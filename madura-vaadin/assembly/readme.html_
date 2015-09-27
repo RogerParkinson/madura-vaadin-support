@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Madura Vaadin Support ${project.version}</title>
+</head>
+<body>
+	<h1>Madura Vaadin Support ${project.version}</h1>
+
+<p>Integrates Madura Objects with <a href="http:www.vaadin.com">Vaadin</a> (${vaadin.version}) applications including support for dynamic metadata changes 
+(available choices, read/write status of fields etc). Includes support for <a href="https://vaadin.com/add-ons/touchkit">Vaadin TouchKit</a> (${vaadin-touchkit.version}).</p>
+
+<p>The best way to understand what this can do is to take a look at the <a href="http://pizzaorderdemo-madura.rhcloud.com/">pizza order demo</a>. Use Firefox
+and follow the <a href="https://repo1.maven.org/maven2/nz/co/senanque/madura-pizzaorder/3.4.0/madura-pizzaorder-3.4.0.pdf">demo script</a> (PDF).
+
+<p>There you can see simple validation working but you will also see more complex things going on. For example you choose
+a pizza size and the pizza topping available changes dynamically. Or you choose the topping and the available sizes change, it doesn't
+matter which way around. Fields become visible or invisible or readonly depending on other choices. It also knows when all the
+required fields are entered and enables the submit button then.</p>
+
+<p>Okay that looks all right in a demo. The next thing to understand is that there isn't a load of specialised code to handle each case. 
+Madura Objects allows us to declare how objects behave. For example you define which fields are required in an object and that controls
+if the submit button is active or not. Simple validation and I18n issues are catered for automatically based on how each field is defined
+and the current language setting. Your code can concentrate on the business logic rather than the plumbing.</p>
+
+<p>As well as simple validation (eg range checks on numbers etc) there is also cross field validation, where two or more fields have to maintain a
+relationship to each other such as one date must be after another one or total items in an invoice must be above a threshold. This is done with
+Madura Rules, a plugin to Madura Objects. You write rules like</p>
+<pre>
+rule: Pizza "p2"
+{
+	if (size == "Small")
+	{
+		readonly(testing);
+		activate(testing);
+		amount = 10;
+	}
+}
+</pre>
+<p>Which makes a field called 'testing' readOnly and visible if the user picked a small pizza. It also sets the amount field to 10. These changes
+show up immediately on the display and they require no extra coding. If the user changes his mind and picks a different size the rule
+is 'unfired' and the actions taken when it was fired are automatically undone.</p>
+
+<p>Transparency is important here. Your code is barely aware that anything interesting is happening. Pretty much everything is determined from annotations
+on the POJOs and these are (preferably) generated using JAXB so your objects are defined in a schema file. You can annotate them by hand if you
+want but using JAXB, especially with HyperJAXB you get objects that will serialise to JPA and XML as well (that's not part of Madura, just
+stuff we really like using, like Vaadin and Spring). Once the objects are generated there is a small amount of binding code to make Madura Objects 
+aware of the POJOs and buttons you've instantiated and that's about it.</p>
+
+<p>All labels and button names etc are handled for I18n. You need to provide a translation file and it uses standard Java resource files for that,
+so there is nothing really to learn.</p>
+
+<p>And some other things we find useful:</p>
+<list>
+<le>A view manager to support easier handling of several Vaadin forms at once.</le>
+<le>An extension of the JPAContainer which supports @Transactional better. It also supports nice popup edit forms for each row.</le>
+<le>A permission manager that allows you to define permission on any object field. This will determine if the current user is allowed to see the field or update it etc. User permissions
+are supplied through Spring Security, field permissions are defined through annotations. The permissions are, of course, optional.</le>
+<le>Support for our perspectives manager which allows you to plug sub-applications into a perpectives framework. The result looks a bit like Eclipse perpectives.</le>
+<le>Support for Spring applications which are sometimes tricky to manage with Vaadin.</le>
+</list>
+
+<p>This is a very short introduction to the Madura software. It does more than we described and it does it with very little fuss.
+There is much more information about the Madura products <a href="www.madurasoftware.com">here</a>.
+
+<h2>Installation</h2>
+<p>See <a href="https://vaadin.com/book/vaadin7/-/page/addons.html#addons.overview">Using Vaadin Add-ons</a> for general installation instructions. This product
+has a number of dependencies and we assume you are using maven or ivy to manage those. However all non-optional dependencies are included in the addon zip file just in case you don't.</p>
+<p>To see how the demo projects are organised, including the Spring configuration, rule definitions and plugin operation you should look at the pizza
+order demo sources. There are two version, depending on whether you prefer to use maven or ant+ivy. If you don't want to use a dependency manager
+then probably still start with one of those and copy the required jar files to where you prefer.</p>
+<p>Madura invokes JAXB to generate annotated Java objects, as well as a rule compiler (if Madura Rules is being used). Both of these can be called
+from either ant or from a maven plugin defined in the pom file. Again, see the relevant project source for how this is done.</p>
+<h2>Useful Links</h2>
+<list>
+<li>Master page describing the Madura products and their various locations : https://www.madurasoftware.com</li>
+<li>Madura Vaadin Support sources: https://github.com/RogerParkinson/MaduraVaadinSupport</li>
+<li>Detailed documentation (pdf): https://repo1.maven.org/maven2/nz/co/senanque/madura-vaadinsupport/${project.version}/madura-vaadinsupport-${project.version}.pdf</li>
+<li>Pizza Order Demo sources: https://github.com/RogerParkinson/MaduraPizzaOrderDemo</li>
+<li>Pizza Order Demo docs (pdf): https://repo1.maven.org/maven2/nz/co/senanque/madura-pizzaorder/3.4.0/madura-pizzaorder-3.4.0.pdf</li>
+<li>Perspectives Manager sources: https://repo1.maven.org/maven2/nz/co/senanque/madura-perpectives/3.4.0/madura-pizzaorder-3.4.0.pdf</li>
+<li>Perspectives Manager docs (pdf): https://repo1.maven.org/maven2/nz/co/senanque/madura-pizzaorder/3.4.0/madura-pizzaorder-3.4.0.pdf</li>
+</list>
+</body>
+</html>
