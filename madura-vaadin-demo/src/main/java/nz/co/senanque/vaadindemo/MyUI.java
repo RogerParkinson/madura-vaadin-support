@@ -74,9 +74,8 @@ public class MyUI extends UI implements MessageSourceAware {
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {
-    		"nz.co.senanque.validationengine",
-    		"nz.co.senanque.login",
-    		"nz.co.senanque.testv7"})
+    		"nz.co.senanque.vaadin",
+    		"nz.co.senanque.validationengine"})
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
@@ -117,7 +116,15 @@ public class MyUI extends UI implements MessageSourceAware {
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         navigationBar.addComponent(createNavigationButton("View Scoped View",
                 ViewScopedView.VIEW_NAME));
-        root.addComponent(navigationBar);
+		root.addComponent(navigationBar);
+		Button logout = new Button("Logout");
+		logout.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				logout();
+			}
+		});
+		navigationBar.addComponent(logout);
 
         final Panel viewContainer = new Panel();
         viewContainer.setSizeFull();
