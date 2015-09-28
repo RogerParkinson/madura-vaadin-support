@@ -94,8 +94,11 @@ public class MyUI extends UI implements MessageSourceAware {
     	// Initialise the permission manager using data from the login
     	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
     	// but they should all populate the permission manager.
-    	m_maduraSessionManager.getPermissionManager().setPermissionsList((Set<String>)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.PERMISSIONS));
-    	m_maduraSessionManager.getPermissionManager().setCurrentUser((String)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.USERNAME));
+    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.USERNAME);
+    	@SuppressWarnings("unchecked")
+		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.PERMISSIONS);
+    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
+    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
 
     	final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
@@ -129,11 +132,11 @@ public class MyUI extends UI implements MessageSourceAware {
 		m_messageSourceAccessor = new MessageSourceAccessor(messageSource);
 		
 	}
-	public MaduraSessionManager getMaduraSessionManager() {
-		return m_maduraSessionManager;
-	}
-	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
-		m_maduraSessionManager = maduraSessionManager;
-	}
+//	public MaduraSessionManager getMaduraSessionManager() {
+//		return m_maduraSessionManager;
+//	}
+//	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
+//		m_maduraSessionManager = maduraSessionManager;
+//	}
 
 }
