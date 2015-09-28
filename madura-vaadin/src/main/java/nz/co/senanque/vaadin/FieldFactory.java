@@ -78,8 +78,13 @@ public final class FieldFactory extends DefaultFieldFactory {
         }
         else if (item instanceof BeanItem) {
         	MaduraPropertyWrapper maduraProperty = getMaduraSessionManager().getMaduraPropertyWrapper((ValidationObject)((BeanItem)item).getBean(), propertyId.toString());
+        	if (maduraProperty == null) {
+        		logger.warn("property {} is not mapped",propertyId);
+        		return null;
+        	} else {
             ret = createFieldByPropertyType(maduraProperty);
 //            logger.debug("created field {} class {} value {}",new Object[]{propertyId,ret.getClass().getName(),ret.getValue()});
+        	}
         }
         else {
         	// this probably never gets called
