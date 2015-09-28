@@ -9,6 +9,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 
 /**
- * @author roger
+ * @author Roger Parkinson
  *
  */
 @Component
@@ -36,11 +37,14 @@ public class SessionBean implements BeanFactoryAware {
 	}
 	@PostConstruct
 	public void init() {
-		m_logger.info("init");
+		StringBuilder sb = new StringBuilder("\n");
 		for (String s: m_beanFactory.getBeanDefinitionNames()) {
-			m_logger.info("{}",s);
+			sb.append(s).append(" ");
+			BeanDefinition bd = m_beanFactory.getBeanDefinition(s);
+			sb.append(bd.getBeanClassName()).append(" ");
+			sb.append("\"").append(bd.getScope()).append("\"").append("\n");
 		}
-		m_logger.info("init-done");
+		m_logger.info("app beans: {}",sb);
 	}
 	
 	public String toString() {

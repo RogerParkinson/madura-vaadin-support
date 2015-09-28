@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.login.RequestValidator;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadindemo.ViewScopedView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -25,14 +26,19 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -44,6 +50,7 @@ public class MyUI extends UI implements MessageSourceAware {
 	private static final long serialVersionUID = 1L;
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
+	@Autowired private SpringViewProvider viewProvider;
 	private transient MessageSourceAccessor m_messageSourceAccessor;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 
@@ -67,9 +74,8 @@ public class MyUI extends UI implements MessageSourceAware {
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {
-    		"nz.co.senanque.validationengine",
-    		"nz.co.senanque.login",
-    		"nz.co.senanque.testv7"})
+    		"nz.co.senanque.vaadin",
+    		"nz.co.senanque.validationengine"})
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
@@ -94,29 +100,72 @@ public class MyUI extends UI implements MessageSourceAware {
     	// Initialise the permission manager using data from the login
     	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
     	// but they should all populate the permission manager.
-    	m_maduraSessionManager.getPermissionManager().setPermissionsList((Set<String>)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.PERMISSIONS));
-    	m_maduraSessionManager.getPermissionManager().setCurrentUser((String)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.USERNAME));
+    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.USERNAME);
+    	@SuppressWarnings("unchecked")
+		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.PERMISSIONS);
+    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
+    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
 
-    	final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        setContent(layout);
-        Button button = new Button("Click Me");
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.setMargin(true);
+        root.setSpacing(true);
+        setContent(root);
+
+        final CssLayout navigationBar = new CssLayout();
+        navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        navigationBar.addComponent(createNavigationButton("View Scoped View",
+                ViewScopedView.VIEW_NAME));
+		root.addComponent(navigationBar);
+		Button logout = new Button("Logout");
+		logout.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				logout();
+			}
+		});
+		navigationBar.addComponent(logout);
+
+        final Panel viewContainer = new Panel();
+        viewContainer.setSizeFull();
+        root.addComponent(viewContainer);
+        root.setExpandRatio(viewContainer, 1.0f);
+
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addProvider(viewProvider);
+
+//    	final VerticalLayout layout = new VerticalLayout();
+//        layout.setMargin(true);
+//        setContent(layout);
+//        Button button = new Button("Click Me");
+//        button.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(ClickEvent event) {
+//                layout.addComponent(new Label("Thank you for clicking"));
+//            }
+//        });
+//        layout.addComponent(button);
+//        Button logout = new Button("Logout");
+//        logout.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(ClickEvent event) {
+//                logout();
+//            }
+//        });
+//        layout.addComponent(logout);
+
+    }
+    private Button createNavigationButton(String caption, final String viewName) {
+        Button button = new Button(caption);
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
         button.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
-            }
-        });
-        layout.addComponent(button);
-        Button logout = new Button("Logout");
-        logout.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                logout();
-            }
-        });
-        layout.addComponent(logout);
-
+			
+			public void buttonClick(ClickEvent event) {
+				getUI().getNavigator().navigateTo(viewName);
+			}
+		});
+        return button;
     }
     private void logout() {
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
@@ -129,11 +178,11 @@ public class MyUI extends UI implements MessageSourceAware {
 		m_messageSourceAccessor = new MessageSourceAccessor(messageSource);
 		
 	}
-	public MaduraSessionManager getMaduraSessionManager() {
-		return m_maduraSessionManager;
-	}
-	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
-		m_maduraSessionManager = maduraSessionManager;
-	}
+//	public MaduraSessionManager getMaduraSessionManager() {
+//		return m_maduraSessionManager;
+//	}
+//	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
+//		m_maduraSessionManager = maduraSessionManager;
+//	}
 
 }
