@@ -70,6 +70,7 @@ limitations under the License.
 					<xsd:appinfo>
 						<annox:annotate>
 							<md:Label labelName="person.name" />
+							<md:Required/>
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -85,6 +86,7 @@ limitations under the License.
 						<annox:annotate>
 							<md:Label labelName="email" />
 							<md:Email/>
+							<md:Required/>
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>

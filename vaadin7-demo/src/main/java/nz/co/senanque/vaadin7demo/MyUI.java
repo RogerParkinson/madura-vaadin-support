@@ -4,13 +4,10 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -22,7 +19,6 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -38,14 +34,13 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @Widgetset("nz.co.senanque.vaadin7demo.MyAppWidgetset")
 @SpringUI
-public class MyUI extends UI implements MessageSourceAware {
+public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
 	@Autowired
     private SpringViewProvider viewProvider;
-	private transient MessageSourceAccessor m_messageSourceAccessor;
 
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
@@ -92,12 +87,6 @@ public class MyUI extends UI implements MessageSourceAware {
     @Override
     protected void init(VaadinRequest vaadinRequest) { // called at session start
     	
-    	// Initialise the permission manager using data from the login
-    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
-    	// but they should all populate the permission manager.
-//    	m_maduraSessionManager.getPermissionManager().setPermissionsList((Set<String>)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.PERMISSIONS));
-//    	m_maduraSessionManager.getPermissionManager().setCurrentUser((String)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.USERNAME));
-
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);
@@ -155,15 +144,4 @@ public class MyUI extends UI implements MessageSourceAware {
 		});
         return button;
     }
-    private void logout() {
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-        this.close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
-    }
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSourceAccessor = new MessageSourceAccessor(messageSource);
-		
-	}
-
 }

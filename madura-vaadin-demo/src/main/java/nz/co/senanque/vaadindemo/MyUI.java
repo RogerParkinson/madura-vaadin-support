@@ -10,13 +10,10 @@ import nz.co.senanque.login.RequestValidator;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -24,9 +21,10 @@ import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
@@ -35,7 +33,8 @@ import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -43,13 +42,12 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @Widgetset("nz.co.senanque.vaadindemo.MyAppWidgetset")
 @SpringUI
-public class MyUI extends UI implements MessageSourceAware {
+public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
 	@Autowired private SpringViewProvider viewProvider;
-	private transient MessageSourceAccessor m_messageSourceAccessor;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
@@ -104,67 +102,35 @@ public class MyUI extends UI implements MessageSourceAware {
     	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
 
-//        final VerticalLayout root = new VerticalLayout();
-//        root.setSizeFull();
-//        root.setMargin(true);
-//        root.setSpacing(true);
-//        setContent(root);
-//
-//        final CssLayout navigationBar = new CssLayout();
-//        navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-//        navigationBar.addComponent(createNavigationButton("View Scoped View",
-//                ViewScopedView.VIEW_NAME));
-//		root.addComponent(navigationBar);
-//		Button logout = new Button("Logout");
-//		logout.addClickListener(new Button.ClickListener() {
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//				logout();
-//			}
-//		});
-//		navigationBar.addComponent(logout);
-//
-//        final Panel viewContainer = new Panel();
-//        viewContainer.setSizeFull();
-//        root.addComponent(viewContainer);
-//        root.setExpandRatio(viewContainer, 1.0f);
-//
-//        Navigator navigator = new Navigator(this, viewContainer);
-//        navigator.addProvider(viewProvider);
-    	
-    	final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        setContent(layout);
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.setMargin(true);
+        root.setSpacing(true);
+        setContent(root);
 
-        // create a dummy object to map things to
-        Person person = new Person();
-    	m_maduraSessionManager.getValidationSession().bind(person);
+        final CssLayout navigationBar = new CssLayout();
+        navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        navigationBar.addComponent(createNavigationButton("View Scoped View",
+                ViewScopedView.VIEW_NAME));
+		root.addComponent(navigationBar);
+		Button logout = new Button("Logout");
+		logout.addStyleName(ValoTheme.BUTTON_SMALL);
+		logout.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				logout();
+			}
+		});
+		navigationBar.addComponent(logout);
 
-    	// create a form to display the object and add it to the UI
-    	PersonForm personForm = new PersonForm(m_maduraSessionManager);
-    	personForm.setFieldList(new String[]{"id","name","email","address"});
-    	layout.addComponent(personForm);
-    	
-    	// Map the person object onto the person form
-    	personForm.setItemDataSource(new BeanItem<Person>(person));
+        final Panel viewContainer = new Panel();
+        viewContainer.setSizeFull();
+        root.addComponent(viewContainer);
+        root.setExpandRatio(viewContainer, 1.0f);
 
-        Button button = new Button("Click Me");
-        button.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
-            }
-        });
-        layout.addComponent(button);
-        Button logout = new Button("Logout");
-        logout.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                logout();
-            }
-        });
-        layout.addComponent(logout);
-
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addProvider(viewProvider);
+        View v = viewProvider.getView("");   	
     }
     private Button createNavigationButton(String caption, final String viewName) {
         Button button = new Button(caption);
@@ -184,9 +150,7 @@ public class MyUI extends UI implements MessageSourceAware {
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
     }
-	@Override
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSourceAccessor = new MessageSourceAccessor(messageSource);
-		
+	public Person getPerson() {
+        return new Person();
 	}
 }

@@ -135,6 +135,10 @@ public class MaduraForm extends Form implements InitializingBean {
     {
        return createButton(name,painter,listener,null);
     }
+    public Button createButton(String name, ButtonPainter painter)
+    {
+       return createButton(name,painter,null,null);
+    }
     protected Button createButton(String name,
             ButtonPainter painter, ClickListener listener, Object data)
     {
