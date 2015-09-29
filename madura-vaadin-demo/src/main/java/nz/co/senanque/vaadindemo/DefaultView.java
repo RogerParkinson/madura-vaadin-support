@@ -101,9 +101,10 @@ public class DefaultView extends VerticalLayout implements View {
     		m_person = ui.getPerson();
         	m_maduraSessionManager.getValidationSession().bind(m_person);
         	personForm.setItemDataSource(new BeanItem<Person>(m_person));
-        	List<MaduraPropertyWrapper> properties = personForm.getItemDataSourceProperties();
-    		m_maduraSessionManager.bind(submit, properties);
-    		m_maduraSessionManager.bind(cancel, properties);
+// The following happens automatically in a MaduraForm.setItemDataSource
+//        	List<MaduraPropertyWrapper> properties = personForm.getItemDataSourceProperties();
+//    		m_maduraSessionManager.bind(submit, properties);
+//    		m_maduraSessionManager.bind(cancel, properties);
     	}
     }
 }
