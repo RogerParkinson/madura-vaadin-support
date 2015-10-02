@@ -23,6 +23,7 @@
 		<project.scm.id>github</project.scm.id>
 		<project.source.version>1.7</project.source.version>
 		<project.target.version>1.7</project.target.version>
+		<project.encoding>UTF-8</project.encoding>
 	</properties>
 	<repositories>
 		<repository>
@@ -42,6 +43,21 @@
 	</repositories>
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-login</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-vaadin</artifactId>
+	            <version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-vaadin-tableeditor</artifactId>
+	            <version>0.0.1-SNAPSHOT</version>
+			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
@@ -111,6 +127,17 @@
 				<artifactId>spring-web</artifactId>
 				<version>${spring.framework.version}</version>
 			</dependency>
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-context-support</artifactId>
+			    <version>${spring.framework.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.springframework</groupId>
+			    <artifactId>spring-test</artifactId>
+			    <version>4.1.7.RELEASE</version>
+			    <scope>test</scope>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
@@ -119,6 +146,7 @@
   	<module>vaadin7-demo</module>
   	<module>madura-vaadin</module>
   	<module>madura-vaadin-demo</module>
+  	<module>madura-vaadin-tableeditor</module>
   	<module>madura-address-book</module>
   </modules>
 </project>

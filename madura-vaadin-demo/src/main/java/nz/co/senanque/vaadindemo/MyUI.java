@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.login.RequestValidator;
+import nz.co.senanque.vaadin.Hints;
+import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Button;
@@ -89,6 +92,11 @@ public class MyUI extends UI {
     	public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
     		return new PropertySourcesPlaceholderConfigurer();
     	}
+    	@Bean(name="hints")
+    	@UIScope
+    	public Hints getHints() {
+    		return new HintsImpl();
+    	}
     }
     @Override
     protected void init(VaadinRequest vaadinRequest) { // called at session start
@@ -110,8 +118,8 @@ public class MyUI extends UI {
 
         final CssLayout navigationBar = new CssLayout();
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        navigationBar.addComponent(createNavigationButton("View Scoped View",
-                ViewScopedView.VIEW_NAME));
+//        navigationBar.addComponent(createNavigationButton("View Scoped View",
+//                ViewScopedView.VIEW_NAME));
 		root.addComponent(navigationBar);
 		Button logout = new Button("Logout");
 		logout.addStyleName(ValoTheme.BUTTON_SMALL);
@@ -135,7 +143,6 @@ public class MyUI extends UI {
     private Button createNavigationButton(String caption, final String viewName) {
         Button button = new Button(caption);
         button.addStyleName(ValoTheme.BUTTON_SMALL);
-        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
         button.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {

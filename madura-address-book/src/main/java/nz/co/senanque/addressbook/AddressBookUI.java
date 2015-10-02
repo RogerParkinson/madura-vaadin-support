@@ -7,16 +7,14 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.login.RequestValidator;
+import nz.co.senanque.vaadin.Hints;
+import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.tableeditor.EditorWindow;
 import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.annotation.Bean;
@@ -96,6 +94,11 @@ public class AddressBookUI extends UI implements MessageSourceAware  {
     		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people");
     		ret.setColumns(new String[]{"name","address","email"});
     		return ret;
+    	}
+    	@Bean(name="hints")
+    	@UIScope
+    	public Hints getHints() {
+    		return new HintsImpl();
     	}
     	@Bean(name="editorWindow")
     	@UIScope

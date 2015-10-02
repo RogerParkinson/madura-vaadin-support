@@ -47,7 +47,6 @@ public class JPAContainerEditorFactory<T>  implements FactoryBean<JPAContainerEd
 	@Value("${nz.co.senanque.vaadin.tableeditor.JPAContainerEditorFactory.type}")
 	private Class<T> m_type;
 
-	@Override
 	public JPAContainerEditor<T> getObject() throws Exception {
 		JPAContainerEditor<T> container = new JPAContainerEditor<T>(m_type, entityManager);
 		EntityProvider<T> entityProvider = new MutableLocalEntityProvider<T>(m_type, entityManager); 
@@ -56,12 +55,10 @@ public class JPAContainerEditorFactory<T>  implements FactoryBean<JPAContainerEd
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Override
 	public Class<JPAContainerEditor> getObjectType() {
 		return JPAContainerEditor.class;
 	}
 
-	@Override
 	public boolean isSingleton() {
 		return true;
 	}

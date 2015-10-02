@@ -53,8 +53,6 @@ import com.vaadin.ui.TextField;
  * @author Roger Parkinson
  *
  */
-@Component("hints")
-@UIScope
 public class HintsImpl implements Hints, Serializable {
 	
 	private static final long serialVersionUID = -1066631793343374468L;

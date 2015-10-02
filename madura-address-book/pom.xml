@@ -7,70 +7,12 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-	<groupId>nz.co.senanque</groupId>
 	<artifactId>madura-address-book</artifactId>
 	<packaging>war</packaging>
 	<version>2.0.0-SNAPSHOT</version>
 	<name>madura-address-book</name>
   <url>www.madurasoftware.com</url>
-  <description>This is a demo program that illustrates some of the capabilities of Madura working with Vaadin. Specifically it shows the use of the JPAontainer. The JPAContainer shown here is extended from the one you can find in Vaadin Addons to support Spring's @Transactional notation. It is also using Madura Objects, but that is an interesting incidental because you could use Madura Objects with both.
-
-So the objective here is to show a complete working demo of how to configure everything to show a table of data fetched from a database using JPA, including popup edit forms.</description>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<pdf>target/${project.artifactId}-${project.version}.pdf</pdf>
-		<vaadin.version>7.5.6</vaadin.version>
-		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
-		<project.source.version>1.7</project.source.version>
-		<project.target.version>1.7</project.target.version>
-		<project.encoding>UTF-8</project.encoding>
-		<jaxb22.version>2.2.4-1</jaxb22.version>
-		<hibernate-version>4.1.4.Final</hibernate-version>
-		<madura.objects.version>3.0.0-SNAPSHOT</madura.objects.version>
-	</properties>
-	<organization>
-		<name>Prometheus Consulting</name>
-		<url>www.madurasoftware.com</url>
-	</organization>
-	<developers>
-		<developer>
-			<id>roger</id>
-			<name>Roger J Parkinson</name>
-			<email>roger.parkinson35 at gmail.com</email>
-			<timezone>GMT+12</timezone>
-			<roles>
-			</roles>
-		</developer>
-	</developers>
-	<scm>
-		<connection>scm:git:git@github.com:RogerParkinson/madura-address-book.git</connection>
-		<url>scm:git:git@github.com:RogerParkinson/madura-address-book.git</url>
-		<developerConnection>scm:git:git@github.com:RogerParkinson/madura-address-book.git</developerConnection>
-	</scm>
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/RogerParkinson/madura-address-book/issues</url>
-	</issueManagement>
-
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-		<repository>
-			<id>vaadin-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
+  <description>A demo program that illustrates the extended JPAContainer and the table editor</description>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -102,20 +44,14 @@ So the objective here is to show a complete working demo of how to configure eve
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-login</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-vaadin</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+			<artifactId>madura-vaadin-tableeditor</artifactId>
             <exclusions>
             	<exclusion>
             		<artifactId>spring-oxm</artifactId>
             		<groupId>org.springframework</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>hibernate-jpa-2.0-api</artifactId>
-            		<groupId>org.hibernate.javax.persistence</groupId>
             	</exclusion>
             </exclusions>
 		</dependency>
@@ -125,30 +61,23 @@ So the objective here is to show a complete working demo of how to configure eve
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+		    <groupId>org.hibernate.javax.persistence</groupId>
+		    <artifactId>hibernate-jpa-2.1-api</artifactId>
+		    <version>1.0.0.Final</version>
+		</dependency>
+		<dependency>
 		    <groupId>org.springframework.data</groupId>
 		    <artifactId>spring-data-jpa</artifactId>
 		    <version>1.9.0.RELEASE</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.hibernate</groupId>
-		    <artifactId>hibernate-entitymanager</artifactId>
-		    <version>5.0.1.Final</version>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
 		    <version>1.4.189</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-context-support</artifactId>
-		    <version>4.1.6.RELEASE</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-test</artifactId>
-		    <version>4.1.7.RELEASE</version>
-		    <scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

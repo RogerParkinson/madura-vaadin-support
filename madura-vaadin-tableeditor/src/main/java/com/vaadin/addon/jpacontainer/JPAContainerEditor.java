@@ -18,9 +18,7 @@ package com.vaadin.addon.jpacontainer;
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
-
 import nz.co.senanque.vaadin.tableeditor.Editor;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +48,6 @@ public class JPAContainerEditor<T> extends JPAContainer<T> implements Editor<T>{
     	log.debug("Constructor");
     }
 
-    @Override
 	public T get(Serializable target) {
 		log.debug("");
 		T entity = (T) m_entityManager.find(type, target);
@@ -90,7 +87,6 @@ public class JPAContainerEditor<T> extends JPAContainer<T> implements Editor<T>{
         return id;
 	}
 
-	@Override
 	@Transactional
 	public void merge(T entity) {
 		assert entity != null : "entity must not be null";
@@ -128,7 +124,6 @@ public class JPAContainerEditor<T> extends JPAContainer<T> implements Editor<T>{
         return true;
     }
 
-	@Override
     public Object getIdForPojo(T entity) {
 		assert entity != null : "entity must not be null";
         return getEntityClassMetadata().getPropertyValue(entity,

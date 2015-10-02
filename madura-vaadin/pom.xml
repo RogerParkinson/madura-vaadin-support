@@ -11,47 +11,6 @@
 	<name>madura-vaadin</name>
 	<url>www.madurasoftware.com</url>
 	<description>Integrates Madura Objects with Vaadin applications including support for dynamic metadata changes (available choices, read/write status of fields etc).</description>
-	<organization>
-		<name>Prometheus Consulting</name>
-		<url>www.madurasoftware.com</url>
-	</organization>
-	<developers>
-		<developer>
-			<id>roger</id>
-			<name>Roger J Parkinson</name>
-			<email>roger.parkinson35 at gmail.com</email>
-			<timezone>GMT+12</timezone>
-			<roles>
-			</roles>
-		</developer>
-	</developers>
-	<scm>
-		<connection>scm:git:git@github.com:RogerParkinson/madura-vaadin-support.git</connection>
-		<url>scm:git:git@github.com:RogerParkinson/madura-vaadin-support.git</url>
-		<developerConnection>scm:git:git@github.com:RogerParkinson/madura-vaadin-support.git</developerConnection>
-	</scm>
-	<issueManagement>
-		<system>GitHub</system>
-		<url>https://github.com/RogerParkinson/MaduraVaadin/issues</url>
-	</issueManagement>
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-		<repository>
-			<id>vaadin-snapshots</id>
-			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.logback-extensions</groupId>
@@ -125,6 +84,12 @@
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
@@ -318,7 +283,7 @@
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<pluginExecution>
-									<pluginExecutionFilter>
+				asm					<pluginExecutionFilter>
 										<groupId>org.apache.maven.plugins</groupId>
 										<artifactId>maven-enforcer-plugin</artifactId>
 										<versionRange>[1.0.0,)</versionRange>

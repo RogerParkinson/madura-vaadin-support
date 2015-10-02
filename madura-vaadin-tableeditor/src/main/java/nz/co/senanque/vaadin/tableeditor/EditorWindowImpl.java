@@ -76,15 +76,6 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 		m_caption = caption;
 	}
 
-//	public EditorWindowImpl(MaduraSessionManager maduraSessionManager, String caption, MessageSource messageSource) {
-//		m_maduraSessionManager = maduraSessionManager;
-//        m_form = new nz.co.senanque.vaadin.MaduraForm(maduraSessionManager);
-//        setCaption(new MessageSourceAccessor(messageSource).getMessage(caption));
-//    }
-//	public void setCaption(String caption) {
-//		super.setCaption(new MessageSourceAccessor(m_messageSource).getMessage(caption));
-//	}
-	
     public void initialize(List<String> fields) {
     	MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
     	setCaption(messageSourceAccessor.getMessage(m_caption));
@@ -192,7 +183,6 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
     {
         m_newRow = newRow;
     }
-	@Override
 	public void setMessageSource(MessageSource messageSource) {
 		m_messageSource = messageSource;
 		
