@@ -119,5 +119,6 @@
   	<module>vaadin7-demo</module>
   	<module>madura-vaadin</module>
   	<module>madura-vaadin-demo</module>
+  	<module>madura-address-book</module>
   </modules>
 </project>

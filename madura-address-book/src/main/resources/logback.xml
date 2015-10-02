@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<contextName>MaduraAddressbook</contextName>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!-- <pattern>%-15(%d{HH:mm:ss.SSS}) %-5level %logger (%F:%L) %msg</pattern> -->
+			<pattern>%date %level [%thread] %logger{10} \(%file:%line\) %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework" level="warn" />
+	<logger name="nz.co.senanque.vaadin" level="warn" />
+	<root level="error">
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>
+
