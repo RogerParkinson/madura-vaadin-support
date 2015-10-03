@@ -131,109 +131,22 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.8.0</version>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-objects-maven-plugin</artifactId>
+				<version>${madura.objects.version}</version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<schemaDirectory>src/main/resources/</schemaDirectory>
-							<extension>true</extension>
 							<schemaIncludes>
 								<include>AddressBook.xsd</include>
 							</schemaIncludes>
-							<generateDirectory>${basedir}/generated-sources/xjc</generateDirectory>
-							<addCompileSourceRoot>true</addCompileSourceRoot>
-							<cleanPackageDirectories>false</cleanPackageDirectories>
-							<forceRegenerate>true</forceRegenerate>
-							<removeOldOutput>false</removeOldOutput>
-							<extension>true</extension>
-							<args>
-								<arg>-extension</arg>
-								<arg>-Xequals</arg>
-								<arg>-XtoString</arg>
-								<arg>-Xannotate</arg>
-								<arg>-XhashCode</arg>
-								<arg>-Xhyperjaxb3-ejb</arg>
-								<arg>-Xmadura-objects</arg>
-								<arg>-Xvalidator</arg>
-							</args>
 						</configuration>
 					</execution>
 				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>nz.co.senanque</groupId>
-						<artifactId>madura-objects</artifactId>
-						<version>${madura.objects.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.jvnet.hyperjaxb3</groupId>
-						<artifactId>hyperjaxb3-ejb-runtime</artifactId>
-						<version>0.5.6</version>
-						<exclusions>
-							<exclusion>
-								<groupId>commons-logging</groupId>
-								<artifactId>commons-logging</artifactId>
-							</exclusion>
-							<exclusion>
-								<groupId>org.jvnet.hyperjaxb3</groupId>
-								<artifactId>hyperjaxb3-ejb-roundtrip</artifactId>
-							</exclusion>
-							<!-- Needs to be excluded because it pulls the wrong version -->
-							<exclusion>
-								<groupId>org.springframework</groupId>
-								<artifactId>spring</artifactId>
-							</exclusion>
-							<!-- Needs to be excluded because it pulls the wrong version -->
-							<exclusion>
-								<groupId>org.slf4j</groupId>
-								<artifactId>slf4j-log4j12</artifactId>
-							</exclusion>
-						</exclusions>
-					</dependency>
-					<dependency>
-						<groupId>org.jvnet.hyperjaxb3</groupId>
-						<artifactId>hyperjaxb3-ejb-plugin</artifactId>
-						<version>0.5.6</version>
-						<exclusions>
-							<exclusion>
-								<groupId>commons-logging</groupId>
-								<artifactId>commons-logging</artifactId>
-							</exclusion>
-							<exclusion>
-								<groupId>org.jvnet.hyperjaxb3</groupId>
-								<artifactId>hyperjaxb3-ejb-roundtrip</artifactId>
-							</exclusion>
-							<!-- Needs to be excluded because it pulls the wrong version -->
-							<exclusion>
-								<groupId>org.springframework</groupId>
-								<artifactId>spring</artifactId>
-							</exclusion>
-							<!-- Needs to be excluded because it pulls the wrong version -->
-							<exclusion>
-								<groupId>org.slf4j</groupId>
-								<artifactId>slf4j-log4j12</artifactId>
-							</exclusion>
-						</exclusions>
-					</dependency>
-					<!-- These two are needed to manage logging -->
-					<dependency>
-						<groupId>com.pyx4j</groupId>
-						<artifactId>maven-plugin-log4j</artifactId>
-						<version>1.0.1</version>
-					</dependency>
-					<dependency>
-						<groupId>org.slf4j</groupId>
-						<artifactId>slf4j-log4j12</artifactId>
-						<version>1.7.5</version>
-					</dependency>
-				</dependencies>
 			</plugin>
-
 		</plugins>
 
 		<pluginManagement>
@@ -282,13 +195,13 @@
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>
-											org.jvnet.jaxb2.maven2
+											nz.co.senanque
 										</groupId>
 										<artifactId>
-											maven-jaxb2-plugin
+											madura-objects-maven-plugin
 										</artifactId>
 										<versionRange>
-											[0.8.0,)
+											[3.0.0-SNAPSHOT,)
 										</versionRange>
 										<goals>
 											<goal>generate</goal>

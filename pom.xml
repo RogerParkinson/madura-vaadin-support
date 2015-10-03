@@ -10,7 +10,40 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>madura-vaadin-support</name>
+  <url>www.madurasoftware.com</url>
   <description>madura-vaadin-support</description>
+    <licenses>
+      <license>
+        <name>Apache License, Version 2.0</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+        <comments>A business-friendly OSS license</comments>
+      </license>
+    </licenses>
+    <organization>
+  	<name>Prometheus Consulting</name>
+  	<url>www.madurasoftware.com</url>
+  </organization>
+	<developers>
+		<developer>
+			<id>roger</id>
+			<name>Roger J Parkinson</name>
+			<email>roger.parkinson35 at gmail.com</email>
+			<timezone>GMT+12</timezone>
+			<roles>
+			</roles>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:git:git@github.com:RogerParkinson/madura-vaadin-support.git</connection>
+		<url>scm:git:git@github.com:RogerParkinson/madura-vaadin-support.git</url>
+		<developerConnection>scm:git:git@github.com:RogerParkinson/madura-vaadin-support.git</developerConnection>
+	</scm>
+  <issueManagement>
+  	<system>GitHub</system>
+  	<url>https://github.com/RogerParkinson/madura-vaadin-support/issues</url>
+  </issueManagement>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<pdf>target/${project.artifactId}-${project.version}.pdf</pdf>
