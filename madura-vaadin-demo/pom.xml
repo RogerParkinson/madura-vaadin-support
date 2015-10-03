@@ -7,8 +7,8 @@
   </parent>
   <artifactId>madura-vaadin-demo</artifactId>
   <packaging>war</packaging>
-  <name>madura-vaadin-demo</name>
-  <description>madura-vaadin-demo</description>
+  <name>Madura Vaadin Demo</name>
+  <description>Demo that shows Madura Objects and Vaadin working together</description>
 	<dependencies>
 		<dependency>
 		    <groupId>org.logback-extensions</groupId>
@@ -220,4 +220,5 @@
 
 	</build>
 
+	<url>www.madurasoftware.com</url>
 </project>
