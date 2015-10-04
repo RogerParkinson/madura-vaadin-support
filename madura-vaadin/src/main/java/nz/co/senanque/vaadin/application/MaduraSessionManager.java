@@ -91,6 +91,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     private transient ValidationSession m_validationSession;
     @Autowired private transient FieldFactory m_formFieldFactory;
     @Autowired transient PermissionManager m_permissionManager;
+    @Autowired transient MaduraConverterFactory m_maduraConverterFactory;
     @Autowired private transient Hints m_hints;
 	private transient MessageSource m_messageSource;
     
@@ -673,5 +674,12 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	}
 	public void afterPropertiesSet() throws Exception {
 		m_formFieldFactory.setMaduraSessionManager(this);
+	}
+	public MaduraConverterFactory getMaduraConverterFactory() {
+		return m_maduraConverterFactory;
+	}
+	public void setMaduraConverterFactory(
+			MaduraConverterFactory maduraConverterFactory) {
+		m_maduraConverterFactory = maduraConverterFactory;
 	}
 }

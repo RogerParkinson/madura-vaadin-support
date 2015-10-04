@@ -109,6 +109,7 @@ public class MyUI extends UI {
 		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(RequestValidator.PERMISSIONS);
     	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
+    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
 
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();

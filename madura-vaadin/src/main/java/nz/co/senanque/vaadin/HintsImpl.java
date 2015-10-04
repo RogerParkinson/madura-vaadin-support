@@ -221,7 +221,7 @@ public class HintsImpl implements Hints, Serializable {
         	    select.setValue(v);
         	}
         }
-         return select;
+        return select;
 	}
     public AbstractField getTextField(MaduraPropertyWrapper property) {
     	AbstractTextField ret = null;
