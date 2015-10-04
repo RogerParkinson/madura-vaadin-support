@@ -125,6 +125,11 @@
 				<version>${madura.objects.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-rules</artifactId>
+				<version>${madura.objects.version}</version>
+			</dependency>
+			<dependency>
 			    <groupId>org.logback-extensions</groupId>
 			    <artifactId>logback-ext-spring</artifactId>
 			    <version>0.1.4</version>
@@ -181,5 +186,6 @@
   	<module>madura-vaadin-demo</module>
   	<module>madura-vaadin-tableeditor</module>
   	<module>madura-address-book</module>
+  	<module>madura-rules-demo</module>
   </modules>
 </project>

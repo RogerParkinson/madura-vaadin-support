@@ -111,11 +111,28 @@
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<plugins>
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>build-helper-maven-plugin</artifactId> 
-				<version>1.5</version> <executions> <execution> <phase>package</phase> <id>attach-artifacts</id> 
-				<goals> <goal>attach-artifact</goal> </goals> </execution> </executions> 
-				<configuration> <artifacts> <artifact> <file>${pdf}</file> <type>pdf</type> 
-				</artifact> </artifacts> </configuration> </plugin> -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<id>attach-artifacts</id>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<artifacts>
+						<artifact>
+							<file>${pdf}</file>
+							<type>pdf</type>
+						</artifact>
+					</artifacts>
+				</configuration>
+			</plugin>
 			<plugin>
 				<inherited>true</inherited>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -151,6 +168,7 @@
 			</plugin>
 			<plugin>
 				<!-- outputs target/madura-vaadin-${project.version}-addon.jar -->
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.5.4</version>
 				<configuration>
@@ -234,9 +252,20 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>nz.co.senanque</groupId> <artifactId>maduradocs</artifactId> 
-				<version>6.2.0</version> <executions> <execution> <goals> <goal>pdf</goal> 
-				</goals> </execution> </executions> </plugin> -->
+			<!--  -->
+			<plugin>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>maduradocs</artifactId>
+				<version>6.2.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>pdf</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.kuali.maven.plugins</groupId>
 				<artifactId>properties-maven-plugin</artifactId>
@@ -283,7 +312,7 @@
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
 								<pluginExecution>
-				asm					<pluginExecutionFilter>
+									<pluginExecutionFilter>
 										<groupId>org.apache.maven.plugins</groupId>
 										<artifactId>maven-enforcer-plugin</artifactId>
 										<versionRange>[1.0.0,)</versionRange>
