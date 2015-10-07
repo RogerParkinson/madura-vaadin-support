@@ -31,19 +31,34 @@
 		<h1 t="Overview">
 		<p>This is a quick way to add authentication and authorisation to a demo. It might be okay in production
 		but with some modifications and extensions, but it is intended for demos.</p>
-		<p>By 'quick' we mean all you need to do is add this to your maven dependencies and your war file
-		will start using it, assuming you are deploying to a servlet 3.0 applicaton server (we tested on Tomcat 7).</p>
+		<p>By 'quick' we mean all you need to do is add this to your maven dependencies and your get your Spring configuration to
+		scan the right package, then your war file will start using it, assuming you are deploying to a servlet 3.0 applicaton server (we tested on Tomcat 7).</p>
 		<p>But you'll likely want to customise it a little. Customising is easy.</p>
+		<p>We configure Spring like this:</p>
+        <code><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+
+    <context:component-scan base-package="nz.co.senanque.login" />
+
+</beans>
+        ]]></code>
+        <p>Your Spring configuration probably has other beans in it too, so this is the minimum to get started.</p>
 		</h1>
 		<h1 t="Customising">
 		<p>You can do the following:</p>
 		<list>
-		<le>Change the look of the login prompt.</le>
+		<le>Change the look of the login prompt screen.</le>
 		<le>Add more locales.</le>
 		<le>Change the user list.</le>
 		<le>Replace user authentication mechanism with one of your own.</le>
 		</list>
-		<h2 t="Change the Login Prompt">
+		<h2 t="Change the Login Prompt Screen">
 		<p>The login prompt is controlled by the login.html file, and that loads a css file, and some image files. By default it uses the
 		login.html file in <courier>nz.co.senanque.login.login.html</courier> and that file looks like this:</p>
         <code><![CDATA[
@@ -108,8 +123,20 @@ user,user,A
 		</h2>
 		<h2 t="Replace User Authentication Mechanism">
 		<p>This is not so simple. If you get this far you probably want to look at commercial authentication mechanisms suitable for production.
-		However the mechanism is replaceable. Implement an extension of RequestValidator that does what you need.</p>
+		However the mechanism is replaceable. Provide a class that implements <courier>nz.co.senanque.login.users.UserRepository</courier> and 
+		add it to the Spring beans configuration. It will be autowired into the login process.</p>
 		</h2>
+        </h1>
+        <h1 t="Authorising your Application">
+        <p>The login prompt will ask for a user/password and if it is given a valid one then it will redirect to your application. That might be all you want to do
+        but you probably want to do a little more such find out what user logged in and what permissions they have. You first have to get your HttpSession
+        which can be done various ways depending on what technology you are using. Then you can find the information on the session attributes.</p>
+        <code><![CDATA[
+String currentUser = (String)session.getAttribute(AuthenticationDelegate.USERNAME);
+String localeString = (String)session.getAttribute(AuthenticationDelegate.LOCALE);
+Set<String> currentPermissions = (Set<String>)session.getAttribute(AuthenticationDelegate.PERMISSIONS);
+        ]]></code>
+        <p>That gets you the user, locale and permissions. The permissions are just a list of strings.</p>
         </h1>
 		<a1 t="Release Notes">
 		<note>You need Java 1.7 to compile this project.</note>
