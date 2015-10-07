@@ -9,7 +9,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,7 +51,7 @@ public class AuthenticationServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try {
-			Cookie[] cookies = req.getCookies();
+//			Cookie[] cookies = req.getCookies();
 			m_validator.setErrorAttribute(req, null);
 			m_validator.authenticate(req);
 //			resp.addCookie(cookies[0]);

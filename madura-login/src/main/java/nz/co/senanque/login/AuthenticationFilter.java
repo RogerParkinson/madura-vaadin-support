@@ -31,7 +31,7 @@ public class AuthenticationFilter extends GenericFilterBean {
 	private RequestValidator m_validator;
 
 	protected void initFilterBean() throws ServletException {
-		loginURL = getServletContext().getContextPath()+"/auth/login";
+		loginURL = getServletContext().getContextPath()+AuthenticationDelegate.LOGIN_URL;
 		m_logger.debug("{}",loginURL);
 	}
 
