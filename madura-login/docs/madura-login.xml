@@ -1,0 +1,128 @@
+<?xml-stylesheet type="text/xsl" href="MaduraHTML.xsl" ?>
+
+<doc xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.madurasoftware.com/maduradocs.xsd">
+	<title>
+		<MainTitle>Madura Login</MainTitle>
+		<SubTitle>User Guide</SubTitle>
+		<Author>Roger Parkinson</Author>
+		<Revision>$Revision: 1$</Revision>
+		<image>logo.jpg</image>
+		<references>
+			<reference t="Spring Framework" url="http://www.springframework.org" />
+			<reference t="Vaadin" url="https://vaadin.com/home"/>
+			<reference t="MaduraObjects" url="https://github.com/RogerParkinson/madura-objects-parent"/>
+			<reference t="MaduraRules" url="https://github.com/RogerParkinson/MaduraRules"/>
+			<reference t="MaduraBundles" url="https://github.com/RogerParkinson/madura-bundles"/>
+			<reference t="madura-addressbook" url="https://github.com/RogerParkinson/MaduraAddressbook"/>
+			<reference t="madura-pizzaorder" url="https://github.com/RogerParkinson/MaduraPizzaOrderDemo"/>
+			<reference t="madura-pizzaorder-online" url="http://pizzaorderdemo-madura.rhcloud.com/"/>
+			<reference t="madura-perspectives-manager" url="https://github.com/RogerParkinson/MaduraPerspectivesManager"/>
+			<reference t="madura-perspectives-manager-online" url="http://perspectivesmanager-madura.rhcloud.com/"/>
+			<reference t="madura-pizzaorder-bundle" url="https://github.com/RogerParkinson/MaduraPizzaOrderBundle"/>
+			<reference t="vaadin-touchkit" url="https://vaadin.com/add-ons/touchkit"/>
+			<reference t="vaadin-addon" url="https://vaadin.com/directory#!authoring/edit/addon=449"/>
+			<reference t="PhoneGap" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
+		</references>
+	</title>
+	<body>
+		<process-log/>
+		<process-references/>
+		<h1 t="Overview">
+		<p>This is a quick way to add authentication and authorisation to a demo. It might be okay in production
+		but with some modifications and extensions, but it is intended for demos.</p>
+		<p>By 'quick' we mean all you need to do is add this to your maven dependencies and your war file
+		will start using it, assuming you are deploying to a servlet 3.0 applicaton server (we tested on Tomcat 7).</p>
+		<p>But you'll likely want to customise it a little. Customising is easy.</p>
+		</h1>
+		<h1 t="Customising">
+		<p>You can do the following:</p>
+		<list>
+		<le>Change the look of the login prompt.</le>
+		<le>Add more locales.</le>
+		<le>Change the user list.</le>
+		<le>Replace user authentication mechanism with one of your own.</le>
+		</list>
+		<h2 t="Change the Login Prompt">
+		<p>The login prompt is controlled by the login.html file, and that loads a css file, and some image files. By default it uses the
+		login.html file in <courier>nz.co.senanque.login.login.html</courier> and that file looks like this:</p>
+        <code><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/ DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>~TITLE</title>
+<link rel="stylesheet" type="text/css" href="~CONTEXTPATH/login.css"/>
+<link rel='icon' type='image/x-icon' href='~CONTEXTPATH/favicon.ico' />
+</head>
+<body>
+	<div>
+		<form id='loginf' action='~CONTEXTPATH/auth/login' method='post'>
+			<div>
+				<label>
+					<select name="locale" class="icon-menu">
+					<option value="en" selected style="background-image:url(flags/English.png)">English</option>
+					<option value="fr" style="background-image:url(flags/French.png)">French</option>
+					</select>
+				</label>
+				<h1>~TITLE</h1>
+				<label> 
+					<span>~NAME</span><input type="text" name="user" autofocus />
+				</label> 
+				<label>
+					<span>~PASSWORD</span><input type="password" name="password" />
+				</label> 
+				<label> 
+					<input type="submit" value="~LOGIN" />
+				</label> 
+				<label> <span class="error">~ERROR</span></label>
+				<label class="logo"/>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
+<!-- Vaadin-Refresh -->
+        ]]></code>
+		<p>This is just an ordinary html file except for the ~ fields which get substituted before it renders. We
+		could have used JSP or similar for this but we wanted to keep the setup very simple. Notice the comment at the end, you need this
+		to support Vaadin applications.</p>
+		<p>You can replace this completely by putting your own login.html in your WEB-INF directory. Or you can just change the 
+		dependent files. For example you can put your own copy of login.css into WEB-INF and it will use that. In fact if you just want to change
+		the css file don't bother copying the login.html into WEB-INF. So the rule is to customise a file put your copy into WEB-INF.</p>
+		<p>The other files it will look for (which can be replaced) are users.csv, favicon.png and logo.gif.</p>
+		</h2>
+		<h2 t="Add More Locales">
+		<p>The login.html file includes a prompt for the locale. By default this has only two locales: en and fr. It provides an easy way to switch your
+		demo over to French. You may want more (or different) locales. Just edit your required options into your customised login.html. You can, if you
+		want, add flags into your WEB-INF/flags directory. These only show up in the drop down on FireFox, but they look pretty.</p>
+		</h2>
+		<h2 t="Change the User List">
+		<p>The list of users is in users.csv which can be replaced by your file in WEB-INF. The default file looks like this:</p>
+        <code><![CDATA[
+admin,admin,A,B,C,ADMIN
+user,user,A
+        ]]></code>
+        <p>The format is user, password, permissions...</p>
+        <p>Just edit it to add more users and passwords as needed. The permissions are just strings. Once authenticated the user and permissions are put into the
+        http session where the application can pick them up and use them. Obviously this not a secure way to store real user names and passwords.</p>
+		</h2>
+		<h2 t="Replace User Authentication Mechanism">
+		<p>This is not so simple. If you get this far you probably want to look at commercial authentication mechanisms suitable for production.
+		However the mechanism is replaceable. Implement an extension of RequestValidator that does what you need.</p>
+		</h2>
+        </h1>
+		<a1 t="Release Notes">
+		<note>You need Java 1.7 to compile this project.</note>
+		<table width="12cm">
+			<tw>12cm</tw>
+		<tr>
+			<th>1.0.0</th>
+		</tr>
+		<tr>
+			<td>Initial version</td>
+		</tr>
+		</table>
+		</a1>
+	</body>
+	
+</doc>

@@ -2,12 +2,19 @@
 <html>
 <head>
 <title>~TITLE</title>
-<link rel="stylesheet" type="text/css" href="~CSSFILE"/>
+<link rel="stylesheet" type="text/css" href="~CONTEXTPATH/login.css"/>
+<link rel='icon' type='image/x-icon' href='~CONTEXTPATH/favicon.ico' />
 </head>
 <body>
 	<div>
 		<form id='loginf' action='~CONTEXTPATH/auth/login' method='post'>
 			<div>
+				<label>
+					<select name="locale" class="icon-menu">
+					<option value="en" selected style="background-image:url(flags/English.png)">English</option>
+					<option value="fr" style="background-image:url(flags/French.png)">French</option>
+					</select>
+				</label>
 				<h1>~TITLE</h1>
 				<label> 
 					<span>~NAME</span><input type="text" name="user" autofocus />

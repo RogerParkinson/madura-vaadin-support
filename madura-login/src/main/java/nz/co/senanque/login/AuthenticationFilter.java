@@ -52,7 +52,6 @@ public class AuthenticationFilter extends GenericFilterBean {
 	}
 
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 

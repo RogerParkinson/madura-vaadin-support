@@ -9,6 +9,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,11 +33,9 @@ public class AuthenticationServlet extends HttpServlet {
 	private RequestValidator m_validator;
 
 	public AuthenticationServlet() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		m_logger.debug("");
 		ServletContext sc = config.getServletContext();
 		WebApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(sc);
 		m_validator = applicationContext.getBean(RequestValidator.class);
@@ -53,8 +52,10 @@ public class AuthenticationServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try {
+			Cookie[] cookies = req.getCookies();
 			m_validator.setErrorAttribute(req, null);
 			m_validator.authenticate(req);
+//			resp.addCookie(cookies[0]);
 			resp.sendRedirect(req.getContextPath()); // on to application
 		} catch (Exception e) {
 			m_logger.error(e.getMessage(),e);

@@ -1,17 +1,15 @@
 form {
-	background: -webkit-gradient(linear, bottom, left 175px, from(#CCCCCC),
-		to(#EEEEEE));
-	background: -moz-linear-gradient(bottom, #CCCCCC, #EEEEEE 175px);
+	background: linear-gradient(to top, #CCCCCC, #EEEEEE);
 	margin: auto;
 	position: relative;
 	width: 30%;
-	height: 300px;
+	height: 320px;
 	font-family: Tahoma, Geneva, sans-serif;
 	font-size: 14px;
 	font-style: italic;
 	line-height: 24px;
 	font-weight: bold;
-	color: #09C;
+	color: #1eaedd;
 	text-decoration: none;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -40,7 +38,7 @@ input[type=submit] {
 	position: absolute;
 	right: 20px;
 	bottom: 20px;
-	background: #09C;
+	background: #1eaedd;
 	color: #fff;
 	font-family: Tahoma, Geneva, sans-serif;
 	height: 30px;
@@ -52,7 +50,7 @@ input[type=submit] {
 
 input[type=submit]:hover {
 	background: #fff;
-	color: #09C;
+	color: #1eaedd;
 }
 
 .error {
@@ -71,3 +69,11 @@ input[type=submit]:hover {
 h1 {
 	text-align:center;
 }
+
+select.icon-menu option {
+	background-repeat:no-repeat;
+	background-position:bottom left;
+	background-size: 20px;
+	padding-left:30px;
+}
+

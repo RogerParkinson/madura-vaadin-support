@@ -29,6 +29,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * @author Roger Parkinson
@@ -39,10 +40,6 @@ public class RequestValidator implements AuthenticationDelegate, MessageSourceAw
 	
 	private static Logger m_logger = LoggerFactory.getLogger(RequestValidator.class);
 
-	public static final String ERROR_ATTRIBUTE = "nz.co.senanque.login.RequestValidator.ERROR";
-	public static final String LOGIN_URL = "/auth/login";
-	public static final String PERMISSIONS = "nz.co.senanque.login.RequestValidator.AUTHENTICATED";
-	public static final String USERNAME = "nz.co.senanque.login.RequestValidator.USERNAME";
 	
 	private String m_loginPage = LOGIN_URL;
 	private String[] m_ignoreURLs;
@@ -66,16 +63,32 @@ public class RequestValidator implements AuthenticationDelegate, MessageSourceAw
 		String url = req.getRequestURI();
 		HttpSession session = req.getSession(true);
 		Object o = session.getAttribute(USERNAME);
-		m_logger.debug("checking url {} current user {}",url,o);
+		m_logger.debug("checking url {} current user {} session {}",url,o,session.getId());
 		if (o != null) {
 			m_logger.debug("true");
 			return true; // ignore URLs when we are already authenticated
 		}
-		if (url.endsWith("login.css")) {
+		if (url.endsWith(".css")) {
+			m_logger.debug("false");
+			return false;
+		}
+		if (url.endsWith(".ico")) {
 			m_logger.debug("false");
 			return false;
 		}
 		if (url.endsWith(".gif")) {
+			m_logger.debug("false");
+			return false;
+		}
+		if (url.endsWith(".png")) {
+			m_logger.debug("false");
+			return false;
+		}
+		if (url.endsWith(".jpg")) {
+			m_logger.debug("false");
+			return false;
+		}
+		if (url.endsWith(".jpeg")) {
 			m_logger.debug("false");
 			return false;
 		}
@@ -93,10 +106,13 @@ public class RequestValidator implements AuthenticationDelegate, MessageSourceAw
 	public void authenticate(HttpServletRequest req) throws IOException, LoginException {
 		String user = req.getParameter("user");
 		String password = req.getParameter("password");
+		String locale = req.getParameter("locale");
 		Set<String> permissions = m_authenticationDelegate.authenticate(req.getServletContext(),user,password);
 		HttpSession session = req.getSession(true);
 		session.setAttribute(PERMISSIONS, permissions);
 		session.setAttribute(USERNAME, user);
+		session.setAttribute(LOCALE, locale);
+		m_logger.debug("Setting user: {} on session {}",user,req.getSession().getId());
 	}
 	public void setErrorAttribute(HttpServletRequest req, String error) {
 		req.getSession().setAttribute(ERROR_ATTRIBUTE, error);
@@ -128,13 +144,44 @@ public class RequestValidator implements AuthenticationDelegate, MessageSourceAw
 
 	public void write(HttpServletRequest req,ServletContext servletContext,
 			HttpServletResponse httpServletResponse) throws IOException {
-		if (req.getRequestURI().endsWith("css")) {
-			String css = getLoginCSS("login.css", servletContext);
+		
+		String contextPath = servletContext.getContextPath();
+		String uri = req.getRequestURI();
+		uri = StringUtils.delete(uri, contextPath);
+		if (uri.startsWith("/")) {
+			uri = uri.substring(1);
+		}
+		if (uri.endsWith("css")) {
+			String css = getLoginCSS(uri, servletContext);
 			httpServletResponse.getOutputStream().print(css);
 			return;
 		}
-		if (req.getRequestURI().endsWith("gif")) {
-			InputStream is = getStream("logo.gif", servletContext);
+		if (uri.endsWith("gif")) {
+			InputStream is = getStream(uri, servletContext);
+			OutputStream out = httpServletResponse.getOutputStream();
+			pipe(is,out);
+			return;
+		}
+		if (uri.endsWith("png")) {
+			InputStream is = getStream(uri, servletContext);
+			OutputStream out = httpServletResponse.getOutputStream();
+			pipe(is,out);
+			return;
+		}
+		if (uri.endsWith("jpg")) {
+			InputStream is = getStream(uri, servletContext);
+			OutputStream out = httpServletResponse.getOutputStream();
+			pipe(is,out);
+			return;
+		}
+		if (uri.endsWith("jpeg")) {
+			InputStream is = getStream(uri, servletContext);
+			OutputStream out = httpServletResponse.getOutputStream();
+			pipe(is,out);
+			return;
+		}
+		if (uri.endsWith("ico")) {
+			InputStream is = getStream(uri, servletContext);
 			OutputStream out = httpServletResponse.getOutputStream();
 			pipe(is,out);
 			return;
@@ -157,7 +204,6 @@ public class RequestValidator implements AuthenticationDelegate, MessageSourceAw
 		final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
 		String contextPath = servletContext.getContextPath();
 		String c = s.replace("~CONTEXTPATH", contextPath);
-		c = c.replace("~CSSFILE", contextPath+"/login.css");
 		c = c.replace("~TITLE", messageSourceAccessor.getMessage("login.title","Welcome to Madura"));
 		c = c.replace("~NAME", messageSourceAccessor.getMessage("login.name","User"));
 		c = c.replace("~PASSWORD", messageSourceAccessor.getMessage("login.password","Password"));
@@ -168,7 +214,8 @@ public class RequestValidator implements AuthenticationDelegate, MessageSourceAw
 	
 	protected String getLoginCSS(String fileName, ServletContext servletContext) throws IOException {
 		String s = getFile(fileName,servletContext);
-		return s;
+		String contextPath = servletContext.getContextPath();
+		return s.replace("~CONTEXTPATH", contextPath);
 	}
 	
 	private String getFile(String fileName,ServletContext servletContext) throws IOException {
