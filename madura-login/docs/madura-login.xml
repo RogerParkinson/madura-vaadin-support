@@ -75,8 +75,8 @@
 			<div>
 				<label>
 					<select name="locale" class="icon-menu">
-					<option value="en" selected style="background-image:url(flags/English.png)">English</option>
-					<option value="fr" style="background-image:url(flags/French.png)">French</option>
+					<option value="en" selected style="background-image:url(~CONTEXTPATH/flags/English.png)">English</option>
+					<option value="fr" style="background-image:url(~CONTEXTPATH/flags/French.png)">French</option>
 					</select>
 				</label>
 				<h1>~TITLE</h1>
