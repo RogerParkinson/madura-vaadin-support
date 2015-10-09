@@ -10,8 +10,6 @@ import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -30,24 +27,16 @@ import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -126,78 +115,20 @@ public class MyUI extends UI implements MessageSourceAware {
     	this.setLocale( locale );
     	this.getSession().setLocale( locale );
     	LocaleContextHolder.setLocale(locale);
-    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
-    	Person person = new Person();
-    	
-    	final HorizontalLayout horizontalLayout = new HorizontalLayout();
-    	horizontalLayout.setSizeFull();
-        setContent(horizontalLayout);
-    	
-        final VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.setMargin(true);
-        verticalLayout.setSpacing(true);
-        verticalLayout.addStyleName("madura-form");
-        horizontalLayout.addComponent(verticalLayout);
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.setMargin(true);
+        root.setSpacing(true);
+        setContent(root);
 
-        PersonForm personForm = new PersonForm(m_maduraSessionManager);
-        personForm.setCaption(messageSourceAccessor.getMessage("login.title"));
-        verticalLayout.addComponent(personForm);
+        final Panel viewContainer = new Panel();
+        viewContainer.setSizeFull();
+        root.addComponent(viewContainer);
+        root.setExpandRatio(viewContainer, 1.0f);
 
-		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = personForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addProvider(viewProvider);
 
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Notification.show(messageSourceAccessor.getMessage("message.clicked.cancel"),
-						messageSourceAccessor.getMessage("message.noop"),
-						Notification.Type.HUMANIZED_MESSAGE);
-				
-			}});
-		Button submit = personForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Notification.show(messageSourceAccessor.getMessage("message.clicked.submit"),
-						messageSourceAccessor.getMessage("message.noop"),
-		                  Notification.Type.HUMANIZED_MESSAGE);
-				
-			}});
-		Button logout = personForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				logout();
-				
-			}});
-		actions.addComponent(cancel);
-		actions.addComponent(submit);
-		actions.addComponent(logout);
-		verticalLayout.addComponent(actions);
-		verticalLayout.setComponentAlignment(actions, Alignment.MIDDLE_CENTER);
-		
-		Component instructions = getInstructions(messageSourceAccessor);
-		horizontalLayout.addComponent(instructions);
-		horizontalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_CENTER);
-
-    	m_maduraSessionManager.getValidationSession().bind(person);
-    	personForm.setItemDataSource(new BeanItem<Person>(person));
-    }
-    private VerticalLayout getInstructions(MessageSourceAccessor messageSourceAccessor) {
-		VerticalLayout panel = new VerticalLayout();
-		TextArea textArea = new TextArea();
-		textArea.setWidth("100%");
-		textArea.setHeight("100%");
-		textArea.setValue(messageSourceAccessor.getMessage("demo.instructions"));
-		textArea.setReadOnly(true);
-        panel.addComponent(textArea);
-        panel.setComponentAlignment(textArea, Alignment.MIDDLE_CENTER);
-        return panel;
-    }
-    private void logout() {
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-        this.close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
     }
 	public Person getPerson() {
         return new Person();

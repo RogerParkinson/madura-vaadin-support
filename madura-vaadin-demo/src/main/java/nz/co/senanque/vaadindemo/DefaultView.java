@@ -3,26 +3,28 @@
  */
 package nz.co.senanque.vaadindemo;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
-import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
+import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
@@ -34,13 +36,12 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 @SpringView(name = DefaultView.VIEW_NAME)
-public class DefaultView extends VerticalLayout implements View {
+public class DefaultView extends VerticalLayout implements View, MessageSourceAware {
     public static final String VIEW_NAME = "";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     private Person m_person = null;
-    private Button submit;
-    private Button cancel;
     private PersonForm personForm;
+	private MessageSource m_messageSource;
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -49,45 +50,76 @@ public class DefaultView extends VerticalLayout implements View {
      */
     @PostConstruct
     void init() {
+    	
+    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
 
-    	// create a form to display the object and add it to the UI
-    	personForm = new PersonForm(m_maduraSessionManager);
-    	addComponent(personForm);
+    	final HorizontalLayout horizontalLayout = new HorizontalLayout();
+    	horizontalLayout.setSizeFull();
+    	addComponent(horizontalLayout);
+
+        final VerticalLayout verticalLayout = new VerticalLayout();
+        verticalLayout.setMargin(true);
+        verticalLayout.setSpacing(true);
+        verticalLayout.addStyleName("madura-form");
+        horizontalLayout.addComponent(verticalLayout);
+
+        personForm = new PersonForm(m_maduraSessionManager);
+        personForm.setCaption(messageSourceAccessor.getMessage("login.title"));
+        verticalLayout.addComponent(personForm);
+
 		HorizontalLayout actions = new HorizontalLayout();
-		cancel = personForm.createButton("Cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = personForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Notification.show("Pressed Cancel",
-		                  "...which doesn't actually do anything in this demo",
+				Notification.show(messageSourceAccessor.getMessage("message.clicked.cancel"),
+						messageSourceAccessor.getMessage("message.noop"),
+						Notification.Type.HUMANIZED_MESSAGE);
+				
+			}});
+		Button submit = personForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Notification.show(messageSourceAccessor.getMessage("message.clicked.submit"),
+						messageSourceAccessor.getMessage("message.noop"),
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		submit = personForm.createButton("Submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button logout = personForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Notification.show("Pressed Submit",
-		                  "...which doesn't actually do anything in this demo",
-		                  Notification.Type.HUMANIZED_MESSAGE);
+				logout();
 				
 			}});
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
-		addComponent(actions);
+		actions.addComponent(logout);
+		verticalLayout.addComponent(actions);
+		verticalLayout.setComponentAlignment(actions, Alignment.MIDDLE_CENTER);
 		
+		Component instructions = getInstructions(messageSourceAccessor);
+		horizontalLayout.addComponent(instructions);
+		horizontalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_CENTER);
+
+    }
+    private VerticalLayout getInstructions(MessageSourceAccessor messageSourceAccessor) {
 		VerticalLayout panel = new VerticalLayout();
 		TextArea textArea = new TextArea();
-		textArea.setWidth("50%");
-		textArea.setValue(
-				"The Submit button is inactive until the form is completed, and without errors\n"+
-				"'complete' means all the required fields have valid values. Name and Email are required\n"+
-				"but address is not, also Email needs an '@' in it to be valid\n"+
-				"Try different values in the different fields and note how the Submit button changes");
+		textArea.setWidth("100%");
+		textArea.setHeight("100%");
+		textArea.setValue(messageSourceAccessor.getMessage("demo.instructions"));
 		textArea.setReadOnly(true);
         panel.addComponent(textArea);
-        panel.setComponentAlignment(textArea, Alignment.BOTTOM_RIGHT);
-        addComponent(panel);
+        panel.setComponentAlignment(textArea, Alignment.MIDDLE_CENTER);
+        return panel;
+    }
+    private void logout() {
+    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+    	getUI().close();
+        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        getUI().getPage().setLocation(contextPath);
     }
     /* 
      * This is where we establish the actual person object. 
@@ -107,4 +139,8 @@ public class DefaultView extends VerticalLayout implements View {
 //    		m_maduraSessionManager.bind(cancel, properties);
     	}
     }
+	@Override
+	public void setMessageSource(MessageSource messageSource) {
+		m_messageSource = messageSource;
+	}
 }
