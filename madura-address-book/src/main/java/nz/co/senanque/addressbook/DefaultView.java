@@ -50,8 +50,9 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 
         layout.addComponent(m_tableEditorLayout);
         HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setMargin(true);
         layout.addComponent(buttons);
-        layout.setComponentAlignment(buttons, Alignment.MIDDLE_CENTER);
+        layout.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
         Button button = new Button(messageSourceAccessor.getMessage("logout"));
         button.addClickListener(new Button.ClickListener() {
             @Override

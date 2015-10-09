@@ -33,4 +33,82 @@
   @include valo;
 
   // Insert your own theme rules here
+.v-button {
+	width: 120px;
+	right: 20px;
+	bottom: 20px;
+	background: #1eaedd;
+	color: #fff;
+//	font-family: Tahoma, Geneva, sans-serif;
+	height: 30px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	border: 1p solid #999;
+	margin:5px;
+}  
+.v-button:hover {
+	background: #fff;
+	color: #1eaedd;
 }
+v-textfield {
+	width: 50%;
+	display: block;
+	border: 1px solid #999;
+	height: 25px;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+.madura-form {
+	background: linear-gradient(to top, #CCCCCC, #EEEEEE);
+	position: relative;
+	width: 30%;
+//	height: 320px;
+//	font-family: Tahoma, Geneva, sans-serif;
+//	font-size: 14px;
+	font-style: italic;
+	line-height: 24px;
+	font-weight: bold;
+	color: #1eaedd;
+	text-decoration: none;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin: 20px; padding : 10px;
+	border: 1px solid #999;
+	border: inset 1px solid #333;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	padding: 10px;
+}
+.v-caption {
+	font-style: italic;
+	font-size: 14px;
+	line-height: 24px;
+	font-weight: bold;
+	color: #1eaedd;
+	text-decoration: none;
+}
+.v-margin-top {
+	padding-top: 10px;
+}
+.v-margin-bottom {
+	padding-bottom: 10px;
+}
+.v-margin-left {
+	padding-left: 10px;
+}
+.v-margin-right {
+	padding-right: 10px;
+}
+.v-table-header-wrap {
+	font-style: italic;
+	line-height: 24px;
+	font-weight: bold;
+	color: #1eaedd;
+	text-decoration: none;
+}
+}
+

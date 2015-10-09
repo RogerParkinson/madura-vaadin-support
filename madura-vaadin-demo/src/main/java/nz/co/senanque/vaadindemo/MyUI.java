@@ -43,14 +43,13 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 @Widgetset("nz.co.senanque.vaadindemo.MyAppWidgetset")
 @SpringUI
-public class MyUI extends UI implements MessageSourceAware {
+public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
 	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-	private MessageSource m_messageSource;
 
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
@@ -132,9 +131,5 @@ public class MyUI extends UI implements MessageSourceAware {
     }
 	public Person getPerson() {
         return new Person();
-	}
-	@Override
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSource = messageSource;
 	}
 }
