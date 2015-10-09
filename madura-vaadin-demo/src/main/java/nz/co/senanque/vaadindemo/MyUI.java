@@ -134,7 +134,6 @@ public class MyUI extends UI implements MessageSourceAware {
         setContent(horizontalLayout);
     	
         final VerticalLayout verticalLayout = new VerticalLayout();
-        //verticalLayout.setSizeFull();
         verticalLayout.setMargin(true);
         verticalLayout.setSpacing(true);
         verticalLayout.addStyleName("madura-form");
