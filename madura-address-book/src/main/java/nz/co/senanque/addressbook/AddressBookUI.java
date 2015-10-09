@@ -35,14 +35,17 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -52,14 +55,13 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("addressbooktheme")
 @Widgetset("nz.co.senanque.addressbook.AddressBookWidgetset")
 @SpringUI
-public class AddressBookUI extends UI implements MessageSourceAware  {
+public class AddressBookUI extends UI  {
 	
 	private static Logger m_logger = LoggerFactory.getLogger(AddressBookUI.class);
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
-
-	private MessageSource m_messageSource;
+	@Autowired private SpringViewProvider viewProvider;
 
 	@WebListener
     public static class MyContextLoaderListener extends ContextLoaderListener {
@@ -130,38 +132,24 @@ public class AddressBookUI extends UI implements MessageSourceAware  {
     	this.getSession().setLocale( locale );
     	LocaleContextHolder.setLocale(locale);
 
-    	final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        setContent(layout);
+    	final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.setMargin(true);
+        root.setSpacing(true);
+        setContent(root);
 
-        layout.addComponent(m_tableEditorLayout);
-        MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
-        Button button = new Button(messageSourceAccessor.getMessage("logout"));
-        button.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                logout();
-            }
-        });
-        layout.addComponent(button);
+        final Panel viewContainer = new Panel();
+        viewContainer.setSizeFull();
+        root.addComponent(viewContainer);
+        root.setExpandRatio(viewContainer, 1.0f);
+
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addProvider(viewProvider);
         
     }
-    private void logout() {
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-        this.close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
-    }
-
     @WebServlet(urlPatterns = "/*", name = "AddressBookUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = AddressBookUI.class, productionMode = false)
     public static class AddressBookUIServlet extends SpringVaadinServlet {
     }
-
-	@Override
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSource = messageSource;
-		
-	}
 
 }
