@@ -4,9 +4,6 @@ import java.util.logging.Logger;
 
 import org.springframework.stereotype.Component;
 
-import nz.co.senanque.vaadin.converter.StringToChoiceBase;
-import nz.co.senanque.validationengine.choicelists.ChoiceBase;
-
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.data.util.converter.DefaultConverterFactory;
 
@@ -23,14 +20,14 @@ public class MaduraConverterFactory extends DefaultConverterFactory {
 	protected <PRESENTATION, MODEL> Converter<PRESENTATION, MODEL> findConverter(
 			Class<PRESENTATION> presentationType, Class<MODEL> modelType) {
 
+//		if (presentationType == String.class && modelType == ChoiceBase.class) {
+//			return (Converter<PRESENTATION, MODEL>) new StringToChoiceBase(null);
+//		}
 		// check the Vaadin-supplied converters first
 		Converter<PRESENTATION, MODEL> ret = super.findConverter(
 				presentationType, modelType);
-		if (ret == null) {
+		if (ret != null) {
 			return ret;
-		}
-		if (modelType == ChoiceBase.class) {
-			return (Converter<PRESENTATION, MODEL>) new StringToChoiceBase();
 		}
 
 		return null;

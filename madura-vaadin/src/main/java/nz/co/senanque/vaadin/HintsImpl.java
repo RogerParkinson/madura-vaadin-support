@@ -17,20 +17,22 @@ package nz.co.senanque.vaadin;
 
 import java.io.Serializable;
 
+import nz.co.senanque.vaadin.application.MaduraConverterFactory;
+import nz.co.senanque.vaadin.converter.StringToChoiceBase;
 import nz.co.senanque.validationengine.ValidationException;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
-import org.springframework.stereotype.Component;
 
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.UserError;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
@@ -62,6 +64,7 @@ public class HintsImpl implements Hints, Serializable {
 	private String m_width = "200px";
 	private boolean m_forceImmediate = true;
 	private boolean m_hideInactive = true;
+	@Autowired private MaduraConverterFactory m_maduraConverterFactory;
 	public HintsImpl()
 	{
 	    logger.debug("Constructing...");
@@ -221,6 +224,8 @@ public class HintsImpl implements Hints, Serializable {
         	    select.setValue(v);
         	}
         }
+        select.setConverter(new StringToChoiceBase(property));
+
         return select;
 	}
     public AbstractField getTextField(MaduraPropertyWrapper property) {
@@ -247,12 +252,12 @@ public class HintsImpl implements Hints, Serializable {
 		Button ret = new Button(messageSourceAccessor.getMessage(name,null,name));
 		return ret;
 	}
-//	public void setMessageSource(MessageSource messageSource) {
-//		m_messageSource = messageSource;
-//		
-//	}
-//	@Override
-//	public MessageSource getMessageSource() {
-//		return m_messageSource;
-//	}
+
+	public MaduraConverterFactory getMaduraConverterFactory() {
+		return m_maduraConverterFactory;
+	}
+	public void setMaduraConverterFactory(
+			MaduraConverterFactory maduraConverterFactory) {
+		m_maduraConverterFactory = maduraConverterFactory;
+	}
 }

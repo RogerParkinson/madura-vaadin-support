@@ -193,6 +193,7 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
 	    {
 	        return;
 	    }
+		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
         try {
             Class<?> clazz = this.getDataType();
             Object converted = newValue;
@@ -204,17 +205,20 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
                 }
                 catch (Exception e)
                 {
-            		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
                     String message = messageSourceAccessor.getMessage("nz.co.senanque.validationengine.numericparse", new Object[]{ this.m_label, String.valueOf(newValue) });
                     throw new ValidationException(message);
                 }
             }
             else
             {
-                if (converted instanceof ChoiceBase)
-                {
-                    converted =  ((ChoiceBase)converted).getKey();
-                }
+            	if (getAvailableValues() != null) {
+            		for (ChoiceBase cb: getAvailableValues()) {
+            			if (cb.toString().equals(converted)) {
+            				converted = cb.getKey();
+            				break;
+            			}
+            		}
+            	}
                 if (clazz != String.class)
                 {
                     try
@@ -226,7 +230,6 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
                         }
                         else
                         {
-                    		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
                             converted = ConvertUtils.convertToObject(clazz, newValue, messageSourceAccessor);
                         }
                     }
@@ -392,6 +395,10 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
 
 	public int getMaxLength() {
 		return m_fieldMetadata.getMaxLength();
+	}
+
+	public MessageSource getMessageSource() {
+		return m_messageSource;
 	}
 
 }

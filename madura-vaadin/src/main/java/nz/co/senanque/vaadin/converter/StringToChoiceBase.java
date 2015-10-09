@@ -2,6 +2,10 @@ package nz.co.senanque.vaadin.converter;
 
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 
 import com.vaadin.data.util.converter.Converter;
@@ -10,31 +14,69 @@ import com.vaadin.data.util.converter.Converter;
  * @author Roger Parkinson
  *
  */
-public class StringToChoiceBase implements Converter<String, ChoiceBase> {
+public class StringToChoiceBase implements Converter<Object, Object> {
+	
+    private static final Logger logger = LoggerFactory.getLogger(StringToChoiceBase.class);
+
+	private final MaduraPropertyWrapper m_property;
+
+	public StringToChoiceBase(MaduraPropertyWrapper property) {
+		m_property = property;
+	}
 
 	@Override
-	public ChoiceBase convertToModel(String value,
-			Class<? extends ChoiceBase> targetType, Locale locale)
+	public Object convertToModel(Object value,
+			Class<? extends Object> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
-		// TODO Auto-generated method stub
+		if (value == null) {
+			return null;
+		}
+//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+		if (value instanceof ChoiceBase) {
+			return value.toString();
+		}
+		if (value instanceof String) {
+			return getChoiceBase((String)value);
+		}
 		return null;
 	}
 
 	@Override
-	public String convertToPresentation(ChoiceBase value,
-			Class<? extends String> targetType, Locale locale)
+	public Object convertToPresentation(Object value,
+			Class<? extends Object> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
-		return value.toString();
+		if (value == null) {
+			return null;
+		}
+//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+		if (value instanceof ChoiceBase) {
+			return value.toString();
+		}
+		if (value instanceof String) {
+			return getChoiceBase((String)value);
+		}
+		return null;
+	}
+	
+	private ChoiceBase getChoiceBase(String key) {
+		for (ChoiceBase v: m_property.getAvailableValues())
+        {
+        	if (v.toString().equals(key)) {
+        		return v;
+        	}
+        }
+		return null;
 	}
 
 	@Override
-	public Class<ChoiceBase> getModelType() {
-		return ChoiceBase.class;
+	public Class<Object> getModelType() {
+		return Object.class;
 	}
 
 	@Override
-	public Class<String> getPresentationType() {
-		return String.class;
+	public Class<Object> getPresentationType() {
+		return Object.class;
 	}
+
 
 }
