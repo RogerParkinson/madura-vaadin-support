@@ -95,7 +95,7 @@ public class AddressBookUI extends UI implements MessageSourceAware  {
     	@UIScope
     	public TableEditorLayout<Person> getTableEditorLayout() {
     		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people");
-    		ret.setColumns(new String[]{"name","address","email"});
+    		ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
     		return ret;
     	}
     	@Bean(name="hints")

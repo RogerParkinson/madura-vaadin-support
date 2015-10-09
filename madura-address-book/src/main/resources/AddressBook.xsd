@@ -49,7 +49,7 @@ limitations under the License.
 
 	<complexType name="Person">
 		<sequence>
-			<element name="id" type="long">
+			<element name="id" type="long" default="0">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<hj:id>
@@ -65,11 +65,12 @@ limitations under the License.
 					</appinfo>
 				</annotation>
 			</element>
-			<element name="name">
+			<element name="name" default="">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
 							<md:Label labelName="person.name" />
+							<md:Required/>
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -79,12 +80,13 @@ limitations under the License.
 					</restriction>
 				</simpleType>
 			</element>
-			<element name="email">
+			<element name="email" default="">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
-							<md:Label labelName="email" />
+							<md:Label labelName="person.email" />
 							<md:Email/>
+							<md:Required/>
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -94,13 +96,12 @@ limitations under the License.
 					</restriction>
 				</simpleType>
 			</element>
-			<element name="address">
+			<element name="address" default="">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
-							<md:Label labelName="address" />
+							<md:Label labelName="person.address" />
 							<md:ReadPermission name="ADMIN" />
-							<md:WritePermission name="ADMIN" />
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -110,6 +111,41 @@ limitations under the License.
 					</restriction>
 				</simpleType>
 			</element>
+			<element name="gender">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="person.gender" />
+							<md:ChoiceList name="Genders"/> 
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="20"></maxLength>
+					</restriction>
+				</simpleType>
+			</element>
+			<element name="startDate" type="date" default="2001-01-15">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="person.startDate" />
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="amount" type="double" default="10000.50">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="person.amount" />
+							<md:Range maxInclusive="11000"/>
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+
 		</sequence>
 	</complexType>
 
