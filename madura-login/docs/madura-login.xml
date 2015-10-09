@@ -11,18 +11,6 @@
 		<references>
 			<reference t="Spring Framework" url="http://www.springframework.org" />
 			<reference t="Vaadin" url="https://vaadin.com/home"/>
-			<reference t="MaduraObjects" url="https://github.com/RogerParkinson/madura-objects-parent"/>
-			<reference t="MaduraRules" url="https://github.com/RogerParkinson/MaduraRules"/>
-			<reference t="MaduraBundles" url="https://github.com/RogerParkinson/madura-bundles"/>
-			<reference t="madura-addressbook" url="https://github.com/RogerParkinson/MaduraAddressbook"/>
-			<reference t="madura-pizzaorder" url="https://github.com/RogerParkinson/MaduraPizzaOrderDemo"/>
-			<reference t="madura-pizzaorder-online" url="http://pizzaorderdemo-madura.rhcloud.com/"/>
-			<reference t="madura-perspectives-manager" url="https://github.com/RogerParkinson/MaduraPerspectivesManager"/>
-			<reference t="madura-perspectives-manager-online" url="http://perspectivesmanager-madura.rhcloud.com/"/>
-			<reference t="madura-pizzaorder-bundle" url="https://github.com/RogerParkinson/MaduraPizzaOrderBundle"/>
-			<reference t="vaadin-touchkit" url="https://vaadin.com/add-ons/touchkit"/>
-			<reference t="vaadin-addon" url="https://vaadin.com/directory#!authoring/edit/addon=449"/>
-			<reference t="PhoneGap" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
 		</references>
 	</title>
 	<body>
@@ -31,7 +19,7 @@
 		<h1 t="Overview">
 		<p>This is a quick way to add authentication and authorisation to a demo. It might be okay in production
 		but with some modifications and extensions, but it is intended for demos.</p>
-		<p>By 'quick' we mean all you need to do is add this to your maven dependencies and your get your Spring configuration to
+		<p>By 'quick' we mean all you need to do is add this to your maven dependencies and your get your Spring<referenceLink t="Spring Framework"/> configuration to
 		scan the right package, then your war file will start using it, assuming you are deploying to a servlet 3.0 applicaton server (we tested on Tomcat 7).</p>
 		<p>But you'll likely want to customise it a little. Customising is easy.</p>
 		<p>We configure Spring like this:</p>
@@ -100,7 +88,7 @@
         ]]></code>
 		<p>This is just an ordinary html file except for the ~ fields which get substituted before it renders. We
 		could have used JSP or similar for this but we wanted to keep the setup very simple. Notice the comment at the end, you need this
-		to support Vaadin applications.</p>
+		to support Vaadin<referenceLink t="Vaadin"/> applications.</p>
 		<p>You can replace this completely by putting your own login.html in your WEB-INF directory. Or you can just change the 
 		dependent files. For example you can put your own copy of login.css into WEB-INF and it will use that. In fact if you just want to change
 		the css file don't bother copying the login.html into WEB-INF. So the rule is to customise a file put your copy into WEB-INF.</p>
@@ -137,6 +125,16 @@ String localeString = (String)session.getAttribute(AuthenticationDelegate.LOCALE
 Set<String> currentPermissions = (Set<String>)session.getAttribute(AuthenticationDelegate.PERMISSIONS);
         ]]></code>
         <p>That gets you the user, locale and permissions. The permissions are just a list of strings.</p>
+        </h1>
+        <h1 t="Demoware?">
+        <p>It might not always be demo ware but it is at this stage. Here's why:</p>
+        <list>
+        <le>It doesn't like Chrome or IE, only FireFox.</le>
+        <le>It ought to have a way to change your password or at least cater for the 'forgot password' scenario.</le>
+        <le>It is probably fairly secure but we haven't verified that, for example we haven't used it with HTTPS nor have we had it reviewed for security.</le>
+        </list>
+        <p>The good thing is you can put this into your application very easily, and replace it with something else for production. The
+        application has very few dependencies on the login mechanism.</p>
         </h1>
 		<a1 t="Release Notes">
 		<note>You need Java 1.7 to compile this project.</note>
