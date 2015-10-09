@@ -17,5 +17,10 @@ limitations under the License.
 <MaduraValidator xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xi:noNamespaceSchemaLocation="http://oss.sonatype.org/content/repositories/releases/nz/co/senanque/madura-objects/2.2.2/choices-2.2.2.xsd">
 
+	<ChoiceList name="Genders">
+		<Choice name="M">Male</Choice>
+		<Choice name="F">Female</Choice>
+		<Choice name="O">Other</Choice>
+	</ChoiceList>
 </MaduraValidator>
 	

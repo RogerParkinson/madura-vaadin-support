@@ -9,7 +9,7 @@ public class PersonForm extends MaduraForm {
 
 	public PersonForm(MaduraSessionManager maduraSessionManager) {
 		super(new VerticalLayout(),maduraSessionManager);
-		setFieldList(new String[]{"id","name","email","address"});
+		setFieldList(new String[]{"name","email","address","gender","startDate","amount"});
 	}
 
 }

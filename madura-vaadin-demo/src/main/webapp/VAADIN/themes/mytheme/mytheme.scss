@@ -1,9 +1,9 @@
 // Global variable overrides. Must be declared before importing Valo.
 
 // Defines the plaintext font size, weight and family. Font size affects general component sizing.
-//$v-font-size: 16px;
+$v-font-size: 14px;
 //$v-font-weight: 300;
-//$v-font-family: "Open Sans", sans-serif;
+$v-font-family: Tahoma, Geneva, sans-serif;
 
 // Defines the border used by all components.
 //$v-border: 1px solid (v-shade 0.7);
@@ -33,4 +33,55 @@
   @include valo;
 
   // Insert your own theme rules here
+.v-button {
+	width: 120px;
+	right: 20px;
+	bottom: 20px;
+	background: #1eaedd;
+	color: #fff;
+//	font-family: Tahoma, Geneva, sans-serif;
+	height: 30px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	border: 1p solid #999;
+	margin:5px;
+}  
+.v-button:hover {
+	background: #fff;
+	color: #1eaedd;
+}
+v-textfield {
+	width: 50%;
+	display: block;
+	border: 1px solid #999;
+	height: 25px;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+.madura-form {
+	background: linear-gradient(to top, #CCCCCC, #EEEEEE);
+	position: relative;
+	width: 30%;
+//	height: 320px;
+//	font-family: Tahoma, Geneva, sans-serif;
+//	font-size: 14px;
+	font-style: italic;
+	line-height: 24px;
+	font-weight: bold;
+	color: #1eaedd;
+	text-decoration: none;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin: 20px; padding : 10px;
+	border: 1px solid #999;
+	border: inset 1px solid #333;
+	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	padding: 10px;
+}
+
 }

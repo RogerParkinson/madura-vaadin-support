@@ -13,5 +13,17 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
---><messages>
+-->
+<messages xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xi:noNamespaceSchemaLocation="https://oss.sonatype.org/content/repositories/releases/nz/co/senanque/madura-objects/2.2.4/madura-objects-2.2.4-messages.xsd">
+	<locale name="fr">
+		<entry name="Male" value="mâle"/>
+		<entry name="Female" value="Femelle"/>
+		<entry name="Other" value="autre"/>
+	</locale>
+	<locale>
+		<entry name="Male" value="Male"/>
+		<entry name="Female" value="Female"/>
+		<entry name="Other" value="Other"/>
+	</locale>
 </messages>

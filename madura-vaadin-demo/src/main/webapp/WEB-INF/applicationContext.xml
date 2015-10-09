@@ -14,7 +14,6 @@
 				class="org.springframework.context.support.ResourceBundleMessageSource">
 				<property name="basenames">
 					<list>
-<!-- 						<value>org/springframework/security/messages</value> -->
 						<value>ValidationMessages</value>
 					</list>
 				</property>
