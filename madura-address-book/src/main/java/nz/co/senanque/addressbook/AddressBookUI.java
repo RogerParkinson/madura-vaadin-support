@@ -3,12 +3,12 @@ package nz.co.senanque.addressbook;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.login.AuthenticationDelegate;
-import nz.co.senanque.login.RequestValidator;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -17,14 +17,11 @@ import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -37,14 +34,11 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -96,7 +90,7 @@ public class AddressBookUI extends UI  {
     	@Bean(name="personTableLayout")
     	@UIScope
     	public TableEditorLayout<Person> getTableEditorLayout() {
-    		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people");
+    		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people", Person.class);
     		ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
     		return ret;
     	}
@@ -120,18 +114,12 @@ public class AddressBookUI extends UI  {
     	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
     	// but they should all populate the permission manager.
     	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
-    	String localeString = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.LOCALE);
     	@SuppressWarnings("unchecked")
 		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
     	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
     	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
-    	Locale locale = new Locale(localeString);
-    	this.setLocale( locale );
-    	this.getSession().setLocale( locale );
-    	LocaleContextHolder.setLocale(locale);
-
     	final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);
