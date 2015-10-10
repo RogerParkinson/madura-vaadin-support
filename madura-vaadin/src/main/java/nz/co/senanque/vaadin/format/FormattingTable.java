@@ -17,6 +17,8 @@ package nz.co.senanque.vaadin.format;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 
@@ -36,6 +38,7 @@ import com.vaadin.ui.Table;
  */
 public class FormattingTable extends Table {
 
+	private static Logger m_logger = LoggerFactory.getLogger(FormattingTable.class);
 	private static final long serialVersionUID = 8755024456768538497L;
 	
 	public FormattingTable() {
@@ -84,7 +87,7 @@ public class FormattingTable extends Table {
 				}
 				if (propertyId.toString().equals(thisColumn)) {
 					visiblePropertyIds[i] = propertyId;
-					headings_[i] = messageSourceAccessor.getMessage(headings[j]);
+					headings_[i] = messageSourceAccessor.getMessage(headings[j],headings[j]);
 					i++;
 					break;
 				}
