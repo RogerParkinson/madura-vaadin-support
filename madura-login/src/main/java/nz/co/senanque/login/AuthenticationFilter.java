@@ -4,6 +4,7 @@
 package nz.co.senanque.login;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,9 +13,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -43,6 +46,14 @@ public class AuthenticationFilter extends GenericFilterBean {
 			WebApplicationContext applicationContext = WebApplicationContextUtils
 		            .getWebApplicationContext(this.getServletContext());
 			m_validator = applicationContext.getBean(RequestValidator.class);
+		}
+		HttpSession session = ((HttpServletRequest)request).getSession(true);
+		if (session != null) {
+			String localeString = (String)session.getAttribute(AuthenticationDelegate.LOCALE);
+			if (localeString != null && !localeString.equals(LocaleContextHolder.getLocale())) {
+				LocaleContextHolder.setLocale(new Locale(localeString));
+				m_logger.debug("Set locale to {}",localeString);
+			}
 		}
 		if (!m_validator.isURLIgnored(httpServletRequest)) {
 			m_validator.write(httpServletRequest, this.getServletContext(),httpServletResponse);
