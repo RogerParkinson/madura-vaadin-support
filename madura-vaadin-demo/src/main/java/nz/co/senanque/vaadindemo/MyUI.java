@@ -13,8 +13,6 @@ import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -103,17 +101,12 @@ public class MyUI extends UI {
     	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
     	// but they should all populate the permission manager.
     	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
-    	String localeString = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.LOCALE);
     	@SuppressWarnings("unchecked")
 		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
     	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
     	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
-    	Locale locale = new Locale(localeString);
-    	this.setLocale( locale );
-    	this.getSession().setLocale( locale );
-    	LocaleContextHolder.setLocale(locale);
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);
