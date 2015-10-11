@@ -33,7 +33,9 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractLayout;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
@@ -70,6 +72,13 @@ public class MaduraForm extends Form implements InitializingBean {
     {
         this(new VerticalLayout(),maduraSessionManager);
     }
+	public void setFooter(HorizontalLayout layout) {
+		HorizontalLayout l = new HorizontalLayout();
+		l.addComponent(layout);
+		l.setComponentAlignment(layout, Alignment.MIDDLE_CENTER);
+		super.setFooter(l);
+	}
+
     public List<MaduraPropertyWrapper> getItemDataSourceProperties()
 	{
 		return m_itemDataSourceProperties;

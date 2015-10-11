@@ -53,18 +53,14 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
     	
     	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
 
-    	final HorizontalLayout horizontalLayout = new HorizontalLayout();
-    	horizontalLayout.setSizeFull();
-    	addComponent(horizontalLayout);
-
         final VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setMargin(true);
         verticalLayout.setSpacing(true);
-        verticalLayout.addStyleName("madura-form");
-        horizontalLayout.addComponent(verticalLayout);
+        addComponent(verticalLayout);
 
         personForm = new PersonForm(m_maduraSessionManager);
         personForm.setCaption(messageSourceAccessor.getMessage("login.title"));
+        personForm.setWidth("30%");
         verticalLayout.addComponent(personForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
@@ -96,12 +92,12 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		actions.addComponent(logout);
-		verticalLayout.addComponent(actions);
-		verticalLayout.setComponentAlignment(actions, Alignment.MIDDLE_CENTER);
+		personForm.setFooter(actions);
 		
 		Component instructions = getInstructions(messageSourceAccessor);
-		horizontalLayout.addComponent(instructions);
-		horizontalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_CENTER);
+		verticalLayout.addComponent(instructions);
+		instructions.setWidth("30%");
+		verticalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_LEFT);
 
     }
     private VerticalLayout getInstructions(MessageSourceAccessor messageSourceAccessor) {
