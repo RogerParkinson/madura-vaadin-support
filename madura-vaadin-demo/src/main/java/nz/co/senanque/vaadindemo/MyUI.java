@@ -1,6 +1,5 @@
 package nz.co.senanque.vaadindemo;
 
-import java.util.Locale;
 import java.util.Set;
 
 import javax.servlet.annotation.WebListener;
@@ -17,13 +16,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
 import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
@@ -39,6 +38,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @Theme("mytheme")
+@Title("Madura Vaadin Demo")
 @Widgetset("nz.co.senanque.vaadindemo.MyAppWidgetset")
 @SpringUI
 public class MyUI extends UI {

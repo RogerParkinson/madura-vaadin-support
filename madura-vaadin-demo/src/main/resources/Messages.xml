@@ -17,9 +17,9 @@ limitations under the License.
 <messages xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xi:noNamespaceSchemaLocation="https://oss.sonatype.org/content/repositories/releases/nz/co/senanque/madura-objects/2.2.4/madura-objects-2.2.4-messages.xsd">
 	<locale name="fr">
-		<entry name="Male" value="mâle"/>
+		<entry name="Male" value="Mâle"/>
 		<entry name="Female" value="Femelle"/>
-		<entry name="Other" value="autre"/>
+		<entry name="Other" value="Autre"/>
 	</locale>
 	<locale>
 		<entry name="Male" value="Male"/>

@@ -40,6 +40,12 @@
 		    <groupId>com.vaadin.addon</groupId>
 		    <artifactId>vaadin-touchkit-agpl</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>

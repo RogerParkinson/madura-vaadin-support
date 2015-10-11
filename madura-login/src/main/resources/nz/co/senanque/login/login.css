@@ -1,19 +1,22 @@
+body {
+	background-color: #E6E6FA	
+}
 form {
-	background: linear-gradient(to top, #CCCCCC, #EEEEEE);
+	background: #FBFBFE none repeat scroll 0% 0%;
 	margin: auto;
 	position: relative;
 	width: 30%;
-	height: 320px;
+	height: 350px;
 	font-family: Tahoma, Geneva, sans-serif;
 	font-size: 14px;
 	font-style: italic;
 	line-height: 24px;
 	font-weight: bold;
-	color: #1eaedd;
+	color: #2A2A63;
 	text-decoration: none;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 	margin-top: 150px; padding : 10px;
 	border: 1px solid #999;
 	border: inset 1px solid #333;
@@ -24,13 +27,17 @@ form {
 }
 
 input {
-	width: 100%;
+	width: 90%;
 	display: block;
-	border: 1px solid #999;
-	height: 25px;
+	border: 1px solid #A5A5B4;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+	height: 40px;
+	padding: 4px 12px;
 }
 
 input[type=submit] {
@@ -38,14 +45,25 @@ input[type=submit] {
 	position: absolute;
 	right: 20px;
 	bottom: 20px;
-	background: #1eaedd;
-	color: #fff;
 	font-family: Tahoma, Geneva, sans-serif;
 	height: 30px;
+	border-radius: 15px;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
-	border-radius: 15px;
-	border: 1p solid #999;
+	white-space: nowrap;
+	outline: medium none;
+	cursor: pointer;
+	height: 40px;
+	padding: 0px 22px;
+	font-weight: 500;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #A9A9B4 #A5A5B4 #9191A1;
+	-moz-border-top-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	border-image: none;
 }
 
 input[type=submit]:hover {
@@ -67,7 +85,11 @@ input[type=submit]:hover {
 }
 
 h1 {
-	text-align:center;
+	font-style: italic;
+	font-size: 16px;
+	line-height: 24px;
+	font-weight: bold;
+	text-align: center;
 }
 
 select.icon-menu option {
