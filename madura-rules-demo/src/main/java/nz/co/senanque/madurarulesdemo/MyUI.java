@@ -1,8 +1,12 @@
 package nz.co.senanque.madurarulesdemo;
 
+import java.util.Set;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
+import nz.co.senanque.addressbook.instances.Person;
+import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -12,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -19,12 +24,11 @@ import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
@@ -94,18 +98,37 @@ public class MyUI extends UI {
     }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+    	
+    	// Initialise the permission manager using data from the login
+    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
+    	// but they should all populate the permission manager.
+    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
+    	@SuppressWarnings("unchecked")
+		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
+    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
+    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
+    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
+    	
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         setContent(layout);
 
+        PersonForm personForm = new PersonForm(m_maduraSessionManager);
+        personForm.setCaption(new MessageSourceAccessor(m_maduraSessionManager.getMessageSource()).getMessage("login.title"));
+        personForm.setWidth("30%");
+        layout.addComponent(personForm);
         Button button = new Button("Click Me");
         button.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
+                layout.addComponent(new Label("Thank you for clicking#1"));
             }
         });
         layout.addComponent(button);
+        
+        Person m_person = new Person();
+    	m_maduraSessionManager.getValidationSession().bind(m_person);
+    	personForm.setItemDataSource(new BeanItem<Person>(m_person));
 
     }
 
