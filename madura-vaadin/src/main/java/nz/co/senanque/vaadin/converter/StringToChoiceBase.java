@@ -31,11 +31,15 @@ public class StringToChoiceBase implements Converter<Object, Object> {
 		if (value == null) {
 			return null;
 		}
-//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+		if (targetType.equals(String.class)) {
+			return value.toString();
+		}
+			
 		if (value instanceof ChoiceBase) {
 			return value.toString();
 		}
-		if (value instanceof String) {
+		if (value instanceof String ) {
 			return getChoiceBase((String)value);
 		}
 		return null;
@@ -48,7 +52,10 @@ public class StringToChoiceBase implements Converter<Object, Object> {
 		if (value == null) {
 			return null;
 		}
-//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+		if (targetType.equals(String.class)) {
+			return value.toString();
+		}
 		if (value instanceof ChoiceBase) {
 			return value.toString();
 		}
