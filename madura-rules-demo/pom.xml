@@ -157,6 +157,24 @@
 				    <scanIntervalSeconds>2</scanIntervalSeconds>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-objects-maven-plugin</artifactId>
+				<version>${madura.objects.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<schemaIncludes>
+								<include>AddressBook.xsd</include>
+							</schemaIncludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 
 		<pluginManagement>
@@ -181,6 +199,25 @@
 											<goal>compile</goal>
 											<goal>compile-theme</goal>
 											<goal>update-theme</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											nz.co.senanque
+										</groupId>
+										<artifactId>
+											madura-objects-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.0.0-SNAPSHOT,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
