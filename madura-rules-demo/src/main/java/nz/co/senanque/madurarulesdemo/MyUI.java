@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -25,18 +24,16 @@ import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -109,31 +106,23 @@ public class MyUI extends UI {
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
     	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        setContent(layout);
+        final VerticalLayout root = new VerticalLayout();
+        root.setSizeFull();
+        root.setMargin(true);
+        root.setSpacing(true);
+        setContent(root);
 
-        PersonForm personForm = new PersonForm(m_maduraSessionManager);
-        personForm.setCaption(new MessageSourceAccessor(m_maduraSessionManager.getMessageSource()).getMessage("login.title"));
-        personForm.setWidth("30%");
-        layout.addComponent(personForm);
-        Button button = new Button("Click Me");
-        button.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking#1"));
-            }
-        });
-        layout.addComponent(button);
-        
-        Person m_person = new Person();
-    	m_maduraSessionManager.getValidationSession().bind(m_person);
-    	personForm.setItemDataSource(new BeanItem<Person>(m_person));
+        final Panel viewContainer = new Panel();
+        viewContainer.setSizeFull();
+        root.addComponent(viewContainer);
+        root.setExpandRatio(viewContainer, 1.0f);
+
+        Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addProvider(viewProvider);
 
     }
+	public Person getPerson() {
+		return new Person();
+	}
 
-//    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-//    @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-//    public static class MyUIServlet extends VaadinServlet {
-//    }
 }
