@@ -5,7 +5,7 @@ package nz.co.senanque.madurarulesdemo;
 
 import javax.annotation.PostConstruct;
 
-import nz.co.senanque.pizzaorder.instances.Customer;
+import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -35,12 +35,12 @@ import com.vaadin.ui.VerticalLayout;
  * @author Roger Parkinson
  *
  */
-@SpringView(name = DefaultView.VIEW_NAME)
-public class DefaultView extends VerticalLayout implements View, MessageSourceAware {
-    public static final String VIEW_NAME = "";
+@SpringView(name = ShoppingCartView.VIEW_NAME)
+public class ShoppingCartView extends VerticalLayout implements View, MessageSourceAware {
+    public static final String VIEW_NAME = "shoppingCart";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
-    private Customer m_customer = null;
-    private CustomerForm customerForm;
+    private Order m_order = null;
+    private OrderForm orderForm;
 	private MessageSource m_messageSource;
 
     /*
@@ -58,13 +58,13 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
 
-        customerForm = new CustomerForm(m_maduraSessionManager);
-        customerForm.setCaption(messageSourceAccessor.getMessage("login.title"));
-        customerForm.setWidth("30%");
-        verticalLayout.addComponent(customerForm);
+        orderForm = new OrderForm(m_maduraSessionManager);
+        orderForm.setCaption(messageSourceAccessor.getMessage("login.title"));
+        orderForm.setWidth("30%");
+        verticalLayout.addComponent(orderForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = customerForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = orderForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -73,7 +73,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 						Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button submit = customerForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button submit = orderForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -82,7 +82,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button logout = customerForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button logout = orderForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -92,7 +92,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		actions.addComponent(logout);
-		customerForm.setFooter(actions);
+		orderForm.setFooter(actions);
 		
 		Component instructions = getInstructions(messageSourceAccessor);
 		verticalLayout.addComponent(instructions);
@@ -118,7 +118,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
         getUI().getPage().setLocation(contextPath);
     }
     /* 
-     * This is where we establish the actual customer object. 
+     * This is where we establish the actual person object. 
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
@@ -126,9 +126,10 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
     public void enter(ViewChangeEvent event) {
     	MyUI ui = (MyUI)UI.getCurrent();
     	ui.reviewNavigationButtons(VIEW_NAME);
-    	if (m_customer == null) {
-    		m_customer = ui.getCustomer();
-        	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
+    	if (m_order == null) {
+    		m_order = ui.getCustomer().getOrders().get(0);
+//        	m_maduraSessionManager.getValidationSession().bind(m_order);
+        	orderForm.setItemDataSource(new BeanItem<Order>(m_order));
     	}
     }
 	@Override

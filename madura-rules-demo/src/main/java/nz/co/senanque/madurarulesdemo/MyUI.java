@@ -1,5 +1,6 @@
 package nz.co.senanque.madurarulesdemo;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.annotation.WebListener;
@@ -7,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.pizzaorder.instances.Customer;
+import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -28,14 +30,20 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("mytheme")
 @Title("Madura Rules Demo")
@@ -47,6 +55,9 @@ public class MyUI extends UI {
 	
 	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
+	
+	private Customer m_customer;
+	private CssLayout navigationBar;
 
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
@@ -112,6 +123,22 @@ public class MyUI extends UI {
         root.setSpacing(true);
         setContent(root);
 
+        navigationBar = new CssLayout();
+        navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        navigationBar.addComponent(createNavigationButton("Customer",
+                DefaultView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Order",
+                OrderView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Shopping Cart",
+                ShoppingCartView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Logout",new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				logout();
+			}
+		}));
+        root.addComponent(navigationBar);
+
         final Panel viewContainer = new Panel();
         viewContainer.setSizeFull();
         root.addComponent(viewContainer);
@@ -121,8 +148,50 @@ public class MyUI extends UI {
         navigator.addProvider(viewProvider);
 
     }
+    public void reviewNavigationButtons(String thisViewName) {
+    	Iterator<Component> it = navigationBar.iterator();
+    	while (it.hasNext()) {
+    		Component component = it.next();
+    		if (component instanceof Button) {
+    			Button button = (Button)component;
+    			String data = (String)button.getData();
+				button.setEnabled(!thisViewName.equals(data));
+    		}
+    	}
+    }
+    private void logout() {
+    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+    	getUI().close();
+        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        getUI().getPage().setLocation(contextPath);
+    }
+    private Button createNavigationButton(String caption, final String viewName) {
+        Button button = new Button(caption);
+        button.setData(viewName);
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
+        button.addClickListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				getUI().getNavigator().navigateTo(viewName);
+			}
+		});
+        return button;
+    }
+    private Button createNavigationButton(String caption, Button.ClickListener clickListener) {
+        Button button = new Button(caption);
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
+        button.addClickListener(clickListener);
+        return button;
+    }
 	public Customer getCustomer() {
-		return new Customer();
+		if (m_customer == null) {
+			m_customer = new Customer();
+			m_customer.getOrders().add(new Order());
+        	m_maduraSessionManager.getValidationSession().bind(m_customer);
+		}
+		return m_customer;
 	}
 
 }
