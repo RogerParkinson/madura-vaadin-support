@@ -5,7 +5,7 @@ package nz.co.senanque.madurarulesdemo;
 
 import javax.annotation.PostConstruct;
 
-import nz.co.senanque.addressbook.instances.Person;
+import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -39,8 +39,8 @@ import com.vaadin.ui.VerticalLayout;
 public class DefaultView extends VerticalLayout implements View, MessageSourceAware {
     public static final String VIEW_NAME = "";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
-    private Person m_person = null;
-    private PersonForm personForm;
+    private Customer m_customer = null;
+    private CustomerForm customerForm;
 	private MessageSource m_messageSource;
 
     /*
@@ -58,13 +58,13 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
 
-        personForm = new PersonForm(m_maduraSessionManager);
-        personForm.setCaption(messageSourceAccessor.getMessage("login.title"));
-        personForm.setWidth("30%");
-        verticalLayout.addComponent(personForm);
+        customerForm = new CustomerForm(m_maduraSessionManager);
+        customerForm.setCaption(messageSourceAccessor.getMessage("login.title"));
+        customerForm.setWidth("30%");
+        verticalLayout.addComponent(customerForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = personForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = customerForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -73,7 +73,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 						Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button submit = personForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button submit = customerForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -82,7 +82,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button logout = personForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button logout = customerForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -92,7 +92,7 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		actions.addComponent(logout);
-		personForm.setFooter(actions);
+		customerForm.setFooter(actions);
 		
 		Component instructions = getInstructions(messageSourceAccessor);
 		verticalLayout.addComponent(instructions);
@@ -125,10 +125,10 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
     @Override
     public void enter(ViewChangeEvent event) {
     	MyUI ui = (MyUI)UI.getCurrent();
-    	if (m_person == null) {
-    		m_person = ui.getPerson();
-        	m_maduraSessionManager.getValidationSession().bind(m_person);
-        	personForm.setItemDataSource(new BeanItem<Person>(m_person));
+    	if (m_customer == null) {
+    		m_customer = ui.getCustomer();
+        	m_maduraSessionManager.getValidationSession().bind(m_customer);
+        	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
 // The following happens automatically in a MaduraForm.setItemDataSource
 //        	List<MaduraPropertyWrapper> properties = personForm.getItemDataSourceProperties();
 //    		m_maduraSessionManager.bind(submit, properties);

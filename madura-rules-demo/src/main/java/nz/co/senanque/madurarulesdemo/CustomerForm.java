@@ -5,9 +5,9 @@ import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import com.vaadin.ui.VerticalLayout;
 
-public class PersonForm extends MaduraForm {
+public class CustomerForm extends MaduraForm {
 
-	public PersonForm(MaduraSessionManager maduraSessionManager) {
+	public CustomerForm(MaduraSessionManager maduraSessionManager) {
 		super(new VerticalLayout(),maduraSessionManager);
 		setFieldList(new String[]{"name","email","address","gender","startDate","amount"});
 	}
