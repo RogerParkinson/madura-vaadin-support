@@ -2,15 +2,5 @@
 <persistence version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd
 http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:orm="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <persistence-unit name="nz.co.senanque.pizzaorder.instances">
-        <class>nz.co.senanque.pizzaorder.instances.Bread</class>
-        <class>nz.co.senanque.pizzaorder.instances.Customer</class>
-        <class>nz.co.senanque.pizzaorder.instances.Dessert</class>
-        <class>nz.co.senanque.pizzaorder.instances.Drink</class>
-        <class>nz.co.senanque.pizzaorder.instances.Extra</class>
-        <class>nz.co.senanque.pizzaorder.instances.Order</class>
-        <class>nz.co.senanque.pizzaorder.instances.OrderItem</class>
-        <class>nz.co.senanque.pizzaorder.instances.Pizza</class>
-        <class>nz.co.senanque.pizzaorder.instances.Preference</class>
-        <class>nz.co.senanque.pizzaorder.instances.Session</class>
     </persistence-unit>
 </persistence>

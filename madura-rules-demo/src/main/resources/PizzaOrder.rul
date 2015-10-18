@@ -1,0 +1,74 @@
+formula: Order "sum"
+{
+	amount = sum(pizzas.amount); 
+}
+rule: Pizza "p2"
+{
+	if (size == "Small")
+	{
+		readonly(testing);
+		activate(testing);
+		amount = 10;
+	}
+}
+rule: Order "shoppingcartsize"
+{
+	if (count(pizzas) > 0)
+	{
+		orderStatus = format("shopping.cart.status",count(pizzas));
+	}
+}
+rule: Order "shoppingcartsize"
+{
+	if (count(pizzas) == 0)
+	{
+		orderStatus = format("shopping.cart.status.empty",0);
+	}
+}
+rule: Pizza "p3"
+{
+	if (size == "Medium")
+	{
+		activate(testing);
+		require(testing);
+		amount = 15;
+	}
+}
+rule: Pizza "p4"
+{
+	if (size == "Large")
+	{
+		activate(testing);
+		amount = 20;
+	}
+}
+rule: Customer "dynamic"
+{
+	if (name == "fred")
+	{
+		dynamic = true;
+	}
+}
+
+formula: Customer "BMI"
+{
+	bmi = weight / (height * height);
+}
+formula: Customer "Height Metric"
+{
+	height = heightMetric;
+}
+formula: Customer "Height Imperial"
+{
+	height = (heightFeet * 0.3048D) + (heightInches * 0.0254D);
+}
+formula: Customer "Weight metric"
+{
+	weight = weightKilos;
+}
+formula: Customer "Weight pounds"
+{
+	weight = weightPounds * 0.453D;
+}
+
+

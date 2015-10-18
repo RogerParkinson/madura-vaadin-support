@@ -57,6 +57,7 @@ public class MyUI extends UI {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	
 	private Customer m_customer;
+	private Order m_order;
 	private CssLayout navigationBar;
 
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
@@ -126,11 +127,7 @@ public class MyUI extends UI {
         navigationBar = new CssLayout();
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         navigationBar.addComponent(createNavigationButton("Customer",
-                DefaultView.VIEW_NAME));
-        navigationBar.addComponent(createNavigationButton("Order",
-                OrderView.VIEW_NAME));
-        navigationBar.addComponent(createNavigationButton("Shopping Cart",
-                ShoppingCartView.VIEW_NAME));
+                CustomerView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("Logout",new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
@@ -188,10 +185,16 @@ public class MyUI extends UI {
 	public Customer getCustomer() {
 		if (m_customer == null) {
 			m_customer = new Customer();
-			m_customer.getOrders().add(new Order());
         	m_maduraSessionManager.getValidationSession().bind(m_customer);
 		}
 		return m_customer;
+	}
+	public Order getOrder() {
+		if (m_order == null) {
+			m_order = new Order();
+        	m_maduraSessionManager.getValidationSession().bind(m_order);
+		}
+		return m_order;
 	}
 
 }

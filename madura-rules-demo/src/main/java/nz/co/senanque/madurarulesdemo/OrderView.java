@@ -5,7 +5,9 @@ package nz.co.senanque.madurarulesdemo;
 
 import javax.annotation.PostConstruct;
 
+import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.pizzaorder.instances.Order;
+import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -37,10 +39,11 @@ import com.vaadin.ui.VerticalLayout;
  */
 @SpringView(name = OrderView.VIEW_NAME)
 public class OrderView extends VerticalLayout implements View, MessageSourceAware {
-    public static final String VIEW_NAME = "order";
+    public static final String VIEW_NAME = "";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
+    @Autowired private PizzaWindow m_pizzaWindow;
     private Order m_order = null;
-    private OrderForm orderForm;
+    private MaduraForm orderForm;
 	private MessageSource m_messageSource;
 
     /*
@@ -58,9 +61,10 @@ public class OrderView extends VerticalLayout implements View, MessageSourceAwar
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
 
-        orderForm = new OrderForm(m_maduraSessionManager);
+        orderForm = new MaduraForm(m_maduraSessionManager);
         orderForm.setCaption(messageSourceAccessor.getMessage("login.title"));
         orderForm.setWidth("30%");
+        orderForm.setFieldList(new String[]{"name","email","address","gender","startDate","amount"});
         verticalLayout.addComponent(orderForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
@@ -118,7 +122,7 @@ public class OrderView extends VerticalLayout implements View, MessageSourceAwar
         getUI().getPage().setLocation(contextPath);
     }
     /* 
-     * This is where we establish the actual person object. 
+     * This is where we establish the actual customer object. 
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
@@ -127,13 +131,18 @@ public class OrderView extends VerticalLayout implements View, MessageSourceAwar
     	MyUI ui = (MyUI)UI.getCurrent();
     	ui.reviewNavigationButtons(VIEW_NAME);
     	if (m_order == null) {
-    		m_order = ui.getCustomer().getOrders().get(0);
-//        	m_maduraSessionManager.getValidationSession().bind(m_order);
+    		m_order = ui.getOrder();
         	orderForm.setItemDataSource(new BeanItem<Order>(m_order));
     	}
     }
 	@Override
 	public void setMessageSource(MessageSource messageSource) {
 		m_messageSource = messageSource;
+	}
+	public PizzaWindow getPizzaWindow() {
+		return m_pizzaWindow;
+	}
+	public void setPizzaWindow(PizzaWindow pizzaWindow) {
+		m_pizzaWindow = pizzaWindow;
 	}
 }
