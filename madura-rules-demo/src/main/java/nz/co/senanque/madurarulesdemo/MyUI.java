@@ -81,7 +81,8 @@ public class MyUI extends UI {
     @EnableVaadin
     @ComponentScan(basePackages = {
     		"nz.co.senanque.vaadin",
-    		"nz.co.senanque.validationengine"})
+    		"nz.co.senanque.validationengine",
+    		"nz.co.senanque.rules"})
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
@@ -128,6 +129,8 @@ public class MyUI extends UI {
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         navigationBar.addComponent(createNavigationButton("Customer",
                 CustomerView.VIEW_NAME));
+        navigationBar.addComponent(createNavigationButton("Order",
+                OrderView.VIEW_NAME));
         navigationBar.addComponent(createNavigationButton("Logout",new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {

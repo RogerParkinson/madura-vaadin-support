@@ -86,40 +86,10 @@ public class OrderView extends VerticalLayout implements View, MessageSourceAwar
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button logout = orderForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				logout();
-				
-			}});
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
-		actions.addComponent(logout);
 		orderForm.setFooter(actions);
 		
-		Component instructions = getInstructions(messageSourceAccessor);
-		verticalLayout.addComponent(instructions);
-		instructions.setWidth("30%");
-		verticalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_LEFT);
-
-    }
-    private VerticalLayout getInstructions(MessageSourceAccessor messageSourceAccessor) {
-		VerticalLayout panel = new VerticalLayout();
-		TextArea textArea = new TextArea();
-		textArea.setWidth("100%");
-		textArea.setHeight("100%");
-		textArea.setValue(messageSourceAccessor.getMessage("demo.instructions"));
-		textArea.setReadOnly(true);
-        panel.addComponent(textArea);
-        panel.setComponentAlignment(textArea, Alignment.MIDDLE_CENTER);
-        return panel;
-    }
-    private void logout() {
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-    	getUI().close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
     }
     /* 
      * This is where we establish the actual customer object. 

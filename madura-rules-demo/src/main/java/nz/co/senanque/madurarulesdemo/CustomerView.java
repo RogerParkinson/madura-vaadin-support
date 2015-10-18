@@ -38,7 +38,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 @SpringView(name = CustomerView.VIEW_NAME)
 public class CustomerView extends VerticalLayout implements View, MessageSourceAware {
-    public static final String VIEW_NAME = "";
+    public static final String VIEW_NAME = "customer";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     private Customer m_customer = null;
     private MaduraForm customerForm;
@@ -84,40 +84,9 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button logout = customerForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				logout();
-				
-			}});
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
-		actions.addComponent(logout);
 		customerForm.setFooter(actions);
-		
-		Component instructions = getInstructions(messageSourceAccessor);
-		verticalLayout.addComponent(instructions);
-		instructions.setWidth("30%");
-		verticalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_LEFT);
-
-    }
-    private VerticalLayout getInstructions(MessageSourceAccessor messageSourceAccessor) {
-		VerticalLayout panel = new VerticalLayout();
-		TextArea textArea = new TextArea();
-		textArea.setWidth("100%");
-		textArea.setHeight("100%");
-		textArea.setValue(messageSourceAccessor.getMessage("demo.instructions"));
-		textArea.setReadOnly(true);
-        panel.addComponent(textArea);
-        panel.setComponentAlignment(textArea, Alignment.MIDDLE_CENTER);
-        return panel;
-    }
-    private void logout() {
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-    	getUI().close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
     }
     /* 
      * This is where we establish the actual customer object. 
