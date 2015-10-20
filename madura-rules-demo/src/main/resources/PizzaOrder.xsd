@@ -54,7 +54,7 @@
 					</appinfo>
 				</annotation>
 			</element>
-			<element name="name">
+			<element name="name" default="">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
@@ -68,7 +68,7 @@
 					</restriction>
 				</simpleType>
 			</element>
-			<element name="email">
+			<element name="email" default="">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
@@ -208,8 +208,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</element>
-			<element name="customer" type="string"/>
-			<element name="orderStatus" type="string">
+			<element name="orderStatus" type="string" default="">
     			<xsd:annotation>
     				<xsd:appinfo>
     					<annox:annotate>

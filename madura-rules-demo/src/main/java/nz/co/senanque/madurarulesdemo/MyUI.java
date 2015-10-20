@@ -26,6 +26,7 @@ import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.event.EventRouter;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.navigator.Navigator;
@@ -55,6 +56,7 @@ public class MyUI extends UI {
 	
 	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
+	private final EventRouter m_eventRouter = new EventRouter();
 	
 	private Customer m_customer;
 	private Order m_order;
@@ -198,6 +200,13 @@ public class MyUI extends UI {
         	m_maduraSessionManager.getValidationSession().bind(m_order);
 		}
 		return m_order;
+	}
+	public EventRouter getEventRouter() {
+		return m_eventRouter;
+	}
+	
+	public static MyUI getCurrent() {
+		return (MyUI)UI.getCurrent();
 	}
 
 }

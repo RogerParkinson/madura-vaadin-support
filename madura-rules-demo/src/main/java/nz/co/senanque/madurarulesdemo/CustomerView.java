@@ -19,26 +19,23 @@ import org.springframework.context.support.MessageSourceAccessor;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Alignment;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 /**
  * @author Roger Parkinson
  *
  */
+@UIScope
 @SpringView(name = CustomerView.VIEW_NAME)
 public class CustomerView extends VerticalLayout implements View, MessageSourceAware {
-    public static final String VIEW_NAME = "customer";
+    public static final String VIEW_NAME = "";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     private Customer m_customer = null;
     private MaduraForm customerForm;
@@ -60,9 +57,9 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
         addComponent(verticalLayout);
 
         customerForm = new MaduraForm(m_maduraSessionManager);
-        customerForm.setCaption(messageSourceAccessor.getMessage("login.title"));
+//        customerForm.setCaption(messageSourceAccessor.getMessage("login.title"));
         customerForm.setWidth("30%");
-        customerForm.setFieldList(new String[]{"name","email","address","gender","startDate","amount"});
+        customerForm.setFieldList(new String[]{"name","email"});
         verticalLayout.addComponent(customerForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
@@ -95,7 +92,7 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
      */
     @Override
     public void enter(ViewChangeEvent event) {
-    	MyUI ui = (MyUI)UI.getCurrent();
+    	MyUI ui = MyUI.getCurrent();
     	ui.reviewNavigationButtons(VIEW_NAME);
     	if (m_customer == null) {
     		m_customer = ui.getCustomer();

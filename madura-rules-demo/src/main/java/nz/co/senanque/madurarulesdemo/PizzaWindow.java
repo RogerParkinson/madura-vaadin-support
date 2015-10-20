@@ -17,14 +17,14 @@ import org.springframework.context.support.MessageSourceAccessor;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 
 /**
  * @author Roger Parkinson
@@ -37,12 +37,11 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 	private Layout panel;
 	private MaduraForm m_maduraForm;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-//    private String m_windowWidth = "800px";
-//    private String m_windowHeight = "400px";
+    private String m_windowWidth = "200px";
+    private String m_windowHeight = "400px";
 	private MessageSourceAccessor m_messageSourceAccessor;
 
 	public PizzaWindow() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -50,7 +49,6 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 	 */
 	public PizzaWindow(String caption) {
 		super(caption);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -59,7 +57,6 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 	 */
 	public PizzaWindow(String caption, Component content) {
 		super(caption, content);
-		// TODO Auto-generated constructor stub
 	}
 	@PostConstruct
 	public void init() {
@@ -67,19 +64,18 @@ public class PizzaWindow extends Window implements MessageSourceAware {
         setContent(main);
         setModal(true);
 //        main.setStyleName(Panel.STYLE_LIGHT);
-//        this.setWidth(getWindowWidth());
-//        this.setHeight(getWindowHeight());
+        this.setWidth(getWindowWidth());
+        this.setHeight(getWindowHeight());
         
         panel = new VerticalLayout();
-//        main.setMargin(true);
+//        this.setMargin(true);
         main.addComponent(panel);
         HorizontalLayout actions = new HorizontalLayout();
         Button OK = new Button();
         actions.addComponent(OK);
         Button cancel = new Button();
         actions.addComponent(cancel);
-        
-        setCaption(m_messageSourceAccessor.getMessage("launch.wizard", "Launch Wizard"));
+        setCaption(m_messageSourceAccessor.getMessage("pizza", "Pizza"));
 	}
 	
 	public void load(final Pizza pizza) {
@@ -92,13 +88,14 @@ public class PizzaWindow extends Window implements MessageSourceAware {
     	m_maduraForm.setFieldList(fieldList);
     	m_maduraForm.setItemDataSource(beanItem);
     	panel.addComponent(m_maduraForm);
+    	
 		HorizontalLayout actions = new HorizontalLayout();
 		Button OK = m_maduraForm.createButton("button.OK", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				getMaduraSessionManager().getValidationSession().unbind(pizza);
-				// TODO: add pizza to order
+				MyUI.getCurrent().getEventRouter().fireEvent(new AddItemEvent(this,pizza));
 				close();
 			}});
 		actions.addComponent(OK);
@@ -135,6 +132,14 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 
 	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
 		m_maduraSessionManager = maduraSessionManager;
+	}
+
+	public String getWindowWidth() {
+		return m_windowWidth;
+	}
+
+	public String getWindowHeight() {
+		return m_windowHeight;
 	}
 
 }
