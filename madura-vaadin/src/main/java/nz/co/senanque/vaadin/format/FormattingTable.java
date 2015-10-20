@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 
-import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.EntityContainer;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.ui.Table;
@@ -46,7 +46,7 @@ public class FormattingTable extends Table {
 	}
 
 	public FormattingTable(String message,
-			JPAContainer<?> container) {
+			EntityContainer<?> container) {
 		super(message,container);
 	}
 
