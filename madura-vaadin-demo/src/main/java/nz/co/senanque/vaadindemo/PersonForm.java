@@ -3,8 +3,6 @@ package nz.co.senanque.vaadindemo;
 import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 public class PersonForm extends MaduraForm {
