@@ -11,6 +11,10 @@ rule: Pizza "p2"
 		amount = 10;
 	}
 }
+formula: Pizza "description"
+{
+	description = base+"-"+size+"-"+topping;
+}
 rule: Order "shoppingcartsize"
 {
 	if (count(pizzas) > 0)

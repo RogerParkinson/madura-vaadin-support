@@ -311,7 +311,7 @@
 					</restriction>
 				</simpleType>
 			</element>
-			<element name="testing">
+			<element name="testing" default="">
     			<xsd:annotation>
     				<xsd:appinfo>
     					<annox:annotate>

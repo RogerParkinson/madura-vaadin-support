@@ -22,6 +22,8 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -89,20 +91,25 @@ public class OrderView extends VerticalLayout implements View {
 		Container indexed = new BeanItemContainer<Pizza>(Pizza.class, new ArrayList<Pizza>());
 		m_itemsTable.setContainerDataSource(indexed,NATURAL_COL_ORDER,ENGLISH_COL_ORDER,m_maduraSessionManager.getMessageSource());
 		verticalLayout.addComponent(m_itemsTable);
+		m_itemsTable.addItemClickListener(new ItemClickListener(){
+
+			@Override
+			public void itemClick(ItemClickEvent event) {
+				m_pizzaWindow.load((Pizza)event.getItemId());
+			}});
     }
     public void addItem(AddItemEvent o) {
-    	if (!m_order.getPizzas().contains(o)) {
+    	if (!m_order.getPizzas().contains(o.getPizza())) {
     		m_order.getPizzas().add(o.getPizza());
     	}
-    	Container indexed = m_itemsTable.getContainerDataSource();
-		BeanItem<Pizza> beanItem = new BeanItem<Pizza>(o.getPizza());
-		if (!indexed.containsId(beanItem)) {
-			Item item = m_itemsTable.addItem(o.getPizza());
-			m_logger.debug("item {}",item);
-		}
+		Item item = m_itemsTable.addItem(o.getPizza());
+		m_logger.debug("item {}",item); // null if already exists.
     	
     	m_itemsTable.refreshRowCache();
-    	m_itemsTable.markAsDirtyRecursive();
+//    	m_itemsTable.markAsDirtyRecursive();
+//    	orderForm.markAsDirty();
+//    	orderForm.requestRepaint(); // tried using markAsDirty() directly and it doesn't work.
+    	markAsDirtyRecursive();
     }
     /* 
      * This is where we establish the actual customer object. 

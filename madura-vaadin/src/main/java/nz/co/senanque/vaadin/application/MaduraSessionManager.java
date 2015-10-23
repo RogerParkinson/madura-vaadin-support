@@ -403,6 +403,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 			public void valueChange(ValueChangeEvent event)
             {
                 com.vaadin.data.Property p = field.getPropertyDataSource();
+				logger.debug("Changed value ");
                 if (p instanceof MaduraPropertyWrapper)
                 {
                     MaduraPropertyWrapper property = (MaduraPropertyWrapper) p;

@@ -1,9 +1,12 @@
 package nz.co.senanque.madurarulesdemo;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraForm;
+import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -37,7 +40,7 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 	private Layout panel;
 	private MaduraForm m_maduraForm;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    private String m_windowWidth = "200px";
+    private String m_windowWidth = "300px";
     private String m_windowHeight = "400px";
 	private MessageSourceAccessor m_messageSourceAccessor;
 
@@ -68,13 +71,8 @@ public class PizzaWindow extends Window implements MessageSourceAware {
         this.setHeight(getWindowHeight());
         
         panel = new VerticalLayout();
-//        this.setMargin(true);
+//        main.setMargin(true);
         main.addComponent(panel);
-        HorizontalLayout actions = new HorizontalLayout();
-        Button OK = new Button();
-        actions.addComponent(OK);
-        Button cancel = new Button();
-        actions.addComponent(cancel);
         setCaption(m_messageSourceAccessor.getMessage("pizza", "Pizza"));
 	}
 	
@@ -84,22 +82,21 @@ public class PizzaWindow extends Window implements MessageSourceAware {
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
 
     	m_maduraForm = new MaduraForm(getMaduraSessionManager());
-    	String[] fieldList = new String[]{"base","topping","size","amount","testing"};
+    	String[] fieldList = new String[]{"base","topping","size","amount","testing","description"};
     	m_maduraForm.setFieldList(fieldList);
     	m_maduraForm.setItemDataSource(beanItem);
     	panel.addComponent(m_maduraForm);
     	
 		HorizontalLayout actions = new HorizontalLayout();
-		Button OK = m_maduraForm.createButton("button.OK", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button OK = m_maduraForm.createButton("button.OK", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getMaduraSessionManager().getValidationSession().unbind(pizza);
 				MyUI.getCurrent().getEventRouter().fireEvent(new AddItemEvent(this,pizza));
 				close();
 			}});
 		actions.addComponent(OK);
-		Button cancel = m_maduraForm.createButton("button.cancel", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = m_maduraForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -111,6 +108,10 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 
 //		panel.addComponent(getInitialLayout());
 //    	panel.requestRepaint();
+		List<MaduraPropertyWrapper> properties = m_maduraForm.getItemDataSourceProperties();
+		m_maduraSessionManager.bind(OK, properties);
+		m_maduraSessionManager.bind(cancel, properties);
+		m_maduraForm.requestRepaint();
     	if (getParent() == null) {
     		UI.getCurrent().addWindow(this);
         	this.center();
