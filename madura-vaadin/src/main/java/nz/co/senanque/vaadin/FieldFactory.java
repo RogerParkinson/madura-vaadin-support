@@ -140,6 +140,7 @@ public final class FieldFactory extends DefaultFieldFactory {
         	ret = hints.getSelectField(property);
         	ret.setImmediate(true);
         	ret.setBuffered(true);
+        	
         }
 
         if (ret == null)
