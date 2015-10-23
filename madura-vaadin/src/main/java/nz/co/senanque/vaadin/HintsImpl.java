@@ -210,6 +210,7 @@ public class HintsImpl implements Hints, Serializable {
         case STANDARD:
         	select = new Select();
             select.setMultiSelect(false);
+            select.setNullSelectionAllowed(true);
         	break;
         case RADIO:
         	select = new OptionGroup();
