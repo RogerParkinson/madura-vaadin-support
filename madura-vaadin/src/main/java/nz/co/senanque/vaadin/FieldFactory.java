@@ -91,7 +91,6 @@ public final class FieldFactory extends DefaultFieldFactory {
             Field field = super.createField(item, propertyId, uiContext);
 	        field.setWidth(getHints().getWidth());
 	        field.setBuffered(true);
-	        field.setBuffered(true);
 	        field.setPropertyDataSource(property);
 	        ret = field;
         }
