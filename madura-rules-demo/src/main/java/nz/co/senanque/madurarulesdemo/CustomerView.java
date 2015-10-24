@@ -37,6 +37,7 @@ import com.vaadin.ui.VerticalLayout;
 public class CustomerView extends VerticalLayout implements View, MessageSourceAware {
     public static final String VIEW_NAME = "";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
+    @Autowired private OneFieldWindowFactory m_oneFieldWindowFactory;
     private Customer m_customer = null;
     private MaduraForm customerForm;
 	private MessageSource m_messageSource;
@@ -81,8 +82,16 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
+//		Button bmi = customerForm.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
+		Button bmi = customerForm.createButton("button.bmi", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				m_oneFieldWindowFactory.createWindow(m_customer, "bmi");				
+			}});
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
+		actions.addComponent(bmi);
 		customerForm.setFooter(actions);
     }
     /* 
@@ -102,5 +111,11 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
 	@Override
 	public void setMessageSource(MessageSource messageSource) {
 		m_messageSource = messageSource;
+	}
+	public OneFieldWindowFactory getOneFieldWindowFactory() {
+		return m_oneFieldWindowFactory;
+	}
+	public void setOneFieldWindowFactory(OneFieldWindowFactory oneFieldWindowFactory) {
+		m_oneFieldWindowFactory = oneFieldWindowFactory;
 	}
 }
