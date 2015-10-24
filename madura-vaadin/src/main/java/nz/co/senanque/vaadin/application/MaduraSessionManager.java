@@ -370,7 +370,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
                         getter, hints,m_messageSource);
             }
         }
-        return null;
+        throw new PropertyNotFoundException(propertyName);
     }
 
     public void bind(final MaduraForm form, final AbstractField field,
