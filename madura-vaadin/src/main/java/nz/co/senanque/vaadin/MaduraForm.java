@@ -25,7 +25,6 @@ import nz.co.senanque.validationengine.ValidationObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import com.vaadin.data.Item;
@@ -35,10 +34,10 @@ import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -49,7 +48,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Roger Parkinson
  *
  */
-public class MaduraForm extends Form implements InitializingBean {
+public class MaduraForm extends Form {
 	
     private static final long serialVersionUID = 1L;
     Logger logger = LoggerFactory.getLogger(MaduraForm.class);
@@ -67,6 +66,10 @@ public class MaduraForm extends Form implements InitializingBean {
     	m_maduraSessionManager = maduraSessionManager;
     	m_maduraFieldFactory = maduraSessionManager.getFieldFactory();
     	this.setFormFieldFactory(m_maduraFieldFactory);
+    	setLayout(m_layout);
+    	setLocale(LocaleContextHolder.getLocale());
+        setBuffered(false);
+        setImmediate(true);
     }
     public MaduraForm(MaduraSessionManager maduraSessionManager)
     {
@@ -207,22 +210,22 @@ public class MaduraForm extends Form implements InitializingBean {
 	public MaduraSessionManager getMaduraSessionManager() {
 		return m_maduraSessionManager;
 	}
-	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
-		m_maduraSessionManager = maduraSessionManager;
-	}
-	public FieldFactory getMaduraFieldFactory() {
-		return m_maduraFieldFactory;
-	}
-	public void setMaduraFieldFactory(FieldFactory maduraFieldFactory) {
-		m_maduraFieldFactory = maduraFieldFactory;
-        setFormFieldFactory(m_maduraFieldFactory);
-	}
-	public void afterPropertiesSet() throws Exception {
-        setFormFieldFactory(m_maduraFieldFactory);
-        setLocale(LocaleContextHolder.getLocale());
-        setBuffered(true);
-        setImmediate(true);
-        setLayout(m_layout);
-	}
-	
+//	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
+//		m_maduraSessionManager = maduraSessionManager;
+//	}
+//	public FieldFactory getMaduraFieldFactory() {
+//		return m_maduraFieldFactory;
+//	}
+//	public void setMaduraFieldFactory(FieldFactory maduraFieldFactory) {
+//		m_maduraFieldFactory = maduraFieldFactory;
+//        setFormFieldFactory(m_maduraFieldFactory);
+//	}
+//	public void afterPropertiesSet() throws Exception {
+//        setFormFieldFactory(m_maduraFieldFactory);
+//        setLocale(LocaleContextHolder.getLocale());
+//        setBuffered(true);
+//        setImmediate(true);
+//        setLayout(m_layout);
+//	}
+//	
 }
