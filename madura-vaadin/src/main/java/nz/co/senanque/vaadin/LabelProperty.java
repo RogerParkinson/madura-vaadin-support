@@ -39,7 +39,7 @@ public class LabelProperty implements com.vaadin.data.Property {
 	}
 
 	public Object getValue() {
-        String ret = String.valueOf(m_property.getValue());
+        String ret = (m_property.getValue()==null)?null:String.valueOf(m_property.getValue());
         return ret;
 	}
 
@@ -49,8 +49,7 @@ public class LabelProperty implements com.vaadin.data.Property {
 	}
 
 	public Class<?> getType() {
-		// TODO Auto-generated method stub
-		return null;
+		return m_property.getDataType();
 	}
 
 	public boolean isReadOnly() {
