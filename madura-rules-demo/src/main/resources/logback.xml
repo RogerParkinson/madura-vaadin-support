@@ -8,6 +8,7 @@
 <!-- 	<logger name="nz.co.senanque.login" level="debug"/> -->
 	<logger name="nz.co.senanque.madurarulesdemo" level="debug"/>
 	<logger name="nz.co.senanque.vaadin.application" level="debug"/>
+	<logger name="nz.co.senanque.vaadin.FieldButtonPainter" level="debug"/>
 
   <root level="warn">
     <appender-ref ref="STDOUT" />
