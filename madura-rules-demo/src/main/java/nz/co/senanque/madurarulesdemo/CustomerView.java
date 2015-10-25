@@ -6,6 +6,7 @@ package nz.co.senanque.madurarulesdemo;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
+import nz.co.senanque.vaadin.FieldButtonPainter;
 import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
@@ -82,8 +83,9 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-//		Button bmi = customerForm.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
-		Button bmi = customerForm.createButton("button.bmi", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button bmi = customerForm.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
+			// TODO: doesn't use the button.bmi here, it uses the dynamic label instead
+//		Button bmi = customerForm.createButton("button.bmi", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
