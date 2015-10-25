@@ -87,7 +87,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
-							<md:Label labelName="dynamic" />
+							<md:Label labelName="button.bmi" />
 							<md:Unknown/>
 						</annox:annotate>
 					</xsd:appinfo>
