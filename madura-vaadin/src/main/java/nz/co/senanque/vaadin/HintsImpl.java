@@ -151,7 +151,6 @@ public class HintsImpl implements Hints, Serializable {
 	public void setCommonProperties(final Button ret,
 			MaduraPropertyWrapper property, MessageSource messageSource) {
         ret.setWidth(getWidth());
-        ret.setData(property);
         ret.setCaption(property.getLabel());
         if (property.isReadOnly()) {
         	ret.setReadOnly(true);
