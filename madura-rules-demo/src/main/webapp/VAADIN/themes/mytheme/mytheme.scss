@@ -26,11 +26,24 @@
 
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
+$v-component-group-spacing: 12px;
+$v-unit-size: 40px;
 
 @import "../valo/valo.scss";
 
 @mixin mytheme {
   @include valo;
 
-  // Insert your own theme rules here
+ // Insert your own theme rules here
+.v-window-contents {
+	margin-left:30px;
 }
+ .v-button {
+ 	margin-right:10px;
+ }
+ .v-form-footer {
+ 	margin-top:0px !important;
+ }
+}
+
+
