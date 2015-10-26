@@ -16,11 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.stereotype.Component;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -28,13 +29,15 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * @author Roger Parkinson
  *
  */
 @UIScope
-@SpringView(name = CustomerView.VIEW_NAME)
+//@SpringView(name = CustomerView.VIEW_NAME)
+@Component
 public class CustomerView extends VerticalLayout implements View, MessageSourceAware {
     public static final String VIEW_NAME = "";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
@@ -59,7 +62,6 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
         addComponent(verticalLayout);
 
         customerForm = new MaduraForm(m_maduraSessionManager);
-//        customerForm.setCaption(messageSourceAccessor.getMessage("login.title"));
         customerForm.setWidth("30%");
         customerForm.setFieldList(new String[]{"name","email"});
         verticalLayout.addComponent(customerForm);
@@ -83,9 +85,10 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
+		submit.setClickShortcut(KeyCode.ENTER );
+		submit.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		Button bmi = customerForm.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
 			// TODO: doesn't use the button.bmi here, it uses the dynamic label instead
-//		Button bmi = customerForm.createButton("button.bmi", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {

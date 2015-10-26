@@ -18,10 +18,12 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
@@ -41,7 +43,7 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 	private MaduraForm m_maduraForm;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
     private String m_windowWidth = "300px";
-    private String m_windowHeight = "400px";
+    private String m_windowHeight = "550px";
 	private MessageSourceAccessor m_messageSourceAccessor;
 
 	public PizzaWindow() {
@@ -66,12 +68,10 @@ public class PizzaWindow extends Window implements MessageSourceAware {
         main = new VerticalLayout();
         setContent(main);
         setModal(true);
-//        main.setStyleName(Panel.STYLE_LIGHT);
         this.setWidth(getWindowWidth());
         this.setHeight(getWindowHeight());
         
         panel = new VerticalLayout();
-//        main.setMargin(true);
         main.addComponent(panel);
         setCaption(m_messageSourceAccessor.getMessage("pizza", "Pizza"));
 	}
@@ -95,6 +95,8 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 				MyUI.getCurrent().getEventRouter().fireEvent(new AddItemEvent(this,pizza));
 				close();
 			}});
+        OK.setClickShortcut(KeyCode.ENTER );
+        OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		actions.addComponent(OK);
 		Button cancel = m_maduraForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
@@ -106,12 +108,10 @@ public class PizzaWindow extends Window implements MessageSourceAware {
 		actions.addComponent(cancel);
 		m_maduraForm.setFooter(actions);
 
-//		panel.addComponent(getInitialLayout());
-//    	panel.requestRepaint();
 		List<MaduraPropertyWrapper> properties = m_maduraForm.getItemDataSourceProperties();
 		m_maduraSessionManager.bind(OK, properties);
 		m_maduraSessionManager.bind(cancel, properties);
-		m_maduraForm.requestRepaint();
+		m_maduraForm.markAsDirty();
     	if (getParent() == null) {
     		UI.getCurrent().addWindow(this);
         	this.center();

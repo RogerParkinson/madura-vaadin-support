@@ -1,6 +1,5 @@
 package nz.co.senanque.madurarulesdemo;
 
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.annotation.WebListener;
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -29,7 +29,6 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.event.EventRouter;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
@@ -38,10 +37,11 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -56,7 +56,9 @@ public class MyUI extends UI {
 	
 	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-	private final EventRouter m_eventRouter = new EventRouter();
+	@Autowired private CustomerView m_customerView;
+	@Autowired private OrderView m_orderView;
+	@Autowired private MyEventRouter m_eventRouter;
 	
 	private Customer m_customer;
 	private Order m_order;
@@ -121,64 +123,63 @@ public class MyUI extends UI {
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
     	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
+    	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+    	final String logout = messageSourceAccessor.getMessage("Logout");
+    	
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);
         root.setSpacing(true);
         setContent(root);
 
-        navigationBar = new CssLayout();
-        navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        navigationBar.addComponent(createNavigationButton("Customer",
-                CustomerView.VIEW_NAME));
-        navigationBar.addComponent(createNavigationButton("Order",
-                OrderView.VIEW_NAME));
-        navigationBar.addComponent(createNavigationButton("Logout",new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				logout();
-			}
-		}));
-        root.addComponent(navigationBar);
+        TabSheet tabsheet = new TabSheet();
+        root.addComponent(tabsheet);
 
-        final Panel viewContainer = new Panel();
-        viewContainer.setSizeFull();
-        root.addComponent(viewContainer);
-        root.setExpandRatio(viewContainer, 1.0f);
+        // Create the first tab
+        VerticalLayout tab1 = new VerticalLayout();
+        tab1.addComponent(m_customerView);
+        m_customerView.enter(null);
+        tabsheet.addTab(tab1, messageSourceAccessor.getMessage("Customer"));
 
-        Navigator navigator = new Navigator(this, viewContainer);
-        navigator.addProvider(viewProvider);
+        // This tab gets its caption from the component caption
+        VerticalLayout tab2 = new VerticalLayout();
+        tab2.addComponent(m_orderView);
+        m_orderView.enter(null);
+        tabsheet.addTab(tab2,messageSourceAccessor.getMessage("Order"));
+
+        VerticalLayout tab3 = new VerticalLayout();
+        tabsheet.addTab(tab3,logout);
+
+        tabsheet.addSelectedTabChangeListener(new SelectedTabChangeListener(){
+
+			@Override
+			public void selectedTabChange(SelectedTabChangeEvent event) {
+				TabSheet tabSheet = event.getTabSheet();
+				Component c = tabSheet.getSelectedTab();
+				String caption = tabSheet.getTab(c).getCaption();
+				if (caption.equals(logout)) {
+					logout();
+				}
+				
+			}});
 
     }
     public void reviewNavigationButtons(String thisViewName) {
-    	Iterator<Component> it = navigationBar.iterator();
-    	while (it.hasNext()) {
-    		Component component = it.next();
-    		if (component instanceof Button) {
-    			Button button = (Button)component;
-    			String data = (String)button.getData();
-				button.setEnabled(!thisViewName.equals(data));
-    		}
-    	}
+//    	Iterator<Component> it = navigationBar.iterator();
+//    	while (it.hasNext()) {
+//    		Component component = it.next();
+//    		if (component instanceof Button) {
+//    			Button button = (Button)component;
+//    			String data = (String)button.getData();
+//				button.setEnabled(!thisViewName.equals(data));
+//    		}
+//    	}
     }
     private void logout() {
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
     	getUI().close();
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
-    }
-    private Button createNavigationButton(String caption, final String viewName) {
-        Button button = new Button(caption);
-        button.setData(viewName);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
-        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
-        button.addClickListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				getUI().getNavigator().navigateTo(viewName);
-			}
-		});
-        return button;
     }
     private Button createNavigationButton(String caption, Button.ClickListener clickListener) {
         Button button = new Button(caption);
@@ -207,6 +208,21 @@ public class MyUI extends UI {
 	
 	public static MyUI getCurrent() {
 		return (MyUI)UI.getCurrent();
+	}
+	public CustomerView getCustomerView() {
+		return m_customerView;
+	}
+	public void setCustomerView(CustomerView customerView) {
+		m_customerView = customerView;
+	}
+	public OrderView getOrderView() {
+		return m_orderView;
+	}
+	public void setOrderView(OrderView orderView) {
+		m_orderView = orderView;
+	}
+	public void setEventRouter(MyEventRouter eventRouter) {
+		m_eventRouter = eventRouter;
 	}
 
 }

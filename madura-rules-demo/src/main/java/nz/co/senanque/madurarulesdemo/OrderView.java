@@ -53,6 +53,8 @@ public class OrderView extends VerticalLayout implements View {
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private PizzaWindow m_pizzaWindow;
     @Autowired FieldFactory m_fieldFactory;
+	@Autowired private MyEventRouter m_eventRouter;
+
     private Order m_order = null;
     private MaduraForm orderForm;
     private Button m_addItem;
@@ -130,7 +132,7 @@ public class OrderView extends VerticalLayout implements View {
 //				m_pizzaWindow.load(pizza);
 //				
 //			}});
-		MyUI.getCurrent().getEventRouter().addListener(AddItemEvent.class, this, "addItem");
+		getEventRouter().addListener(AddItemEvent.class, this, "addItem");
 //		actions.addComponent(add);
 //		orderForm.setFooter(actions);
 		m_itemsTable = new FormattingTable();
@@ -190,5 +192,11 @@ public class OrderView extends VerticalLayout implements View {
 	}
 	public void setFieldFactory(FieldFactory fieldFactory) {
 		m_fieldFactory = fieldFactory;
+	}
+	public MyEventRouter getEventRouter() {
+		return m_eventRouter;
+	}
+	public void setEventRouter(MyEventRouter eventRouter) {
+		m_eventRouter = eventRouter;
 	}
 }
