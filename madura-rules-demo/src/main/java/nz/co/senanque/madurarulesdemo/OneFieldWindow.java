@@ -24,15 +24,16 @@ import nz.co.senanque.validationengine.FieldMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * @author Roger Parkinson
@@ -109,6 +110,9 @@ public class OneFieldWindow extends Window {
 						}
 					}
 				});
+        buttonOK.setClickShortcut(KeyCode.ENTER );
+        buttonOK.addStyleName(ValoTheme.BUTTON_PRIMARY);
+
 		buttons.addComponent(buttonOK);
 
         field.focus();
@@ -128,7 +132,6 @@ public class OneFieldWindow extends Window {
         MaduraPropertyWrapper maduraPropertyWrapper = maduraSessionManager.getMaduraPropertyWrapper(fieldMetadata);
         FieldFactory fieldFactory = maduraSessionManager.getFieldFactory();
         Field field = fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
-        field.setBuffered(false);
         field.setReadOnly(true);
         main.addComponent(field);
 
@@ -141,8 +144,11 @@ public class OneFieldWindow extends Window {
 			public void buttonClick(ClickEvent event) {
 				close();
 			}});
-        buttons.addComponent(buttonOK);
+        buttonOK.setClickShortcut(KeyCode.ENTER );
+        buttonOK.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
+        buttons.addComponent(buttonOK);
+        
         buttons.setComponentAlignment(buttonOK, Alignment.BOTTOM_RIGHT);
 	}
 

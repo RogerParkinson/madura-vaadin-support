@@ -8,7 +8,6 @@ import nz.co.senanque.validationengine.ValidationObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Window;
 
 /**
  * @author Roger Parkinson
