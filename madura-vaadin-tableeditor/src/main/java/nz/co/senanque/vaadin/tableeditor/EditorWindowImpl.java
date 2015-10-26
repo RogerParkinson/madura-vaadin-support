@@ -105,8 +105,8 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
         delete.addClickListener(this);
         close.addClickListener(this);
         actions.addComponent(close);
-
-        main.addComponent(actions);
+        m_form.setFooter(actions);
+//        main.addComponent(actions);
     }
     protected void extraFields()
     {
