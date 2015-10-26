@@ -77,8 +77,6 @@ public class HintsImpl implements Hints, Serializable {
 	}
 	private SelectType m_selectType = SelectType.STANDARD;
 
-//	private transient MessageSource m_messageSource;
-
 	public SelectType getSelectType() {
 		return m_selectType;
 	}
@@ -150,7 +148,6 @@ public class HintsImpl implements Hints, Serializable {
 	@Override
 	public void setCommonProperties(final Button ret,
 			MaduraPropertyWrapper property, MessageSource messageSource) {
-        ret.setWidth(getWidth());
         ret.setCaption(property.getLabel());
         if (property.isReadOnly()) {
         	ret.setReadOnly(true);
@@ -237,12 +234,6 @@ public class HintsImpl implements Hints, Serializable {
         else
         {
         	ret = new TextField();
-//        	int maxLength = property.getMaxLength();
-//        	if (maxLength > 100) {
-//        		ret = new TextArea();
-//        	} else {
-//        		ret = new TextField();
-//        	}
         }
         ret.setMaxLength(property.getMaxLength());
         return ret;

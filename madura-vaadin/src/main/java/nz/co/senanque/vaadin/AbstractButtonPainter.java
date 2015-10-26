@@ -84,4 +84,8 @@ abstract class AbstractButtonPainter implements ButtonPainter,MenuItemPainter, S
 		return m_messageSource;
 	}
 
+	public MaduraPropertyWrapper getProperty() {
+		return null;
+	}
+
 }

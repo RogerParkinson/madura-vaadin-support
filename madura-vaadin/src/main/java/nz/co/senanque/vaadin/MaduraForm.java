@@ -157,10 +157,6 @@ public class MaduraForm extends Form {
        Button ret = m_maduraFieldFactory.createButton(name, listener, painter);
        painter.setForm(this);
        m_myButtons.add(ret);
-//       if (data == null) {
-//    	   data = new ButtonProperty(new SimpleButtonPainter(m_maduraSessionManager));
-//       }
-//       ret.setData(data);
        return ret;
     }
 

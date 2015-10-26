@@ -42,7 +42,7 @@ public class FieldButtonPainter extends AbstractButtonPainter
 
 	public final String m_propertyName;
 	public MaduraPropertyWrapper m_property;   
-    private MaduraSessionManager m_maduraSessionManager;
+    private final MaduraSessionManager m_maduraSessionManager;
 	private MaduraForm m_form;
 
     public FieldButtonPainter(String propertyName, MaduraSessionManager maduraSessionManager)
@@ -96,21 +96,9 @@ public class FieldButtonPainter extends AbstractButtonPainter
     {
         return m_property;
     }
-	public MaduraSessionManager getMaduraSessionManager() {
-		return m_maduraSessionManager;
-	}
-
-	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
-		m_maduraSessionManager = maduraSessionManager;
-	}
-
-	public void setProperty(MaduraPropertyWrapper property) {
-		m_property = property;
-	}
-
 	public void setProperties(
 			List<MaduraPropertyWrapper> properties) {
-		m_property = getMaduraSessionManager().findProperty(m_propertyName, properties);
+		m_property = m_maduraSessionManager.findProperty(m_propertyName, properties);
 	}
 
 	@Override
