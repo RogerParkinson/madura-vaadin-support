@@ -298,7 +298,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     public List<MaduraPropertyWrapper> getFieldList(ValidationObject validationObject)
     {
         List<MaduraPropertyWrapper> ret = new ArrayList<MaduraPropertyWrapper>();
-//	    Class<?> clazz = validationObject.getClass();
         ObjectMetadata objectMetadata = validationObject.getMetadata();
         Collection<PropertyMetadata> propertyMetadata = objectMetadata.getAllPropertyMetadata();
 		for (PropertyMetadata property: propertyMetadata)
@@ -315,7 +314,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     {
         List<String> ret = new ArrayList<String>();
         ObjectMetadata objectMetadata = validationObject.getMetadata();
-//	    Class<?> clazz = validationObject.getClass();
         Collection<PropertyMetadata> propertyMetadata = objectMetadata.getAllPropertyMetadata();
 		for (PropertyMetadata property: propertyMetadata)
 		{
@@ -345,7 +343,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
             String propertyName)
     {
         Hints hints = getHints();
-//        Class<?> clazz = validationObject.getClass();
         ObjectMetadata objectMetadata = validationObject.getMetadata();
         
         Collection<PropertyMetadata> propertyMetadata = objectMetadata.getAllPropertyMetadata();
@@ -455,6 +452,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	
 				public void valueChange(ValueChangeEvent event)
 	            {
+					logger.debug("Changed value ");
 	                com.vaadin.data.Property p = abstractField.getPropertyDataSource();
 	                if (p instanceof MaduraPropertyWrapper)
 	                {

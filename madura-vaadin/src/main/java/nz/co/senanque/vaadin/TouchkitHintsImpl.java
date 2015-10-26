@@ -96,7 +96,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
     public void setCommonProperties(final AbstractField ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
     {
         ret.setWidth(getWidth());
-        ret.setBuffered(true);
+        ret.setBuffered(false);
         ret.setPropertyDataSource(property);
         ret.setCaption(property.getLabel());
         ret.setRequired(property.isRequired());

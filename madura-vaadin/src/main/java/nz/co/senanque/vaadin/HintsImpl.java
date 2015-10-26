@@ -29,7 +29,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
 
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.UserError;
@@ -38,11 +37,11 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 /**
@@ -98,7 +97,7 @@ public class HintsImpl implements Hints, Serializable {
     public void setCommonProperties(final AbstractField ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
     {
         ret.setWidth(getWidth());
-        ret.setBuffered(true);
+        ret.setBuffered(false);
         ret.setPropertyDataSource(property);
         ret.setCaption(property.getLabel());
         ret.setRequired(property.isRequired());
@@ -204,8 +203,8 @@ public class HintsImpl implements Hints, Serializable {
         switch (getSelectType())
         {
         case STANDARD:
-        	select = new Select();
-            select.setMultiSelect(false);
+        	select = new ComboBox();
+//            select.setMultiSelect(false);
             select.setNullSelectionAllowed(true);
         	break;
         case RADIO:

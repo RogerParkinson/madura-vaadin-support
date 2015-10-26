@@ -90,7 +90,7 @@ public final class FieldFactory extends DefaultFieldFactory {
         	// this probably never gets called
             Field field = super.createField(item, propertyId, uiContext);
 	        field.setWidth(getHints().getWidth());
-	        field.setBuffered(true);
+	        field.setBuffered(false);
 	        field.setPropertyDataSource(property);
 	        ret = field;
         }
@@ -138,8 +138,7 @@ public final class FieldFactory extends DefaultFieldFactory {
         if (List.class.isAssignableFrom(type) || size > 0) {
         	ret = hints.getSelectField(property);
         	ret.setImmediate(true);
-        	ret.setBuffered(true);
-        	
+        	ret.setBuffered(false);
         }
 
         if (ret == null)

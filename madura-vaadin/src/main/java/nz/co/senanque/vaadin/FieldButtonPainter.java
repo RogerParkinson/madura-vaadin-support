@@ -71,7 +71,6 @@ public class FieldButtonPainter extends AbstractButtonPainter
         {
             button.setEnabled(false);
         }
-        logger.debug("button {} enabled {}",button.getCaption(),button.isEnabled());
         super.paint(button);
     }
     public void paint(MenuItem menuItem)
