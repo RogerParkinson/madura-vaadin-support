@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -26,14 +27,16 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -46,8 +49,8 @@ public class MyUI extends UI {
 	private static final long serialVersionUID = 1L;
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
-	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
+	@Autowired private DefaultView m_defaultView;
 
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
@@ -107,20 +110,45 @@ public class MyUI extends UI {
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
     	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
-        final VerticalLayout root = new VerticalLayout();
+    	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+    	final String logout = messageSourceAccessor.getMessage("logout");
+    	
+    	final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);
         root.setSpacing(true);
         setContent(root);
+        
+        TabSheet tabsheet = new TabSheet();
+        root.addComponent(tabsheet);
+        // Create the first tab
+        VerticalLayout tab1 = new VerticalLayout();
+        tab1.addComponent(m_defaultView);
+        tabsheet.addTab(tab1, messageSourceAccessor.getMessage("people"));
+        m_defaultView.enter(null);
 
-        final Panel viewContainer = new Panel();
-        viewContainer.setSizeFull();
-        root.addComponent(viewContainer);
-        root.setExpandRatio(viewContainer, 1.0f);
+        VerticalLayout tabLogout = new VerticalLayout();
+        tabsheet.addTab(tabLogout,logout);
 
-        Navigator navigator = new Navigator(this, viewContainer);
-        navigator.addProvider(viewProvider);
+        tabsheet.addSelectedTabChangeListener(new SelectedTabChangeListener(){
 
+			@Override
+			public void selectedTabChange(SelectedTabChangeEvent event) {
+				TabSheet tabSheet = event.getTabSheet();
+				Component c = tabSheet.getSelectedTab();
+				String caption = tabSheet.getTab(c).getCaption();
+				if (caption.equals(logout)) {
+					logout();
+				}
+				
+			}});
+
+    }
+    private void logout() {
+    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+    	getUI().close();
+        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        getUI().getPage().setLocation(contextPath);
     }
 	public Person getPerson() {
         return new Person();

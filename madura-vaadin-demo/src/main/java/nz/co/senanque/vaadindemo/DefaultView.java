@@ -16,10 +16,9 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinService;
-import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -35,10 +34,11 @@ import com.vaadin.ui.VerticalLayout;
  * @author Roger Parkinson
  *
  */
-@SpringView(name = DefaultView.VIEW_NAME)
-public class DefaultView extends VerticalLayout implements View, MessageSourceAware {
-    public static final String VIEW_NAME = "";
-    @Autowired private MaduraSessionManager m_maduraSessionManager;
+@UIScope
+@SpringComponent
+public class DefaultView extends VerticalLayout implements MessageSourceAware {
+
+	@Autowired private MaduraSessionManager m_maduraSessionManager;
     private Person m_person = null;
     private PersonForm personForm;
 	private MessageSource m_messageSource;
@@ -59,7 +59,6 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
         addComponent(verticalLayout);
 
         personForm = new PersonForm(m_maduraSessionManager);
-        personForm.setCaption(messageSourceAccessor.getMessage("login.title"));
         personForm.setWidth("30%");
         verticalLayout.addComponent(personForm);
 
@@ -82,16 +81,8 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button logout = personForm.createButton("button.logout", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				logout();
-				
-			}});
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
-		actions.addComponent(logout);
 		personForm.setFooter(actions);
 		
 		Component instructions = getInstructions(messageSourceAccessor);
@@ -111,18 +102,11 @@ public class DefaultView extends VerticalLayout implements View, MessageSourceAw
         panel.setComponentAlignment(textArea, Alignment.MIDDLE_CENTER);
         return panel;
     }
-    private void logout() {
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-    	getUI().close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
-    }
     /* 
      * This is where we establish the actual person object. 
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    @Override
     public void enter(ViewChangeEvent event) {
     	MyUI ui = (MyUI)UI.getCurrent();
     	if (m_person == null) {
