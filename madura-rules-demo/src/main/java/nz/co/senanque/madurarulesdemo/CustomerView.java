@@ -13,14 +13,11 @@ import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
@@ -36,15 +33,12 @@ import com.vaadin.ui.themes.ValoTheme;
  *
  */
 @UIScope
-//@SpringView(name = CustomerView.VIEW_NAME)
 @Component
-public class CustomerView extends VerticalLayout implements View, MessageSourceAware {
-    public static final String VIEW_NAME = "";
+public class CustomerView extends VerticalLayout {
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private OneFieldWindowFactory m_oneFieldWindowFactory;
     private Customer m_customer = null;
     private MaduraForm customerForm;
-	private MessageSource m_messageSource;
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -54,7 +48,7 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
     @PostConstruct
     void init() {
     	
-    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
+    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
 
         final VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setMargin(true);
@@ -104,19 +98,13 @@ public class CustomerView extends VerticalLayout implements View, MessageSourceA
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    @Override
     public void enter(ViewChangeEvent event) {
     	MyUI ui = MyUI.getCurrent();
-    	ui.reviewNavigationButtons(VIEW_NAME);
     	if (m_customer == null) {
     		m_customer = ui.getCustomer();
         	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
     	}
     }
-	@Override
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSource = messageSource;
-	}
 	public OneFieldWindowFactory getOneFieldWindowFactory() {
 		return m_oneFieldWindowFactory;
 	}

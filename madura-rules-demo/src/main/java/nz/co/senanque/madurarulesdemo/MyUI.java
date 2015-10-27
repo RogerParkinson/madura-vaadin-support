@@ -147,8 +147,8 @@ public class MyUI extends UI {
         m_orderView.enter(null);
         tabsheet.addTab(tab2,messageSourceAccessor.getMessage("Order"));
 
-        VerticalLayout tab3 = new VerticalLayout();
-        tabsheet.addTab(tab3,logout);
+        VerticalLayout tabLogout = new VerticalLayout();
+        tabsheet.addTab(tabLogout,logout);
 
         tabsheet.addSelectedTabChangeListener(new SelectedTabChangeListener(){
 
@@ -164,29 +164,11 @@ public class MyUI extends UI {
 			}});
 
     }
-    public void reviewNavigationButtons(String thisViewName) {
-//    	Iterator<Component> it = navigationBar.iterator();
-//    	while (it.hasNext()) {
-//    		Component component = it.next();
-//    		if (component instanceof Button) {
-//    			Button button = (Button)component;
-//    			String data = (String)button.getData();
-//				button.setEnabled(!thisViewName.equals(data));
-//    		}
-//    	}
-    }
     private void logout() {
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
     	getUI().close();
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
-    }
-    private Button createNavigationButton(String caption, Button.ClickListener clickListener) {
-        Button button = new Button(caption);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
-        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
-        button.addClickListener(clickListener);
-        return button;
     }
 	public Customer getCustomer() {
 		if (m_customer == null) {

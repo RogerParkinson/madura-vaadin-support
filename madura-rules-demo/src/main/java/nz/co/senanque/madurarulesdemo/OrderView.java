@@ -21,6 +21,7 @@ import nz.co.senanque.vaadin.format.FormattingTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -30,7 +31,6 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -45,8 +45,8 @@ import com.vaadin.ui.VerticalLayout;
  *
  */
 @UIScope
-@SpringView(name = OrderView.VIEW_NAME)
-public class OrderView extends VerticalLayout implements View {
+@Component
+public class OrderView extends VerticalLayout {
 	
 	private static Logger m_logger = LoggerFactory.getLogger(OrderView.class);
     public static final String VIEW_NAME = "order";
@@ -78,15 +78,11 @@ public class OrderView extends VerticalLayout implements View {
         verticalLayout.setMargin(true);
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
-        setImmediate(true); // no effect
-////
+//        setImmediate(true); // no effect
         orderForm = new MaduraForm(new HorizontalLayout(),m_maduraSessionManager);
-//        orderForm.setWidth("30%");
         orderForm.setFieldList(new String[]{"orderStatus","date","amount"});
-//        orderForm.setReadOnly(true);
         verticalLayout.addComponent(orderForm);
-        verticalLayout.setImmediate(true);// no effect
-///
+//        verticalLayout.setImmediate(true);// no effect
 		HorizontalLayout orderStatus = new HorizontalLayout();
 		orderStatus.setImmediate(true);
 
@@ -106,8 +102,8 @@ public class OrderView extends VerticalLayout implements View {
 		orderAmountText = new TextField();
 		orderStatus.addComponent(orderAmountText);
 		m_maduraSessionManager.register(orderAmountText);
-		orderAmountText.setImmediate(true);// no effect
-		orderAmountText.setBuffered(false);// no effect
+//		orderAmountText.setImmediate(true);// no effect
+//		orderAmountText.setBuffered(false);// no effect
 		
 		verticalLayout.addComponent(orderStatus);
 				
@@ -123,18 +119,7 @@ public class OrderView extends VerticalLayout implements View {
 			}}, new SimpleButtonPainter(m_maduraSessionManager));
 		actions.addComponent(m_addItem);
 		verticalLayout.addComponent(actions);
-//		Button add = orderForm.createButton("button.addItem", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
-//
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//				Pizza pizza = new Pizza();
-//				pizza.setId(System.currentTimeMillis());
-//				m_pizzaWindow.load(pizza);
-//				
-//			}});
 		getEventRouter().addListener(AddItemEvent.class, this, "addItem");
-//		actions.addComponent(add);
-//		orderForm.setFooter(actions);
 		m_itemsTable = new FormattingTable();
 		m_itemsTable.setImmediate(false);
 		m_itemsTable.setWidth("500px");
@@ -162,14 +147,12 @@ public class OrderView extends VerticalLayout implements View {
     	orderAmountText.markAsDirty(); // no effect
     }
     /* 
-     * This is where we establish the actual customer object. 
+     * This is where we establish the actual order object. 
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    @Override
     public void enter(ViewChangeEvent event) {
     	MyUI ui = MyUI.getCurrent();
-    	ui.reviewNavigationButtons(VIEW_NAME);
     	if (m_order == null) {
     		m_order = ui.getOrder();
         	orderForm.setItemDataSource(new BeanItem<Order>(m_order));

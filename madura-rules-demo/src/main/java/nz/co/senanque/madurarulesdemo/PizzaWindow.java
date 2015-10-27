@@ -12,9 +12,9 @@ import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
@@ -23,13 +23,14 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * @author Roger Parkinson
@@ -37,14 +38,16 @@ import com.vaadin.ui.Window;
  */
 @org.springframework.stereotype.Component
 @UIScope
-public class PizzaWindow extends Window implements MessageSourceAware {
+public class PizzaWindow extends Window {
+
+	private static Logger logger = LoggerFactory.getLogger(PizzaWindow.class);
+
 	private Layout main;
 	private Layout panel;
 	private MaduraForm m_maduraForm;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
     private String m_windowWidth = "300px";
     private String m_windowHeight = "550px";
-	private MessageSourceAccessor m_messageSourceAccessor;
 
 	public PizzaWindow() {
 	}
@@ -73,7 +76,8 @@ public class PizzaWindow extends Window implements MessageSourceAware {
         
         panel = new VerticalLayout();
         main.addComponent(panel);
-        setCaption(m_messageSourceAccessor.getMessage("pizza", "Pizza"));
+        MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+        setCaption(messageSourceAccessor.getMessage("pizza", "Pizza"));
 	}
 	
 	public void load(final Pizza pizza) {
@@ -116,16 +120,21 @@ public class PizzaWindow extends Window implements MessageSourceAware {
     		UI.getCurrent().addWindow(this);
         	this.center();
         }
+		if (logger.isDebugEnabled()) {
+			ComboBox sizeField = (ComboBox)m_maduraForm.getField("size");
+			logger.debug("Size: MultiSelect {} NullSelectionAllowed {} Immediate {} Buffered {}",
+					sizeField.isMultiSelect(),
+					sizeField.isNullSelectionAllowed(),
+					sizeField.isImmediate(),
+					sizeField.isBuffered()
+					);
+		}
+
 	}
     public void close() {
     	getMaduraSessionManager().getValidationSession().unbind((ValidationObject) m_maduraForm.getData());
     	UI.getCurrent().removeWindow(this);
     }
-
-	@Override
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSourceAccessor = new MessageSourceAccessor(messageSource);
-	}
 
 	public MaduraSessionManager getMaduraSessionManager() {
 		return m_maduraSessionManager;
