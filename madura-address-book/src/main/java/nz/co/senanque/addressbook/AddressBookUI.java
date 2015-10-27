@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -31,14 +32,19 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 
 /**
  *
@@ -52,7 +58,8 @@ public class AddressBookUI extends UI  {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
-	@Autowired private SpringViewProvider viewProvider;
+	@Autowired private DefaultView m_defaultView;
+//	@Autowired private SpringViewProvider viewProvider;
 
 	@WebListener
     public static class MyContextLoaderListener extends ContextLoaderListener {
@@ -117,24 +124,55 @@ public class AddressBookUI extends UI  {
     	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
     	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
+    	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+    	final String logout = messageSourceAccessor.getMessage("logout");
+    	
     	final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);
         root.setSpacing(true);
         setContent(root);
-
-        final Panel viewContainer = new Panel();
-        viewContainer.setSizeFull();
-        root.addComponent(viewContainer);
-        root.setExpandRatio(viewContainer, 1.0f);
-
-        Navigator navigator = new Navigator(this, viewContainer);
-        navigator.addProvider(viewProvider);
         
+        TabSheet tabsheet = new TabSheet();
+        root.addComponent(tabsheet);
+        // Create the first tab
+        VerticalLayout tab1 = new VerticalLayout();
+        tab1.addComponent(m_defaultView);
+        tabsheet.addTab(tab1, messageSourceAccessor.getMessage("people"));
+
+        VerticalLayout tabLogout = new VerticalLayout();
+        tabsheet.addTab(tabLogout,logout);
+
+        tabsheet.addSelectedTabChangeListener(new SelectedTabChangeListener(){
+
+			@Override
+			public void selectedTabChange(SelectedTabChangeEvent event) {
+				TabSheet tabSheet = event.getTabSheet();
+				Component c = tabSheet.getSelectedTab();
+				String caption = tabSheet.getTab(c).getCaption();
+				if (caption.equals(logout)) {
+					logout();
+				}
+				
+			}});
+        
+    }
+    private void logout() {
+    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+    	getUI().close();
+        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        getUI().getPage().setLocation(contextPath);
     }
     @WebServlet(urlPatterns = "/*", name = "AddressBookUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = AddressBookUI.class, productionMode = false)
     public static class AddressBookUIServlet extends SpringVaadinServlet {
     }
+
+	public DefaultView getDefaultView() {
+		return m_defaultView;
+	}
+	public void setDefaultView(DefaultView defaultView) {
+		m_defaultView = defaultView;
+	}
 
 }
