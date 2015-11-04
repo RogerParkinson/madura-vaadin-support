@@ -51,6 +51,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -66,6 +67,7 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Field;
+import com.vaadin.ui.Form;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -94,6 +96,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     @Autowired transient MaduraConverterFactory m_maduraConverterFactory;
     @Autowired private transient Hints m_hints;
 	private transient MessageSource m_messageSource;
+	
+	// Used for internal testing, should be left false.
+    @Value("${nz.co.senanque.vaadin.application.MaduraSessionManager.suppressUpdates:false}")
+    private transient boolean m_suppressUpdates;
     
     private class MenuItemWrapper extends AbstractComponent {
     	
@@ -161,6 +167,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	 * @param field
 	 */
 	public void updateOtherFields(AbstractComponent field) {
+		
+		if (m_suppressUpdates) {
+			return;
+		}
 		PermissionManager permissionmanager = getPermissionManager();
 		Collection<AbstractComponent> fields = getFields();
 		Collection<Label> labels = getLabels();
@@ -228,8 +238,9 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 						logger.debug("Visible: {} {}",abstractField.isVisible(),property.isVisible());
 					}
 				}
-				abstractField.setEnabled(property.isEnabled());
-				abstractField.setReadOnly(property.isReadOnly());
+				boolean parentReadOnly = getParentReadOnly(abstractField);
+				abstractField.setEnabled(parentReadOnly?false:property.isEnabled());
+				abstractField.setReadOnly(parentReadOnly?true:property.isReadOnly());
 				abstractField.setRequired(property.isRequired());
 				abstractField.setVisible(property.isVisible());
 				// Permissions trump rules
@@ -273,6 +284,16 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 		}
 	}
 
+	private boolean getParentReadOnly(AbstractComponent abstractField) {
+		AbstractComponent parent = (AbstractComponent)abstractField.getParent();
+		if (parent == null) {
+			return false;
+		}
+		if (parent instanceof Form) {
+			return ((Form)parent).isReadOnly();
+		}
+		return getParentReadOnly(parent);
+	}
 	public Collection<AbstractComponent> getFields() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("fetching registered fields for MaduraSessionManager {}",
@@ -680,5 +701,11 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	public void setMaduraConverterFactory(
 			MaduraConverterFactory maduraConverterFactory) {
 		m_maduraConverterFactory = maduraConverterFactory;
+	}
+	public boolean isSuppressUpdates() {
+		return m_suppressUpdates;
+	}
+	public void setSuppressUpdates(boolean suppressUpdates) {
+		m_suppressUpdates = suppressUpdates;
 	}
 }

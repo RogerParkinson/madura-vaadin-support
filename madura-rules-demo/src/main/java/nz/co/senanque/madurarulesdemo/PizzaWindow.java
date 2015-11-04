@@ -20,11 +20,14 @@ import org.springframework.context.support.MessageSourceAccessor;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.AttributeExaminer;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HasComponents;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
@@ -116,20 +119,38 @@ public class PizzaWindow extends Window {
 		m_maduraSessionManager.bind(OK, properties);
 		m_maduraSessionManager.bind(cancel, properties);
 		m_maduraForm.markAsDirty();
+//		m_maduraForm.setImmediate(false);
     	if (getParent() == null) {
     		UI.getCurrent().addWindow(this);
         	this.center();
         }
 		if (logger.isDebugEnabled()) {
-			ComboBox sizeField = (ComboBox)m_maduraForm.getField("size");
-			logger.debug("Size: MultiSelect {} NullSelectionAllowed {} Immediate {} Buffered {}",
-					sizeField.isMultiSelect(),
-					sizeField.isNullSelectionAllowed(),
-					sizeField.isImmediate(),
-					sizeField.isBuffered()
+	    	ComboBox genderField = (ComboBox)m_maduraForm.getField("size");
+			logger.debug("size: MultiSelect {} NullSelectionAllowed {} Immediate {} Buffered {}",
+					genderField.isMultiSelect(),
+					genderField.isNullSelectionAllowed(),
+					genderField.isImmediate(),
+					genderField.isBuffered()
 					);
+			logger.debug("{}",dump(genderField));
 		}
 
+	}
+	private String dump(AbstractComponent ac) {
+		if (ac == null) {
+			return null;
+		}
+		StringBuilder ret = new StringBuilder();
+		try {
+			ret.append(AttributeExaminer.getAttributes(ac));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		String r = dump((AbstractComponent)ac.getParent());
+		if (r != null) {
+			ret.append(r);
+		}
+		return ret.toString();
 	}
     public void close() {
     	getMaduraSessionManager().getValidationSession().unbind((ValidationObject) m_maduraForm.getData());

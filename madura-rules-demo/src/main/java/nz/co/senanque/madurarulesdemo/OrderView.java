@@ -4,6 +4,7 @@
 package nz.co.senanque.madurarulesdemo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -29,12 +30,12 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -80,6 +81,7 @@ public class OrderView extends VerticalLayout {
         addComponent(verticalLayout);
 //        setImmediate(true); // no effect
         orderForm = new MaduraForm(new HorizontalLayout(),m_maduraSessionManager);
+        orderForm.setReadOnly(true);
         orderForm.setFieldList(new String[]{"orderStatus","date","amount"});
         verticalLayout.addComponent(orderForm);
 //        verticalLayout.setImmediate(true);// no effect
@@ -93,6 +95,7 @@ public class OrderView extends VerticalLayout {
 		orderStatusLabel = new Label();
 		orderStatus.addComponent(orderStatusLabel);
 		m_maduraSessionManager.register(orderStatusLabel);
+		orderStatusLabel.setImmediate(true);
 		
 		orderAmountLabel = new Label();
 		orderStatus.addComponent(orderAmountLabel);
@@ -101,7 +104,7 @@ public class OrderView extends VerticalLayout {
 		
 		orderAmountText = new TextField();
 		orderStatus.addComponent(orderAmountText);
-		m_maduraSessionManager.register(orderAmountText);
+		m_maduraSessionManager.register(orderAmountText); // This works.
 //		orderAmountText.setImmediate(true);// no effect
 //		orderAmountText.setBuffered(false);// no effect
 		
@@ -163,6 +166,7 @@ public class OrderView extends VerticalLayout {
     		m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
     		m_maduraSessionManager.bind(orderAmountText, "amount", properties);
     	}
+    	orderForm.dumpFields();
     }
 	public PizzaWindow getPizzaWindow() {
 		return m_pizzaWindow;

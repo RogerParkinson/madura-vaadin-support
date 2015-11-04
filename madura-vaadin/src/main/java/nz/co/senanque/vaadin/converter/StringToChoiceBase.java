@@ -16,7 +16,7 @@ import com.vaadin.data.util.converter.Converter;
  */
 public class StringToChoiceBase implements Converter<Object, Object> {
 	
-    private static final Logger logger = LoggerFactory.getLogger(StringToChoiceBase.class);
+//    private static final Logger logger = LoggerFactory.getLogger(StringToChoiceBase.class);
 
 	private final MaduraPropertyWrapper m_property;
 
@@ -29,9 +29,10 @@ public class StringToChoiceBase implements Converter<Object, Object> {
 			Class<? extends Object> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null) {
+//			logger.debug("value={} type={} targetType={}",value,null,targetType);
 			return null;
 		}
-		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
 		if (targetType.equals(String.class)) {
 			return value.toString();
 		}
@@ -50,9 +51,10 @@ public class StringToChoiceBase implements Converter<Object, Object> {
 			Class<? extends Object> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null) {
+//			logger.debug("value={} type={} targetType={}",value,null,targetType);
 			return null;
 		}
-		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
+//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
 		if (targetType.equals(String.class)) {
 			return value.toString();
 		}

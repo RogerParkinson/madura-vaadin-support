@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
@@ -44,7 +45,7 @@ import com.vaadin.ui.Field;
  * @author Roger Parkinson
  *
  */
-@org.springframework.stereotype.Component("fieldFactory") // need the expanded name because there is a class called Component somewhere
+@SpringComponent("fieldFactory") // need the expanded name because there is a class called Component somewhere
 @UIScope
 public final class FieldFactory extends DefaultFieldFactory {
 	
@@ -68,6 +69,10 @@ public final class FieldFactory extends DefaultFieldFactory {
             Component uiContext) {
 
 	    logger.debug("creating field for {}",propertyId);
+	    boolean readOnly = false;
+	    if (uiContext instanceof MaduraForm) {
+	    	readOnly = ((MaduraForm)uiContext).isReadOnly();
+	    }
 	    com.vaadin.data.Property property = item.getItemProperty(propertyId);
         Field ret;
         if (property instanceof MaduraPropertyWrapper)
@@ -94,7 +99,12 @@ public final class FieldFactory extends DefaultFieldFactory {
 	        field.setPropertyDataSource(property);
 	        ret = field;
         }
-
+        if (readOnly) {
+        	ret.setReadOnly(true);
+        	ret.setCaption("");
+        	ret.setStyleName("readOnly");
+        	ret.setEnabled(false);
+        }
         return ret;
     }
     public Field createFieldByPropertyType(MaduraPropertyWrapper property) {

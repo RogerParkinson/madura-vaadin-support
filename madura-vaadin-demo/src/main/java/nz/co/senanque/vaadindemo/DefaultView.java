@@ -17,12 +17,14 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
@@ -84,7 +86,6 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		personForm.setFooter(actions);
-		
 		Component instructions = getInstructions(messageSourceAccessor);
 		verticalLayout.addComponent(instructions);
 		instructions.setWidth("30%");

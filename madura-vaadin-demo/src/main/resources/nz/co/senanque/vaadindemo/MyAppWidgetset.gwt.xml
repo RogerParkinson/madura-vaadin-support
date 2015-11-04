@@ -3,6 +3,7 @@
         "http://google-web-toolkit.googlecode.com/svn/tags/2.5.1/distro-source/core/src/gwt-module.dtd">
 <module>
     <inherits name="com.vaadin.DefaultWidgetSet"/>
+<!--     <set-configuration-property name="devModeRedirectEnabled" value="true" /> -->
 
 <!--     <inherits name="com.vaadin.addon.touchkit.gwt.TouchKitWidgetSet" /> -->
 </module>

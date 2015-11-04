@@ -206,6 +206,14 @@ public class MaduraForm extends Form {
 	public MaduraSessionManager getMaduraSessionManager() {
 		return m_maduraSessionManager;
 	}
+	public void dumpFields() {
+		if (logger.isDebugEnabled()) {
+			for (String propertyId: m_fieldList) {
+				Field field = getField(propertyId);
+				logger.debug("Field {} Enabled: {} ReadOnly: {}",propertyId,field.isEnabled(),field.isReadOnly());
+			}
+		}
+	}
 //	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
 //		m_maduraSessionManager = maduraSessionManager;
 //	}
