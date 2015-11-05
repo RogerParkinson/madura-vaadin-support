@@ -11,6 +11,7 @@ import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;

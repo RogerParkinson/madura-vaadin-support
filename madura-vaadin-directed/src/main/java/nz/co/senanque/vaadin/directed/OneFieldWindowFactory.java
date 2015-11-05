@@ -1,4 +1,4 @@
-package nz.co.senanque.madurarulesdemo;
+package nz.co.senanque.vaadin.directed;
 
 import nz.co.senanque.rules.RulesPlugin;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;

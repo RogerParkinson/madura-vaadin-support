@@ -92,6 +92,11 @@
 	            <version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-vaadin-directed</artifactId>
+	            <version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
 				<version>${vaadin.version}</version>
@@ -184,6 +189,7 @@
   	<module>vaadin7-demo</module>
   	<module>madura-vaadin</module>
   	<module>madura-vaadin-demo</module>
+  	<module>madura-vaadin-directed</module>
   	<module>madura-vaadin-tableeditor</module>
   	<module>madura-address-book</module>
   	<module>madura-rules-demo</module>

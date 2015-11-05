@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package nz.co.senanque.madurarulesdemo;
+package nz.co.senanque.vaadin.directed;
 
 import nz.co.senanque.rules.RulesPlugin;
 import nz.co.senanque.vaadin.FieldFactory;
@@ -56,7 +56,7 @@ public class OneFieldWindow extends Window {
         
         MaduraPropertyWrapper maduraPropertyWrapper = maduraSessionManager.getMaduraPropertyWrapper(fm);
         FieldFactory fieldFactory = maduraSessionManager.getFieldFactory();
-        final Field field = fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
+        final Field<?> field = fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
         field.setBuffered(false);
         main.addComponent(field);
         Button buttonNotknown = fieldFactory.createButton("NotKnown", new Button.ClickListener(){
@@ -131,7 +131,7 @@ public class OneFieldWindow extends Window {
         
         MaduraPropertyWrapper maduraPropertyWrapper = maduraSessionManager.getMaduraPropertyWrapper(fieldMetadata);
         FieldFactory fieldFactory = maduraSessionManager.getFieldFactory();
-        Field field = fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
+        Field<?> field = fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
         field.setReadOnly(true);
         main.addComponent(field);
 

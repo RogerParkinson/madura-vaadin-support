@@ -30,6 +30,10 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-vaadin-directed</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-rules</artifactId>
 		</dependency>
 		<dependency>
