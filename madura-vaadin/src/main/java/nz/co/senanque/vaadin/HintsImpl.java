@@ -147,7 +147,7 @@ public class HintsImpl implements Hints, Serializable {
 	@Override
 	public void setCommonProperties(final Button ret,
 			MaduraPropertyWrapper property, MessageSource messageSource) {
-        ret.setCaption(property.getLabel());
+//        ret.setCaption(property.getLabel());
         if (property.isReadOnly()) {
         	ret.setReadOnly(true);
         }
