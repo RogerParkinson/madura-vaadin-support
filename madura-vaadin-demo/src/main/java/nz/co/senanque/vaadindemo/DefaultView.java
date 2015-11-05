@@ -16,21 +16,21 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * @author Roger Parkinson
@@ -83,6 +83,8 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 		                  Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
+		submit.setClickShortcut( KeyCode.ENTER ) ;
+		submit.addStyleName( ValoTheme.BUTTON_PRIMARY ) ;
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		personForm.setFooter(actions);

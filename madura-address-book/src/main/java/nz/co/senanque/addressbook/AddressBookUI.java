@@ -26,6 +26,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
@@ -45,11 +46,13 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  *
  */
 @Theme("addressbooktheme")
+@Title("Madura Address Book")
 @Widgetset("nz.co.senanque.addressbook.AddressBookWidgetset")
 @SpringUI
 public class AddressBookUI extends UI  {
@@ -106,7 +109,7 @@ public class AddressBookUI extends UI  {
     	@Bean(name="editorWindow")
     	@UIScope
     	public EditorWindow<Person> getEditorWIndow() {
-    		EditorWindowImpl<Person> ret = new EditorWindowImpl<Person>("person");
+    		EditorWindowImpl<Person> ret = new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY);
     		return ret;
     	}
     }

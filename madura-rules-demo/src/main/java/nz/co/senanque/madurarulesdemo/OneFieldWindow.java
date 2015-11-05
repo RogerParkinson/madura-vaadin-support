@@ -33,7 +33,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * @author Roger Parkinson
@@ -45,7 +44,7 @@ public class OneFieldWindow extends Window {
     private static Logger logger = LoggerFactory.getLogger(OneFieldWindow.class);
     private VerticalLayout main;
     
-	public OneFieldWindow(final RulesPlugin rulesPlugin, final FieldMetadata fm,final FieldMetadata fieldMetadata, final MaduraSessionManager maduraSessionManager)
+	public OneFieldWindow(final RulesPlugin rulesPlugin, final FieldMetadata fm,final FieldMetadata fieldMetadata, final MaduraSessionManager maduraSessionManager, final String submitStyle)
 	{
         main = new VerticalLayout();
         setContent(main);
@@ -71,12 +70,12 @@ public class OneFieldWindow extends Window {
 				logger.debug("Found empty field {}",(fm1==null)?"null":fm1.getName());
 				if (fm1 != null)
 				{
-					OneFieldWindow ofw = new OneFieldWindow(rulesPlugin,fm1, fieldMetadata, maduraSessionManager);
+					OneFieldWindow ofw = new OneFieldWindow(rulesPlugin,fm1, fieldMetadata, maduraSessionManager, submitStyle);
 					ofw.load();
 				}
 				else
 				{
-					OneFieldWindow ofw = new OneFieldWindow(rulesPlugin,fieldMetadata, maduraSessionManager);
+					OneFieldWindow ofw = new OneFieldWindow(rulesPlugin,fieldMetadata, maduraSessionManager, submitStyle);
 					ofw.load();
 				}
 				
@@ -100,19 +99,20 @@ public class OneFieldWindow extends Window {
 						if (fm1 != null) {
 							OneFieldWindow ofw = new OneFieldWindow(
 									rulesPlugin, fm1, fieldMetadata,
-									maduraSessionManager);
+									maduraSessionManager, submitStyle);
 							ofw.load();
 						} else {
 							OneFieldWindow ofw = new OneFieldWindow(
 									rulesPlugin, fieldMetadata,
-									maduraSessionManager);
+									maduraSessionManager, submitStyle);
 							ofw.load();
 						}
 					}
 				});
-        buttonOK.setClickShortcut(KeyCode.ENTER );
-        buttonOK.addStyleName(ValoTheme.BUTTON_PRIMARY);
-
+		if (submitStyle != null) {
+	        buttonOK.setClickShortcut(KeyCode.ENTER );
+	        buttonOK.addStyleName(submitStyle);
+		}
 		buttons.addComponent(buttonOK);
 
         field.focus();
@@ -120,7 +120,7 @@ public class OneFieldWindow extends Window {
         buttons.setComponentAlignment(buttonOK, Alignment.BOTTOM_RIGHT);
 	}
 
-	public OneFieldWindow(RulesPlugin rulesPlugin, FieldMetadata fieldMetadata, MaduraSessionManager maduraSessionManager) {
+	public OneFieldWindow(RulesPlugin rulesPlugin, FieldMetadata fieldMetadata, MaduraSessionManager maduraSessionManager, final String submitStyle) {
         main = new VerticalLayout();
         setContent(main);
         setModal(true);
@@ -144,9 +144,10 @@ public class OneFieldWindow extends Window {
 			public void buttonClick(ClickEvent event) {
 				close();
 			}});
-        buttonOK.setClickShortcut(KeyCode.ENTER );
-        buttonOK.addStyleName(ValoTheme.BUTTON_PRIMARY);
-
+        if (submitStyle != null) {
+	        buttonOK.setClickShortcut(KeyCode.ENTER );
+	        buttonOK.addStyleName(submitStyle);
+        }
         buttons.addComponent(buttonOK);
         
         buttons.setComponentAlignment(buttonOK, Alignment.BOTTOM_RIGHT);

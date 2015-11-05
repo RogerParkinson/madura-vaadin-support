@@ -20,7 +20,7 @@ public class OneFieldWindowFactory {
 	@Autowired RulesPlugin m_rulesPlugin;
 	@Autowired MaduraSessionManager m_maduraSessionManager;
 	
-	public void createWindow(ValidationObject validationObject, String fieldName) {
+	public void createWindow(ValidationObject validationObject, String fieldName, String submitStyle) {
 		FieldMetadata fieldMetadata = validationObject.getMetadata().getFieldMetadata(fieldName);
 		if (fieldMetadata == null)
 		{
@@ -31,12 +31,12 @@ public class OneFieldWindowFactory {
 		FieldMetadata fm =  m_rulesPlugin.getEmptyField(fieldMetadata);
 		if (fm != null)
 		{
-			OneFieldWindow ofw = new OneFieldWindow(m_rulesPlugin,fm,fieldMetadata,m_maduraSessionManager);
+			OneFieldWindow ofw = new OneFieldWindow(m_rulesPlugin,fm,fieldMetadata,m_maduraSessionManager,submitStyle);
 			ofw.load();
 		}
 		else
 		{
-			OneFieldWindow ofw = new OneFieldWindow(m_rulesPlugin,fieldMetadata,m_maduraSessionManager);
+			OneFieldWindow ofw = new OneFieldWindow(m_rulesPlugin,fieldMetadata,m_maduraSessionManager,submitStyle);
 			ofw.load();
 		}
 		

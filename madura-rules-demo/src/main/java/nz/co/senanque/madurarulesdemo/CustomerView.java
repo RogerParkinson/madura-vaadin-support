@@ -86,7 +86,7 @@ public class CustomerView extends VerticalLayout {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				m_oneFieldWindowFactory.createWindow(m_customer, "bmi");				
+				m_oneFieldWindowFactory.createWindow(m_customer, "bmi",ValoTheme.BUTTON_PRIMARY);				
 			}});
 		actions.addComponent(cancel);
 		actions.addComponent(submit);

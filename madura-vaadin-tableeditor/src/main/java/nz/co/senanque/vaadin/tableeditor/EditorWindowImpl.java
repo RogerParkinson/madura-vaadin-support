@@ -31,9 +31,11 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
@@ -71,12 +73,19 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
     @Autowired private MaduraSessionManager m_maduraSessionManager;
 	private MessageSource m_messageSource;
 	private final String m_caption;
+	private final String m_submitStyle;
 	
 	public EditorWindowImpl(String caption) {
 		m_caption = caption;
+		m_submitStyle = null;
 	}
 
-    public void initialize(List<String> fields) {
+    public EditorWindowImpl(String caption, String submitStyle) {
+		m_caption = caption;
+		m_submitStyle = submitStyle;
+	}
+
+	public void initialize(List<String> fields) {
     	MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
     	setCaption(messageSourceAccessor.getMessage(m_caption));
     	if (m_form == null) {
@@ -100,6 +109,10 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
         actions.addComponent(save);
 
         save.addClickListener(this);
+        if (m_submitStyle != null) {
+	        save.setClickShortcut( KeyCode.ENTER ) ;
+	        save.addStyleName( m_submitStyle ) ;
+        }
 
         actions.addComponent(delete);
         delete.addClickListener(this);
