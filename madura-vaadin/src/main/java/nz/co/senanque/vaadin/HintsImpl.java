@@ -94,7 +94,7 @@ public class HintsImpl implements Hints, Serializable {
 	public void setForceImmediate(boolean forceImmediate) {
 		m_forceImmediate = forceImmediate;
 	}
-    public void setCommonProperties(final AbstractField ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
+    public void setCommonProperties(final AbstractField<?> ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
     {
         ret.setWidth(getWidth());
         ret.setBuffered(false);
@@ -189,16 +189,16 @@ public class HintsImpl implements Hints, Serializable {
 		}
 		return true;
 	}
-	public AbstractField getDateField(MaduraPropertyWrapper property) {
+	public AbstractField<?> getDateField(MaduraPropertyWrapper property) {
         final DateField df = new DateField();
         df.setResolution(DateField.RESOLUTION_DAY);
         df.setStyleName("calendar");
         return df;
 	}
-	public AbstractField getBooleanField(MaduraPropertyWrapper property) {
+	public AbstractField<?> getBooleanField(MaduraPropertyWrapper property) {
 		return new CheckBox();
 	}
-	public AbstractField getSelectField(MaduraPropertyWrapper property) {
+	public AbstractField<?> getSelectField(MaduraPropertyWrapper property) {
         AbstractSelect select = null;
         switch (getSelectType())
         {
@@ -224,7 +224,7 @@ public class HintsImpl implements Hints, Serializable {
 
         return select;
 	}
-    public AbstractField getTextField(MaduraPropertyWrapper property) {
+    public AbstractField<?> getTextField(MaduraPropertyWrapper property) {
     	AbstractTextField ret = null;
         if (property.isSecret())
         {

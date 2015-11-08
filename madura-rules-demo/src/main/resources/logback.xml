@@ -9,6 +9,8 @@
 	<logger name="nz.co.senanque.madurarulesdemo" level="debug"/>
 	<logger name="nz.co.senanque.vaadin.application" level="debug"/>
 	<logger name="nz.co.senanque.madurarulesdemo" level="debug"/>
+	<logger name="nz.co.senanque.rules" level="debug"/>
+	<logger name="nz.co.senanque.vaadin.MaduraPropertyWrapper" level="debug"/>
 <!-- 	<logger name="nz.co.senanque.vaadin" level="debug"/> -->
 <!-- 	<logger name="nz.co.senanque.vaadin.converter" level="debug"/> -->
 

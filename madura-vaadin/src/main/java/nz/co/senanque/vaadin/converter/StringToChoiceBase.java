@@ -2,9 +2,6 @@ package nz.co.senanque.vaadin.converter;
 
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 

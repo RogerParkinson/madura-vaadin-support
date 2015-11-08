@@ -58,6 +58,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.UserError;
 import com.vaadin.spring.annotation.UIScope;
@@ -106,10 +107,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     	private static final long serialVersionUID = 418011465566857902L;
 		private final MenuItemPainter m_menuItemPainter;
 
-		public Class<?> getType() {
-			return null;
-		}
-		
 		private MenuItemWrapper(MenuItem menuItem, MenuItemPainter menuItemPainter)
 		{
 			m_menuItemPainter = menuItemPainter;
@@ -162,7 +159,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	 * Check all the other fields to ensure they are still valid
 	 * this includes any buttons that were registered because they
 	 * get disabled if there are errors on the relevant form or
-	 * if the requiredness is incomplete.
+	 * if the required-ness is incomplete.
 	 * 
 	 * @param field
 	 */
@@ -176,8 +173,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 		Collection<Label> labels = getLabels();
 		for (Label fieldx: labels)
 		{
-		    com.vaadin.data.Property p = fieldx.getPropertyDataSource();
-			if (p != null && p instanceof LabelProperty)
+		    Property<?> p = fieldx.getPropertyDataSource();
+			if (p != null && p instanceof LabelProperty<?>)
 			{
 				fieldx.markAsDirty();
 			}
@@ -206,9 +203,9 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 				}
 				continue;
 			}
-			if (fieldx instanceof AbstractField)
+			if (fieldx instanceof AbstractField<?>)
 			{
-				AbstractField abstractField = (AbstractField)fieldx;
+				AbstractField<?> abstractField = (AbstractField<?>)fieldx;
 				MaduraPropertyWrapper property=null;
 			try {
 				property = (MaduraPropertyWrapper)abstractField.getPropertyDataSource();
@@ -391,7 +388,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         throw new PropertyNotFoundException(propertyName);
     }
 
-    public void bind(final MaduraForm form, final AbstractField field,
+    public void bind(final MaduraForm form, final AbstractField<?> field,
             ValidationObject validationObject, String propertyName)
     {
         MaduraPropertyWrapper property = getMaduraPropertyWrapper(validationObject, propertyName);
@@ -404,7 +401,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         bind(form, field, property);
     }
 
-    public void bind(final MaduraForm form, final AbstractField field,
+    public void bind(final MaduraForm form, final AbstractField<?> field,
             MaduraPropertyWrapper property)
     {
         field.setPropertyDataSource(property);
@@ -420,7 +417,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 
 			public void valueChange(ValueChangeEvent event)
             {
-                com.vaadin.data.Property p = field.getPropertyDataSource();
+                Property<?> p = field.getPropertyDataSource();
 				logger.debug("Changed value ");
                 if (p instanceof MaduraPropertyWrapper)
                 {
@@ -440,10 +437,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
                 {
                     for (Object propertyId : form.getItemPropertyIds())
                     {
-                        Field f = form.getField(propertyId);
-                        if (f instanceof AbstractField)
+                        Field<?> f = form.getField(propertyId);
+                        if (f instanceof AbstractField<?>)
                         {
-                            AbstractField fieldy = (AbstractField) f;
+                            AbstractField<?> fieldy = (AbstractField<?>) f;
                             if (fieldy.getComponentError() != null)
                             {
                                 errors.add(fieldy.getComponentError()
@@ -464,8 +461,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
             throw new RuntimeException("Attempted to register a button without a Button Painter");
         }
         registerWidget(field);
-        if (field instanceof AbstractField) {
-        	final AbstractField abstractField = (AbstractField)field;
+        if (field instanceof AbstractField<?>) {
+        	final AbstractField<?> abstractField = (AbstractField<?>)field;
         	abstractField.addValueChangeListener(new MaduraPropertyWrapper.ValueChangeListener()
 	        {
 	
@@ -474,7 +471,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 				public void valueChange(ValueChangeEvent event)
 	            {
 					logger.debug("Changed value ");
-	                com.vaadin.data.Property p = abstractField.getPropertyDataSource();
+	                Property<?> p = abstractField.getPropertyDataSource();
 	                if (p instanceof MaduraPropertyWrapper)
 	                {
 	                    MaduraPropertyWrapper property = (MaduraPropertyWrapper) p;
@@ -494,9 +491,9 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	//                    for (Object propertyId : form.getItemPropertyIds())
 	//                    {
 	//                        Field f = form.getField(propertyId);
-	//                        if (f instanceof AbstractField)
+	//                        if (f instanceof AbstractField<?>)
 	//                        {
-	//                            AbstractField fieldy = (AbstractField) f;
+	//                            AbstractField<?> fieldy = (AbstractField<?>) f;
 	//                            if (fieldy.getComponentError() != null)
 	//                            {
 	//                                errors.add(fieldy.getComponentError()
@@ -606,12 +603,12 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         }
     }
 
-    public void bind(AbstractField field, String propertyName,
+    public void bind(AbstractField<?> field, String propertyName,
             List<MaduraPropertyWrapper> properties) {
         MaduraPropertyWrapper property = findProperty(propertyName,properties);
         bind(field,property);
     }
-    public void bind(final AbstractField field,
+    public void bind(final AbstractField<?> field,
             MaduraPropertyWrapper property)
     {
         field.setPropertyDataSource(property);
@@ -633,7 +630,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         throw new LocaleAwareRuntimeException("Property named {0} not found in list", new Object[]{propertyName},m_messageSource);
     }
     
-    public void bind(Label field, LabelProperty property) {
+    public void bind(Label field, LabelProperty<?> property) {
         field.setPropertyDataSource(property);
         setPermissions(property.getProperty(), field);
     }

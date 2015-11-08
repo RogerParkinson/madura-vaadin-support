@@ -35,14 +35,14 @@ public interface Hints {
 	}
 	public String getWidth();
 	public SelectType getSelectType();
-	public void setCommonProperties(AbstractField ret, MaduraPropertyWrapper property, final MessageSource messageSource);
+	public void setCommonProperties(AbstractField<?> ret, MaduraPropertyWrapper property, final MessageSource messageSource);
 	public void setCommonProperties(final MenuItem ret, final MaduraPropertyWrapper property, final MessageSource messageSource);
 	public boolean isEnabled(boolean active);
 	public boolean isVisible(boolean active);
-	public AbstractField getDateField(MaduraPropertyWrapper property);
-	public AbstractField getBooleanField(MaduraPropertyWrapper property);
-	public AbstractField getSelectField(MaduraPropertyWrapper property);
-	public AbstractField getTextField(MaduraPropertyWrapper property);
+	public AbstractField<?> getDateField(MaduraPropertyWrapper property);
+	public AbstractField<?> getBooleanField(MaduraPropertyWrapper property);
+	public AbstractField<?> getSelectField(MaduraPropertyWrapper property);
+	public AbstractField<?> getTextField(MaduraPropertyWrapper property);
 	public Button getButtonField(String name, MessageSource messageSource);
 //	public MessageSource getMessageSource();
 	public void setCommonProperties(Button field,

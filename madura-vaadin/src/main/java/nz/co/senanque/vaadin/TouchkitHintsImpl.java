@@ -186,7 +186,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 		}
 		return true;
 	}
-	public AbstractField getDateField(MaduraPropertyWrapper property) {
+	public AbstractField<?> getDateField(MaduraPropertyWrapper property) {
 		TextField ret = new TextField(); // use a touchkit date field when one becomes available
 		return ret;
 //        final DateField df = new DateField();
@@ -194,10 +194,10 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 //        df.setStyleName("calendar");
 //        return df;
 	}
-	public AbstractField getBooleanField(MaduraPropertyWrapper property) {
+	public AbstractField<?> getBooleanField(MaduraPropertyWrapper property) {
 		return new CheckBox();
 	}
-	public AbstractField getSelectField(MaduraPropertyWrapper property) {
+	public AbstractField<?> getSelectField(MaduraPropertyWrapper property) {
         AbstractSelect select = null;
         switch (getSelectType())
         {
@@ -220,7 +220,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
         }
          return select;
 	}
-    public AbstractField getTextField(MaduraPropertyWrapper property) {
+    public AbstractField<?> getTextField(MaduraPropertyWrapper property) {
     	AbstractTextField ret = null;
         if (property.isSecret())
         {

@@ -163,6 +163,7 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
             {
                 ret = m_propertyFormatter.format(ret);
             }
+            logger.debug("getValue() {} {}",getFullName(),ret); 
             return ret;
         }
         catch (Exception e)
@@ -400,5 +401,10 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
 	public MessageSource getMessageSource() {
 		return m_messageSource;
 	}
-
+	public String getFullName() {
+		if (logger.isDebugEnabled()) {
+			return m_owner.getClass().getSimpleName()+"(id="+System.identityHashCode(m_owner)+")"+getName();
+		}
+		return "";
+	}
 }

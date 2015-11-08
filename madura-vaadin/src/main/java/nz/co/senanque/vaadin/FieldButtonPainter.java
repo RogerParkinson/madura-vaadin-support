@@ -18,9 +18,6 @@ package nz.co.senanque.vaadin;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import com.vaadin.ui.Button;
@@ -38,7 +35,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 public class FieldButtonPainter extends AbstractButtonPainter
 {
 	private static final long serialVersionUID = 5050173897198341434L;
-    private static final Logger logger = LoggerFactory.getLogger(FieldButtonPainter.class);
+//    private static final Logger logger = LoggerFactory.getLogger(FieldButtonPainter.class);
 
 	public final String m_propertyName;
 	public MaduraPropertyWrapper m_property;   

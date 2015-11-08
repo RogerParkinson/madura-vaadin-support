@@ -45,6 +45,7 @@ import com.vaadin.ui.Field;
  * @author Roger Parkinson
  *
  */
+@SuppressWarnings("unchecked")
 @SpringComponent("fieldFactory") // need the expanded name because there is a class called Component somewhere
 @UIScope
 public final class FieldFactory extends DefaultFieldFactory {
@@ -65,7 +66,7 @@ public final class FieldFactory extends DefaultFieldFactory {
 	public void setHints(Hints hints) {
 		m_hints = hints;
 	}
-	public Field createField(Item item, Object propertyId,
+	public Field<?> createField(Item item, Object propertyId,
             Component uiContext) {
 
 	    logger.debug("creating field for {}",propertyId);
@@ -73,8 +74,8 @@ public final class FieldFactory extends DefaultFieldFactory {
 	    if (uiContext instanceof MaduraForm) {
 	    	readOnly = ((MaduraForm)uiContext).isReadOnly();
 	    }
-	    com.vaadin.data.Property property = item.getItemProperty(propertyId);
-        Field ret;
+	    com.vaadin.data.Property<?> property = item.getItemProperty(propertyId);
+        Field<?> ret;
         if (property instanceof MaduraPropertyWrapper)
         {
             MaduraPropertyWrapper maduraProperty = (MaduraPropertyWrapper)property;
@@ -82,7 +83,7 @@ public final class FieldFactory extends DefaultFieldFactory {
 //            logger.debug("created field {} class {} value {}",new Object[]{propertyId,ret.getClass().getName(),ret.getValue()});
         }
         else if (item instanceof BeanItem) {
-        	MaduraPropertyWrapper maduraProperty = getMaduraSessionManager().getMaduraPropertyWrapper((ValidationObject)((BeanItem)item).getBean(), propertyId.toString());
+        	MaduraPropertyWrapper maduraProperty = getMaduraSessionManager().getMaduraPropertyWrapper((ValidationObject)((BeanItem<?>)item).getBean(), propertyId.toString());
         	if (maduraProperty == null) {
         		logger.warn("property {} is not mapped",propertyId);
         		return null;
@@ -93,7 +94,7 @@ public final class FieldFactory extends DefaultFieldFactory {
         }
         else {
         	// this probably never gets called
-            Field field = super.createField(item, propertyId, uiContext);
+            Field<?> field = super.createField(item, propertyId, uiContext);
 	        field.setWidth(getHints().getWidth());
 	        field.setBuffered(false);
 	        field.setPropertyDataSource(property);
@@ -107,10 +108,10 @@ public final class FieldFactory extends DefaultFieldFactory {
         }
         return ret;
     }
-    public Field createFieldByPropertyType(MaduraPropertyWrapper property) {
+    public Field<?> createFieldByPropertyType(MaduraPropertyWrapper property) {
     	return createFieldByPropertyType(property,getHints());
     }
-    public Field createFieldByPropertyType(MaduraPropertyWrapper property, Hints hints) {
+    public Field<?> createFieldByPropertyType(MaduraPropertyWrapper property, Hints hints) {
         // Null typed properties can not be edited
     	Class<?> type = property.getDataType();
         if (type == null) {
@@ -126,7 +127,7 @@ public final class FieldFactory extends DefaultFieldFactory {
             return null;
         }
         
-        AbstractField ret = null;
+        AbstractField<?> ret = null;
 
         // Date field
         if (Date.class.isAssignableFrom(type)) {
@@ -179,7 +180,7 @@ public final class FieldFactory extends DefaultFieldFactory {
 		}
 		return ret;
 	}
-	private MaduraForm getParentForm(AbstractField field)
+	private MaduraForm getParentForm(AbstractField<?> field)
 	{
 		Component parent = field.getParent();
 		while (parent != null)

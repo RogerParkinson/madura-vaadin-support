@@ -162,8 +162,8 @@ public class MaduraForm extends Form {
 
 	public void addExtraField(Item item, Object id)
 	{
-		final Property property = item.getItemProperty(id);
-        final Field f = getFormFieldFactory().createField(item, id, this);
+		final Property<?> property = item.getItemProperty(id);
+        final Field<?> f = getFormFieldFactory().createField(item, id, this);
         if (f != null) {
             f.setPropertyDataSource(property);
             addField(id, f);
@@ -209,7 +209,7 @@ public class MaduraForm extends Form {
 	public void dumpFields() {
 		if (logger.isDebugEnabled()) {
 			for (String propertyId: m_fieldList) {
-				Field field = getField(propertyId);
+				Field<?> field = getField(propertyId);
 				logger.debug("Field {} Enabled: {} ReadOnly: {}",propertyId,field.isEnabled(),field.isReadOnly());
 			}
 		}

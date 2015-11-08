@@ -100,7 +100,7 @@ public class TableContainer<T> implements Container,Container.ItemSetChangeNotif
 		return allItems.contains(modelItem);
 	}
 
-	public com.vaadin.data.Property getContainerProperty(Object itemId, Object propertyId) {
+	public com.vaadin.data.Property<?> getContainerProperty(Object itemId, Object propertyId) {
 		return getItem(itemId).getItemProperty(propertyId);
 	}
 

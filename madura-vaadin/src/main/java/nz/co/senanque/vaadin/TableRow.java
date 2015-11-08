@@ -136,7 +136,7 @@ public final class TableRow extends PropertysetItem {
 	public boolean canISubmitYet() {
 		for (Object propertyId: getItemPropertyIds())
 		{
-		    com.vaadin.data.Property property = getItemProperty(propertyId);
+		    com.vaadin.data.Property<?> property = getItemProperty(propertyId);
 			if (property instanceof MaduraPropertyWrapper)
 			{
 				MaduraPropertyWrapper maduraProperty = (MaduraPropertyWrapper)property;

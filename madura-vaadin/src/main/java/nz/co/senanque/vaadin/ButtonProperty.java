@@ -31,7 +31,7 @@ import com.vaadin.data.Property;
  * @author Roger Parkinson
  * @version $Revision:$
  */
-public class ButtonProperty implements com.vaadin.data.Property, MessageSourceAware {
+public class ButtonProperty implements Property<Boolean>, MessageSourceAware {
 
     private static final long serialVersionUID = 1L;
     private final ButtonPainter m_painter;
@@ -48,12 +48,12 @@ public class ButtonProperty implements com.vaadin.data.Property, MessageSourceAw
 		m_messageSource = messageSource;
 	}
 
-	public Class<?> getType() {
+	public Class<Boolean> getType() {
 		// TODO Auto-generated method stub
 		return Boolean.class;
 	}
 
-	public Object getValue() {
+	public Boolean getValue() {
 		// TODO Auto-generated method stub
 		return Boolean.TRUE;
 	}
@@ -68,11 +68,6 @@ public class ButtonProperty implements com.vaadin.data.Property, MessageSourceAw
 		
 	}
 
-	public void setValue(Object newValue) throws Property.ReadOnlyException {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public String getCaption() {
 		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
         String ret = messageSourceAccessor.getMessage(
@@ -82,6 +77,13 @@ public class ButtonProperty implements com.vaadin.data.Property, MessageSourceAw
 	}
 	public void setMessageSource(MessageSource messageSource) {
         m_messageSource = messageSource;
+	}
+
+	@Override
+	public void setValue(Boolean newValue)
+			throws com.vaadin.data.Property.ReadOnlyException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
