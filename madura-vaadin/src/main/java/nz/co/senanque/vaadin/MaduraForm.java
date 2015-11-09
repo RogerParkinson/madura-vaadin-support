@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.Map;
 
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.validationengine.SetterListener;
 import nz.co.senanque.validationengine.ValidationObject;
+import nz.co.senanque.validationengine.ValidationSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,6 +127,17 @@ public class MaduraForm extends Form {
                     buttonProperty.getPainter().setProperties(properties);
                     buttonProperty.getPainter().paint(button);
                     maduraSessionManager.register(button, buttonProperty.getPainter());
+                    MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
+                    if (wrapper != null) {
+                    	final Button finalButton = button;
+                    	m_maduraSessionManager.getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
+
+                			@Override
+                			public void run(ValidationObject object, String name,
+                					Object newValue, ValidationSession session) {
+                				finalButton.markAsDirty();
+                			}});
+                    }
                 }
             }
             else

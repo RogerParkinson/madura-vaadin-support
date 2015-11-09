@@ -4,7 +4,6 @@
 package nz.co.senanque.madurarulesdemo;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +17,9 @@ import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.format.FormattingTable;
+import nz.co.senanque.validationengine.SetterListener;
+import nz.co.senanque.validationengine.ValidationObject;
+import nz.co.senanque.validationengine.ValidationSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +37,6 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -140,10 +141,14 @@ public class OrderView extends VerticalLayout {
     public void addItem(AddItemEvent o) {
     	if (!m_order.getPizzas().contains(o.getPizza())) {
     		m_order.getPizzas().add(o.getPizza());
+    		// This ensures Vaadin knows to revise the values of any dynamic labels
+    		// It is only necessary when you manipulate lists, updating values by setters 
+    		// will update automatically 
+//    		m_maduraSessionManager.updateOtherFields(null);
     	}
 		Item item = m_itemsTable.addItem(o.getPizza());
 		m_logger.debug("item {}",item); // null if already exists.
-    	
+		
     	m_itemsTable.refreshRowCache();
     	markAsDirtyRecursive();
     	orderAmountLabel.markAsDirty(); // no effect
@@ -161,12 +166,11 @@ public class OrderView extends VerticalLayout {
         	orderForm.setItemDataSource(new BeanItem<Order>(m_order));
     		List<MaduraPropertyWrapper> properties = m_maduraSessionManager.getFieldList(m_order);
     		m_maduraSessionManager.bind(m_addItem, properties);
-    		m_maduraSessionManager.bind(orderDateLabel, new LabelProperty(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"date")));
-    		m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
-    		m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
+    		m_maduraSessionManager.bind(orderDateLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"date")));
+    		m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
+    		m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
     		m_maduraSessionManager.bind(orderAmountText, "amount", properties);
     	}
-    	orderForm.dumpFields();
     }
 	public PizzaWindow getPizzaWindow() {
 		return m_pizzaWindow;

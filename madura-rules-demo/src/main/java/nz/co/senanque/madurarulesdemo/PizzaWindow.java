@@ -21,13 +21,12 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AttributeExaminer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.AttributeExaminer;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HasComponents;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
@@ -132,25 +131,8 @@ public class PizzaWindow extends Window {
 					genderField.isImmediate(),
 					genderField.isBuffered()
 					);
-			logger.debug("{}",dump(genderField));
 		}
 
-	}
-	private String dump(AbstractComponent ac) {
-		if (ac == null) {
-			return null;
-		}
-		StringBuilder ret = new StringBuilder();
-		try {
-			ret.append(AttributeExaminer.getAttributes(ac));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		String r = dump((AbstractComponent)ac.getParent());
-		if (r != null) {
-			ret.append(r);
-		}
-		return ret.toString();
 	}
     public void close() {
     	getMaduraSessionManager().getValidationSession().unbind((ValidationObject) m_maduraForm.getData());

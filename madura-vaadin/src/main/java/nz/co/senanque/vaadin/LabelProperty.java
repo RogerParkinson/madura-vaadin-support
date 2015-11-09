@@ -16,6 +16,7 @@
 package nz.co.senanque.vaadin;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.util.AbstractProperty;
 
 
 /**
@@ -25,9 +26,9 @@ import com.vaadin.data.Property;
  * @author Roger Parkinson
  *
  */
-public class LabelProperty implements com.vaadin.data.Property {
+@SuppressWarnings("serial")
+public class LabelProperty<T> extends AbstractProperty<T> {
 	
-	private static final long serialVersionUID = -1355267850336182862L;
 	private final MaduraPropertyWrapper m_property;
 
 	public MaduraPropertyWrapper getProperty() {
@@ -38,29 +39,23 @@ public class LabelProperty implements com.vaadin.data.Property {
 		m_property = property;
 	}
 
-	public Object getValue() {
+	@SuppressWarnings("unchecked")
+	public T getValue() {
         String ret = (m_property.getValue()==null)?null:String.valueOf(m_property.getValue());
-        return ret;
+        return (T)ret;
 	}
 
 	public void setValue(Object newValue) throws Property.ReadOnlyException {
-		// TODO Auto-generated method stub
-		
+		fireValueChange();
 	}
 
-	public Class<?> getType() {
-		return m_property.getDataType();
-	}
-
-	public boolean isReadOnly() {
-		return true;
-	}
-
-	public void setReadOnly(boolean newStatus) {
+	@SuppressWarnings("unchecked")
+	public Class<T> getType() {
+		return (Class<T>)m_property.getDataType();
 	}
 
 	public String getCaption() {
-        String ret = String.valueOf(m_property.getValue());
+        String ret = String.valueOf(getValue());
         return ret;
 	}
 	public String toString()

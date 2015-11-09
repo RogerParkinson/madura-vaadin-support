@@ -41,6 +41,7 @@ import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.ObjectMetadata;
 import nz.co.senanque.validationengine.ProxyField;
+import nz.co.senanque.validationengine.SetterListener;
 import nz.co.senanque.validationengine.ValidationEngine;
 import nz.co.senanque.validationengine.ValidationObject;
 import nz.co.senanque.validationengine.ValidationSession;
@@ -312,8 +313,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	public void setHints(Hints hints) {
 		m_hints = hints;
 	}
-/////////////////////////////////////////////////
-    public List<MaduraPropertyWrapper> getFieldList(ValidationObject validationObject)
+
+	public List<MaduraPropertyWrapper> getFieldList(ValidationObject validationObject)
     {
         List<MaduraPropertyWrapper> ret = new ArrayList<MaduraPropertyWrapper>();
         ObjectMetadata objectMetadata = validationObject.getMetadata();
@@ -410,6 +411,14 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         hints.setCommonProperties(field, property,m_messageSource);
         setPermissions(property, field);
         registerWidget(field);
+		getValidationSession().addListener(property.getOwner(),property.getName(), new SetterListener(){
+
+			@Override
+			public void run(ValidationObject object, String name,
+					Object newValue, ValidationSession session) {
+				com.vaadin.ui.ProtectedMethods.fireValueChange(field);
+				
+			}});
         field.addValueChangeListener(new MaduraPropertyWrapper.ValueChangeListener()
         {
 
@@ -559,6 +568,16 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         buttonProperty.getPainter().setProperties(properties);
         button.setCaption(buttonProperty.getCaption());
         buttonProperty.getPainter().paint(button);  
+        MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
+        if (wrapper != null) {
+        	getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
+
+    			@Override
+    			public void run(ValidationObject object, String name,
+    					Object newValue, ValidationSession session) {
+    				button.markAsDirty();
+    			}});
+        }
     }
 
     public void bind (final MenuItem menuItem, List<MaduraPropertyWrapper> properties)
@@ -616,6 +635,13 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 
         hints.setCommonProperties(field, property, getMessageSource());
         setPermissions(property, field);
+		getValidationSession().addListener(property.getOwner(),property.getName(), new SetterListener(){
+
+			@Override
+			public void run(ValidationObject object, String name,
+					Object newValue, ValidationSession session) {
+				com.vaadin.ui.ProtectedMethods.fireValueChange(field);
+			}});
     }
     
     public MaduraPropertyWrapper findProperty(String propertyName, List<MaduraPropertyWrapper> properties)
@@ -630,9 +656,17 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         throw new LocaleAwareRuntimeException("Property named {0} not found in list", new Object[]{propertyName},m_messageSource);
     }
     
-    public void bind(Label field, LabelProperty<?> property) {
+    public void bind(final Label field, final LabelProperty<?> property) {
         field.setPropertyDataSource(property);
         setPermissions(property.getProperty(), field);
+        MaduraPropertyWrapper wrapper = property.getProperty();
+		getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
+
+			@Override
+			public void run(ValidationObject object, String name,
+					Object newValue, ValidationSession session) {
+				com.vaadin.data.util.ProtectedMethods.fireValueChange(property);
+			}});
     }
     @PreDestroy
     public void close()

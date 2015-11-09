@@ -407,4 +407,8 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
 		}
 		return "";
 	}
+
+	public ValidationObject getOwner() {
+		return m_owner;
+	}
 }
