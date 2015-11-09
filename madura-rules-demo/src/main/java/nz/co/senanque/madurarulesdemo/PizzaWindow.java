@@ -20,8 +20,6 @@ import org.springframework.context.support.MessageSourceAccessor;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.AttributeExaminer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;

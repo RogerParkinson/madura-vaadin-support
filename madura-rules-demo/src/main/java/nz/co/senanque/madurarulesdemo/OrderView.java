@@ -17,9 +17,6 @@ import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.format.FormattingTable;
-import nz.co.senanque.validationengine.SetterListener;
-import nz.co.senanque.validationengine.ValidationObject;
-import nz.co.senanque.validationengine.ValidationSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,12 +77,10 @@ public class OrderView extends VerticalLayout {
         verticalLayout.setMargin(true);
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
-//        setImmediate(true); // no effect
         orderForm = new MaduraForm(new HorizontalLayout(),m_maduraSessionManager);
         orderForm.setReadOnly(true);
         orderForm.setFieldList(new String[]{"orderStatus","date","amount"});
         verticalLayout.addComponent(orderForm);
-//        verticalLayout.setImmediate(true);// no effect
 		HorizontalLayout orderStatus = new HorizontalLayout();
 		orderStatus.setImmediate(true);
 
@@ -101,13 +96,10 @@ public class OrderView extends VerticalLayout {
 		orderAmountLabel = new Label();
 		orderStatus.addComponent(orderAmountLabel);
 		m_maduraSessionManager.register(orderAmountLabel);
-		orderAmountLabel.setImmediate(true);// no effect
 		
 		orderAmountText = new TextField();
 		orderStatus.addComponent(orderAmountText);
-		m_maduraSessionManager.register(orderAmountText); // This works.
-//		orderAmountText.setImmediate(true);// no effect
-//		orderAmountText.setBuffered(false);// no effect
+		m_maduraSessionManager.register(orderAmountText);
 		
 		verticalLayout.addComponent(orderStatus);
 				
@@ -141,18 +133,12 @@ public class OrderView extends VerticalLayout {
     public void addItem(AddItemEvent o) {
     	if (!m_order.getPizzas().contains(o.getPizza())) {
     		m_order.getPizzas().add(o.getPizza());
-    		// This ensures Vaadin knows to revise the values of any dynamic labels
-    		// It is only necessary when you manipulate lists, updating values by setters 
-    		// will update automatically 
-//    		m_maduraSessionManager.updateOtherFields(null);
     	}
 		Item item = m_itemsTable.addItem(o.getPizza());
 		m_logger.debug("item {}",item); // null if already exists.
 		
     	m_itemsTable.refreshRowCache();
     	markAsDirtyRecursive();
-    	orderAmountLabel.markAsDirty(); // no effect
-    	orderAmountText.markAsDirty(); // no effect
     }
     /* 
      * This is where we establish the actual order object. 
