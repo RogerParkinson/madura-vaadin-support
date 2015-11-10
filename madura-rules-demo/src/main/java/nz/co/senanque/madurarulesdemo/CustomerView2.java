@@ -42,8 +42,9 @@ import com.vaadin.ui.themes.ValoTheme;
 public class CustomerView2 extends VerticalLayout {
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private OneFieldWindowFactory m_oneFieldWindowFactory;
-    private Customer m_customer = new Customer();
+    private Customer m_customer;
     private FormLayout customerForm;
+    private MaduraFieldGroup fieldGroup;
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -68,10 +69,8 @@ public class CustomerView2 extends VerticalLayout {
         customerForm.addComponent(nameField);
         customerForm.addComponent(emailField);
         customerForm.addComponent(genderField);
-        
-        m_maduraSessionManager.getValidationSession().bind(m_customer);
-        
-        MaduraFieldGroup fieldGroup = new MaduraFieldGroup(m_maduraSessionManager, new BeanItem<ValidationObject>(m_customer));
+      
+        fieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
         fieldGroup.bind(nameField, "name");
         fieldGroup.bind(emailField, "email");
         fieldGroup.bind(genderField, "gender");
@@ -115,11 +114,11 @@ public class CustomerView2 extends VerticalLayout {
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
     public void enter(ViewChangeEvent event) {
-//    	MyUI ui = MyUI.getCurrent();
-//    	if (m_customer == null) {
-//    		m_customer = ui.getCustomer();
-//        	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
-//    	}
+    	MyUI ui = MyUI.getCurrent();
+    	if (m_customer == null) {
+    		m_customer = ui.getCustomer();
+    		fieldGroup.setItemDataSource(new BeanItem<Customer>(m_customer));
+    	}
     }
 	public OneFieldWindowFactory getOneFieldWindowFactory() {
 		return m_oneFieldWindowFactory;

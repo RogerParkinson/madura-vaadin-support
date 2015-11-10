@@ -4,18 +4,12 @@
 package nz.co.senanque.madurarulesdemo;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.pizzaorder.instances.Pizza;
-import nz.co.senanque.vaadin.FieldFactory;
-import nz.co.senanque.vaadin.LabelProperty;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.MaduraPropertyWrapper;
-import nz.co.senanque.vaadin.PropertiesSource;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.format.FormattingTable;
@@ -23,7 +17,6 @@ import nz.co.senanque.vaadin.format.FormattingTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.Container;
@@ -40,8 +33,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -56,7 +47,6 @@ public class OrderView extends VerticalLayout {
     public static final String VIEW_NAME = "order";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private PizzaWindow m_pizzaWindow;
-//    @Autowired FieldFactory m_fieldFactory;
 	@Autowired private MyEventRouter m_eventRouter;
 	MaduraFieldGroup fieldGroup;
 
@@ -66,10 +56,8 @@ public class OrderView extends VerticalLayout {
     private FormattingTable m_itemsTable;
 	public static final String[] NATURAL_COL_ORDER = new String[] {"description","-amount" };
 	public static final String[] ENGLISH_COL_ORDER = new String[] {"Description","Amount" };
-	private Label orderDateLabel;
 	private Label orderStatusLabel;
 	private Label orderAmountLabel;
-	private TextField orderAmountText;
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -79,9 +67,10 @@ public class OrderView extends VerticalLayout {
     @PostConstruct
     void init() {
 
-//    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+		fieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
+		fieldGroup.setReadOnly(true);
 
-    	final VerticalLayout verticalLayout = new VerticalLayout();
+		final VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setMargin(true);
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
@@ -94,15 +83,11 @@ public class OrderView extends VerticalLayout {
 
 		orderStatusLabel = new Label();
 		horizontalLayout.addComponent(orderStatusLabel);
-		m_maduraSessionManager.register(orderStatusLabel);
-		orderStatusLabel.setImmediate(true);
+		fieldGroup.register(orderStatusLabel,"orderStatus");
 		
 		orderAmountLabel = new Label();
 		horizontalLayout.addComponent(orderAmountLabel);
-		m_maduraSessionManager.register(orderAmountLabel);
-		
-		fieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
-		fieldGroup.setReadOnly(true);
+		fieldGroup.register(orderAmountLabel,"amount");
 		
 		verticalLayout.addComponent(orderForm);
 		orderForm.addComponent(horizontalLayout);
@@ -154,9 +139,8 @@ public class OrderView extends VerticalLayout {
     	if (m_order == null) {
     		m_order = ui.getOrder();
     		fieldGroup.setItemDataSource(new BeanItem<Order>(m_order));
-//    		m_maduraSessionManager.bind(m_addItem);
-    		m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
-    		m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
+//    		m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
+//    		m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
     	}
     }
 	public PizzaWindow getPizzaWindow() {

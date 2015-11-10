@@ -1,12 +1,9 @@
 package nz.co.senanque.madurarulesdemo;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
@@ -112,11 +109,6 @@ public class PizzaWindow extends Window {
 		actions.addComponent(cancel);
 		m_maduraForm.setFooter(actions);
 
-		List<MaduraPropertyWrapper> properties = m_maduraForm.getItemDataSourceProperties();
-//		m_maduraSessionManager.bind(OK);
-//		m_maduraSessionManager.bind(cancel);
-//		m_maduraForm.markAsDirty();
-//		m_maduraForm.setImmediate(false);
     	if (getParent() == null) {
     		UI.getCurrent().addWindow(this);
         	this.center();

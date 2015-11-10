@@ -88,7 +88,7 @@ public class FieldButtonPainter extends AbstractButtonPainter
    public MaduraPropertyWrapper getProperty()
     {
 	   if (m_property == null) {
-		   if (getPropertiesSource() != null) {
+		   if (getPropertiesSource() != null && getPropertiesSource().getProperties().size() > 0) {
 			   m_property = getPropertiesSource().findProperty(m_propertyName);
 		   }
 	   }

@@ -576,7 +576,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     	}
     }
 
-    private void setPermissions(MaduraPropertyWrapper property, AbstractComponent field)
+    public void setPermissions(MaduraPropertyWrapper property, AbstractComponent field)
     {
 		PermissionManager permissionmanager = getPermissionManager();
         if (!permissionmanager.hasPermission(
@@ -591,7 +591,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         }
     }
 
-    private void setPermissions(MaduraPropertyWrapper property, MenuItem field)
+    public void setPermissions(MaduraPropertyWrapper property, MenuItem field)
     {
 		PermissionManager permissionmanager = getPermissionManager();
         if (!permissionmanager.hasPermission(
@@ -640,18 +640,18 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     	throw new RuntimeException(message);
     }
     
-    public void bind(final Label field, final LabelProperty<?> property) {
-        field.setPropertyDataSource(property);
-        setPermissions(property.getProperty(), field);
-        MaduraPropertyWrapper wrapper = property.getProperty();
-		getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
-
-			@Override
-			public void run(ValidationObject object, String name,
-					Object newValue, ValidationSession session) {
-				com.vaadin.data.util.ProtectedMethods.fireValueChange(property);
-			}});
-    }
+//    public void bind(final Label field, final LabelProperty<?> property) {
+//        field.setPropertyDataSource(property);
+//        setPermissions(property.getProperty(), field);
+//        MaduraPropertyWrapper wrapper = property.getProperty();
+//		getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
+//
+//			@Override
+//			public void run(ValidationObject object, String name,
+//					Object newValue, ValidationSession session) {
+//				com.vaadin.data.util.ProtectedMethods.fireValueChange(property);
+//			}});
+//    }
     @PreDestroy
     public void close()
     {
