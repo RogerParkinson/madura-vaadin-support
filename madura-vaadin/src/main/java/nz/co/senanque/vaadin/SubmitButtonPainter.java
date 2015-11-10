@@ -34,10 +34,6 @@ public class SubmitButtonPainter extends AbstractButtonPainter
 {
     private static final long serialVersionUID = 5303047518541446210L;
 
-    private List<MaduraPropertyWrapper> m_properties = new ArrayList<MaduraPropertyWrapper>();
-
-	private MaduraForm m_form;
-
     public SubmitButtonPainter(MaduraSessionManager maduraSessionManager)
     {
     	super(maduraSessionManager.getPermissionManager(),maduraSessionManager.getMessageSource());
@@ -50,7 +46,7 @@ public class SubmitButtonPainter extends AbstractButtonPainter
 
     public void paint(Button button)
     {
-    	if (m_form != null && m_form.isReadOnly()) {
+    	if (getPropertiesSource() != null && getPropertiesSource().isReadOnly()) {
     		button.setEnabled(false);
     	} else {
             button.setEnabled(isEnabled());
@@ -66,9 +62,7 @@ public class SubmitButtonPainter extends AbstractButtonPainter
 
 	private boolean isEnabled() {
 		boolean ret = true;
-		for (MaduraPropertyWrapper property : m_properties) {
-//			String errorText = property.getErrorText();
-//			boolean required = property.isRequired();
+		for (MaduraPropertyWrapper property : getProperties()) {
 			Object value = property.getValue();
 			boolean hasNoValue = (value == null || "".equals(value));
 			if ((property.getErrorText() != null)
@@ -80,25 +74,8 @@ public class SubmitButtonPainter extends AbstractButtonPainter
 		return ret;
 	}
 
-    public void setProperties(List<MaduraPropertyWrapper> properties)
-    {
-        m_properties = properties;        
-    }
-    public List<MaduraPropertyWrapper> getProperties()
-    {
-    	return m_properties;
-    }
     public MaduraPropertyWrapper getProperty()
     {
         return null;
     }
-	@Override
-	public void setForm(MaduraForm maduraForm) {
-		m_form = maduraForm;
-	}
-
-	public MaduraForm getForm() {
-		return m_form;
-	}
-
 }

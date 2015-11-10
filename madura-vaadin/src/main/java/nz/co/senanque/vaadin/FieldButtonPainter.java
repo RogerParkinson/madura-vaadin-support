@@ -15,9 +15,6 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import com.vaadin.ui.Button;
@@ -35,12 +32,10 @@ import com.vaadin.ui.MenuBar.MenuItem;
 public class FieldButtonPainter extends AbstractButtonPainter
 {
 	private static final long serialVersionUID = 5050173897198341434L;
-//    private static final Logger logger = LoggerFactory.getLogger(FieldButtonPainter.class);
 
 	public final String m_propertyName;
 	public MaduraPropertyWrapper m_property;   
     private final MaduraSessionManager m_maduraSessionManager;
-	private MaduraForm m_form;
 
     public FieldButtonPainter(String propertyName, MaduraSessionManager maduraSessionManager)
     {
@@ -59,6 +54,9 @@ public class FieldButtonPainter extends AbstractButtonPainter
     
     public void paint(Button button)
     {
+    	if (getProperty() == null) {
+    		return;
+    	}
         Boolean b = (Boolean)m_property.getValue();
         if (b != null && b)
         {
@@ -72,6 +70,9 @@ public class FieldButtonPainter extends AbstractButtonPainter
     }
     public void paint(MenuItem menuItem)
     {
+    	if (m_property == null) {
+    		return;
+    	}
         Boolean b = (Boolean)m_property.getValue();
         if (b != null && b)
         {
@@ -84,25 +85,13 @@ public class FieldButtonPainter extends AbstractButtonPainter
         super.paint(menuItem);
     }
 
-    public List<MaduraPropertyWrapper> getProperties()
-    {
-    	return new ArrayList<MaduraPropertyWrapper>();
-    }
    public MaduraPropertyWrapper getProperty()
     {
-        return m_property;
+	   if (m_property == null) {
+		   if (getPropertiesSource() != null) {
+			   m_property = getPropertiesSource().findProperty(m_propertyName);
+		   }
+	   }
+       return m_property;
     }
-	public void setProperties(
-			List<MaduraPropertyWrapper> properties) {
-		m_property = m_maduraSessionManager.findProperty(m_propertyName, properties);
-	}
-
-	@Override
-	public void setForm(MaduraForm maduraForm) {
-		m_form = maduraForm;
-	}
-
-	public MaduraForm getForm() {
-		return m_form;
-	}
 }

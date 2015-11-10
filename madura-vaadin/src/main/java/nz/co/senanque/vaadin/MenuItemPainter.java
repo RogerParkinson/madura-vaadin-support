@@ -15,8 +15,6 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin;
 
-import java.util.List;
-
 import com.vaadin.ui.MenuBar.MenuItem;
 
 /**
@@ -29,6 +27,5 @@ public interface MenuItemPainter {
     void paint(MenuItem button);
     MaduraPropertyWrapper getProperty();
     void setPermissionName(String permissionName);
-    List<MaduraPropertyWrapper> getProperties();
-	void setProperties(List<MaduraPropertyWrapper> itemDataSourceProperties);
+	void setPropertiesSource(PropertiesSource propertiesSource);
 }

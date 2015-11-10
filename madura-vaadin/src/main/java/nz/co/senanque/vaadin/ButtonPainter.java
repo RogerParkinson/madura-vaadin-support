@@ -15,8 +15,6 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin;
 
-import java.util.List;
-
 import org.springframework.context.MessageSource;
 
 import com.vaadin.ui.Button;
@@ -31,7 +29,6 @@ public interface ButtonPainter {
     void paint(Button button);
     MaduraPropertyWrapper getProperty();
     void setPermissionName(String permissionName);
-	void setProperties(List<MaduraPropertyWrapper> properties);
-	void setForm(MaduraForm maduraForm);
 	public MessageSource getMessageSource();
+	public void setPropertiesSource(PropertiesSource propertiesSource);
 }

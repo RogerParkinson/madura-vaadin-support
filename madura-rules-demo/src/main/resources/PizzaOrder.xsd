@@ -95,6 +95,21 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</element>
+			<element name="gender">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="person.gender" />
+							<md:ChoiceList name="Genders"/> 
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="20"></maxLength>
+					</restriction>
+				</simpleType>
+			</element>
 			<element name="weight" type="double">
 				<xsd:annotation>
 					<xsd:appinfo>

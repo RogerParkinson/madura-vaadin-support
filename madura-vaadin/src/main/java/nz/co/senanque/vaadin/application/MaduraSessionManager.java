@@ -32,13 +32,16 @@ import nz.co.senanque.vaadin.ButtonPainter;
 import nz.co.senanque.vaadin.ButtonProperty;
 import nz.co.senanque.vaadin.CommandExt;
 import nz.co.senanque.vaadin.FieldFactory;
+import nz.co.senanque.vaadin.FieldGroupFieldFactory;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.LabelProperty;
 import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.MenuItemPainter;
+import nz.co.senanque.vaadin.PropertiesSource;
 import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
+import nz.co.senanque.validationengine.LocaleAwareExceptionFactory;
 import nz.co.senanque.validationengine.ObjectMetadata;
 import nz.co.senanque.validationengine.ProxyField;
 import nz.co.senanque.validationengine.SetterListener;
@@ -94,9 +97,11 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     @Autowired(required=false) private transient ValidationEngine m_validationEngine;
     private transient ValidationSession m_validationSession;
     @Autowired private transient FieldFactory m_formFieldFactory;
+    @Autowired private transient FieldGroupFieldFactory m_fieldGroupFieldFactory;
     @Autowired transient PermissionManager m_permissionManager;
     @Autowired transient MaduraConverterFactory m_maduraConverterFactory;
     @Autowired private transient Hints m_hints;
+    @Autowired private transient LocaleAwareExceptionFactory m_localeAwareExceptionFactory;
 	private transient MessageSource m_messageSource;
 	
 	// Used for internal testing, should be left false.
@@ -395,9 +400,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         MaduraPropertyWrapper property = getMaduraPropertyWrapper(validationObject, propertyName);
         if (property == null)
         {
-            throw new LocaleAwareRuntimeException("property.not.found",
-                    new Object[]
-                    { validationObject.getClass().getName(), propertyName },m_messageSource);
+        	throw getLocaleAwareExceptionFactory().getRuntimeException("property.not.found", new Object[]
+                    { validationObject.getClass().getName()});
         }
         bind(form, field, property);
     }
@@ -494,24 +498,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	                        field.setComponentError(null);
 	                    }
 	                }
-	//                List<String> errors = new ArrayList<String>();
-	//                if (form != null)
-	//                {
-	//                    for (Object propertyId : form.getItemPropertyIds())
-	//                    {
-	//                        Field f = form.getField(propertyId);
-	//                        if (f instanceof AbstractField<?>)
-	//                        {
-	//                            AbstractField<?> fieldy = (AbstractField<?>) f;
-	//                            if (fieldy.getComponentError() != null)
-	//                            {
-	//                                errors.add(fieldy.getComponentError()
-	//                                        .toString());
-	//                            }
-	//                        }
-	//                    }
-	//                    form.setErrors(errors);
-	//                }
 	                updateOtherFields(abstractField);
 	            }
 	        });
@@ -532,18 +518,18 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         registerWidget(field);
     }
     
-    public void register(final MenuItem field, MenuItemPainter painter)
-    {
-        MaduraPropertyWrapper property = painter.getProperty();
-        if (property != null)
-        {
-            Hints hints = getHints();
-            hints.setCommonProperties(field, property,m_messageSource);
-            setPermissions(property, field);
-        }
-        registerWidget(field,painter);
-    }
-    
+//    public void register(final MenuItem field, MenuItemPainter painter)
+//    {
+//        MaduraPropertyWrapper property = painter.getProperty();
+//        if (property != null)
+//        {
+//            Hints hints = getHints();
+//            hints.setCommonProperties(field, property,m_messageSource);
+//            setPermissions(property, field);
+//        }
+//        registerWidget(field,painter);
+//    }
+//    
     public void register(final MenuItem menuItem)
     {
     	Command command = menuItem.getCommand();
@@ -562,10 +548,9 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     	}
     }
     
-    public void bind (final Button button, List<MaduraPropertyWrapper> properties)
+    public void bind (final Button button)
     {
         ButtonProperty buttonProperty = (ButtonProperty)button.getData();
-        buttonProperty.getPainter().setProperties(properties);
         button.setCaption(buttonProperty.getCaption());
         buttonProperty.getPainter().paint(button);  
         MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
@@ -580,14 +565,13 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         }
     }
 
-    public void bind (final MenuItem menuItem, List<MaduraPropertyWrapper> properties)
+    public void bind (final MenuItem menuItem)
     {
     	Command command = menuItem.getCommand();
     	if (command instanceof CommandExt)
     	{
     		CommandExt commandExt = (CommandExt)command;
     		MenuItemPainter painter = commandExt.getPainter();
-    		painter.setProperties(properties);
     		painter.paint(menuItem);
     	}
     }
@@ -622,27 +606,26 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         }
     }
 
-    public void bind(AbstractField<?> field, String propertyName,
-            List<MaduraPropertyWrapper> properties) {
-        MaduraPropertyWrapper property = findProperty(propertyName,properties);
-        bind(field,property);
-    }
-    public void bind(final AbstractField<?> field,
-            MaduraPropertyWrapper property)
-    {
-        field.setPropertyDataSource(property);
-        Hints hints = getHints();
-
-        hints.setCommonProperties(field, property, getMessageSource());
-        setPermissions(property, field);
-		getValidationSession().addListener(property.getOwner(),property.getName(), new SetterListener(){
-
-			@Override
-			public void run(ValidationObject object, String name,
-					Object newValue, ValidationSession session) {
-				com.vaadin.ui.ProtectedMethods.fireValueChange(field);
-			}});
-    }
+//    public void bind(AbstractField<?> field, String propertyName, PropertiesSource properties) {
+//        MaduraPropertyWrapper property = findProperty(propertyName,properties.getProperties());
+//        bind(field,property);
+//    }
+//    public void bind(final AbstractField<?> field,
+//            MaduraPropertyWrapper property)
+//    {
+//        field.setPropertyDataSource(property);
+//        Hints hints = getHints();
+//
+//        hints.setCommonProperties(field, property, getMessageSource());
+//        setPermissions(property, field);
+//		getValidationSession().addListener(property.getOwner(),property.getName(), new SetterListener(){
+//
+//			@Override
+//			public void run(ValidationObject object, String name,
+//					Object newValue, ValidationSession session) {
+//				com.vaadin.ui.ProtectedMethods.fireValueChange(field);
+//			}});
+//    }
     
     public MaduraPropertyWrapper findProperty(String propertyName, List<MaduraPropertyWrapper> properties)
     {
@@ -653,7 +636,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
                 return property;
             }
         }
-        throw new LocaleAwareRuntimeException("Property named {0} not found in list", new Object[]{propertyName},m_messageSource);
+        String message = org.slf4j.helpers.MessageFormatter.arrayFormat("Property named '{}' not found in list", new Object[]{propertyName}).getMessage();
+    	throw new RuntimeException(message);
     }
     
     public void bind(final Label field, final LabelProperty<?> property) {
@@ -738,5 +722,19 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	}
 	public void setSuppressUpdates(boolean suppressUpdates) {
 		m_suppressUpdates = suppressUpdates;
+	}
+	public FieldGroupFieldFactory getFieldGroupFieldFactory() {
+		return m_fieldGroupFieldFactory;
+	}
+	public void setFieldGroupFieldFactory(
+			FieldGroupFieldFactory fieldGroupFieldFactory) {
+		m_fieldGroupFieldFactory = fieldGroupFieldFactory;
+	}
+	public LocaleAwareExceptionFactory getLocaleAwareExceptionFactory() {
+		return m_localeAwareExceptionFactory;
+	}
+	public void setLocaleAwareExceptionFactory(
+			LocaleAwareExceptionFactory localeAwareExceptionFactory) {
+		m_localeAwareExceptionFactory = localeAwareExceptionFactory;
 	}
 }

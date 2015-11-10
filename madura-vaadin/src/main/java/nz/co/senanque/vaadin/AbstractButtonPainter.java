@@ -16,6 +16,7 @@
 package nz.co.senanque.vaadin;
 
 import java.io.Serializable;
+import java.util.List;
 
 import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 
@@ -39,6 +40,7 @@ abstract class AbstractButtonPainter implements ButtonPainter,MenuItemPainter, S
 	private final PermissionManager m_permissionManager;
 	private String m_permissionName;
 	private final MessageSource m_messageSource;
+	private PropertiesSource m_propertiesSource;
 	
 	protected AbstractButtonPainter(PermissionManager permissionManager, MessageSource messageSource)
 	{
@@ -86,6 +88,17 @@ abstract class AbstractButtonPainter implements ButtonPainter,MenuItemPainter, S
 
 	public MaduraPropertyWrapper getProperty() {
 		return null;
+	}
+	public void setPropertiesSource(PropertiesSource propertiesSource) {
+		m_propertiesSource = propertiesSource;
+	}
+	
+	public List<MaduraPropertyWrapper> getProperties() {
+		return m_propertiesSource.getProperties();
+	}
+
+	protected PropertiesSource getPropertiesSource() {
+		return m_propertiesSource;
 	}
 
 }

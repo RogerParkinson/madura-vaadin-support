@@ -20,6 +20,7 @@ import org.springframework.context.MessageSource;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.TextField;
 
 /**
  * Describes the various hints that can be applied to new widgets as they are created
@@ -44,8 +45,9 @@ public interface Hints {
 	public AbstractField<?> getSelectField(MaduraPropertyWrapper property);
 	public AbstractField<?> getTextField(MaduraPropertyWrapper property);
 	public Button getButtonField(String name, MessageSource messageSource);
-//	public MessageSource getMessageSource();
 	public void setCommonProperties(Button field,
 			MaduraPropertyWrapper property, MessageSource m_messageSource);
 
+	public void update(Object o);
+	public void update(TextField text);
 }

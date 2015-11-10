@@ -50,7 +50,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Roger Parkinson
  *
  */
-public class MaduraForm extends Form {
+public class MaduraForm extends Form implements PropertiesSource {
 	
     private static final long serialVersionUID = 1L;
     Logger logger = LoggerFactory.getLogger(MaduraForm.class);
@@ -95,8 +95,6 @@ public class MaduraForm extends Form {
         if (dataSource instanceof BeanItem) 
         {
             Object source = ((BeanItem)dataSource).getBean();
-//         	logger.debug("setItemDataSource {} to Validation engine {}",source.getClass().getSimpleName(),maduraSessionManager.getValidationEngine().getIdentifier());
-
             if (source instanceof ValidationObject)
             {
                 List<String> allFields = maduraSessionManager.getFieldList((ValidationObject)source,dataSource);
@@ -124,7 +122,7 @@ public class MaduraForm extends Form {
                 for (Button button : m_myButtons)
                 {
                     ButtonProperty buttonProperty = (ButtonProperty)button.getData();
-                    buttonProperty.getPainter().setProperties(properties);
+                    buttonProperty.getPainter().setPropertiesSource(this);
                     buttonProperty.getPainter().paint(button);
                     maduraSessionManager.register(button, buttonProperty.getPainter());
                     MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
@@ -146,7 +144,6 @@ public class MaduraForm extends Form {
                 super.setItemDataSource(dataSource,getFieldList());
                 getFooter().setVisible(false);
             }
-//            logger.debug("setItemDatasource complete: field count {}",maduraSessionManager.getFields().size());
         }
         else
         {
@@ -168,7 +165,7 @@ public class MaduraForm extends Form {
             ButtonPainter painter, ClickListener listener, Object data)
     {
        Button ret = m_maduraFieldFactory.createButton(name, listener, painter);
-       painter.setForm(this);
+       painter.setPropertiesSource(this);
        m_myButtons.add(ret);
        return ret;
     }
@@ -227,22 +224,12 @@ public class MaduraForm extends Form {
 			}
 		}
 	}
-//	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
-//		m_maduraSessionManager = maduraSessionManager;
-//	}
-//	public FieldFactory getMaduraFieldFactory() {
-//		return m_maduraFieldFactory;
-//	}
-//	public void setMaduraFieldFactory(FieldFactory maduraFieldFactory) {
-//		m_maduraFieldFactory = maduraFieldFactory;
-//        setFormFieldFactory(m_maduraFieldFactory);
-//	}
-//	public void afterPropertiesSet() throws Exception {
-//        setFormFieldFactory(m_maduraFieldFactory);
-//        setLocale(LocaleContextHolder.getLocale());
-//        setBuffered(true);
-//        setImmediate(true);
-//        setLayout(m_layout);
-//	}
-//	
+	@Override
+	public List<MaduraPropertyWrapper> getProperties() {
+		return m_itemDataSourceProperties;
+	}
+	@Override
+	public MaduraPropertyWrapper findProperty(String propertyName) {
+		return m_maduraSessionManager.findProperty(propertyName, m_itemDataSourceProperties);
+	}
 }

@@ -253,4 +253,14 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 //	public MessageSource getMessageSource() {
 //		return m_messageSource;
 //	}
+	@Override
+	public void update(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void update(TextField text) {
+		// TODO Auto-generated method stub
+		
+	}
 }

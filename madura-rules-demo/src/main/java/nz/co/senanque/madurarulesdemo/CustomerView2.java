@@ -7,11 +7,12 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.vaadin.FieldButtonPainter;
-import nz.co.senanque.vaadin.MaduraForm;
+import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.SimpleButtonPainter;
 import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
+import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -24,8 +25,11 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -35,11 +39,11 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @UIScope
 @Component
-public class CustomerView extends VerticalLayout {
+public class CustomerView2 extends VerticalLayout {
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private OneFieldWindowFactory m_oneFieldWindowFactory;
-    private Customer m_customer = null;
-    private MaduraForm customerForm;
+    private Customer m_customer = new Customer();
+    private FormLayout customerForm;
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -56,13 +60,25 @@ public class CustomerView extends VerticalLayout {
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
 
-        customerForm = new MaduraForm(m_maduraSessionManager);
+        customerForm = new FormLayout();
         customerForm.setWidth("30%");
-        customerForm.setFieldList(new String[]{"name","email"});
+        TextField nameField = new TextField();
+        TextField emailField = new TextField();
+        ComboBox genderField = new ComboBox();
+        customerForm.addComponent(nameField);
+        customerForm.addComponent(emailField);
+        customerForm.addComponent(genderField);
+        
+        m_maduraSessionManager.getValidationSession().bind(m_customer);
+        
+        MaduraFieldGroup fieldGroup = new MaduraFieldGroup(m_maduraSessionManager, new BeanItem<ValidationObject>(m_customer));
+        fieldGroup.bind(nameField, "name");
+        fieldGroup.bind(emailField, "email");
+        fieldGroup.bind(genderField, "gender");
         verticalLayout.addComponent(customerForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = customerForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = fieldGroup.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -71,7 +87,7 @@ public class CustomerView extends VerticalLayout {
 						Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button submit = customerForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button submit = fieldGroup.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -82,7 +98,7 @@ public class CustomerView extends VerticalLayout {
 			}});
 		submit.setClickShortcut(KeyCode.ENTER );
 		submit.addStyleName(ValoTheme.BUTTON_PRIMARY);
-		Button bmi = customerForm.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
+		Button bmi = fieldGroup.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -91,7 +107,7 @@ public class CustomerView extends VerticalLayout {
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		actions.addComponent(bmi);
-		customerForm.setFooter(actions);
+		customerForm.addComponent(actions);
     }
     /* 
      * This is where we establish the actual customer object. 
@@ -99,11 +115,11 @@ public class CustomerView extends VerticalLayout {
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
     public void enter(ViewChangeEvent event) {
-    	MyUI ui = MyUI.getCurrent();
-    	if (m_customer == null) {
-    		m_customer = ui.getCustomer();
-        	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
-    	}
+//    	MyUI ui = MyUI.getCurrent();
+//    	if (m_customer == null) {
+//    		m_customer = ui.getCustomer();
+//        	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
+//    	}
     }
 	public OneFieldWindowFactory getOneFieldWindowFactory() {
 		return m_oneFieldWindowFactory;

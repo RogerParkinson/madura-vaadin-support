@@ -250,4 +250,12 @@ public class HintsImpl implements Hints, Serializable {
 			MaduraConverterFactory maduraConverterFactory) {
 		m_maduraConverterFactory = maduraConverterFactory;
 	}
+	@Override
+	public void update(Object whatever) {
+		throw new RuntimeException("Need to add a handler for "+whatever.getClass().getName());
+	}
+	@Override
+	public void update(TextField text) {
+		String.valueOf(text);
+	}
 }

@@ -113,9 +113,9 @@ public class PizzaWindow extends Window {
 		m_maduraForm.setFooter(actions);
 
 		List<MaduraPropertyWrapper> properties = m_maduraForm.getItemDataSourceProperties();
-		m_maduraSessionManager.bind(OK, properties);
-		m_maduraSessionManager.bind(cancel, properties);
-		m_maduraForm.markAsDirty();
+//		m_maduraSessionManager.bind(OK);
+//		m_maduraSessionManager.bind(cancel);
+//		m_maduraForm.markAsDirty();
 //		m_maduraForm.setImmediate(false);
     	if (getParent() == null) {
     		UI.getCurrent().addWindow(this);

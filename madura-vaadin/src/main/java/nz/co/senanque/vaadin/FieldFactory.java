@@ -66,6 +66,7 @@ public final class FieldFactory extends DefaultFieldFactory {
 	public void setHints(Hints hints) {
 		m_hints = hints;
 	}
+
 	public Field<?> createField(Item item, Object propertyId,
             Component uiContext) {
 

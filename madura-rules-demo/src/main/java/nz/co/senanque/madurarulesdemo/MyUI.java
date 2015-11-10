@@ -54,6 +54,7 @@ public class MyUI extends UI {
 	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private CustomerView m_customerView;
+	@Autowired private CustomerView2 m_customerView2;
 	@Autowired private OrderView m_orderView;
 	@Autowired private MyEventRouter m_eventRouter;
 	
@@ -143,6 +144,12 @@ public class MyUI extends UI {
         m_orderView.enter(null);
         tabsheet.addTab(tab2,messageSourceAccessor.getMessage("Order"));
 
+        // This tab gets its caption from the component caption
+        VerticalLayout tab3 = new VerticalLayout();
+        tab3.addComponent(m_customerView2);
+        m_customerView2.enter(null);
+        tabsheet.addTab(tab3,"C2");
+
         VerticalLayout tabLogout = new VerticalLayout();
         tabsheet.addTab(tabLogout,logout);
 
@@ -201,6 +208,12 @@ public class MyUI extends UI {
 	}
 	public void setEventRouter(MyEventRouter eventRouter) {
 		m_eventRouter = eventRouter;
+	}
+	public CustomerView2 getCustomerView2() {
+		return m_customerView2;
+	}
+	public void setCustomerView2(CustomerView2 customerView2) {
+		m_customerView2 = customerView2;
 	}
 
 }

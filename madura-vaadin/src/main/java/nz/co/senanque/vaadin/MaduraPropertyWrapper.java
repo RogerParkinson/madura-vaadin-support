@@ -163,7 +163,7 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
             {
                 ret = m_propertyFormatter.format(ret);
             }
-            logger.debug("getValue() {} {}",getFullName(),ret); 
+//            logger.debug("getValue() {} {}",getFullName(),ret); 
             return ret;
         }
         catch (Exception e)

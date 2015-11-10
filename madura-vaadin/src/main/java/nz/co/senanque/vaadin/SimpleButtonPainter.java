@@ -33,7 +33,6 @@ public class SimpleButtonPainter extends AbstractButtonPainter
 {
 
     private static final long serialVersionUID = -224212799086717190L;
-	private MaduraForm m_form;
 	public SimpleButtonPainter(MaduraSessionManager maduraSessionManager)
     {
     	super(maduraSessionManager.getPermissionManager(),maduraSessionManager.getMessageSource());
@@ -62,13 +61,5 @@ public class SimpleButtonPainter extends AbstractButtonPainter
     {
         super.paint(menuItem);
     }
-	@Override
-	public void setForm(MaduraForm maduraForm) {
-		m_form = maduraForm;
-	}
-
-	public MaduraForm getForm() {
-		return m_form;
-	}
 
 }
