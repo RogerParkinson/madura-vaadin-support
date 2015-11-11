@@ -97,7 +97,6 @@ public class HintsImpl implements Hints, Serializable {
     public void setCommonProperties(final AbstractField<?> ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
     {
         ret.setWidth(getWidth());
-        ret.setBuffered(false);
         ret.setPropertyDataSource(property);
         ret.setCaption(property.getLabel());
         ret.setRequired(property.isRequired());
@@ -134,6 +133,13 @@ public class HintsImpl implements Hints, Serializable {
                 }
 				
 			}});
+        if (ret instanceof ComboBox) {
+        	((ComboBox)ret).setConverter(new StringToChoiceBase(property));
+        }
+        if (ret instanceof OptionGroup) {
+        	((OptionGroup)ret).setConverter(new StringToChoiceBase(property));
+        }
+        ret.setBuffered(false);
 
     }
     public void setCommonProperties(final MenuItem ret, final MaduraPropertyWrapper property, final MessageSource messageSource)

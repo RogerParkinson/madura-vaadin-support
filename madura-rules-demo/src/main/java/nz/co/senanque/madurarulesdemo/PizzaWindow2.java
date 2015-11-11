@@ -3,24 +3,25 @@ package nz.co.senanque.madurarulesdemo;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
-import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
+import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
-import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
+import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -32,22 +33,36 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @org.springframework.stereotype.Component
 @UIScope
-public class PizzaWindow extends Window {
+public class PizzaWindow2 extends Window {
 
 	private Layout main;
 	private Layout panel;
-	private MaduraForm m_maduraForm;
+	private MaduraFieldGroup m_maduraFieldGroup;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    private String m_windowWidth = "300px";
-    private String m_windowHeight = "550px";
+    private String m_windowWidth = "400px";
+    private String m_windowHeight = "500px";
+    private Pizza m_pizza;
+    
+    @PropertyId("base")
+    private ComboBox base = new ComboBox();
+    @PropertyId("topping")
+    private ComboBox topping = new ComboBox();
+    @PropertyId("size")
+    private ComboBox size = new ComboBox();
+    @PropertyId("amount")
+    private TextField amount = new TextField();
+    @PropertyId("testing")
+    private TextField testing = new TextField();
+    @PropertyId("description")
+    private TextField description = new TextField();
 
-	public PizzaWindow() {
+	public PizzaWindow2() {
 	}
 
 	/**
 	 * @param caption
 	 */
-	public PizzaWindow(String caption) {
+	public PizzaWindow2(String caption) {
 		super(caption);
 	}
 
@@ -55,7 +70,7 @@ public class PizzaWindow extends Window {
 	 * @param caption
 	 * @param content
 	 */
-	public PizzaWindow(String caption, Component content) {
+	public PizzaWindow2(String caption, Component content) {
 		super(caption, content);
 	}
 	@PostConstruct
@@ -77,14 +92,22 @@ public class PizzaWindow extends Window {
 		getMaduraSessionManager().getValidationSession().bind(pizza);
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
 
-    	m_maduraForm = new MaduraForm(getMaduraSessionManager());
-    	String[] fieldList = new String[]{"base","topping","size","amount","testing","description"};
-    	m_maduraForm.setFieldList(fieldList);
-    	m_maduraForm.setItemDataSource(beanItem);
-    	panel.addComponent(m_maduraForm);
+		FormLayout formLayout = new FormLayout();
+		formLayout.addComponent(base);
+		formLayout.addComponent(topping);
+		formLayout.addComponent(size);
+		formLayout.addComponent(amount);
+		formLayout.addComponent(testing);
+		formLayout.addComponent(description);
+    	
+    	panel.addComponent(formLayout);
+    	
+    	m_maduraFieldGroup = new MaduraFieldGroup(getMaduraSessionManager());
+    	m_maduraFieldGroup.setItemDataSource(beanItem);
+    	m_maduraFieldGroup.buildAndBindMemberFields(this);
     	
 		HorizontalLayout actions = new HorizontalLayout();
-		Button OK = m_maduraForm.createButton("button.OK", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button OK = m_maduraFieldGroup.createSubmitButton("button.OK", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -94,7 +117,7 @@ public class PizzaWindow extends Window {
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		actions.addComponent(OK);
-		Button cancel = m_maduraForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = m_maduraFieldGroup.createButton("button.cancel", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -102,7 +125,7 @@ public class PizzaWindow extends Window {
 				close();
 			}});
 		actions.addComponent(cancel);
-		m_maduraForm.setFooter(actions);
+		formLayout.addComponent(actions);
 
     	if (getParent() == null) {
     		UI.getCurrent().addWindow(this);
@@ -110,7 +133,7 @@ public class PizzaWindow extends Window {
         }
 	}
     public void close() {
-    	getMaduraSessionManager().getValidationSession().unbind((ValidationObject) m_maduraForm.getData());
+    	m_maduraFieldGroup.unbind(m_pizza);
     	UI.getCurrent().removeWindow(this);
     }
 

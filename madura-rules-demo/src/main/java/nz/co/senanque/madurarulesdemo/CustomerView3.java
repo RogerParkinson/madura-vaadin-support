@@ -7,11 +7,7 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.vaadin.CommandExt;
-import nz.co.senanque.vaadin.FieldButtonPainter;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.MenuItemPainter;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
 
@@ -20,10 +16,8 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
@@ -34,7 +28,6 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * @author Roger Parkinson

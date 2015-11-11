@@ -18,6 +18,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.BindException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
@@ -171,9 +172,13 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             }
         }
     }
-
+    
     public void unbind(Field<?> field) throws BindException {
-    	
+    	// TODO: do we need to unbind?
+    }
+
+    public void unbind(ValidationObject validationObject) {
+    	getMaduraSessionManager().getValidationSession().unbind(validationObject);
     }
 
 	public MaduraSessionManager getMaduraSessionManager() {

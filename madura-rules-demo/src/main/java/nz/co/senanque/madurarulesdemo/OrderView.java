@@ -47,12 +47,12 @@ public class OrderView extends VerticalLayout {
     public static final String VIEW_NAME = "order";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private PizzaWindow m_pizzaWindow;
+    @Autowired private PizzaWindow2 m_pizzaWindow2;
 	@Autowired private MyEventRouter m_eventRouter;
 	MaduraFieldGroup fieldGroup;
 
     private Order m_order = null;
     private FormLayout orderForm;
-    private Button m_addItem;
     private FormattingTable m_itemsTable;
 	public static final String[] NATURAL_COL_ORDER = new String[] {"description","-amount" };
 	public static final String[] ENGLISH_COL_ORDER = new String[] {"Description","Amount" };
@@ -93,7 +93,7 @@ public class OrderView extends VerticalLayout {
 		orderForm.addComponent(horizontalLayout);
 	
 		HorizontalLayout actions = new HorizontalLayout();
-		m_addItem = fieldGroup.createButton("button.addItem", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button addItem = fieldGroup.createButton("button.addItem", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -102,7 +102,17 @@ public class OrderView extends VerticalLayout {
 				m_pizzaWindow.load(pizza);
 				
 			}});
-		actions.addComponent(m_addItem);
+		actions.addComponent(addItem);
+		Button addItem2 = fieldGroup.createButton("button.addItem2", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Pizza pizza = new Pizza();
+				pizza.setId(System.currentTimeMillis());
+				m_pizzaWindow2.load(pizza);
+				
+			}});
+		actions.addComponent(addItem2);
 		verticalLayout.addComponent(actions);
 		getEventRouter().addListener(AddItemEvent.class, this, "addItem");
 		m_itemsTable = new FormattingTable();

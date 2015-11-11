@@ -6,13 +6,9 @@ package nz.co.senanque.madurarulesdemo;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
-import nz.co.senanque.vaadin.FieldButtonPainter;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
-import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;

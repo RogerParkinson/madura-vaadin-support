@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 
 import javax.annotation.PreDestroy;
 
-import nz.co.senanque.localemanagement.LocaleAwareRuntimeException;
 import nz.co.senanque.vaadin.ButtonPainter;
 import nz.co.senanque.vaadin.ButtonProperty;
 import nz.co.senanque.vaadin.CommandExt;
@@ -38,7 +37,6 @@ import nz.co.senanque.vaadin.LabelProperty;
 import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.MenuItemPainter;
-import nz.co.senanque.vaadin.PropertiesSource;
 import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.LocaleAwareExceptionFactory;
@@ -71,6 +69,7 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Form;
 import com.vaadin.ui.Label;
@@ -411,6 +410,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     {
         field.setPropertyDataSource(property);
         Hints hints = getHints();
+        
+        if (field instanceof ComboBox) {
+        	
+        }
 
         hints.setCommonProperties(field, property,m_messageSource);
         setPermissions(property, field);
