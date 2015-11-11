@@ -55,6 +55,7 @@ public class MyUI extends UI {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private CustomerView m_customerView;
 	@Autowired private CustomerView2 m_customerView2;
+	@Autowired private CustomerView3 m_customerView3;
 	@Autowired private OrderView m_orderView;
 	@Autowired private MyEventRouter m_eventRouter;
 	
@@ -149,6 +150,12 @@ public class MyUI extends UI {
         tab3.addComponent(m_customerView2);
         m_customerView2.enter(null);
         tabsheet.addTab(tab3,"C2");
+
+        // This tab gets its caption from the component caption
+        VerticalLayout tab4 = new VerticalLayout();
+        tab4.addComponent(m_customerView3);
+        m_customerView3.enter(null);
+        tabsheet.addTab(tab4,"C3");
 
         VerticalLayout tabLogout = new VerticalLayout();
         tabsheet.addTab(tabLogout,logout);

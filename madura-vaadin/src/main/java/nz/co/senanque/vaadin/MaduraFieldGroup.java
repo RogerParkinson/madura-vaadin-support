@@ -13,6 +13,7 @@ import nz.co.senanque.validationengine.ValidationObject;
 import nz.co.senanque.validationengine.ValidationSession;
 
 import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -38,10 +39,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	private MessageSource m_messageSource;
 	private List<String> m_fieldList;
 	private List<Button> m_myButtons = new ArrayList<Button>();
-	private List<MaduraPropertyWrapper> m_properties = new ArrayList<MaduraPropertyWrapper>();
+	private List<MaduraPropertyWrapper> m_properties = new ArrayList<>();
 	private Collection<Object> m_propertyIds = new ArrayList<>();
 	private Map<Label,String> m_labels = new HashMap<>();
-	private Map<MenuItem,String> m_menuItems = new HashMap<>();
+	private List<MenuItem> m_menuItems = new ArrayList<>();
 
 	
 //	public MaduraFieldGroup(MaduraSessionManager maduraSessionManager, BeanItem<ValidationObject> itemDataSource) {
@@ -73,10 +74,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	public void register(Label field, String propertyId) {
 		m_maduraSessionManager.register(field);
 		m_labels.put(field,propertyId);
-	}
-	public void register(MenuItem field, String propertyId) {
-		m_maduraSessionManager.register(field);
-		m_menuItems.put(field,propertyId);
 	}
 	@SuppressWarnings("unchecked")
 	public void setItemDataSource(Item itemDataSource) {
@@ -130,10 +127,8 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	    			}});
             }
         }
-        for (Map.Entry<MenuItem, String> entry : m_menuItems.entrySet())
+        for (MenuItem menuItem : m_menuItems)
         {
-        	MenuItem menuItem = entry.getKey();
-        	String propertyId = entry.getValue();
         	Command command = menuItem.getCommand();
         	if (command instanceof CommandExt)
         	{
@@ -148,7 +143,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             button.setCaption(buttonProperty.getCaption());
             buttonProperty.getPainter().setPropertiesSource(this);
             buttonProperty.getPainter().paint(button);
-//            m_maduraSessionManager.register(button, buttonProperty.getPainter());
             MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
             if (wrapper != null) {
             	final Button finalButton = button;
@@ -260,7 +254,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	}
 
 	public Button createButton(String name, ButtonPainter painter, ClickListener listener) {
-		Button ret = m_hints.getButtonField(name, painter.getMessageSource());
+		Button ret = m_hints.getButtonField(name, m_messageSource);
 		if (listener != null) {
 			ret.addClickListener(listener);
 		}
@@ -272,6 +266,61 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		m_myButtons.add(ret);
 		return ret;
 	}
+	
+	public CommandExt createMenuItemCommand(final ClickListener listener) {
+		return createMenuItemCommandExt(new SimpleButtonPainter(m_maduraSessionManager),listener);
+	}
+	public CommandExt createMenuItemCommandSubmit(final ClickListener listener) {
+		return createMenuItemCommandExt(new SubmitButtonPainter(m_maduraSessionManager),listener);
+	}
+//	public CommandExt createMenuItemCommandField(String propertyId, final ClickListener listener) {
+//		return createMenuItemCommandExt(new FieldButtonPainter(propertyId,m_maduraSessionManager),listener);
+//	}
+	public CommandExt createMenuItemCommand(final String permission, final ClickListener listener) {
+		return createMenuItemCommandExt(new SimpleButtonPainter(permission,m_maduraSessionManager),listener);
+	}
+	public CommandExt createMenuItemCommandSubmit(final String permission, final ClickListener listener) {
+		return createMenuItemCommandExt(new SubmitButtonPainter(permission,m_maduraSessionManager),listener);
+	}
+//	public CommandExt createMenuItemCommandField(String propertyId, final String permission, final ClickListener listener) {
+//		return createMenuItemCommandExt(new FieldButtonPainter(propertyId,permission,m_maduraSessionManager),listener);
+//	}
+	public CommandExt createMenuItemCommandExt(final MenuItemPainter painter,
+			final ClickListener listener) {
+		final MaduraFieldGroup me = this;
+		CommandExt ret = new CommandExt() {
+			MenuItemPainter m_menuItemPainter = painter;
+
+			public void menuSelected(MenuItem selectedItem) {
+				listener.buttonClick(null);
+			}
+
+			public MenuItemPainter getPainter() {
+				m_menuItemPainter.setPropertiesSource(me);
+				return m_menuItemPainter;
+			}
+
+			public MaduraSessionManager getMaduraSessionManager() {
+				return m_maduraSessionManager;
+			}
+		};
+		return ret;
+	}
+	public void register(MenuItem field) {
+		Command command = field.getCommand();
+		if (command != null && command instanceof CommandExt) {
+			MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
+			field.setText(messageSourceAccessor.getMessage(field.getText(), field.getText()));
+			m_maduraSessionManager.register(field);
+			m_menuItems.add(field);
+		} else {
+			throw new RuntimeException("Menu item command is not a CommandExt");
+		}
+	}
+//	public void register(MenuItem field, String propertyId) {
+//		m_maduraSessionManager.register(field);
+//		m_menuItems.put(field,propertyId);
+//	}
 
 	@Override
 	public List<MaduraPropertyWrapper> getProperties() {
@@ -285,5 +334,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	public Collection<?> getItemPropertyIds() {
 		return m_propertyIds;
 	}
+
 
 }
