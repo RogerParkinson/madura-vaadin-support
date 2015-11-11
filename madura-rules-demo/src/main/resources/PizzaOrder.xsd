@@ -276,7 +276,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
-							<md:Label labelName="item.name" />
+							<md:Label labelName="descr" />
 							<md:ReadOnly />
 						</annox:annotate>
 					</xsd:appinfo>

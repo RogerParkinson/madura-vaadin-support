@@ -54,7 +54,7 @@ public class PizzaWindow2 extends Window {
     @PropertyId("testing")
     private TextField testing = new TextField();
     @PropertyId("description")
-    private TextField description = new TextField();
+    private TextField descr = new TextField();
 
 	public PizzaWindow2() {
 	}
@@ -93,18 +93,18 @@ public class PizzaWindow2 extends Window {
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
 
 		FormLayout formLayout = new FormLayout();
-		formLayout.addComponent(base);
-		formLayout.addComponent(topping);
-		formLayout.addComponent(size);
-		formLayout.addComponent(amount);
-		formLayout.addComponent(testing);
-		formLayout.addComponent(description);
     	
     	panel.addComponent(formLayout);
     	
     	m_maduraFieldGroup = new MaduraFieldGroup(getMaduraSessionManager());
     	m_maduraFieldGroup.setItemDataSource(beanItem);
     	m_maduraFieldGroup.buildAndBindMemberFields(this);
+		formLayout.addComponent(base);
+		formLayout.addComponent(topping);
+		formLayout.addComponent(size);
+		formLayout.addComponent(amount);
+		formLayout.addComponent(testing);
+		formLayout.addComponent(descr);
     	
 		HorizontalLayout actions = new HorizontalLayout();
 		Button OK = m_maduraFieldGroup.createSubmitButton("button.OK", new ClickListener(){
@@ -151,6 +151,14 @@ public class PizzaWindow2 extends Window {
 
 	public String getWindowHeight() {
 		return m_windowHeight;
+	}
+
+	public TextField getDescr() {
+		return descr;
+	}
+
+	public void setDescr(TextField descr) {
+		this.descr = descr;
 	}
 
 }

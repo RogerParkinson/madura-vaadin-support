@@ -172,6 +172,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             }
         }
     }
+    protected <T extends Field> T build(String caption, Class<?> dataType,
+            Class<T> fieldType) throws BindException {
+    	throw new RuntimeException("Using the buildxxx methods is not supported by Madura");
+    }
     
     public void unbind(Field<?> field) throws BindException {
     	// TODO: do we need to unbind?
