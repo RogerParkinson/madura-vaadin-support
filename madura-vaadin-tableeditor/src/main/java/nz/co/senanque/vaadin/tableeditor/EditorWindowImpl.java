@@ -17,9 +17,7 @@ package nz.co.senanque.vaadin.tableeditor;
 
 import java.util.List;
 
-import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
+import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 
@@ -35,7 +33,7 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
@@ -65,7 +63,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
     protected Button close;
 
     protected T m_object;
-    protected MaduraForm m_form;
+    protected MaduraFieldGroup m_maduraFieldGroup;
     private List<String> m_fields;
     
     private String m_width = "400px";
@@ -74,6 +72,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 	private MessageSource m_messageSource;
 	private final String m_caption;
 	private final String m_submitStyle;
+	private final Layout m_panel = new VerticalLayout();
 	
 	public EditorWindowImpl(String caption) {
 		m_caption = caption;
@@ -88,61 +87,58 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 	public void initialize(List<String> fields) {
     	MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
     	setCaption(messageSourceAccessor.getMessage(m_caption));
-    	if (m_form == null) {
-    		m_form = new nz.co.senanque.vaadin.MaduraForm(m_maduraSessionManager);
+    	if (m_maduraFieldGroup == null) {
+    		m_maduraFieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
     	}
         Layout main = new VerticalLayout();
         setContent(main);
         main.setWidth(getWindowWidth());
 
         setFields(fields);
-        m_form.setSizeFull();
+        main.addComponent(m_panel);
         
-        main.addComponent(m_form);
-        
-        save = m_form.createButton(messageSourceAccessor.getMessage("editor.window.save"),new SubmitButtonPainter(m_maduraSessionManager),this);
-        delete = m_form.createButton(messageSourceAccessor.getMessage("editor.window.delete"),new SimpleButtonPainter(m_maduraSessionManager),this);
-        close = m_form.createButton(messageSourceAccessor.getMessage("editor.window.close"),new SimpleButtonPainter(m_maduraSessionManager),this);
+        save = m_maduraFieldGroup.createSubmitButton("editor.window.save", this);
+        delete = m_maduraFieldGroup.createButton("editor.window.delete",this);
+        close = m_maduraFieldGroup.createButton("editor.window.close",this);
 
-        extraFields();
+        extraFields(main);
         HorizontalLayout actions = new HorizontalLayout();
         actions.addComponent(save);
 
-        save.addClickListener(this);
         if (m_submitStyle != null) {
 	        save.setClickShortcut( KeyCode.ENTER ) ;
 	        save.addStyleName( m_submitStyle ) ;
         }
 
         actions.addComponent(delete);
-        delete.addClickListener(this);
-        close.addClickListener(this);
         actions.addComponent(close);
-        m_form.setFooter(actions);
-//        main.addComponent(actions);
-    }
-    protected void extraFields()
-    {
-    	
-    }
-    
-    protected void setItemDataSource(BeanItem<T> newDataSource)
-    {
-        final ValidationObject o = (ValidationObject)newDataSource.getBean();
-        m_maduraSessionManager.getValidationSession().bind(o);
-        m_form.setFieldList(getFields());
-        m_form.setItemDataSource(newDataSource);
+        actions.setMargin(true);
+        actions.setSpacing(true);
+        main.addComponent(actions);
         this.addCloseListener(new CloseListener(){
 
 			private static final long serialVersionUID = -2096669984588309706L;
 
 			public void windowClose(CloseEvent e)
             {
-                // TODO: it would be better to selectively unbind
-				m_maduraSessionManager.getValidationSession().unbindAll();
-                
+				m_maduraFieldGroup.unbind((ValidationObject)m_object);
             }});
     }
+
+	protected void extraFields(Layout main) {
+	}
+    
+	protected void setItemDataSource(BeanItem<T> newDataSource) {
+		final ValidationObject o = (ValidationObject) newDataSource.getBean();
+		m_maduraSessionManager.getValidationSession().bind(o);
+		m_maduraFieldGroup.setFieldList(getFields());
+		m_maduraFieldGroup.setItemDataSource(newDataSource);
+		m_panel.removeAllComponents();
+		for (String propertyId : getFields()) {
+			Field<?> field = m_maduraFieldGroup.buildAndBind(propertyId);
+			m_panel.addComponent(field);
+		}
+	}
 
      public void loadObject(T object, boolean newRow) {
         if (object == null) {
@@ -177,7 +173,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 		if (m_fields == null)
 		{
 			m_fields = fields;
-			m_form.setFieldList(fields);
+			m_maduraFieldGroup.setFieldList(fields);
 		}
 	}
 

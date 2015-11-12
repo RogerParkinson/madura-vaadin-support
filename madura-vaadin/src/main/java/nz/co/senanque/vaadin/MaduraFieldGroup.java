@@ -35,7 +35,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	
 	private final MaduraSessionManager m_maduraSessionManager;
-	private final FieldGroupFieldFactory m_fieldFactory;
+	private final FieldFactory m_fieldFactory;
 	private Hints m_hints;
 	private MessageSource m_messageSource;
 	private List<String> m_fieldList;
@@ -57,7 +57,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	
     public MaduraFieldGroup(MaduraSessionManager maduraSessionManager) {
 		m_maduraSessionManager = maduraSessionManager;
-		m_fieldFactory = maduraSessionManager.getFieldGroupFieldFactory();
+		m_fieldFactory = maduraSessionManager.getFieldFactory();
 		m_messageSource = maduraSessionManager.getMessageSource();
 		m_hints = maduraSessionManager.getHints();
 	}
@@ -157,7 +157,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             }
         }
     }
-
+    
     public void bind(Field<?> field, Object propertyId) throws BindException {
     	super.bind(field, propertyId);
     	Item dataSource = getItemDataSource();
@@ -177,8 +177,18 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	throw new RuntimeException("Using the buildxxx methods is not supported by Madura");
     }
     
+    public Field<?> buildAndBind(Object propertyId) throws BindException {
+    	if (getItemDataSource()==null) {
+    		throw new BindException("No data source established, cannot build and bind "+propertyId);
+    	}
+    	ValidationObject validationObject = ((BeanItem<ValidationObject>)getItemDataSource()).getBean();
+    	MaduraPropertyWrapper maduraPropertyWrapper = m_maduraSessionManager.getMaduraPropertyWrapper(validationObject, propertyId.toString());
+    	final Field<?> field = m_fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
+    	return field;
+    }
+    
     public void unbind(Field<?> field) throws BindException {
-    	// TODO: do we need to unbind?
+    	super.unbind(field);
     }
 
     public void unbind(ValidationObject validationObject) {

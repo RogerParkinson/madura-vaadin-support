@@ -6,8 +6,7 @@ package nz.co.senanque.vaadindemo;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
+import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,9 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
@@ -42,8 +43,10 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
     private Person m_person = null;
-    private PersonForm personForm;
+    private final Layout m_panel = new VerticalLayout();
+    protected MaduraFieldGroup m_maduraFieldGroup;
 	private MessageSource m_messageSource;
+	private String[] fields = new String[]{"name","email","address","gender","startDate","amount"};
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -54,18 +57,20 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
     void init() {
     	
     	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
+    	if (m_maduraFieldGroup == null) {
+    		m_maduraFieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
+    	}
 
         final VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setMargin(true);
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
 
-        personForm = new PersonForm(m_maduraSessionManager);
-        personForm.setWidth("30%");
-        verticalLayout.addComponent(personForm);
+        m_panel.setWidth("30%");
+        verticalLayout.addComponent(m_panel);
 
 		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = personForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = m_maduraFieldGroup.createButton("button.cancel", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -74,7 +79,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 						Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button submit = personForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button submit = m_maduraFieldGroup.createSubmitButton("button.submit", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -87,7 +92,9 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 		submit.addStyleName( ValoTheme.BUTTON_PRIMARY ) ;
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
-		personForm.setFooter(actions);
+        actions.setMargin(true);
+        actions.setSpacing(true);
+		verticalLayout.addComponent(actions);
 		Component instructions = getInstructions(messageSourceAccessor);
 		verticalLayout.addComponent(instructions);
 		instructions.setWidth("30%");
@@ -115,11 +122,12 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
     	if (m_person == null) {
     		m_person = ui.getPerson();
         	m_maduraSessionManager.getValidationSession().bind(m_person);
-        	personForm.setItemDataSource(new BeanItem<Person>(m_person));
-// The following happens automatically in a MaduraForm.setItemDataSource
-//        	List<MaduraPropertyWrapper> properties = personForm.getItemDataSourceProperties();
-//    		m_maduraSessionManager.bind(submit, properties);
-//    		m_maduraSessionManager.bind(cancel, properties);
+        	m_maduraFieldGroup.setItemDataSource(new BeanItem<Person>(m_person));
+    		m_panel.removeAllComponents();
+    		for (String propertyId : fields) {
+    			Field<?> field = m_maduraFieldGroup.buildAndBind(propertyId);
+    			m_panel.addComponent(field);
+    		}
     	}
     }
 	@Override
