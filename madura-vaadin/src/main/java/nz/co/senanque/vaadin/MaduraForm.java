@@ -50,6 +50,7 @@ import com.vaadin.ui.VerticalLayout;
  * @author Roger Parkinson
  *
  */
+@Deprecated
 public class MaduraForm extends Form implements PropertiesSource {
 	
     private static final long serialVersionUID = 1L;

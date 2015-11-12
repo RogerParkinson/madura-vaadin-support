@@ -31,7 +31,6 @@ import nz.co.senanque.vaadin.ButtonPainter;
 import nz.co.senanque.vaadin.ButtonProperty;
 import nz.co.senanque.vaadin.CommandExt;
 import nz.co.senanque.vaadin.FieldFactory;
-import nz.co.senanque.vaadin.FieldGroupFieldFactory;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.LabelProperty;
 import nz.co.senanque.vaadin.MaduraForm;
@@ -96,7 +95,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     @Autowired(required=false) private transient ValidationEngine m_validationEngine;
     private transient ValidationSession m_validationSession;
     @Autowired private transient FieldFactory m_formFieldFactory;
-    @Autowired private transient FieldGroupFieldFactory m_fieldGroupFieldFactory;
     @Autowired transient PermissionManager m_permissionManager;
     @Autowired transient MaduraConverterFactory m_maduraConverterFactory;
     @Autowired private transient Hints m_hints;
@@ -725,13 +723,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	}
 	public void setSuppressUpdates(boolean suppressUpdates) {
 		m_suppressUpdates = suppressUpdates;
-	}
-	public FieldGroupFieldFactory getFieldGroupFieldFactory() {
-		return m_fieldGroupFieldFactory;
-	}
-	public void setFieldGroupFieldFactory(
-			FieldGroupFieldFactory fieldGroupFieldFactory) {
-		m_fieldGroupFieldFactory = fieldGroupFieldFactory;
 	}
 	public LocaleAwareExceptionFactory getLocaleAwareExceptionFactory() {
 		return m_localeAwareExceptionFactory;
