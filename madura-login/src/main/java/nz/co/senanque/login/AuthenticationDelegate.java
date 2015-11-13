@@ -10,7 +10,9 @@ import javax.security.auth.login.LoginException;
 import javax.servlet.ServletContext;
 
 /**
- * Optional delegation for authentication
+ * Delegation for authentication. By default the {link nz.co.senanque.login.RequestValidatorImpl} class
+ * is the implementation for this, but that is a very simple implementation which is suitable for demos.
+ * To implement your own delegate just create a Spring bean with this interface.    
  * 
  * @author Roger Parkinson
  *

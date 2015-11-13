@@ -28,6 +28,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
+ * Spring bean that is fetched from the Spring context explicitly by the filter rather than injected.
+ * This doesn't make any difference to the bean itself, of course. It optionally injects an {link nz.co.senanque.login.AuthenticationDelegate}
+ * and if there is none it uses itself instead. But the {link nz.co.senanque.login.AuthenticationDelegate} it implements
+ * is demo-ware so you should provide your own implementation for production.
+ * <p>
+ * To test if the current request has been authenticated the HttpSession is examined for an attribute {link nz.co.senanque.login.AuthenticationDelegate.USERNAME}
+ * containing a valid string.
+ * <p>
+ * There are facilities to ensure image files etc bypass the authentication mechanism, as well as a mechanism to serve up some files
+ * from the classpath, ie those needed for the login pages.
+ * 
  * @author Roger Parkinson
  *
  */

@@ -8,6 +8,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Describes the request validator.
+ * 
+ * @author Roger Parkinson
+ *
+ */
 public interface RequestValidator {
 
 	public abstract boolean isURLIgnored(HttpServletRequest req);

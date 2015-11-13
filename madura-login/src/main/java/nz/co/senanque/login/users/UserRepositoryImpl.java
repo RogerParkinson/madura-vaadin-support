@@ -12,12 +12,13 @@ import java.util.StringTokenizer;
 import javax.security.auth.login.LoginException;
 import javax.servlet.ServletContext;
 
-import nz.co.senanque.login.RequestValidatorImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Simple authentication repository based on a csv file.
+ * Demo-ware only, not for production use.
+ * 
  * @author Roger Parkinson
  *
  */

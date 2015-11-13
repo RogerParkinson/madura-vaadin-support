@@ -6,6 +6,9 @@ package nz.co.senanque.login.users;
 import java.util.Set;
 
 /**
+ * Object to represent a user and password
+ * Demo ware, not for production.
+ * 
  * @author Roger Parkinson
  *
  */

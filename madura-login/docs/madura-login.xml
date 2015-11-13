@@ -18,7 +18,7 @@
 		<process-references/>
 		<h1 t="Overview">
 		<p>This is a quick way to add authentication and authorisation to a demo. It might be okay in production
-		but with some modifications and extensions, but it is intended for demos.</p>
+		with some modifications and extensions, but it is intended for demos.</p>
 		<p>By 'quick' we mean all you need to do is add this to your maven dependencies and your get your Spring<referenceLink t="Spring Framework"/> configuration to
 		scan the right package, then your war file will start using it, assuming you are deploying to a servlet 3.0 applicaton server (we tested on Tomcat 7).</p>
 		<p>But you'll likely want to customise it a little. Customising is easy.</p>

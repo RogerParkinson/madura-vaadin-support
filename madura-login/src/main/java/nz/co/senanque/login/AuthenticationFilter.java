@@ -23,6 +23,9 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 /**
+ * This filter intercepts the servlet requests. If it is not an explicitly ignored request type then
+ * test and redirect if necessary.
+ * 
  * @author Roger Parkinson
  *
  */
