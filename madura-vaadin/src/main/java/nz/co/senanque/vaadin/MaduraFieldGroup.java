@@ -1,5 +1,6 @@
 package nz.co.senanque.vaadin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,16 +18,21 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.fieldgroup.Caption;
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.fieldgroup.FieldGroup.BindException;
+import com.vaadin.data.fieldgroup.FieldGroup.SearchException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.util.ReflectTools;
 
 /**
  * @author Roger Parkinson
@@ -171,6 +177,79 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             	m_maduraSessionManager.bind(null, f, p);
             }
         }
+    }
+    protected void buildAndBindMemberFields(Object objectWithMemberFields,
+            boolean buildFields) throws BindException {
+    	super.buildAndBindMemberFields(objectWithMemberFields,
+                buildFields);
+    	processLabels(objectWithMemberFields, buildFields);
+    	loadProperties((BeanItem<ValidationObject>)getItemDataSource());
+    }
+        
+    private void processLabels(Object objectWithMemberFields, boolean buildFields) {
+    	Class<?> objectClass = objectWithMemberFields.getClass();
+        for (java.lang.reflect.Field memberField : getFieldsInDeclareOrder(objectClass)) {
+
+            if (!Label.class.isAssignableFrom(memberField.getType())) {
+                // Process next field
+                continue;
+            }
+
+            PropertyId propertyIdAnnotation = memberField
+                    .getAnnotation(PropertyId.class);
+
+            Object propertyId = null;
+            if (propertyIdAnnotation != null) {
+                // @PropertyId(propertyId) always overrides property id
+                propertyId = propertyIdAnnotation.value();
+            } else {
+                try {
+                    propertyId = findPropertyId(memberField);
+                } catch (SearchException e) {
+                    // Property id was not found, skip this field
+                    continue;
+                }
+                if (propertyId == null) {
+                    // Property id was not found, skip this field
+                    continue;
+                }
+            }
+            Label field;
+            try {
+                // Get the field from the object
+                field = (Label) ReflectTools.getJavaFieldValue(
+                        objectWithMemberFields, memberField, Label.class);
+            } catch (Exception e) {
+                // If we cannot determine the value, just skip the field and try
+                // the next one
+                continue;
+            }
+            if (field == null && buildFields) {
+
+                // Create the component (Field)
+                field = new Label();
+
+                // Store it in the field
+                try {
+                    ReflectTools.setJavaFieldValue(objectWithMemberFields,
+                            memberField, field);
+                } catch (IllegalArgumentException e) {
+                    throw new BindException("Could not assign value to field '"
+                            + memberField.getName() + "'", e);
+                } catch (IllegalAccessException e) {
+                    throw new BindException("Could not assign value to field '"
+                            + memberField.getName() + "'", e);
+                } catch (InvocationTargetException e) {
+                    throw new BindException("Could not assign value to field '"
+                            + memberField.getName() + "'", e);
+                }
+            }
+            if (field != null) {
+                // Bind it to the property id
+            	ValidationObject validationObject = (ValidationObject)((BeanItem<ValidationObject>)getItemDataSource()).getBean();
+            	register(field,propertyId.toString());
+            }
+        }    	
     }
     protected <T extends Field> T build(String caption, Class<?> dataType,
             Class<T> fieldType) throws BindException {

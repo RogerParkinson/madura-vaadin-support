@@ -20,6 +20,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -54,7 +55,7 @@ public class PizzaWindow2 extends Window {
     @PropertyId("testing")
     private TextField testing = new TextField();
     @PropertyId("description")
-    private TextField descr = new TextField();
+    private Label descr = new Label();
 
 	public PizzaWindow2() {
 	}
@@ -153,11 +154,11 @@ public class PizzaWindow2 extends Window {
 		return m_windowHeight;
 	}
 
-	public TextField getDescr() {
+	public Label getDescr() {
 		return descr;
 	}
 
-	public void setDescr(TextField descr) {
+	public void setDescr(Label descr) {
 		this.descr = descr;
 	}
 
