@@ -43,7 +43,6 @@ public class ConfigJPA {
 
 	    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 	    factory.setJpaVendorAdapter(vendorAdapter);
-//	    factory.setPackagesToScan("nz.co.senanque.addressbook.instances");
 	    factory.setDataSource(dataSource());
 	    factory.afterPropertiesSet();
 

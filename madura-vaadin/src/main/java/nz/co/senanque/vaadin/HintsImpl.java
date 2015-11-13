@@ -197,7 +197,7 @@ public class HintsImpl implements Hints, Serializable {
 	}
 	public AbstractField<?> getDateField(MaduraPropertyWrapper property) {
         final DateField df = new DateField();
-        df.setResolution(DateField.RESOLUTION_DAY);
+        df.setResolution(DateField.RESOLUTION_DAY.DAY);
         df.setStyleName("calendar");
         return df;
 	}

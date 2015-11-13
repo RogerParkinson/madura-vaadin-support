@@ -24,7 +24,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 
 /**
  * 
- * Just check permission
+ * This painter just checks the permission.
  * 
  * @author Roger Parkinson
  * @version $Revision:$

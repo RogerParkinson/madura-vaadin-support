@@ -8,13 +8,12 @@ import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 import com.vaadin.data.util.converter.Converter;
 
 /**
+ * Allows Vaadin to convert between a ChoiceBase and a String.
  * @author Roger Parkinson
  *
  */
 public class StringToChoiceBase implements Converter<Object, Object> {
 	
-//    private static final Logger logger = LoggerFactory.getLogger(StringToChoiceBase.class);
-
 	private final MaduraPropertyWrapper m_property;
 
 	public StringToChoiceBase(MaduraPropertyWrapper property) {
@@ -26,10 +25,8 @@ public class StringToChoiceBase implements Converter<Object, Object> {
 			Class<? extends Object> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null) {
-//			logger.debug("value={} type={} targetType={}",value,null,targetType);
 			return null;
 		}
-//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
 		if (targetType.equals(String.class)) {
 			return value.toString();
 		}
@@ -48,10 +45,8 @@ public class StringToChoiceBase implements Converter<Object, Object> {
 			Class<? extends Object> targetType, Locale locale)
 			throws com.vaadin.data.util.converter.Converter.ConversionException {
 		if (value == null) {
-//			logger.debug("value={} type={} targetType={}",value,null,targetType);
 			return null;
 		}
-//		logger.debug("value={} type={} targetType={}",value,value.getClass(),targetType);
 		if (targetType.equals(String.class)) {
 			return value.toString();
 		}

@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Implemented by the painters.
+ * 
  * @author Roger Parkinson
  *
  */

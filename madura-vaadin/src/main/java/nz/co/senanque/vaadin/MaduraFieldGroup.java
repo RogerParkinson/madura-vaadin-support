@@ -18,15 +18,11 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.data.fieldgroup.Caption;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
-import com.vaadin.data.fieldgroup.FieldGroup.BindException;
-import com.vaadin.data.fieldgroup.FieldGroup.SearchException;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
@@ -35,6 +31,8 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.util.ReflectTools;
 
 /**
+ * Use this instead of the Vaadin {link com.vaadin.data.fieldgroup.FieldGroup} to manage integration with a Madura session.
+ * 
  * @author Roger Parkinson
  *
  */
@@ -51,16 +49,12 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	private Map<Label,String> m_labels = new HashMap<>();
 	private List<MenuItem> m_menuItems = new ArrayList<>();
 
-	
-//	public MaduraFieldGroup(MaduraSessionManager maduraSessionManager, BeanItem<ValidationObject> itemDataSource) {
-//		super(itemDataSource);
-//		m_maduraSessionManager = maduraSessionManager;
-//		m_fieldFactory = maduraSessionManager.getFieldGroupFieldFactory();
-//		m_messageSource = maduraSessionManager.getMessageSource();
-//		m_hints = maduraSessionManager.getHints();
-//		loadProperties(itemDataSource);
-//	}
-	
+    /**
+     * Constructor insists on a {link nz.co.senanque.vaadin.application.MaduraSessionManager}.
+     * It does not need a current session or a current object to instantiate this, so it can be used as a Spring bean.
+     * 
+     * @param maduraSessionManager
+     */
     public MaduraFieldGroup(MaduraSessionManager maduraSessionManager) {
 		m_maduraSessionManager = maduraSessionManager;
 		m_fieldFactory = maduraSessionManager.getFieldFactory();
@@ -68,9 +62,17 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		m_hints = maduraSessionManager.getHints();
 	}
 
+	/**
+	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
+	 * @param fieldList
+	 */
 	public void setFieldList(List<String> fieldList) {
 		m_fieldList = fieldList;
 	}
+	/**
+	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
+	 * @param fieldList
+	 */
 	public void setFieldList(String[] fieldList) {
 		m_fieldList = Arrays.asList(fieldList);
 	}
@@ -78,10 +80,21 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	{
 		return m_fieldList;
 	}
+	/**
+	 * Tells the Madura session manager to connect this {link com.vaadin.ui.Label) to the given propertyId.
+	 * This can be done before there is a data source.
+	 * @param field
+	 * @param propertyId
+	 */
 	public void register(Label field, String propertyId) {
 		m_maduraSessionManager.register(field);
 		m_labels.put(field,propertyId);
 	}
+	/**
+	 * Establish a data source. The data source must be a {@code BeanItem<ValidationObject>} or we throw an exception.
+	 * This establishes the Madura binding for the fields. 
+	 * @see com.vaadin.data.fieldgroup.FieldGroup#setItemDataSource(com.vaadin.data.Item)
+	 */
 	@SuppressWarnings("unchecked")
 	public void setItemDataSource(Item itemDataSource) {
     	if (!(itemDataSource instanceof BeanItem && ((BeanItem<?>) itemDataSource).getBean() instanceof ValidationObject)) {
@@ -91,6 +104,11 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	loadProperties((BeanItem<ValidationObject>) itemDataSource);
 	}
     
+    /**
+     * Establish the Madura binding for the fields.
+     * 
+     * @param dataSource
+     */
     private void loadProperties(BeanItem<ValidationObject> dataSource) {
     	if (m_maduraSessionManager == null) {
     		return; // too early
@@ -164,6 +182,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
         }
     }
     
+    /** 
+     * Bind this field to the given propertyId. Also establish binding to the Madura session.
+     * @see com.vaadin.data.fieldgroup.FieldGroup#bind(com.vaadin.ui.Field, java.lang.Object)
+     */
     public void bind(Field<?> field, Object propertyId) throws BindException {
     	super.bind(field, propertyId);
     	Item dataSource = getItemDataSource();
@@ -174,10 +196,14 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             {
             	MaduraPropertyWrapper p = m_maduraSessionManager.getMaduraPropertyWrapper((ValidationObject)source, propertyId.toString());
             	AbstractField<?> f = (AbstractField<?>)field;
-            	m_maduraSessionManager.bind(null, f, p);
+            	m_maduraSessionManager.bind(f, p);
             }
         }
     }
+    /**
+     * Create (if necessary) and bind fields.
+     * @see com.vaadin.data.fieldgroup.FieldGroup#buildAndBindMemberFields(java.lang.Object, boolean)
+     */
     protected void buildAndBindMemberFields(Object objectWithMemberFields,
             boolean buildFields) throws BindException {
     	super.buildAndBindMemberFields(objectWithMemberFields,
@@ -186,6 +212,12 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	loadProperties((BeanItem<ValidationObject>)getItemDataSource());
     }
         
+    /** 
+     * Scan the class for {link com.vaadin.ui.Label} fields, as opposed for input fields that the
+     * Vaadin code already scans for, and bind them to the Madura session.
+     * @param objectWithMemberFields
+     * @param buildFields
+     */
     private void processLabels(Object objectWithMemberFields, boolean buildFields) {
     	Class<?> objectClass = objectWithMemberFields.getClass();
         for (java.lang.reflect.Field memberField : getFieldsInDeclareOrder(objectClass)) {
@@ -251,11 +283,20 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             }
         }    	
     }
+    /**
+     *  We don't trust this call to work right so this override just throws an exception
+     * @see com.vaadin.data.fieldgroup.FieldGroup#build(java.lang.String, java.lang.Class, java.lang.Class)
+     */
     protected <T extends Field> T build(String caption, Class<?> dataType,
             Class<T> fieldType) throws BindException {
     	throw new RuntimeException("Using the buildxxx methods is not supported by Madura");
     }
     
+    /**
+     * Uses the field factory to create a field using the property type. This requires a data source already established.
+     * 
+     * @see com.vaadin.data.fieldgroup.FieldGroup#buildAndBind(java.lang.Object)
+     */
     public Field<?> buildAndBind(Object propertyId) throws BindException {
     	if (getItemDataSource()==null) {
     		throw new BindException("No data source established, cannot build and bind "+propertyId);
@@ -266,10 +307,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	return field;
     }
     
-    public void unbind(Field<?> field) throws BindException {
-    	super.unbind(field);
-    }
-
     public void unbind(ValidationObject validationObject) {
     	getMaduraSessionManager().getValidationSession().unbind(validationObject);
     }
@@ -365,24 +402,44 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		return ret;
 	}
 	
+	/**
+	 * Creates an extended command for use with a {@link com.vaadin.ui.MenuBar.MenuItem}.
+	 * @param listener
+	 * @return commandExt
+	 */
 	public CommandExt createMenuItemCommand(final ClickListener listener) {
 		return createMenuItemCommandExt(new SimpleButtonPainter(m_maduraSessionManager),listener);
 	}
+	/**
+	 * Creates an extended command for use with a {@link com.vaadin.ui.MenuBar.MenuItem}.
+	 * The MenuItem will disable until all the fields are clean.
+	 * @param listener
+	 * @return commandExt
+	 */
 	public CommandExt createMenuItemCommandSubmit(final ClickListener listener) {
 		return createMenuItemCommandExt(new SubmitButtonPainter(m_maduraSessionManager),listener);
 	}
-//	public CommandExt createMenuItemCommandField(String propertyId, final ClickListener listener) {
-//		return createMenuItemCommandExt(new FieldButtonPainter(propertyId,m_maduraSessionManager),listener);
-//	}
+	/**
+	 * Creates an extended command for use with a {@link com.vaadin.ui.MenuBar.MenuItem}.
+	 * If the current user does not have the given permission it remains disabled
+	 * @param permission
+	 * @param listener
+	 * @return commandExt
+	 */
 	public CommandExt createMenuItemCommand(final String permission, final ClickListener listener) {
 		return createMenuItemCommandExt(new SimpleButtonPainter(permission,m_maduraSessionManager),listener);
 	}
+	/**
+	 * Creates an extended command for use with a {@link com.vaadin.ui.MenuBar.MenuItem}.
+	 * The MenuItem will disable until all the fields are clean.
+	 * If the current user does not have the given permission it remains disabled
+	 * @param permission
+	 * @param listener
+	 * @return commandExt
+	 */
 	public CommandExt createMenuItemCommandSubmit(final String permission, final ClickListener listener) {
 		return createMenuItemCommandExt(new SubmitButtonPainter(permission,m_maduraSessionManager),listener);
 	}
-//	public CommandExt createMenuItemCommandField(String propertyId, final String permission, final ClickListener listener) {
-//		return createMenuItemCommandExt(new FieldButtonPainter(propertyId,permission,m_maduraSessionManager),listener);
-//	}
 	public CommandExt createMenuItemCommandExt(final MenuItemPainter painter,
 			final ClickListener listener) {
 		final MaduraFieldGroup me = this;
@@ -404,6 +461,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		};
 		return ret;
 	}
+	/**
+	 * Tells the madura session about this {@link com.vaadin.ui.MenuBar.MenuItem}.
+	 * @param field
+	 */
 	public void register(MenuItem field) {
 		Command command = field.getCommand();
 		if (command != null && command instanceof CommandExt) {
@@ -415,10 +476,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 			throw new RuntimeException("Menu item command is not a CommandExt");
 		}
 	}
-//	public void register(MenuItem field, String propertyId) {
-//		m_maduraSessionManager.register(field);
-//		m_menuItems.put(field,propertyId);
-//	}
 
 	@Override
 	public List<MaduraPropertyWrapper> getProperties() {

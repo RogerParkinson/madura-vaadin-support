@@ -15,9 +15,6 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 
 import com.vaadin.ui.Button;
@@ -26,6 +23,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 /**
  * 
  * Only enable the button (or menu item) if the required fields are filled in.
+ * Also check the permission.
  * 
  * @author Roger Parkinson
  * @version $Revision:$

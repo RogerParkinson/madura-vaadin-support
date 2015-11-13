@@ -81,7 +81,7 @@ public class FormattingTable extends Table {
 				if (thisColumn.startsWith("-"))
 				{
 					thisColumn = thisColumn.substring(1);
-					setColumnAlignment(thisColumn, Table.ALIGN_RIGHT);
+					setColumnAlignment(thisColumn, Table.Align.RIGHT);
 				}
 				if (propertyId.toString().equals(thisColumn)) {
 					visiblePropertyIds[i] = propertyId;

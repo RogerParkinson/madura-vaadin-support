@@ -1,8 +1,9 @@
 package com.vaadin.data.util;
 
-import com.vaadin.ui.AbstractField;
 
 /**
+ * Allows us to get to the protected methods on {link com.vaadin.data.util.AbstractProperty}.
+ * 
  * @author Roger Parkinson
  *
  */

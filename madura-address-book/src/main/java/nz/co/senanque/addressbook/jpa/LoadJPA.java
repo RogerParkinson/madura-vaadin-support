@@ -1,7 +1,5 @@
 package nz.co.senanque.addressbook.jpa;
 
-import java.sql.Date;
-
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
@@ -27,6 +25,9 @@ public class LoadJPA {
 		m_addressBookDAO = addressBookDAO;
 	}
 
+	/**
+	 * Load the data into the memory-based database.
+	 */
 	@PostConstruct
 	@Transactional
 	public void loadData() {

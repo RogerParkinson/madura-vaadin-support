@@ -402,10 +402,19 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         }
         bind(form, field, property);
     }
+    public void bind(final AbstractField<?> field,
+            ValidationObject validationObject, String propertyName) {
+    	bind(null,field,validationObject,propertyName);
+    }
 
-    public void bind(final MaduraForm form, final AbstractField<?> field,
+    public void bind(final AbstractField<?> field,
             MaduraPropertyWrapper property)
     {
+    	bind(null,field,property);
+    }
+    public void bind(final MaduraForm form, final AbstractField<?> field,
+            MaduraPropertyWrapper property)
+        {
         field.setPropertyDataSource(property);
         Hints hints = getHints();
         

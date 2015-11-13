@@ -35,19 +35,16 @@ public class FieldButtonPainter extends AbstractButtonPainter
 
 	public final String m_propertyName;
 	public MaduraPropertyWrapper m_property;   
-    private final MaduraSessionManager m_maduraSessionManager;
 
     public FieldButtonPainter(String propertyName, MaduraSessionManager maduraSessionManager)
     {
     	super(maduraSessionManager.getPermissionManager(),maduraSessionManager.getMessageSource());
         m_propertyName = propertyName;
-        m_maduraSessionManager = maduraSessionManager;
     }
     
     public FieldButtonPainter(String propertyName, String permissionName, MaduraSessionManager maduraSessionManager)
     {
     	super(maduraSessionManager.getPermissionManager(),maduraSessionManager.getMessageSource());
-        m_maduraSessionManager = maduraSessionManager;
         m_propertyName = propertyName;
         setPermissionName(permissionName);
     }
