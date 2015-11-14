@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -44,6 +45,7 @@ public class AuthenticationServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		m_logger.debug("redirecting to {}",loginURL);
 		resp.sendRedirect(loginURL);
 	}
 
@@ -51,15 +53,15 @@ public class AuthenticationServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		try {
-//			Cookie[] cookies = req.getCookies();
 			m_validator.setErrorAttribute(req, null);
 			m_validator.authenticate(req);
-//			resp.addCookie(cookies[0]);
-			resp.sendRedirect(req.getContextPath()); // on to application
+			m_logger.debug("redirecting to {}",req.getContextPath());
+			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // on to application
 		} catch (Exception e) {
 			m_logger.error(e.getMessage(),e);
 			m_validator.setErrorAttribute(req, e.getLocalizedMessage());
-			resp.sendRedirect(req.getContextPath()); // back to login page
+			m_logger.debug("redirecting to {}",req.getContextPath());
+			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // back to login page
 		}
 	}
 
