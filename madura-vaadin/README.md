@@ -1,4 +1,4 @@
-#MaduraVaadinSupport#
+#madura-vaadin#
 	
 
 MaduraVaadinSupport ties together all the back-end Madura projects (Madura Objects[[3]](https://github.com/RogerParkinson/madura-objects-parent) , Madura Rules[[4]](https://github.com/RogerParkinson/MaduraRules) , Madura Bundles[[5]](https://github.com/RogerParkinson/madura-bundles) ) and delivers them with a Vaadin UI[[2]](https://vaadin.com/home) . So it is worth taking a brief moment to review what those back-ends do:

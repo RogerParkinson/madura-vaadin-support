@@ -1,5 +1,4 @@
-madura-vaadin-support
-=====================
+#madura-vaadin-support#
 
 We love Vaadin's UI approach, so we've made sure Madura plays well with it. The following sub projects provide libraries and demonstrations supporting what we've done. 
 
