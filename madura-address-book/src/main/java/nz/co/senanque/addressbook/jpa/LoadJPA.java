@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Loads hard coded data into the H2 database.
+ * 
  * @author Roger Parkinson
  *
  */

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.spring.annotation.UIScope;
 
 /**
+ * The factory the creates the first directed popup window.
+ * 
  * @author Roger Parkinson
  *
  */

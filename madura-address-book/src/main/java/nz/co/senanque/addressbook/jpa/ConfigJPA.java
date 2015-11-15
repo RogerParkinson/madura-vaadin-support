@@ -19,6 +19,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
+ * This is a Spring Configuration class that defines the beans needed for
+ * the database. The database used here is an H2 database, in memory, to simplify
+ * the demo setup.
+ * 
  * @author Roger Parkinson
  *
  */

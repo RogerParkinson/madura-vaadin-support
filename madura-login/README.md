@@ -5,6 +5,7 @@ Web fragment that provides authentication and authorization services for applica
 Probably only useful for demos.
 
 Can be customised by:
+
  * adding a customised login.html to the resources directory
  * adding a customised login.css to resources/css
  * adding a logo.gif file to resources/images
@@ -12,11 +13,12 @@ Can be customised by:
  * deploying a different AuthenticationDelegate implementation as a bean.
  
 Things a production version ought to have:
+
  * remember me
  * security timeout
  * forgot password, change password
+ * a more dynamic/robust way of storing the password (ie a production implementation of AuthenticationDelegate.java)
   
 To do:
- * review CSS, not sure about the blue writing
+
  * doesn't work at all on Chromium browser, ie doesn't redirect to application.
- * Is there a way to integrate css with Vaadin themes?

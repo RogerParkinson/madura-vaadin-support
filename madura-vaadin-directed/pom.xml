@@ -9,7 +9,7 @@
   <name>madura-vaadin-directed</name>
   <packaging>jar</packaging>
   <url>www.madurasoftware.com</url>
-  <description>Extended table editor that uses popup editor windows and an extended jpacontainer that supports @Transactional</description>
+  <description>Library to provide directed questioning driven by the rules.</description>
   <dependencies>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>

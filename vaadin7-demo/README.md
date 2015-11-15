@@ -1,7 +1,7 @@
 vaadin7-demo
 ============
 
-Template for a simple Vaadin application that only requires a Servlet 3.0 container to run.
+Template for a simple Vaadin application that only requires a Servlet 3.0 container to run. The reason for including this is to give us a baseline of Vaadin without Madura. It is mostly Vaadin tutorial examples running with vaadin-spring. The rest of the (madura) applications use this as a template.
 
 
 Workflow

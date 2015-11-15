@@ -1,40 +1,23 @@
 madura-vaadin-demo
 ==================
 
-Template for a simple Vaadin application that only requires a Servlet 3.0 container to run.
-It demonstrates integration with Madura.
+This demo shows Vaadin and Madura Objects working together providing single field validation and a dynamic submit button which disables until the required fields are complete and without error.
 
+It does not use Madura Rules so there is no cross-field validation, but it illustrates the configuration and code required to implement this much functionality. This is to show that Madura can be used without the rules engine and still be useful. 
 
-Workflow
-========
+More detailed documentation for this is found in the {madura-vaadin)[../madura-vaadin/READ.me] project.
+
+Build and Run
+-------------
 
 To compile the entire project, run "mvn install".
-To run the application, run "mvn jetty:run" and open http://localhost:8080/ .
+To run the application, run "mvn jetty:run" and open http://localhost:8080/
 
-To develop the theme, simply update the relevant theme files and reload the application.
-Pre-compiling a theme eliminates automatic theme updates at runtime - see below for more information.
+Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
 
-Debugging client side code
-  - run "mvn vaadin:run-codeserver" on a separate console while the application is running
-  - activate Super Dev Mode in the debug window of the application
+Script
+------
 
-To produce a deployable production mode WAR:
-- change productionMode to true in the servlet class configuration (nested in the UI class)
-- run "mvn clean vaadin:compile-theme package"
-  - See below for more information. Running "mvn clean" removes the pre-compiled theme.
-- test with "mvn jetty:run-war
+login with admin/admin
 
-Using a precompiled theme
--------------------------
-
-When developing the application, Vaadin can compile the theme on the fly when needed,
-or the theme can be precompiled to speed up page loads.
-
-To precompile the theme run "mvn vaadin:compile-theme". Note, though, that once
-the theme has been precompiled, any theme changes will not be visible until the
-next theme compilation or running the "mvn clean" target.
-
-When developing the theme, running the application in the "run" mode (rather than
-in "debug") in the IDE can speed up consecutive on-the-fly theme compilations
-significantly.
-
+The Submit button is inactive until the form is completed, and without errors 'complete' means all the required fields have valid values. Name and Email are required but address is not, also Email needs an '@' in it to be valid Try different values in the different fields and note how the Submit button changes

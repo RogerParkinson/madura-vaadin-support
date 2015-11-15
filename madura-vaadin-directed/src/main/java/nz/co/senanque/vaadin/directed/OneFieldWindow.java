@@ -35,6 +35,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 /**
+ * Creates a popup window that prompts for a single field, then recursively generates the next window for the next field.
+ * 
  * @author Roger Parkinson
  *
  */

@@ -27,6 +27,8 @@ import nz.co.senanque.addressbook.instances.Person;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 /**
+ * DAO class for the address book.
+ * 
  * @author Roger Parkinson
  *
  */
@@ -34,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AddressBookDAO {
 
 	private EntityManager entityManager;
-	
 
 	@PersistenceContext
 	public void setEntityManager(EntityManager entityManager)

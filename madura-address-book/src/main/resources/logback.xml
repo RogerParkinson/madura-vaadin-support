@@ -10,9 +10,6 @@
 	</appender>
 
 	<logger name="org.springframework" level="warn" />
-<!-- 	<logger name="nz.co.senanque.login" level="debug" /> -->
-<!-- 	<logger name="nz.co.senanque.vaadin.tableeditor" level="debug" /> -->
-<!-- 	<logger name="nz.co.senanque.vaadin.format" level="debug" /> -->
 	<root level="error">
 		<appender-ref ref="CONSOLE" />
 	</root>
