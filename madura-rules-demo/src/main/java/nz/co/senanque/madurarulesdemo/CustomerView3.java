@@ -30,6 +30,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 /**
+ * This is much the same as {@link nz.co.senanque.madurarulesdemo.CustomerView2} except we use
+ * a menu bar instead buttons. The menu bar dynamically enables and disables the submit option in the same way
+ * the submit button was enabled and disabled.
+ * 
  * @author Roger Parkinson
  *
  */
@@ -98,7 +102,7 @@ public class CustomerView3 extends VerticalLayout {
 				
 			}});
         MenuItem menuItemCancel = file.addItem("button.cancel", command);
-        fieldGroup.register(menuItemCancel);
+        fieldGroup.bind(menuItemCancel);
 
         command = fieldGroup.createMenuItemCommandSubmit(new ClickListener(){
 
@@ -110,7 +114,7 @@ public class CustomerView3 extends VerticalLayout {
 				
 			}});
         MenuItem menuItemSubmit = file.addItem("button.submit", command);
-        fieldGroup.register(menuItemSubmit);
+        fieldGroup.bind(menuItemSubmit);
 
     }
     /* 

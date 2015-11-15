@@ -86,7 +86,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	 * @param field
 	 * @param propertyId
 	 */
-	public void register(Label field, String propertyId) {
+	public void bind(Label field, String propertyId) {
 		m_maduraSessionManager.register(field);
 		m_labels.put(field,propertyId);
 	}
@@ -246,25 +246,25 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
                     continue;
                 }
             }
-            Label field;
+            Label label;
             try {
                 // Get the field from the object
-                field = (Label) ReflectTools.getJavaFieldValue(
+                label = (Label) ReflectTools.getJavaFieldValue(
                         objectWithMemberFields, memberField, Label.class);
             } catch (Exception e) {
                 // If we cannot determine the value, just skip the field and try
                 // the next one
                 continue;
             }
-            if (field == null && buildFields) {
+            if (label == null && buildFields) {
 
                 // Create the component (Field)
-                field = new Label();
+                label = new Label();
 
                 // Store it in the field
                 try {
                     ReflectTools.setJavaFieldValue(objectWithMemberFields,
-                            memberField, field);
+                            memberField, label);
                 } catch (IllegalArgumentException e) {
                     throw new BindException("Could not assign value to field '"
                             + memberField.getName() + "'", e);
@@ -276,10 +276,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
                             + memberField.getName() + "'", e);
                 }
             }
-            if (field != null) {
+            if (label != null) {
                 // Bind it to the property id
             	ValidationObject validationObject = (ValidationObject)((BeanItem<ValidationObject>)getItemDataSource()).getBean();
-            	register(field,propertyId.toString());
+            	bind(label,propertyId.toString());
             }
         }    	
     }
@@ -465,7 +465,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	 * Tells the madura session about this {@link com.vaadin.ui.MenuBar.MenuItem}.
 	 * @param field
 	 */
-	public void register(MenuItem field) {
+	public void bind(MenuItem field) {
 		Command command = field.getCommand();
 		if (command != null && command instanceof CommandExt) {
 			MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);

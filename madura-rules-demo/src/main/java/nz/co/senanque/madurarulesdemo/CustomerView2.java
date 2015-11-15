@@ -30,6 +30,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * Shows a MaduraFieldGroup binding against predefined fields and used to create buttons.
+ * This is all done before the data source is established, but you do have to know what
+ * fields are needed on the form at coding time which is not always the case.
+ * 
  * @author Roger Parkinson
  *
  */

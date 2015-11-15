@@ -36,6 +36,13 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 /**
+ * This show the use of the MaduraFieldGroup when binding to labels rather than to fields.
+ * There is also a table variant to display the order entries. This is a 
+ * {@link nz.co.senanque.vaadin.format.FormattingTable.FormattingTable()} which
+ * handles some I18n issues and right justifies numerics etc.
+ * 
+ * Two buttons raise popup windows to get new order items.
+ * 
  * @author Roger Parkinson
  *
  */
@@ -83,11 +90,11 @@ public class OrderView extends VerticalLayout {
 
 		orderStatusLabel = new Label();
 		horizontalLayout.addComponent(orderStatusLabel);
-		fieldGroup.register(orderStatusLabel,"orderStatus");
+		fieldGroup.bind(orderStatusLabel,"orderStatus");
 		
 		orderAmountLabel = new Label();
 		horizontalLayout.addComponent(orderAmountLabel);
-		fieldGroup.register(orderAmountLabel,"amount");
+		fieldGroup.bind(orderAmountLabel,"amount");
 		
 		verticalLayout.addComponent(orderForm);
 		orderForm.addComponent(horizontalLayout);

@@ -29,6 +29,8 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * This is a popup window that uses the MaduraFieldGroup to configure the pizza.
+ * 
  * @author Roger Parkinson
  *
  */
@@ -88,18 +90,27 @@ public class PizzaWindow2 extends Window {
         setCaption(messageSourceAccessor.getMessage("pizza", "Pizza"));
 	}
 	
+	/**
+	 * Loads an existing (or new/empty) pizza object and binds it to the fields.
+	 * 
+	 * @param pizza
+	 */
 	public void load(final Pizza pizza) {
+		// Clean the panel of any previous fields
 		panel.removeAllComponents();
+		// bind the object to the Madura session
 		getMaduraSessionManager().getValidationSession().bind(pizza);
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
 
-		FormLayout formLayout = new FormLayout();
-    	
+    	// make a new layout and add to the panel
+    	FormLayout formLayout = new FormLayout();
     	panel.addComponent(formLayout);
     	
     	m_maduraFieldGroup = new MaduraFieldGroup(getMaduraSessionManager());
     	m_maduraFieldGroup.setItemDataSource(beanItem);
-    	m_maduraFieldGroup.buildAndBindMemberFields(this);
+    	m_maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
+    	
+    	// Now we have to add the fields to the panel
 		formLayout.addComponent(base);
 		formLayout.addComponent(topping);
 		formLayout.addComponent(size);

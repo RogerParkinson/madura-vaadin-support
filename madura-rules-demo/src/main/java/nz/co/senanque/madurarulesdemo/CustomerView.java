@@ -30,6 +30,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * Shows the use of the deprecated MaduraForm to define the fields and buttons.
+ * Both fields and buttons can be defined before the data source is set.
+ * 
  * @author Roger Parkinson
  *
  */

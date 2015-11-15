@@ -27,6 +27,8 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * This is a popup window that uses the deprecated MaduraForm to configure the pizza.
+ * 
  * @author Roger Parkinson
  *
  */
