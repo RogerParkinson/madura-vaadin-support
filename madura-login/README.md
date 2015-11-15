@@ -1,5 +1,4 @@
-madura-login
-============
+#madura-login#
 
 Web fragment that provides authentication and authorization services for application.
 Probably only useful for demos.
@@ -22,3 +21,6 @@ Things a production version ought to have:
 To do:
 
  * doesn't work at all on Chromium browser, ie doesn't redirect to application.
+ 
+More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
+

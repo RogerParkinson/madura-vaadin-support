@@ -12,16 +12,14 @@ Finally there is an example of directed questioning. This uses the rules to work
 
 More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
 
-Build and Run
--------------
+##Build and Run##
 
 To compile the entire project, run "mvn install".
 To run the application, run "mvn jetty:run" and open http://localhost:8080/
 
 Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
 
-Script
-------
+##Script##
 
 login with admin/admin
 

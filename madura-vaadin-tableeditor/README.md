@@ -4,6 +4,7 @@ Extended table editor that uses popup editor windows and an extension of Vaadin'
 
 Example configuration:
 
+```
 	@Bean(name="personTableLayout")
 	@UIScope
 	public TableEditorLayout<Person> getTableEditorLayout() {
@@ -56,4 +57,4 @@ Also make sure Spring scans the {@code nz.co.senanque.vaadin.tableeditor} packag
 			}
 		}
 	}
-
+```

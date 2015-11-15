@@ -6,16 +6,14 @@ It does not use Madura Rules so there is no cross-field validation, but it illus
 
 More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
 
-Build and Run
--------------
+##Build and Run##
 
 To compile the entire project, run "mvn install".
 To run the application, run "mvn jetty:run" and open http://localhost:8080/
 
 Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
 
-Script
-------
+##Script##
 
 login with admin/admin
 
