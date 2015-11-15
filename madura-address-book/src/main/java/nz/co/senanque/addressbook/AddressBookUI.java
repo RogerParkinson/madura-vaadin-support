@@ -2,7 +2,6 @@ package nz.co.senanque.addressbook;
 
 import java.util.Set;
 
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
@@ -23,8 +22,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
-
-import ch.qos.logback.ext.spring.web.LogbackConfigListener;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
