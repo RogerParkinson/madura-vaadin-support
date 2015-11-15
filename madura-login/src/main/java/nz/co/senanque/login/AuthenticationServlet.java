@@ -55,12 +55,12 @@ public class AuthenticationServlet extends HttpServlet {
 		try {
 			m_validator.setErrorAttribute(req, null);
 			m_validator.authenticate(req);
-			m_logger.debug("redirecting to {}",req.getContextPath());
+			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
 			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // on to application
 		} catch (Exception e) {
 			m_logger.error(e.getMessage(),e);
 			m_validator.setErrorAttribute(req, e.getLocalizedMessage());
-			m_logger.debug("redirecting to {}",req.getContextPath());
+			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
 			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // back to login page
 		}
 	}
