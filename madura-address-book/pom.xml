@@ -177,6 +177,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.plugin.version}</version>
 				<configuration>
+					<jvmArgs>-XX:PermSize=128M -XX:MaxPermSize=256M</jvmArgs>
 				    <scanIntervalSeconds>2</scanIntervalSeconds>
 				</configuration>
 			</plugin>
