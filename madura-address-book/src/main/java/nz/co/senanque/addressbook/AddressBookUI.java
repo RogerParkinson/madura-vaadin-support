@@ -2,6 +2,7 @@ package nz.co.senanque.addressbook;
 
 import java.util.Set;
 
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
@@ -46,6 +47,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * Main application class.
+ * 
+ * @author Roger Parkinson
  *
  */
 @Theme("addressbooktheme")
@@ -59,19 +63,13 @@ public class AddressBookUI extends UI  {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
 	@Autowired private DefaultView m_defaultView;
-//	@Autowired private SpringViewProvider viewProvider;
 
 	@WebListener
     public static class MyContextLoaderListener extends ContextLoaderListener {
     	// This causes the applicationContext.xml context file to be loaded
     	// per session.
     }
-
-    @WebListener
-    public static class MyLogbackConfigListener extends LogbackConfigListener {
-    	// Need this to init logback correctly
-    }
-    
+   
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {

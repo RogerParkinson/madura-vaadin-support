@@ -64,11 +64,6 @@ public class MyUI extends UI {
     	// per session.
     }
 
-    @WebListener
-    public static class MyLogbackConfigListener extends LogbackConfigListener {
-    	// Need this to init logback correctly
-    }
-    
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {
