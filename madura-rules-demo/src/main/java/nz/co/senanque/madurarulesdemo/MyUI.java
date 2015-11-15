@@ -43,6 +43,12 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * Main UI class.
+ * 
+ * @author Roger Parkinson
+ *
+ */
 @Theme("mytheme")
 @Title("Madura Rules Demo")
 @Widgetset("nz.co.senanque.madurarulesdemo.MyAppWidgetset")
@@ -180,6 +186,10 @@ public class MyUI extends UI {
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
     }
+	/**
+	 * Create a customer if one doesn't exist.
+	 * @return Customer
+	 */
 	public Customer getCustomer() {
 		if (m_customer == null) {
 			m_customer = new Customer();
@@ -187,6 +197,10 @@ public class MyUI extends UI {
 		}
 		return m_customer;
 	}
+	/**
+	 * Create an Order if one doesn't exist.
+	 * @return Order
+	 */
 	public Order getOrder() {
 		if (m_order == null) {
 			m_order = new Order();

@@ -51,27 +51,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-<!-- 
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-push</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-themes</artifactId>
-		</dependency>
- -->
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -157,6 +137,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>${jetty.plugin.version}</version>
 				<configuration>
+					<jvmArgs>-XX:PermSize=128M -XX:MaxPermSize=256M</jvmArgs>
 				    <scanIntervalSeconds>2</scanIntervalSeconds>
 				</configuration>
 			</plugin>
