@@ -34,6 +34,10 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
+ * Shows the use of {@link nz.co.senanque.vaadin.MaduraFieldGroup} to create buttons and fields.
+ * Notice that the buttons can be created before a data source it bound to the fiel group, but field
+ * must be done afterwards.
+ * 
  * @author Roger Parkinson
  *
  */
