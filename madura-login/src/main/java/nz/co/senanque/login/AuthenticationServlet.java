@@ -4,6 +4,7 @@
 package nz.co.senanque.login;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -57,6 +58,11 @@ public class AuthenticationServlet extends HttpServlet {
 			m_validator.authenticate(req);
 			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
 			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // on to application
+		} catch (LocaleChangeException e) {
+			m_validator.setLocale(req, e.getLocale());
+			resp.setLocale(new Locale(e.getLocale()));
+			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
+			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // back to login page
 		} catch (Exception e) {
 			m_logger.error(e.getMessage(),e);
 			m_validator.setErrorAttribute(req, e.getLocalizedMessage());

@@ -6,6 +6,7 @@ package nz.co.senanque.login;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -49,6 +50,8 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 
 	private String m_loginPage = LOGIN_URL;
 	private String[] m_ignoreURLs;
+	private String[] m_flags = new String[]{"English","French"};
+	private String[] m_langs = new String[]{"en","fr"};
 	
 	@Autowired(required=false) private AuthenticationDelegate m_authenticationDelegate;
 
@@ -112,6 +115,10 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		String user = req.getParameter("user");
 		String password = req.getParameter("password");
 		String locale = req.getParameter("locale");
+		if (StringUtils.isEmpty(user) || StringUtils.isEmpty(password)) {
+			// assume we just changed the locale
+			throw new LocaleChangeException(locale);
+		}
 		Set<String> permissions = m_authenticationDelegate.authenticate(req.getServletContext(),user,password);
 		HttpSession session = req.getSession(true);
 		session.setAttribute(PERMISSIONS, permissions);
@@ -126,6 +133,10 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		req.getSession().setAttribute(ERROR_ATTRIBUTE, error);
 		m_logger.debug("Setting error: {} on session {}",error,req.getSession().getId());
 	}
+	public void setLocale(HttpServletRequest req, String locale) {
+		req.getSession().setAttribute(LOCALE, locale);
+		m_logger.debug("Setting locale: {} on session {}",locale,req.getSession().getId());
+	}
 
 	/* (non-Javadoc)
 	 * @see nz.co.senanque.login.RequestValidator#getErrorAttribute(javax.servlet.http.HttpServletRequest)
@@ -135,6 +146,13 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 				(String)req.getSession().getAttribute(ERROR_ATTRIBUTE),
 				req.getSession().getId());
 		return (String)req.getSession().getAttribute(ERROR_ATTRIBUTE);
+	}
+
+	public String getLocale(HttpServletRequest req) {
+		m_logger.debug("Getting locale: {} on session {}",
+				(String)req.getSession().getAttribute(LOCALE),
+				req.getSession().getId());
+		return (String)req.getSession().getAttribute(LOCALE);
 	}
 
 	public String[] getIgnoreURLs() {
@@ -200,7 +218,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			pipe(is,out);
 			return;
 		}
-		String login = getLoginHTML(getErrorAttribute(req), servletContext);
+		String login = getLoginHTML(getErrorAttribute(req),getLocale(req), servletContext);
 		httpServletResponse.getOutputStream().print(login);
 	}
 	
@@ -213,17 +231,58 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		}
 	}
 	
-	protected String getLoginHTML(String error, ServletContext servletContext) throws IOException {
-		String s = getFile("login.html",servletContext);
+	protected String getLoginHTML(String error, String locale, ServletContext servletContext) throws IOException {
+		
+		m_logger.debug("Current locale {}",locale);
+		Locale useLocale = Locale.getDefault();
+		if (locale != null) {
+			Locale.setDefault(new Locale(locale));
+			useLocale = new Locale(locale);
+		}
+		String flags = getLocales(locale);
+		m_logger.debug("Current locale {}",useLocale);
+		String s = getFile("login.html",servletContext).replace("~FLAGS",flags);
 		final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
+		String t = messageSourceAccessor.getMessage("login.title",useLocale);
+		m_logger.debug("login.title={}",t);
+		t = messageSourceAccessor.getMessage("login.name",useLocale);
+		m_logger.debug("login.name={}",t);
 		String contextPath = servletContext.getContextPath();
 		String c = s.replace("~CONTEXTPATH", contextPath);
-		c = c.replace("~TITLE", messageSourceAccessor.getMessage("login.title","Welcome to Madura"));
-		c = c.replace("~NAME", messageSourceAccessor.getMessage("login.name","User"));
-		c = c.replace("~PASSWORD", messageSourceAccessor.getMessage("login.password","Password"));
-		c = c.replace("~LOGIN", messageSourceAccessor.getMessage("login.login","Login"));
+		c = c.replace("~TITLE", messageSourceAccessor.getMessage("login.title","Welcome to Madura",useLocale));
+		c = c.replace("~NAME", messageSourceAccessor.getMessage("login.name","User",useLocale));
+		c = c.replace("~PASSWORD", messageSourceAccessor.getMessage("login.password","Password",useLocale));
+		c = c.replace("~LOGIN", messageSourceAccessor.getMessage("login.login","Login",useLocale));
 		c = c.replace("~ERROR", (error==null?"":error));
+		c = c.replace("~LOCALE", (locale==null?"":locale.toString()));
+		m_logger.debug("\n{}",c);
 		return c;
+	}
+	
+	private String getLocales(String currentLocale) {
+		Class<?> clazz = this.getClass();
+		String currentFlag ="";
+		if (currentLocale == null) {
+			currentLocale = m_langs[0];
+		}
+		for (int i=0;i<m_langs.length;i++) {
+			if (currentLocale.equals(m_langs[i])) {
+				currentFlag = m_flags[i];
+			}
+		}
+		StringBuilder ret = new StringBuilder("<select name=\"locale\" class=\"icon-menu\" onchange=\"this.form.submit()\" ");
+		ret.append("style=\"background-image:url(~CONTEXTPATH/flags/~CURRENTFLAG.png);\">".replace("~CURRENTFLAG", currentFlag));
+		for (int i=0;i<m_langs.length;i++) {
+			if (currentLocale.equals(m_langs[i])) {
+				ret.append("<option value=\"~LANG\" selected style=\"background-image:url(~CONTEXTPATH/flags/~FLAG.png)\">~FLAG</option>"
+						.replace("~FLAG", m_flags[i]).replace("~LANG", m_langs[i]));
+			} else {
+				ret.append("<option value=\"~LANG\" style=\"background-image:url(~CONTEXTPATH/flags/~FLAG.png)\">~FLAG</option>"
+						.replace("~FLAG", m_flags[i]).replace("~LANG", m_langs[i]));
+			}
+		}
+		ret.append("</select>");
+		return ret.toString();
 	}
 	
 	protected String getLoginCSS(String fileName, ServletContext servletContext) throws IOException {

@@ -101,12 +101,14 @@ select {
 	border-radius: 4px;
 	color: #474747;
 	border: 1px solid #C5C5C5;
-	background: #FFF none repeat scroll 0% 0%;
+	background: #FFF none no-repeat scroll 0% 0%;
+	background-size: 30px auto;
+	padding-left:30px;
 }
 select.icon-menu option {
 	background-repeat:no-repeat;
 	background-position:bottom left;
-	background-size: 20px;
+	background-size: 20px auto;
 	padding-left:30px;
 }
 label>span {
