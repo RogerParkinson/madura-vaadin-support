@@ -14,7 +14,10 @@
 				class="org.springframework.context.support.ResourceBundleMessageSource">
 				<property name="basenames">
 					<list>
-						<value>ValidationMessages</value>
+						<value>nz/co/senanque/rules/RulesMessages</value>
+						<value>nz/co/senanque/validationengine/ValidationMessages</value>
+						<value>ApplicationMessages</value>
+						<value>nz/co/senanque/login/messages</value>
 					</list>
 				</property>
 			</bean>

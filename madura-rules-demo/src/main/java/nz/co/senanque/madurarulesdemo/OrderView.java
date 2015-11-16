@@ -33,6 +33,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -59,7 +60,7 @@ public class OrderView extends VerticalLayout {
 	MaduraFieldGroup fieldGroup;
 
     private Order m_order = null;
-    private FormLayout orderForm;
+    private Layout orderForm;
     private FormattingTable m_itemsTable;
 	public static final String[] NATURAL_COL_ORDER = new String[] {"description","-amount" };
 	public static final String[] ENGLISH_COL_ORDER = new String[] {"Description","Amount" };
@@ -82,7 +83,7 @@ public class OrderView extends VerticalLayout {
         verticalLayout.setSpacing(true);
         addComponent(verticalLayout);
         
-        orderForm = new FormLayout();
+        orderForm = new VerticalLayout();
         
         final HorizontalLayout horizontalLayout = new HorizontalLayout();
         horizontalLayout.setSpacing(true);

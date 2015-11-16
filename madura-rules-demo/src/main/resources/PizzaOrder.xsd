@@ -58,7 +58,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
-							<md:Label labelName="Name" />
+							<md:Label labelName="person.name" />
 							<md:Required/>
 						</annox:annotate>
 					</xsd:appinfo>
@@ -73,7 +73,7 @@
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
-							<md:Label labelName="email" />
+							<md:Label labelName="person.email" />
 							<md:Email/>
 							<md:Required/>
 						</annox:annotate>
@@ -332,6 +332,7 @@
     			<xsd:annotation>
     				<xsd:appinfo>
     					<annox:annotate>
+    						<md:Label labelName="testing" />
 							<md:Inactive/> 
 						</annox:annotate>
     				</xsd:appinfo>

@@ -90,7 +90,7 @@ public class CustomerView3 extends VerticalLayout {
         fieldGroup.bind(genderField, "gender");
         verticalLayout.addComponent(customerForm);
         
-        final MenuBar.MenuItem file = menuBar.addItem("File", null);
+        final MenuBar.MenuItem file = menuBar.addItem(messageSourceAccessor.getMessage("File"), null);
 
         CommandExt command = fieldGroup.createMenuItemCommand(new ClickListener(){
 

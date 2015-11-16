@@ -5,11 +5,6 @@
 	</encoder>
 	</appender>
 	
-<!-- 	
-	<logger name="nz.co.senanque.login" level="debug"/>
-	<logger name="nz.co.senanque.vaadindemo" level="debug"/>
-	<logger name="nz.co.senanque.vaadin" level="debug"/>
- -->
   <root level="warn">
     <appender-ref ref="STDOUT" />
   </root>
