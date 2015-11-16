@@ -30,12 +30,14 @@ This is driven from a rule, ie no UI coding needed.
 Now press BMI and you will see a series of popup windows each asking for one field.
 This is the directed questioning feature. The fields prompted for are rules driven and only fields needed to work out the BMI are asked for.
 
-Now go to the Order tab
+Now go to the Order tab.
+
 There are two Add Item buttons here. They do the same thing, ie they present a popup form that inputs a pizza specification.
 There is a subtle difference between the two, ie the last field is a read-only text field in one and a label in the other.
-But they both show the dynamic nature of the fields. Pick Tpooing: Seafood and then check the size options. Only one, Small, right?
+But they both show the dynamic nature of the fields. Pick Topping: Seafood and then check the size options. Only one, Small, right?
 Now change the topping to Greek. There is still only one size but it is Large. You can only have small seafood pizzas and large Greek ones. Now clear the topping value and set the size to Large. Now check the toppings. There are two: Hawaiian and Greek. The choices change dynamically depending on what else was picked.
 The other thing that is changing is the Amount which varies by Size in this case. The field below that, testing, switches between invisible, required and optional depending on the other picks.
+
 Finally, at the bottom, is the description field which includes the base-size-topping combination.
 All of this is driven entirely by rules rather than custom UI code.
 The dynamic changes to the drop downs ensure that only valid combinations of a potentially complex configuration can be specified.
@@ -44,3 +46,5 @@ The C2 tab is a variation on the Customer tab, the difference is in the programm
 The C3 tab is also similar but instead of submit and cancel buttons there is a menu bar with menu options. You can see the submit menu option enables and disables in the same way as the submit button does.
 
 You can change the language in the login dialog and see the French version. The captions on the fields and buttons, and the choices in the drop downs now appear in French.
+
+If you log out and log back in as user/user, then enter 'fred' into the name field you should notice the BMI button remains disabled. This is because the button has an attached permission value. The admin login has the permission, the user login does not, so the button remains disabled for user even though the rule triggered by 'fred' fired. Permissions always trump rules.  
