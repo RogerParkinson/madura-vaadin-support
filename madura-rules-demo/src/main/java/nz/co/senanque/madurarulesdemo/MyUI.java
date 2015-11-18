@@ -21,8 +21,6 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
-import ch.qos.logback.ext.spring.web.LogbackConfigListener;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
@@ -65,9 +63,6 @@ public class MyUI extends UI {
 	@Autowired private OrderView m_orderView;
 	@Autowired private MyEventRouter m_eventRouter;
 	
-	private Customer m_customer;
-	private Order m_order;
-
     @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
 
@@ -171,10 +166,10 @@ public class MyUI extends UI {
 				if (caption.equals(logout)) {
 					logout();
 				}
-				
 			}});
 
     }
+
     private void logout() {
     	m_maduraSessionManager.close();
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
@@ -182,28 +177,7 @@ public class MyUI extends UI {
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
     }
-//	/**
-//	 * Create a customer if one doesn't exist.
-//	 * @return Customer
-//	 */
-//	public Customer getCustomer() {
-//		if (m_customer == null) {
-//			m_customer = new Customer();
-//        	m_maduraSessionManager.getValidationSession().bind(m_customer);
-//		}
-//		return m_customer;
-//	}
-//	/**
-//	 * Create an Order if one doesn't exist.
-//	 * @return Order
-//	 */
-//	public Order getOrder() {
-//		if (m_order == null) {
-//			m_order = new Order();
-//        	m_maduraSessionManager.getValidationSession().bind(m_order);
-//		}
-//		return m_order;
-//	}
+
 	public EventRouter getEventRouter() {
 		return m_eventRouter;
 	}
