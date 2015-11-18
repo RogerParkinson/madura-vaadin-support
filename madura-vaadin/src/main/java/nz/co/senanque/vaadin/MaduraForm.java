@@ -125,8 +125,8 @@ public class MaduraForm extends Form implements PropertiesSource {
                 {
                     ButtonProperty buttonProperty = (ButtonProperty)button.getData();
                     buttonProperty.getPainter().setPropertiesSource(this);
-                    buttonProperty.getPainter().paint(button);
                     maduraSessionManager.register(button, buttonProperty.getPainter());
+                    buttonProperty.getPainter().paint(button);
                     MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
                     if (wrapper != null) {
                     	final Button finalButton = button;
@@ -138,6 +138,7 @@ public class MaduraForm extends Form implements PropertiesSource {
                 				finalButton.markAsDirty();
                 			}});
                     }
+                    button.markAsDirty();
                 }
             }
             else
@@ -153,6 +154,7 @@ public class MaduraForm extends Form implements PropertiesSource {
             super.setItemDataSource(dataSource,getFieldList());
             getFooter().setVisible(false);
         }
+        this.markAsDirtyRecursive();
     }
 	/**
 	 * Create a button that only enables when all the required fields are completed without error.
