@@ -88,7 +88,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 @UIScope
 public class MaduraSessionManager implements Serializable, MessageSourceAware, InitializingBean
 {
-	private static final long serialVersionUID = 1415805577188960471L;
+	private static final long serialVersionUID = -1L;
 	private static Logger logger = LoggerFactory.getLogger(MaduraSessionManager.class);
 	private Map<Integer,AbstractComponent> m_fields = new HashMap<>();
 	private Map<Integer,Label> m_labels = new HashMap<>();
@@ -107,7 +107,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     
     private class MenuItemWrapper extends AbstractComponent {
     	
-    	private static final long serialVersionUID = 418011465566857902L;
+    	private static final long serialVersionUID = -1L;
 		private final MenuItemPainter m_menuItemPainter;
 
 		private MenuItemWrapper(MenuItem menuItem, MenuItemPainter menuItemPainter)
@@ -528,18 +528,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         registerWidget(field);
     }
     
-//    public void register(final MenuItem field, MenuItemPainter painter)
-//    {
-//        MaduraPropertyWrapper property = painter.getProperty();
-//        if (property != null)
-//        {
-//            Hints hints = getHints();
-//            hints.setCommonProperties(field, property,m_messageSource);
-//            setPermissions(property, field);
-//        }
-//        registerWidget(field,painter);
-//    }
-//    
     public void register(final MenuItem menuItem)
     {
     	Command command = menuItem.getCommand();
@@ -616,27 +604,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         }
     }
 
-//    public void bind(AbstractField<?> field, String propertyName, PropertiesSource properties) {
-//        MaduraPropertyWrapper property = findProperty(propertyName,properties.getProperties());
-//        bind(field,property);
-//    }
-//    public void bind(final AbstractField<?> field,
-//            MaduraPropertyWrapper property)
-//    {
-//        field.setPropertyDataSource(property);
-//        Hints hints = getHints();
-//
-//        hints.setCommonProperties(field, property, getMessageSource());
-//        setPermissions(property, field);
-//		getValidationSession().addListener(property.getOwner(),property.getName(), new SetterListener(){
-//
-//			@Override
-//			public void run(ValidationObject object, String name,
-//					Object newValue, ValidationSession session) {
-//				com.vaadin.ui.ProtectedMethods.fireValueChange(field);
-//			}});
-//    }
-    
     public MaduraPropertyWrapper findProperty(String propertyName, List<MaduraPropertyWrapper> properties)
     {
         for (MaduraPropertyWrapper property: properties)
@@ -650,18 +617,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     	throw new RuntimeException(message);
     }
     
-//    public void bind(final Label field, final LabelProperty<?> property) {
-//        field.setPropertyDataSource(property);
-//        setPermissions(property.getProperty(), field);
-//        MaduraPropertyWrapper wrapper = property.getProperty();
-//		getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
-//
-//			@Override
-//			public void run(ValidationObject object, String name,
-//					Object newValue, ValidationSession session) {
-//				com.vaadin.data.util.ProtectedMethods.fireValueChange(property);
-//			}});
-//    }
     @PreDestroy
     public void close()
     {

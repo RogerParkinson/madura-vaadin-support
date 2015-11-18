@@ -153,6 +153,7 @@ public class AddressBookUI extends UI  {
         
     }
     private void logout() {
+    	m_maduraSessionManager.close();
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
     	getUI().close();
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
