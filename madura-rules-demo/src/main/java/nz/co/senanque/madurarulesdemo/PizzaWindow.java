@@ -86,7 +86,7 @@ public class PizzaWindow extends Window {
     	panel.addComponent(m_maduraForm);
     	
 		HorizontalLayout actions = new HorizontalLayout();
-		Button OK = m_maduraForm.createButton("button.OK", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button OK = m_maduraForm.createSubmitButton("button.OK", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -96,7 +96,7 @@ public class PizzaWindow extends Window {
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		actions.addComponent(OK);
-		Button cancel = m_maduraForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = m_maduraForm.createButton("button.cancel", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {

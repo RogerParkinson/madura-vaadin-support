@@ -154,16 +154,80 @@ public class MaduraForm extends Form implements PropertiesSource {
             getFooter().setVisible(false);
         }
     }
-    public Button createButton(String name,
+	/**
+	 * Create a button that only enables when all the required fields are completed without error.
+	 * @param name
+	 * @param listener
+	 * @return button
+	 */
+	public Button createSubmitButton(String name, ClickListener listener) {
+		return createButton(name,new SubmitButtonPainter(m_maduraSessionManager),listener);
+	}
+
+	/**
+	 * Create a simple button.
+	 * @param name
+	 * @param listener
+	 * @return button
+	 */
+	public Button createButton(String name, ClickListener listener) {
+		return createButton(name,new SimpleButtonPainter(m_maduraSessionManager),listener);
+	}
+
+	/**
+	 * Create a button that enables and disables depending on the value of the boolean propertyId.
+	 * @param name
+	 * @param propertyId
+	 * @param listener
+	 * @return button
+	 */
+	public Button createFieldButton(String name, String propertyId, ClickListener listener) {
+		return createButton(name,new FieldButtonPainter(propertyId, m_maduraSessionManager),listener);
+	}
+
+	/**
+	 * Create a button that only enables when all the required fields are completed without error.
+	 * @param name
+	 * @param permission
+	 * @param listener
+	 * @return button
+	 */
+	public Button createSubmitButton(String name, String permission, ClickListener listener) {
+		return createButton(name,new SubmitButtonPainter(permission,m_maduraSessionManager),listener);
+	}
+
+	/**
+	 * Create a simple button.
+	 * @param name
+	 * @param permission
+	 * @param listener
+	 * @return button
+	 */
+	public Button createButton(String name, String permission, ClickListener listener) {
+		return createButton(name,new SimpleButtonPainter(permission, m_maduraSessionManager),listener);
+	}
+
+	/**
+	 * Create a button that enables and disables depending on the value of the boolean propertyId.
+	 * @param name
+	 * @param permission
+	 * @param propertyId
+	 * @param listener
+	 * @return
+	 */
+	public Button createFieldButton(String name, String propertyId, String permission, ClickListener listener) {
+		return createButton(name,new FieldButtonPainter(propertyId, permission, m_maduraSessionManager),listener);
+	}
+    private Button createButton(String name,
             ButtonPainter painter, ClickListener listener)
     {
        return createButton(name,painter,listener,null);
     }
-    public Button createButton(String name, ButtonPainter painter)
-    {
-       return createButton(name,painter,null,null);
-    }
-    protected Button createButton(String name,
+//    private Button createButton(String name, ButtonPainter painter)
+//    {
+//       return createButton(name,painter,null,null);
+//    }
+    private Button createButton(String name,
             ButtonPainter painter, ClickListener listener, Object data)
     {
        Button ret = m_maduraFieldFactory.createButton(name, listener, painter);

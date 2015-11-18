@@ -65,7 +65,7 @@ public class CustomerView extends VerticalLayout {
         verticalLayout.addComponent(customerForm);
 
 		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = customerForm.createButton("button.cancel", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button cancel = customerForm.createButton("button.cancel", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -74,7 +74,7 @@ public class CustomerView extends VerticalLayout {
 						Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button submit = customerForm.createButton("button.submit", new SubmitButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button submit = customerForm.createSubmitButton("button.submit", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -85,7 +85,7 @@ public class CustomerView extends VerticalLayout {
 			}});
 		submit.setClickShortcut(KeyCode.ENTER );
 		submit.addStyleName(ValoTheme.BUTTON_PRIMARY);
-		Button bmi = customerForm.createButton("button.bmi", new FieldButtonPainter("dynamic","ADMIN",m_maduraSessionManager), new ClickListener(){
+		Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ADMIN", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
