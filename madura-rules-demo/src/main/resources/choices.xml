@@ -83,31 +83,6 @@ limitations under the License.
 			</Row>
 		</Rows>
 	</DecisionTable>
-	<!-- 
-	<DecisionTable name="prices" scope="Pizza" message="nz.co.senanque.pizzaorder.rules.decisionTable">
-		<ColumnNames>
-			<ColumnName autoAssign="false">name</ColumnName>
-			<ColumnName>size</ColumnName>
-		</ColumnNames>
-		<Rows>
-			<Row>
-				<Column>Seafood</Column><Column>Small</Column>
-			</Row>
-			<Row>
-				<Column>Italian</Column><Column>Medium</Column>
-			</Row>
-			<Row>
-				<Column>Spanish</Column><Column>Medium</Column>
-			</Row>
-			<Row>
-				<Column>Hawaiian</Column><Column>Large</Column>
-			</Row>
-			<Row>
-				<Column>Greek</Column><Column>Large</Column>
-			</Row>
-		</Rows>
-	</DecisionTable>
-	 -->
 	<Constants>
 		<Constant name="xyz">aaaab</Constant>
 	</Constants>
