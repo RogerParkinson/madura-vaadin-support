@@ -100,6 +100,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	if (!(itemDataSource instanceof BeanItem && ((BeanItem<?>) itemDataSource).getBean() instanceof ValidationObject)) {
     		throw new RuntimeException("Use BeanItem<ValidationObject> only");
     	}
+		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
     	super.setItemDataSource(itemDataSource);
     	loadProperties((BeanItem<ValidationObject>) itemDataSource);
 	}
@@ -112,6 +113,9 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     private void loadProperties(BeanItem<ValidationObject> dataSource) {
     	if (m_maduraSessionManager == null) {
     		return; // too early
+    	}
+    	if (dataSource == null) {
+    		throw new RuntimeException("No data source set");
     	}
     	ValidationObject validationObject = dataSource.getBean();
         List<String> allFields = m_maduraSessionManager.getFieldList(validationObject,dataSource);

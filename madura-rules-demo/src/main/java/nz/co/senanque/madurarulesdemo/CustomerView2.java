@@ -113,12 +113,9 @@ public class CustomerView2 extends VerticalLayout {
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    public void enter(ViewChangeEvent event) {
-    	MyUI ui = MyUI.getCurrent();
-    	if (m_customer == null) {
-    		m_customer = ui.getCustomer();
-    		fieldGroup.setItemDataSource(new BeanItem<Customer>(m_customer));
-    	}
+    public void load(Customer customer) {
+		m_customer = customer;
+		fieldGroup.setItemDataSource(new BeanItem<Customer>(m_customer));
     }
 	public OneFieldWindowFactory getOneFieldWindowFactory() {
 		return m_oneFieldWindowFactory;

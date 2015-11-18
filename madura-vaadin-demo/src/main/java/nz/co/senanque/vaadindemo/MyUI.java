@@ -118,7 +118,7 @@ public class MyUI extends UI {
         VerticalLayout tab1 = new VerticalLayout();
         tab1.addComponent(m_defaultView);
         tabsheet.addTab(tab1, messageSourceAccessor.getMessage("people"));
-        m_defaultView.enter(null);
+        m_defaultView.load(new Person());
 
         VerticalLayout tabLogout = new VerticalLayout();
         tabsheet.addTab(tabLogout,logout);
@@ -138,12 +138,10 @@ public class MyUI extends UI {
 
     }
     private void logout() {
+    	m_maduraSessionManager.close();
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
     	getUI().close();
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
     }
-	public Person getPerson() {
-        return new Person();
-	}
 }

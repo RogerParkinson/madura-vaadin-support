@@ -121,18 +121,14 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    public void enter(ViewChangeEvent event) {
-    	MyUI ui = (MyUI)UI.getCurrent();
-    	if (m_person == null) {
-    		m_person = ui.getPerson();
-        	m_maduraSessionManager.getValidationSession().bind(m_person);
-        	m_maduraFieldGroup.setItemDataSource(new BeanItem<Person>(m_person));
-    		m_panel.removeAllComponents();
-    		for (String propertyId : fields) {
-    			Field<?> field = m_maduraFieldGroup.buildAndBind(propertyId);
-    			m_panel.addComponent(field);
-    		}
-    	}
+    public void load(Person person) {
+		m_person = person;
+    	m_maduraFieldGroup.setItemDataSource(new BeanItem<Person>(m_person));
+		m_panel.removeAllComponents();
+		for (String propertyId : fields) {
+			Field<?> field = m_maduraFieldGroup.buildAndBind(propertyId);
+			m_panel.addComponent(field);
+		}
     }
 	@Override
 	public void setMessageSource(MessageSource messageSource) {

@@ -152,14 +152,11 @@ public class OrderView extends VerticalLayout {
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    public void enter(ViewChangeEvent event) {
-    	MyUI ui = MyUI.getCurrent();
-    	if (m_order == null) {
-    		m_order = ui.getOrder();
-    		fieldGroup.setItemDataSource(new BeanItem<Order>(m_order));
-//    		m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
-//    		m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
-    	}
+    public void load(Order order) {
+		m_order = order;
+		fieldGroup.setItemDataSource(new BeanItem<Order>(m_order));
+//    	m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
+//    	m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
     }
 	public PizzaWindow getPizzaWindow() {
 		return m_pizzaWindow;

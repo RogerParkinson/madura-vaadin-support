@@ -80,11 +80,6 @@ public class MyUI extends UI {
     	// per session.
     }
 
-    @WebListener
-    public static class MyLogbackConfigListener extends LogbackConfigListener {
-    	// Need this to init logback correctly
-    }
-    
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {
@@ -142,26 +137,26 @@ public class MyUI extends UI {
         // Create the first tab
         VerticalLayout tab1 = new VerticalLayout();
         tab1.addComponent(m_customerView);
-        m_customerView.enter(null);
+        m_customerView.load(new Customer());
         tabsheet.addTab(tab1, messageSourceAccessor.getMessage("Customer"));
-
-        // This tab gets its caption from the component caption
-        VerticalLayout tab2 = new VerticalLayout();
-        tab2.addComponent(m_orderView);
-        m_orderView.enter(null);
-        tabsheet.addTab(tab2,messageSourceAccessor.getMessage("Order"));
 
         // This tab gets its caption from the component caption
         VerticalLayout tab3 = new VerticalLayout();
         tab3.addComponent(m_customerView2);
-        m_customerView2.enter(null);
+        m_customerView2.load(new Customer());
         tabsheet.addTab(tab3,"C2");
 
         // This tab gets its caption from the component caption
         VerticalLayout tab4 = new VerticalLayout();
         tab4.addComponent(m_customerView3);
-        m_customerView3.enter(null);
+        m_customerView3.load(new Customer());
         tabsheet.addTab(tab4,"C3");
+
+        // This tab gets its caption from the component caption
+        VerticalLayout tabOrder = new VerticalLayout();
+        tabOrder.addComponent(m_orderView);
+        m_orderView.load(new Order());
+        tabsheet.addTab(tabOrder,messageSourceAccessor.getMessage("Order"));
 
         VerticalLayout tabLogout = new VerticalLayout();
         tabsheet.addTab(tabLogout,logout);
@@ -181,33 +176,34 @@ public class MyUI extends UI {
 
     }
     private void logout() {
+    	m_maduraSessionManager.close();
     	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
     	getUI().close();
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
     }
-	/**
-	 * Create a customer if one doesn't exist.
-	 * @return Customer
-	 */
-	public Customer getCustomer() {
-		if (m_customer == null) {
-			m_customer = new Customer();
-        	m_maduraSessionManager.getValidationSession().bind(m_customer);
-		}
-		return m_customer;
-	}
-	/**
-	 * Create an Order if one doesn't exist.
-	 * @return Order
-	 */
-	public Order getOrder() {
-		if (m_order == null) {
-			m_order = new Order();
-        	m_maduraSessionManager.getValidationSession().bind(m_order);
-		}
-		return m_order;
-	}
+//	/**
+//	 * Create a customer if one doesn't exist.
+//	 * @return Customer
+//	 */
+//	public Customer getCustomer() {
+//		if (m_customer == null) {
+//			m_customer = new Customer();
+//        	m_maduraSessionManager.getValidationSession().bind(m_customer);
+//		}
+//		return m_customer;
+//	}
+//	/**
+//	 * Create an Order if one doesn't exist.
+//	 * @return Order
+//	 */
+//	public Order getOrder() {
+//		if (m_order == null) {
+//			m_order = new Order();
+//        	m_maduraSessionManager.getValidationSession().bind(m_order);
+//		}
+//		return m_order;
+//	}
 	public EventRouter getEventRouter() {
 		return m_eventRouter;
 	}

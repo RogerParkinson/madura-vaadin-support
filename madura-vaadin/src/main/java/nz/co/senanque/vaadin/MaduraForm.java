@@ -98,6 +98,7 @@ public class MaduraForm extends Form implements PropertiesSource {
             Object source = ((BeanItem)dataSource).getBean();
             if (source instanceof ValidationObject)
             {
+        		m_maduraSessionManager.getValidationSession().bind((ValidationObject)source);
                 List<String> allFields = maduraSessionManager.getFieldList((ValidationObject)source,dataSource);
                 List<String> fields = allFields;
                 if (getFieldList() != null)
