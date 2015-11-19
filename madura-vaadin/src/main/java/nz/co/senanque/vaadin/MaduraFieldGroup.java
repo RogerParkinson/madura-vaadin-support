@@ -17,7 +17,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.Item;
-import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
@@ -45,7 +44,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	private List<String> m_fieldList;
 	private List<Button> m_myButtons = new ArrayList<Button>();
 	private List<MaduraPropertyWrapper> m_properties = new ArrayList<>();
-	private Collection<Object> m_propertyIds = new ArrayList<>();
+//	private Collection<Object> m_propertyIds = new ArrayList<>();
 	private Map<Label,String> m_labels = new HashMap<>();
 	private List<MenuItem> m_menuItems = new ArrayList<>();
 
@@ -86,9 +85,13 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	 * @param field
 	 * @param propertyId
 	 */
-	public void bind(Label field, String propertyId) {
-		m_maduraSessionManager.register(field);
-		m_labels.put(field,propertyId);
+	public void bind(Label label, String propertyId) {
+		m_maduraSessionManager.register(label);
+		m_labels.put(label,propertyId);
+		if (getItemDataSource() == null) {
+			return;
+		}
+		configureLabel(label);
 	}
 	/**
 	 * Establish a data source. The data source must be a {@code BeanItem<ValidationObject>} or we throw an exception.
@@ -100,9 +103,12 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	if (!(itemDataSource instanceof BeanItem && ((BeanItem<?>) itemDataSource).getBean() instanceof ValidationObject)) {
     		throw new RuntimeException("Use BeanItem<ValidationObject> only");
     	}
+    	// make sure the data source is bound to Madura
 		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
+		// the super call will only bind fields
     	super.setItemDataSource(itemDataSource);
-    	loadProperties((BeanItem<ValidationObject>) itemDataSource);
+    	// this will configure labels, menuitems, and buttons
+    	configure((BeanItem<ValidationObject>) itemDataSource);
 	}
     
     /**
@@ -110,7 +116,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
      * 
      * @param dataSource
      */
-    private void loadProperties(BeanItem<ValidationObject> dataSource) {
+    private void configure(BeanItem<ValidationObject> dataSource) {
     	if (m_maduraSessionManager == null) {
     		return; // too early
     	}
@@ -120,90 +126,20 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	ValidationObject validationObject = dataSource.getBean();
         List<String> allFields = m_maduraSessionManager.getFieldList(validationObject,dataSource);
         List<String> fields = allFields;
-        if (getFieldList() != null)
-        {
-            fields = getFieldList();
-        }
-        m_properties = new ArrayList<MaduraPropertyWrapper>();
-        for (String fieldName: fields)
-        {
-            Property<?> p = getItemProperty(fieldName);
-            if (p == null)
-            {
-            	p = m_maduraSessionManager.getMaduraPropertyWrapper(validationObject, fieldName);
-            }
-            if (p instanceof MaduraPropertyWrapper)
-            {
-            	m_properties.add((MaduraPropertyWrapper)p);
-            	m_propertyIds.add(fieldName);
-            }
-        }
-        for (Map.Entry<Label, String> entry : m_labels.entrySet())
-        {
-        	Label field = entry.getKey();
-        	String propertyId = entry.getValue();
-        	final LabelProperty<?> property = new LabelProperty(m_maduraSessionManager.getMaduraPropertyWrapper(validationObject,propertyId));
-        	field.setPropertyDataSource(property);
-        	m_maduraSessionManager.setPermissions(property.getProperty(), field);
-            MaduraPropertyWrapper wrapper = property.getProperty();
-            if (wrapper != null) {
-	            m_maduraSessionManager.getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
-	
-	    			@Override
-	    			public void run(ValidationObject object, String name,
-	    					Object newValue, ValidationSession session) {
-	    				com.vaadin.data.util.ProtectedMethods.fireValueChange(property);
-	    			}});
-            }
-        }
-        for (MenuItem menuItem : m_menuItems)
-        {
-        	Command command = menuItem.getCommand();
-        	if (command instanceof CommandExt)
-        	{
-        		CommandExt commandExt = (CommandExt)command;
-        		MenuItemPainter painter = commandExt.getPainter();
-        		painter.paint(menuItem);
-        	}
-        }
-        for (Button button : m_myButtons)
-        {
-            ButtonProperty buttonProperty = (ButtonProperty)button.getData();
-            button.setCaption(buttonProperty.getCaption());
-            buttonProperty.getPainter().setPropertiesSource(this);
-            buttonProperty.getPainter().paint(button);
-            MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
-            if (wrapper != null) {
-            	final Button finalButton = button;
-            	m_maduraSessionManager.getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
-
-        			@Override
-        			public void run(ValidationObject object, String name,
-        					Object newValue, ValidationSession session) {
-        				finalButton.markAsDirty();
-        			}});
-            }
-        }
+		if (getFieldList() != null) {
+			fields = getFieldList();
+		}
+		for (Label label : m_labels.keySet()) {
+			configureLabel(label);
+		}
+		for (MenuItem menuItem : m_menuItems) {
+			configureMenuItem(menuItem);
+		}
+		for (Button button : m_myButtons) {
+			configureButton(button);
+		}
     }
     
-    /** 
-     * Bind this field to the given propertyId. Also establish binding to the Madura session.
-     * @see com.vaadin.data.fieldgroup.FieldGroup#bind(com.vaadin.ui.Field, java.lang.Object)
-     */
-    public void bind(Field<?> field, Object propertyId) throws BindException {
-    	super.bind(field, propertyId);
-    	Item dataSource = getItemDataSource();
-        if (dataSource instanceof BeanItem) 
-        {
-            Object source = ((BeanItem)dataSource).getBean();
-            if (source instanceof ValidationObject)
-            {
-            	MaduraPropertyWrapper p = m_maduraSessionManager.getMaduraPropertyWrapper((ValidationObject)source, propertyId.toString());
-            	AbstractField<?> f = (AbstractField<?>)field;
-            	m_maduraSessionManager.bind(f, p);
-            }
-        }
-    }
     /**
      * Create (if necessary) and bind fields.
      * @see com.vaadin.data.fieldgroup.FieldGroup#buildAndBindMemberFields(java.lang.Object, boolean)
@@ -213,7 +149,75 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	super.buildAndBindMemberFields(objectWithMemberFields,
                 buildFields);
     	processLabels(objectWithMemberFields, buildFields);
-    	loadProperties((BeanItem<ValidationObject>)getItemDataSource());
+    }
+    
+    /**
+     * We get here when there is a bind() call and the data source has been set.
+     * @see com.vaadin.data.fieldgroup.FieldGroup#configureField(com.vaadin.ui.Field)
+     */
+    protected void configureField(Field<?> field) {
+    	super.configureField(field);
+    	ValidationObject source = getDataSource();
+    	MaduraPropertyWrapper p = getMaduraPropertyWrapper(source,getPropertyId(field),true);
+    	AbstractField<?> f = (AbstractField<?>)field;
+    	m_maduraSessionManager.bind(f, p);
+    }
+    
+    private ValidationObject getDataSource() {
+    	BeanItem<ValidationObject> dataSource = (BeanItem<ValidationObject>)getItemDataSource();
+    	ValidationObject source = dataSource.getBean();
+    	return source;
+    }
+    
+    protected void configureLabel(Label label) {
+    	ValidationObject source = getDataSource();
+    	final LabelProperty<?> property = new LabelProperty(getMaduraPropertyWrapper(source,m_labels.get(label),true));
+    	label.setPropertyDataSource(property);
+    	m_maduraSessionManager.setPermissions(property.getProperty(), label);
+        MaduraPropertyWrapper wrapper = property.getProperty();
+        if (wrapper != null) {
+            m_maduraSessionManager.getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
+
+    			@Override
+    			public void run(ValidationObject object, String name,
+    					Object newValue, ValidationSession session) {
+    				com.vaadin.data.util.ProtectedMethods.fireValueChange(property);
+    			}});
+        }
+    	
+    }
+    
+    protected void configureMenuItem(MenuItem menuItem) {
+    	Command command = menuItem.getCommand();
+    	if (command instanceof CommandExt)
+    	{
+    		CommandExt commandExt = (CommandExt)command;
+    		MenuItemPainter painter = commandExt.getPainter();
+    		painter.paint(menuItem);
+    	}
+    }
+        
+    protected void configureButton(Button button) {
+        ButtonProperty buttonProperty = (ButtonProperty)button.getData();
+        button.setCaption(buttonProperty.getCaption());
+        ButtonPainter painter = buttonProperty.getPainter();
+        if (painter.getPropertyName() != null) {
+        	ValidationObject source = getDataSource();
+        	this.getMaduraPropertyWrapper(source, painter.getPropertyName(), true);
+        }
+        painter.setPropertiesSource(this);
+        painter.paint(button);
+        MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
+        if (wrapper != null) {
+        	final Button finalButton = button;
+        	m_maduraSessionManager.getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
+
+    			@Override
+    			public void run(ValidationObject object, String name,
+    					Object newValue, ValidationSession session) {
+    				finalButton.markAsDirty();
+    			}});
+        }
     }
         
     /** 
@@ -282,7 +286,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
             }
             if (label != null) {
                 // Bind it to the property id
-            	ValidationObject validationObject = (ValidationObject)((BeanItem<ValidationObject>)getItemDataSource()).getBean();
+//            	ValidationObject validationObject = (ValidationObject)((BeanItem<ValidationObject>)getItemDataSource()).getBean();
             	bind(label,propertyId.toString());
             }
         }    	
@@ -305,10 +309,24 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	if (getItemDataSource()==null) {
     		throw new BindException("No data source established, cannot build and bind "+propertyId);
     	}
-    	ValidationObject validationObject = ((BeanItem<ValidationObject>)getItemDataSource()).getBean();
-    	MaduraPropertyWrapper maduraPropertyWrapper = m_maduraSessionManager.getMaduraPropertyWrapper(validationObject, propertyId.toString());
+    	ValidationObject validationObject = getDataSource();
+    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(validationObject,propertyId,false);
     	final Field<?> field = m_fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
     	return field;
+    }
+    
+    private MaduraPropertyWrapper getMaduraPropertyWrapper(ValidationObject validationObject, Object propertyId, boolean create) {
+    	for (MaduraPropertyWrapper maduraPropertyWrapper: m_properties) {
+    		if (maduraPropertyWrapper.getName().equals(propertyId)) {
+    	    	return maduraPropertyWrapper;
+    		}
+    	}
+    	if (create) {
+    		MaduraPropertyWrapper maduraPropertyWrapper = m_maduraSessionManager.getMaduraPropertyWrapper(validationObject, propertyId.toString());
+    		m_properties.add(maduraPropertyWrapper);
+    		return maduraPropertyWrapper;
+    	}
+    	throw new RuntimeException("No such property defined: "+propertyId);
     }
     
     public void unbind(ValidationObject validationObject) {
@@ -479,6 +497,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		} else {
 			throw new RuntimeException("Menu item command is not a CommandExt");
 		}
+		if (getItemDataSource() == null) {
+			return;
+		}
+		configureMenuItem(field);
 	}
 
 	@Override
@@ -488,11 +510,4 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	public MaduraPropertyWrapper findProperty(String propertyName) {
 		return m_maduraSessionManager.findProperty(propertyName, getProperties());
 	}
-
-	@Override
-	public Collection<?> getItemPropertyIds() {
-		return m_propertyIds;
-	}
-
-
 }

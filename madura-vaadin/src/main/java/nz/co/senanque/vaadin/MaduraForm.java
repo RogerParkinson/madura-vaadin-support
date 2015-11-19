@@ -225,10 +225,6 @@ public class MaduraForm extends Form implements PropertiesSource {
     {
        return createButton(name,painter,listener,null);
     }
-//    private Button createButton(String name, ButtonPainter painter)
-//    {
-//       return createButton(name,painter,null,null);
-//    }
     private Button createButton(String name,
             ButtonPainter painter, ClickListener listener, Object data)
     {

@@ -72,6 +72,9 @@ abstract class AbstractButtonPainter implements ButtonPainter,MenuItemPainter, S
     {
         return m_permissionName;
     }
+    public String getPropertyName() {
+    	return null;
+    }
 
     public void setPermissionName(String permissionName)
     {

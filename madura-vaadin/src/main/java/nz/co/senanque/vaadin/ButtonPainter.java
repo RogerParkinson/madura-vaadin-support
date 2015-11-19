@@ -30,5 +30,6 @@ public interface ButtonPainter {
     MaduraPropertyWrapper getProperty();
     void setPermissionName(String permissionName);
 	public MessageSource getMessageSource();
+	public String getPropertyName();
 	public void setPropertiesSource(PropertiesSource propertiesSource);
 }

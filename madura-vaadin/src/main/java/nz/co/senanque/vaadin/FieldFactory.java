@@ -72,8 +72,8 @@ public final class FieldFactory extends DefaultFieldFactory {
 
 	    logger.debug("creating field for {}",propertyId);
 	    boolean readOnly = false;
-	    if (uiContext instanceof MaduraForm) {
-	    	readOnly = ((MaduraForm)uiContext).isReadOnly();
+	    if (uiContext instanceof PropertiesSource) {
+	    	readOnly = ((PropertiesSource)uiContext).isReadOnly();
 	    }
 	    com.vaadin.data.Property<?> property = item.getItemProperty(propertyId);
         Field<?> ret;

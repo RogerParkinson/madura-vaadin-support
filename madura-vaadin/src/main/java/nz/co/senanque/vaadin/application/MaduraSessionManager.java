@@ -33,9 +33,9 @@ import nz.co.senanque.vaadin.CommandExt;
 import nz.co.senanque.vaadin.FieldFactory;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.LabelProperty;
-import nz.co.senanque.vaadin.MaduraForm;
 import nz.co.senanque.vaadin.MaduraPropertyWrapper;
 import nz.co.senanque.vaadin.MenuItemPainter;
+import nz.co.senanque.vaadin.PropertiesSource;
 import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.LocaleAwareExceptionFactory;
@@ -70,7 +70,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Field;
-import com.vaadin.ui.Form;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -289,8 +288,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 		if (parent == null) {
 			return false;
 		}
-		if (parent instanceof Form) {
-			return ((Form)parent).isReadOnly();
+		if (parent instanceof PropertiesSource) {
+			return ((PropertiesSource)parent).isReadOnly();
 		}
 		return getParentReadOnly(parent);
 	}
@@ -391,7 +390,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         throw new PropertyNotFoundException(propertyName);
     }
 
-    public void bind(final MaduraForm form, final AbstractField<?> field,
+    public void bind(final PropertiesSource form, final AbstractField<?> field,
             ValidationObject validationObject, String propertyName)
     {
         MaduraPropertyWrapper property = getMaduraPropertyWrapper(validationObject, propertyName);
@@ -412,16 +411,12 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     {
     	bind(null,field,property);
     }
-    public void bind(final MaduraForm form, final AbstractField<?> field,
+    public void bind(final PropertiesSource form1, final AbstractField<?> field,
             MaduraPropertyWrapper property)
         {
         field.setPropertyDataSource(property);
         Hints hints = getHints();
         
-        if (field instanceof ComboBox) {
-        	
-        }
-
         hints.setCommonProperties(field, property,m_messageSource);
         setPermissions(property, field);
         registerWidget(field);
@@ -436,7 +431,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         field.addValueChangeListener(new MaduraPropertyWrapper.ValueChangeListener()
         {
 
-			private static final long serialVersionUID = -3295559168401789196L;
+			private static final long serialVersionUID = -1L;
 
 			public void valueChange(ValueChangeEvent event)
             {
@@ -455,24 +450,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
                         field.setComponentError(null);
                     }
                 }
-                List<String> errors = new ArrayList<String>();
-                if (form != null)
-                {
-                    for (Object propertyId : form.getItemPropertyIds())
-                    {
-                        Field<?> f = form.getField(propertyId);
-                        if (f instanceof AbstractField<?>)
-                        {
-                            AbstractField<?> fieldy = (AbstractField<?>) f;
-                            if (fieldy.getComponentError() != null)
-                            {
-                                errors.add(fieldy.getComponentError()
-                                        .toString());
-                            }
-                        }
-                    }
-                    form.setErrors(errors);
-                }
                 updateOtherFields(field);
             }
         });
@@ -489,7 +466,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
         	abstractField.addValueChangeListener(new MaduraPropertyWrapper.ValueChangeListener()
 	        {
 	
-	            private static final long serialVersionUID = 5542293169155226281L;
+	            private static final long serialVersionUID = -1L;
 	
 				public void valueChange(ValueChangeEvent event)
 	            {

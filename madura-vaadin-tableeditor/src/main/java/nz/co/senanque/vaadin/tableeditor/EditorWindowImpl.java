@@ -55,7 +55,7 @@ import com.vaadin.ui.Window;
 
 public class EditorWindowImpl<T> extends Window implements ClickListener, EditorWindow<T>, MessageSourceAware {
 
-	private static final long serialVersionUID = -2089155892716330035L;
+	private static final long serialVersionUID = -1L;
 	private static Logger logger = LoggerFactory.getLogger(EditorWindowImpl.class);
 
     protected Button save;
@@ -117,7 +117,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
         main.addComponent(actions);
         this.addCloseListener(new CloseListener(){
 
-			private static final long serialVersionUID = -2096669984588309706L;
+			private static final long serialVersionUID = -1L;
 
 			public void windowClose(CloseEvent e)
             {

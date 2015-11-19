@@ -31,7 +31,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
  */
 public class FieldButtonPainter extends AbstractButtonPainter
 {
-	private static final long serialVersionUID = 5050173897198341434L;
+	private static final long serialVersionUID = -1L;
 
 	public final String m_propertyName;
 	public MaduraPropertyWrapper m_property;   
@@ -42,6 +42,9 @@ public class FieldButtonPainter extends AbstractButtonPainter
         m_propertyName = propertyName;
     }
     
+    public String getPropertyName() {
+    	return m_propertyName;
+    }
     public FieldButtonPainter(String propertyName, String permissionName, MaduraSessionManager maduraSessionManager)
     {
     	super(maduraSessionManager.getPermissionManager(),maduraSessionManager.getMessageSource());
