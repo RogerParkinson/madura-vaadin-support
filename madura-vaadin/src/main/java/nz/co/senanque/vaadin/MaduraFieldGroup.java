@@ -23,6 +23,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.util.ReflectTools;
@@ -39,10 +40,8 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	private final FieldFactory m_fieldFactory;
 	private Hints m_hints;
 	private MessageSource m_messageSource;
-//	private List<String> m_fieldList;
 	private List<Button> m_myButtons = new ArrayList<Button>();
 	private List<MaduraPropertyWrapper> m_properties = new ArrayList<>();
-//	private Collection<Object> m_propertyIds = new ArrayList<>();
 	private Map<Label,String> m_labels = new HashMap<>();
 	private List<MenuItem> m_menuItems = new ArrayList<>();
 
@@ -59,24 +58,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		m_hints = maduraSessionManager.getHints();
 	}
 
-//	/**
-//	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
-//	 * @param fieldList
-//	 */
-//	public void setFieldList(List<String> fieldList) {
-//		m_fieldList = fieldList;
-//	}
-//	/**
-//	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
-//	 * @param fieldList
-//	 */
-//	public void setFieldList(String[] fieldList) {
-//		m_fieldList = Arrays.asList(fieldList);
-//	}
-//	protected List<String> getFieldList()
-//	{
-//		return m_fieldList;
-//	}
 	/**
 	 * Tells the Madura session manager to connect this {link com.vaadin.ui.Label) to the given propertyId.
 	 * This can be done before there is a data source.
@@ -121,12 +102,6 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	if (dataSource == null) {
     		throw new RuntimeException("No data source set");
     	}
-//    	ValidationObject validationObject = dataSource.getBean();
-//        List<String> allFields = m_maduraSessionManager.getFieldList(validationObject,dataSource);
-//        List<String> fields = allFields;
-//		if (getFieldList() != null) {
-//			fields = getFieldList();
-//		}
 		for (Label label : m_labels.keySet()) {
 			configureLabel(label);
 		}
@@ -299,20 +274,27 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     }
     
     /**
-     * Uses the field factory to create a field using the property type. This requires a data source already established.
+     * Using this in inevitably wrong
      * 
      * @see com.vaadin.data.fieldgroup.FieldGroup#buildAndBind(java.lang.Object)
      */
     public Field<?> buildAndBind(Object propertyId) throws BindException {
-    	if (getItemDataSource()==null) {
-    		throw new BindException("No data source established, cannot build and bind "+propertyId);
-    	}
-    	ValidationObject validationObject = getDataSource();
-    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(validationObject,propertyId,true);
-    	final Field<?> field = m_fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
-    	return field;
+    	throw new RuntimeException("use buildAndBind(Layout panel, String[] fields, BeanItem<ValidationObject> itemDataSource) instead");
     }
     
+	public void buildAndBind(Layout panel, List<String> fields, BeanItem<ValidationObject> itemDataSource) {
+		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
+		// the super call will only bind fields
+    	super.setItemDataSource(itemDataSource);
+		panel.removeAllComponents();
+		for (String propertyId : fields) {
+	    	ValidationObject validationObject = getDataSource();
+	    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(validationObject,propertyId,true);
+	    	final Field<?> field = m_fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
+			panel.addComponent(field);
+		}
+		configure(itemDataSource);
+	}
     private MaduraPropertyWrapper getMaduraPropertyWrapper(ValidationObject validationObject, Object propertyId, boolean create) {
     	for (MaduraPropertyWrapper maduraPropertyWrapper: m_properties) {
     		if (maduraPropertyWrapper.getName().equals(propertyId)) {

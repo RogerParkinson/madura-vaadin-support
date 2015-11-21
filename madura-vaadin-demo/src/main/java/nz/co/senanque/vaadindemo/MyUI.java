@@ -65,8 +65,8 @@ public class MyUI extends UI {
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {
-    		"nz.co.senanque.vaadin",
-    		"nz.co.senanque.validationengine"})
+    		"nz.co.senanque.vaadin",			// madura-vaadin
+    		"nz.co.senanque.validationengine"})	// madura-objects
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	

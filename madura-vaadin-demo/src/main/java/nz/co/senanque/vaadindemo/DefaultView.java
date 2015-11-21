@@ -3,11 +3,14 @@
  */
 package nz.co.senanque.vaadindemo;
 
+import java.util.Arrays;
+
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -16,7 +19,6 @@ import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
@@ -24,19 +26,17 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Shows the use of {@link nz.co.senanque.vaadin.MaduraFieldGroup} to create buttons and fields.
- * Notice that the buttons can be created before a data source it bound to the fiel group, but field
- * must be done afterwards.
+ * Notice that the buttons can be created before a data source it bound to the field group, but fields
+ * are done afterwards.
  * 
  * @author Roger Parkinson
  *
@@ -46,7 +46,6 @@ import com.vaadin.ui.themes.ValoTheme;
 public class DefaultView extends VerticalLayout implements MessageSourceAware {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    private Person m_person = null;
     private final Layout m_panel = new VerticalLayout();
     protected MaduraFieldGroup m_maduraFieldGroup;
 	private MessageSource m_messageSource;
@@ -122,13 +121,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
     public void load(Person person) {
-		m_person = person;
-    	m_maduraFieldGroup.setItemDataSource(new BeanItem<Person>(m_person));
-		m_panel.removeAllComponents();
-		for (String propertyId : fields) {
-			Field<?> field = m_maduraFieldGroup.buildAndBind(propertyId);
-			m_panel.addComponent(field);
-		}
+		m_maduraFieldGroup.buildAndBind(m_panel,Arrays.asList(fields),new BeanItem<ValidationObject>(person));
     }
 	@Override
 	public void setMessageSource(MessageSource messageSource) {

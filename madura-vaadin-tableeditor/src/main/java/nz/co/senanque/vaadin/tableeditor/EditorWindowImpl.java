@@ -15,6 +15,7 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin.tableeditor;
 
+import java.util.Arrays;
 import java.util.List;
 
 import nz.co.senanque.vaadin.MaduraFieldGroup;
@@ -56,7 +57,7 @@ import com.vaadin.ui.Window;
 public class EditorWindowImpl<T> extends Window implements ClickListener, EditorWindow<T>, MessageSourceAware {
 
 	private static final long serialVersionUID = -1L;
-	private static Logger logger = LoggerFactory.getLogger(EditorWindowImpl.class);
+//	private static Logger logger = LoggerFactory.getLogger(EditorWindowImpl.class);
 
     protected Button save;
     protected Button delete;
@@ -129,15 +130,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 	}
     
 	protected void setItemDataSource(BeanItem<T> newDataSource) {
-		final ValidationObject o = (ValidationObject) newDataSource.getBean();
-		m_maduraSessionManager.getValidationSession().bind(o);
-		m_maduraFieldGroup.setFieldList(getFields());
-		m_maduraFieldGroup.setItemDataSource(newDataSource);
-		m_panel.removeAllComponents();
-		for (String propertyId : getFields()) {
-			Field<?> field = m_maduraFieldGroup.buildAndBind(propertyId);
-			m_panel.addComponent(field);
-		}
+		m_maduraFieldGroup.buildAndBind(m_panel,getFields(),(BeanItem<ValidationObject>)newDataSource);
 	}
 
      public void loadObject(T object, boolean newRow) {
@@ -173,7 +166,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 		if (m_fields == null)
 		{
 			m_fields = fields;
-			m_maduraFieldGroup.setFieldList(fields);
+//			m_maduraFieldGroup.setFieldList(fields);
 		}
 	}
 
