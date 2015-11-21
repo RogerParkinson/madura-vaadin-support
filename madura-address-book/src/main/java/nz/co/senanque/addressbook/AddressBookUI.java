@@ -70,9 +70,9 @@ public class AddressBookUI extends UI  {
     @Configuration
     @EnableVaadin
     @ComponentScan(basePackages = {
-    		"nz.co.senanque.vaadin",
-    		"nz.co.senanque.validationengine",
-    		"nz.co.senanque.vaadin.tableeditor"})
+    		"nz.co.senanque.vaadin",			// madura-vaadin
+    		"nz.co.senanque.validationengine",	// madura-objects
+    		"nz.co.senanque.vaadin.tableeditor"})// madura-tableeditor
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
