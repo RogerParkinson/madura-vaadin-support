@@ -184,7 +184,6 @@
 			<plugin>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-objects-maven-plugin</artifactId>
-				<version>${madura.objects.version}</version>
 				<executions>
 					<execution>
 						<goals>

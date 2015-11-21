@@ -181,9 +181,30 @@
 			    <version>4.1.7.RELEASE</version>
 			    <scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-resource-loader</artifactId>
+				<version>1.0.0</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
+	<build>
+	    <pluginManagement>
+	    	<plugins>
+	    		<plugin>
+					<groupId>nz.co.senanque</groupId>
+					<artifactId>madura-rules-maven-plugin</artifactId>
+					<version>${madura.objects.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>nz.co.senanque</groupId>
+					<artifactId>madura-objects-maven-plugin</artifactId>
+					<version>${madura.objects.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
   <modules>
   	<module>madura-login</module>
   	<module>vaadin7-demo</module>

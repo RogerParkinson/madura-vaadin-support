@@ -30,6 +30,10 @@
 			<artifactId>spring-web</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-resource-loader</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<pluginManagement>

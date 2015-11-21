@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 
 import nz.co.senanque.login.users.UserRepository;
 import nz.co.senanque.login.users.UserRepositoryImpl;
+import nz.co.senanque.resourceloader.MessageResource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,7 @@ import org.springframework.util.StringUtils;
  *
  */
 @Component("requestValidator")
+@MessageResource("messages")
 public class RequestValidatorImpl implements AuthenticationDelegate, MessageSourceAware, RequestValidator {
 	
 	private static Logger m_logger = LoggerFactory.getLogger(RequestValidatorImpl.class);
