@@ -86,6 +86,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
 		// the super call will only bind fields
     	super.setItemDataSource(itemDataSource);
+    	m_properties.clear();
     	// this will configure labels, menuitems, and buttons
     	configure((BeanItem<ValidationObject>) itemDataSource);
 	}
@@ -138,7 +139,10 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     
     private ValidationObject getDataSource() {
     	BeanItem<ValidationObject> dataSource = (BeanItem<ValidationObject>)getItemDataSource();
-    	ValidationObject source = dataSource.getBean();
+    	if (dataSource == null) {
+    		return null;
+    	}
+		ValidationObject source = dataSource.getBean();
     	return source;
     }
     
@@ -286,6 +290,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
 		// the super call will only bind fields
     	super.setItemDataSource(itemDataSource);
+    	m_properties.clear();
 		panel.removeAllComponents();
 		for (String propertyId : fields) {
 	    	ValidationObject validationObject = getDataSource();
@@ -309,8 +314,12 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	throw new RuntimeException("No such property defined: "+propertyId);
     }
     
-    public void unbind(ValidationObject validationObject) {
-    	getMaduraSessionManager().getValidationSession().unbind(validationObject);
+    public void unbind() {
+    	m_properties.clear();
+    	ValidationObject validationObject = getDataSource();
+    	if (validationObject != null) {
+    		getMaduraSessionManager().getValidationSession().unbind(validationObject);
+    	}
     }
 
 	public MaduraSessionManager getMaduraSessionManager() {

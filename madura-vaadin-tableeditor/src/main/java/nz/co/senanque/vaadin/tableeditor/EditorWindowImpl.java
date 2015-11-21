@@ -122,7 +122,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 
 			public void windowClose(CloseEvent e)
             {
-				m_maduraFieldGroup.unbind((ValidationObject)m_object);
+				m_maduraFieldGroup.unbind();
             }});
     }
 

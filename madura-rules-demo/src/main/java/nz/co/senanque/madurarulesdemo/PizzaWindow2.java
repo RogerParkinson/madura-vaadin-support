@@ -145,7 +145,7 @@ public class PizzaWindow2 extends Window {
         }
 	}
     public void close() {
-    	m_maduraFieldGroup.unbind(m_pizza);
+    	m_maduraFieldGroup.unbind();
     	UI.getCurrent().removeWindow(this);
     }
 
