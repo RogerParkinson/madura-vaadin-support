@@ -2,8 +2,6 @@ package nz.co.senanque.vaadin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +39,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 	private final FieldFactory m_fieldFactory;
 	private Hints m_hints;
 	private MessageSource m_messageSource;
-	private List<String> m_fieldList;
+//	private List<String> m_fieldList;
 	private List<Button> m_myButtons = new ArrayList<Button>();
 	private List<MaduraPropertyWrapper> m_properties = new ArrayList<>();
 //	private Collection<Object> m_propertyIds = new ArrayList<>();
@@ -61,24 +59,24 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
 		m_hints = maduraSessionManager.getHints();
 	}
 
-	/**
-	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
-	 * @param fieldList
-	 */
-	public void setFieldList(List<String> fieldList) {
-		m_fieldList = fieldList;
-	}
-	/**
-	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
-	 * @param fieldList
-	 */
-	public void setFieldList(String[] fieldList) {
-		m_fieldList = Arrays.asList(fieldList);
-	}
-	protected List<String> getFieldList()
-	{
-		return m_fieldList;
-	}
+//	/**
+//	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
+//	 * @param fieldList
+//	 */
+//	public void setFieldList(List<String> fieldList) {
+//		m_fieldList = fieldList;
+//	}
+//	/**
+//	 * Tell the class what fields are interesting. Invalid names will be ignored, missing names will also be ignored.
+//	 * @param fieldList
+//	 */
+//	public void setFieldList(String[] fieldList) {
+//		m_fieldList = Arrays.asList(fieldList);
+//	}
+//	protected List<String> getFieldList()
+//	{
+//		return m_fieldList;
+//	}
 	/**
 	 * Tells the Madura session manager to connect this {link com.vaadin.ui.Label) to the given propertyId.
 	 * This can be done before there is a data source.
@@ -123,12 +121,12 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     	if (dataSource == null) {
     		throw new RuntimeException("No data source set");
     	}
-    	ValidationObject validationObject = dataSource.getBean();
-        List<String> allFields = m_maduraSessionManager.getFieldList(validationObject,dataSource);
-        List<String> fields = allFields;
-		if (getFieldList() != null) {
-			fields = getFieldList();
-		}
+//    	ValidationObject validationObject = dataSource.getBean();
+//        List<String> allFields = m_maduraSessionManager.getFieldList(validationObject,dataSource);
+//        List<String> fields = allFields;
+//		if (getFieldList() != null) {
+//			fields = getFieldList();
+//		}
 		for (Label label : m_labels.keySet()) {
 			configureLabel(label);
 		}
@@ -310,7 +308,7 @@ public class MaduraFieldGroup extends FieldGroup implements PropertiesSource {
     		throw new BindException("No data source established, cannot build and bind "+propertyId);
     	}
     	ValidationObject validationObject = getDataSource();
-    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(validationObject,propertyId,false);
+    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(validationObject,propertyId,true);
     	final Field<?> field = m_fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
     	return field;
     }
