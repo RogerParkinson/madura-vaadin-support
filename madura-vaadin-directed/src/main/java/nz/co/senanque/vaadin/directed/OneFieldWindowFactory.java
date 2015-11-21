@@ -1,5 +1,7 @@
 package nz.co.senanque.vaadin.directed;
 
+import java.io.Serializable;
+
 import nz.co.senanque.rules.RulesPlugin;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
@@ -17,7 +19,7 @@ import com.vaadin.spring.annotation.UIScope;
  */
 @org.springframework.stereotype.Component
 @UIScope
-public class OneFieldWindowFactory {
+public class OneFieldWindowFactory implements Serializable {
 	
 	@Autowired RulesPlugin m_rulesPlugin;
 	@Autowired MaduraSessionManager m_maduraSessionManager;
