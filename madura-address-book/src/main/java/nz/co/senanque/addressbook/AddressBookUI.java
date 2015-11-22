@@ -10,7 +10,6 @@ import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
-import nz.co.senanque.vaadin.tableeditor.EditorWindow;
 import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
@@ -91,18 +90,13 @@ public class AddressBookUI extends UI  {
     	public TableEditorLayout<Person> getTableEditorLayout() {
     		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people", Person.class);
     		ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
+    		ret.setEditorWindow(new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY));
     		return ret;
     	}
     	@Bean(name="hints")
     	@UIScope
     	public Hints getHints() {
     		return new HintsImpl();
-    	}
-    	@Bean(name="editorWindow")
-    	@UIScope
-    	public EditorWindow<Person> getEditorWIndow() {
-    		EditorWindowImpl<Person> ret = new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY);
-    		return ret;
     	}
     }
 

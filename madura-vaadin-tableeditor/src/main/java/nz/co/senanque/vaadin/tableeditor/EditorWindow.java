@@ -17,11 +17,13 @@ package nz.co.senanque.vaadin.tableeditor;
 
 import java.util.List;
 
+import nz.co.senanque.vaadin.MaduraSessionManager;
+
 import com.vaadin.ui.Component;
 
 public interface EditorWindow<T> extends Component {
 
 	public void loadObject(T object, boolean newRow);
-	public void initialize(List<String> fields);
+	public void initialize(List<String> fields, MaduraSessionManager maduraSessionManager);
 
 }

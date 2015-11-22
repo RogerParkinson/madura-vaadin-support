@@ -21,9 +21,6 @@ import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.data.util.BeanItem;
@@ -50,7 +47,7 @@ import com.vaadin.ui.Window;
  * @param <T>
  */
 
-public class EditorWindowImpl<T> extends Window implements ClickListener, EditorWindow<T>, MessageSourceAware {
+public class EditorWindowImpl<T> extends Window implements ClickListener, EditorWindow<T> {
 
 	private static final long serialVersionUID = -1L;
 
@@ -64,8 +61,6 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
     
     private String m_width = "400px";
     private boolean m_newRow;
-    @Autowired private MaduraSessionManager m_maduraSessionManager;
-	private MessageSource m_messageSource;
 	private final String m_caption;
 	private final String m_submitStyle;
 	private final Layout m_panel = new VerticalLayout();
@@ -80,10 +75,10 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 		m_submitStyle = submitStyle;
 	}
 
-	public void initialize(List<String> fields) {
-    	MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
+	public void initialize(List<String> fields, MaduraSessionManager maduraSessionManager) {
+    	MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(maduraSessionManager.getMessageSource());
     	setCaption(messageSourceAccessor.getMessage(m_caption));
-    	m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
+    	m_maduraFieldGroup = maduraSessionManager.createMaduraFieldGroup();
         Layout main = new VerticalLayout();
         setContent(main);
         main.setWidth(getWindowWidth());
@@ -177,9 +172,4 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
     {
         m_newRow = newRow;
     }
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSource = messageSource;
-		
-	}
-	
 }
