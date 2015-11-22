@@ -10,8 +10,7 @@ import javax.annotation.PostConstruct;
 import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.format.FormattingTable;
 
 import org.slf4j.Logger;
@@ -25,12 +24,10 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
@@ -57,7 +54,7 @@ public class OrderView extends VerticalLayout {
     @Autowired private PizzaWindow m_pizzaWindow;
     @Autowired private PizzaWindow2 m_pizzaWindow2;
 	@Autowired private MyEventRouter m_eventRouter;
-	MaduraFieldGroup fieldGroup;
+	private MaduraFieldGroup fieldGroup;
 
     private Order m_order = null;
     private Layout orderForm;
@@ -75,7 +72,7 @@ public class OrderView extends VerticalLayout {
     @PostConstruct
     void init() {
 
-		fieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
+		fieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
 		fieldGroup.setReadOnly(true);
 
 		final VerticalLayout verticalLayout = new VerticalLayout();
@@ -101,7 +98,7 @@ public class OrderView extends VerticalLayout {
 		orderForm.addComponent(horizontalLayout);
 	
 		HorizontalLayout actions = new HorizontalLayout();
-		Button addItem = fieldGroup.createButton("button.addItem", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button addItem = fieldGroup.createButton("button.addItem", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -111,7 +108,7 @@ public class OrderView extends VerticalLayout {
 				
 			}});
 		actions.addComponent(addItem);
-		Button addItem2 = fieldGroup.createButton("button.addItem2", new SimpleButtonPainter(m_maduraSessionManager), new ClickListener(){
+		Button addItem2 = fieldGroup.createButton("button.addItem2", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {

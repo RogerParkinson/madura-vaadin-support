@@ -9,7 +9,7 @@ import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.tableeditor.EditorWindow;
 import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-package nz.co.senanque.vaadin.application;
+package nz.co.senanque.vaadin;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -27,15 +27,8 @@ import java.util.Map.Entry;
 
 import javax.annotation.PreDestroy;
 
-import nz.co.senanque.vaadin.ButtonPainter;
-import nz.co.senanque.vaadin.ButtonProperty;
-import nz.co.senanque.vaadin.CommandExt;
-import nz.co.senanque.vaadin.FieldFactory;
-import nz.co.senanque.vaadin.Hints;
-import nz.co.senanque.vaadin.LabelProperty;
-import nz.co.senanque.vaadin.MaduraPropertyWrapper;
-import nz.co.senanque.vaadin.MenuItemPainter;
-import nz.co.senanque.vaadin.PropertiesSource;
+import nz.co.senanque.vaadin.application.MaduraConverterFactory;
+import nz.co.senanque.vaadin.application.PropertyNotFoundException;
 import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.LocaleAwareExceptionFactory;
@@ -68,8 +61,6 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -388,6 +379,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
             }
         }
         throw new PropertyNotFoundException(propertyName);
+    }
+    
+    public MaduraFieldGroup createMaduraFieldGroup() {
+    	return new MaduraFieldGroupImpl(this);
     }
 
     public void bind(final PropertiesSource form, final AbstractField<?> field,

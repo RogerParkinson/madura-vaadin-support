@@ -9,7 +9,7 @@ import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

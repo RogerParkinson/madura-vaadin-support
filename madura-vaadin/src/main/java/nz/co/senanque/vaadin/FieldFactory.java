@@ -18,7 +18,6 @@ package nz.co.senanque.vaadin;
 import java.util.Date;
 import java.util.List;
 
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 

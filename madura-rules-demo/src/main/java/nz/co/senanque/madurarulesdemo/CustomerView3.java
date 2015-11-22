@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.vaadin.CommandExt;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +83,7 @@ public class CustomerView3 extends VerticalLayout {
 		headingButtonslLayout.addComponent(menuBar);
 		customerForm.addComponent(headingButtonslLayout, 0);
 
-        fieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
+        fieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
         fieldGroup.bind(nameField, "name");
         fieldGroup.bind(emailField, "email");
         fieldGroup.bind(genderField, "gender");

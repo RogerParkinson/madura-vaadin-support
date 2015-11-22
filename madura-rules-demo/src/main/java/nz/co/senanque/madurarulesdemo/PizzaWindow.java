@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;

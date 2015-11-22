@@ -9,7 +9,8 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraFieldGroupImpl;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
- * Shows the use of {@link nz.co.senanque.vaadin.MaduraFieldGroup} to create buttons and fields.
+ * Shows the use of {@link nz.co.senanque.vaadin.MaduraFieldGroupImpl} to create buttons and fields.
  * Notice that the buttons can be created before a data source it bound to the field group, but fields
  * are done afterwards.
  * 
@@ -60,9 +61,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
     void init() {
     	
     	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
-    	if (m_maduraFieldGroup == null) {
-    		m_maduraFieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
-    	}
+		m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
 
         final VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.setMargin(true);

@@ -3,7 +3,7 @@ package nz.co.senanque.vaadin.directed;
 import java.io.Serializable;
 
 import nz.co.senanque.rules.RulesPlugin;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.ValidationObject;
 

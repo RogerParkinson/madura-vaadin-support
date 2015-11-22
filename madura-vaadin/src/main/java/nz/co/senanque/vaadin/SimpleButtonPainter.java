@@ -18,8 +18,6 @@ package nz.co.senanque.vaadin;
 import java.util.ArrayList;
 import java.util.List;
 
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
-
 import com.vaadin.ui.MenuBar.MenuItem;
 
 /**

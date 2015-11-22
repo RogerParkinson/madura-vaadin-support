@@ -15,8 +15,6 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin;
 
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
-
 import com.vaadin.ui.Button;
 import com.vaadin.ui.MenuBar.MenuItem;
 

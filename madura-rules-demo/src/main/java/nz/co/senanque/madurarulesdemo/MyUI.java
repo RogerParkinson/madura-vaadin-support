@@ -10,7 +10,7 @@ import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

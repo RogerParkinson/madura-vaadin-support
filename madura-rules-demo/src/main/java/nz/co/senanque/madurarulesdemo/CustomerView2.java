@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -70,7 +69,7 @@ public class CustomerView2 extends VerticalLayout {
         customerForm.addComponent(emailField);
         customerForm.addComponent(genderField);
       
-        fieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
+        fieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
         fieldGroup.bind(nameField, "name");
         fieldGroup.bind(emailField, "email");
         fieldGroup.bind(genderField, "gender");

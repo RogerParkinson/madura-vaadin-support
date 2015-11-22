@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 import nz.co.senanque.validationengine.ValidationSession;
 import nz.co.senanque.validationengine.metadata.ClassMetadata;

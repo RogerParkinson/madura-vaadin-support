@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -44,7 +44,6 @@ public class PizzaWindow2 extends Window {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
     private String m_windowWidth = "400px";
     private String m_windowHeight = "500px";
-    private Pizza m_pizza;
     
     @PropertyId("base")
     private ComboBox base = new ComboBox();
@@ -106,7 +105,7 @@ public class PizzaWindow2 extends Window {
     	FormLayout formLayout = new FormLayout();
     	panel.addComponent(formLayout);
     	
-    	m_maduraFieldGroup = new MaduraFieldGroup(getMaduraSessionManager());
+    	m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
     	m_maduraFieldGroup.setItemDataSource(beanItem);
     	m_maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
     	

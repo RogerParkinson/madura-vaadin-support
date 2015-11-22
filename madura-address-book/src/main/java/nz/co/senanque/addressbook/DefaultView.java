@@ -5,7 +5,7 @@ package nz.co.senanque.addressbook;
 
 import javax.annotation.PostConstruct;
 
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
 import org.springframework.beans.factory.annotation.Autowired;

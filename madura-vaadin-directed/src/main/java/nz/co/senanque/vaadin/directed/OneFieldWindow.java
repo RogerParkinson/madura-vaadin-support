@@ -18,7 +18,7 @@ package nz.co.senanque.vaadin.directed;
 import nz.co.senanque.rules.RulesPlugin;
 import nz.co.senanque.vaadin.FieldFactory;
 import nz.co.senanque.vaadin.MaduraPropertyWrapper;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 
 import org.slf4j.Logger;

@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.ObjectMetadata;
 import nz.co.senanque.validationengine.ValidationObject;

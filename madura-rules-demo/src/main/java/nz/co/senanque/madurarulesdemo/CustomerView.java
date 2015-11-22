@@ -6,11 +6,8 @@ package nz.co.senanque.madurarulesdemo;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
-import nz.co.senanque.vaadin.FieldButtonPainter;
 import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;

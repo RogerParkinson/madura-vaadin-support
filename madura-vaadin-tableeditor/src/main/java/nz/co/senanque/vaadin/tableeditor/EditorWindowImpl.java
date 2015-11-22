@@ -15,15 +15,12 @@
  *******************************************************************************/
 package nz.co.senanque.vaadin.tableeditor;
 
-import java.util.Arrays;
 import java.util.List;
 
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.application.MaduraSessionManager;
+import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -34,7 +31,6 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
@@ -57,7 +53,6 @@ import com.vaadin.ui.Window;
 public class EditorWindowImpl<T> extends Window implements ClickListener, EditorWindow<T>, MessageSourceAware {
 
 	private static final long serialVersionUID = -1L;
-//	private static Logger logger = LoggerFactory.getLogger(EditorWindowImpl.class);
 
     protected Button save;
     protected Button delete;
@@ -88,9 +83,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 	public void initialize(List<String> fields) {
     	MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
     	setCaption(messageSourceAccessor.getMessage(m_caption));
-    	if (m_maduraFieldGroup == null) {
-    		m_maduraFieldGroup = new MaduraFieldGroup(m_maduraSessionManager);
-    	}
+    	m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
         Layout main = new VerticalLayout();
         setContent(main);
         main.setWidth(getWindowWidth());
@@ -166,7 +159,6 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 		if (m_fields == null)
 		{
 			m_fields = fields;
-//			m_maduraFieldGroup.setFieldList(fields);
 		}
 	}
 
