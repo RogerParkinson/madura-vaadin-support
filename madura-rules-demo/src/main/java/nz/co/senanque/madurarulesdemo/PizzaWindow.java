@@ -4,8 +4,6 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraForm;
-import nz.co.senanque.vaadin.SimpleButtonPainter;
-import nz.co.senanque.vaadin.SubmitButtonPainter;
 import nz.co.senanque.vaadin.application.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 

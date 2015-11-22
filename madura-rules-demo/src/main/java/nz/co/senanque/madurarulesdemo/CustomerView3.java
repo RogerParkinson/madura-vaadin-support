@@ -16,7 +16,6 @@ import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;

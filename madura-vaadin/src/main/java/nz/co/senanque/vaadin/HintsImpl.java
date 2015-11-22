@@ -56,7 +56,7 @@ import com.vaadin.ui.TextField;
  */
 public class HintsImpl implements Hints, Serializable {
 	
-	private static final long serialVersionUID = -1066631793343374468L;
+	private static final long serialVersionUID = -1L;
 
 	Logger logger = LoggerFactory.getLogger(HintsImpl.class);
 	
