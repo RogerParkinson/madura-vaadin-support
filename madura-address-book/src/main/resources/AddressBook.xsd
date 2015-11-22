@@ -148,7 +148,41 @@ limitations under the License.
 
 		</sequence>
 	</complexType>
-
+	<complexType name="TreeSpecies">
+		<sequence>
+			<element name="id" type="long" default="0">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<hj:id>
+							<orm:generated-value strategy="AUTO"/>
+						</hj:id>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="version" type="long">
+				<annotation>
+					<appinfo>
+						<hj:version />
+					</appinfo>
+				</annotation>
+			</element>
+			<element name="name" default="">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="tree.name" />
+							<md:Required/>
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+				<simpleType>
+					<restriction base="string">
+						<maxLength value="50"></maxLength>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+	</complexType>
 
 	<element name="Session" type="tns:Session"></element>
 

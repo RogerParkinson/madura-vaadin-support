@@ -3,6 +3,7 @@ package nz.co.senanque.addressbook.jpa;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
+import nz.co.senanque.addressbook.instances.TreeSpecies;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoadJPA {
 	
 	@Autowired AddressBookDAO m_addressBookDAO;
+	@Autowired TreeSpeciesDAO m_treeSpeciesDAO;
 
 	public AddressBookDAO getAddressBookDAO() {
 		return m_addressBookDAO;
@@ -137,5 +139,23 @@ public class LoadJPA {
 		person.setStartDate(java.sql.Date.valueOf("2000-10-01"));
 		person.setAmount(100);
 		getAddressBookDAO().createPerson(person);
+		
+		TreeSpecies treeSpecies = new TreeSpecies();
+		treeSpecies.setName("Rimu");
+		getTreeSpeciesDAO().createTree(treeSpecies);
+		treeSpecies = new TreeSpecies();
+		treeSpecies.setName("Totora");
+		getTreeSpeciesDAO().createTree(treeSpecies);
+		treeSpecies = new TreeSpecies();
+		treeSpecies.setName("Kauri");
+		getTreeSpeciesDAO().createTree(treeSpecies);
+	}
+
+	public TreeSpeciesDAO getTreeSpeciesDAO() {
+		return m_treeSpeciesDAO;
+	}
+
+	public void setTreeSpeciesDAO(TreeSpeciesDAO treeSpeciesDAO) {
+		m_treeSpeciesDAO = treeSpeciesDAO;
 	}
 }

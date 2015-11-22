@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import nz.co.senanque.addressbook.instances.Person;
+import nz.co.senanque.addressbook.instances.TreeSpecies;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,6 +34,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 public class AddressBookJPATest {
 
     @Autowired private AddressBookDAO m_addressBookDAO;
+    @Autowired private TreeSpeciesDAO m_treeSpeciesDAO;
     
 	@Test
 	public void loadData() {
@@ -47,7 +49,16 @@ public class AddressBookJPATest {
 		List<Person> persons = getAddressBookDAO().getAllPersons();
 		assertEquals(persons.size(),13);
 		Object id = getAddressBookDAO().getId(persons.get(0));
-		assertEquals(id,1L);
+		assertEquals(1L,id);
+	}
+
+	@Test
+	public void test2() {
+		
+		List<TreeSpecies> trees = getTreeSpeciesDAO().getAllTrees();
+		assertEquals(trees.size(),3);
+		Object id = getTreeSpeciesDAO().getId(trees.get(0));
+		assertEquals(14L,id);
 	}
 
 	protected AddressBookDAO getAddressBookDAO() {
@@ -56,6 +67,14 @@ public class AddressBookJPATest {
 
 	protected void setAddressBookDAO(AddressBookDAO addressBookDAO) {
 		m_addressBookDAO = addressBookDAO;
+	}
+
+	public TreeSpeciesDAO getTreeSpeciesDAO() {
+		return m_treeSpeciesDAO;
+	}
+
+	public void setTreeSpeciesDAO(TreeSpeciesDAO treeSpeciesDAO) {
+		m_treeSpeciesDAO = treeSpeciesDAO;
 	}
 
 }
