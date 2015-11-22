@@ -37,15 +37,13 @@
 		<le>Madura Rules plugs into the Madura Objects validation engine to support a rules/constraints based environment that does cross-field validation as well as deriving new values (eg total of the invoice 
 		lines on this invoice). It does 'truth maintenance' which means when the data changes rules might be 'unfired', keeping the derived data always 'true'.  The rules can also operate on metadata which 
 		means they can change the	list of valid choices on a choice field, make a field visible or read-only etc.</le>
-		<le>Madura Bundles builds sub-applications into jar files which can be published to maven or held on a local directory. These Bundles are hot loaded into a host application which sees only a Spring
-		injected bean which supports an interface. You can deploy new versions of sub-applications on the fly.</le>
 		</list>
 		<p>This project wraps those tools to make them easy to use in a Vaadin application. The result delivers highly dynamic applications with very little application code. For example:</p>
 		<list>
 		<le>You can pass a POJO to a generic form which builds display fields for all the POJO fields. Each field is automatically validated according to specifications in the XSD (eg field length, numeric range checks) and
 		error messages delivered where necessary. Required fields (again, as specfied in the XSD) are noted and the submit button is disabled until they are filled in, it is also disabled if there is an
 		error. The generic form can accept a list of fields so you can specify which ones you want, you don't have to have them all.</le>
-		<le>All field captions are fetched from the relevant Madura label and translated to the current locale.</le>
+		<le>All field captions are fetched from the relevant XSD label and translated to the current locale.</le>
 		<le>All validations on all fields are handled automatically. That means range checks, regex checks etc, but it also
 		means rules based validation if you have configured it. The application code is unaware of this.</le>
 		<le>Error handling and delivery of any messages is synched with Vaadin's error message delivery and messages
@@ -55,7 +53,7 @@
 		the field it will be rendered normally, so you only add permissions to fields you care about.</le>
 		<le>Fields marked Secret are rendered as Password style fields.</le>
 		<le>Default values, if specified in the XSD, will be loaded in the obvious way.</le>
-		<le>Required fields are indicated as such. This is done with a red asterisk but is customisable.</le>
+		<le>Required fields are indicated as such. This is normally done with a red asterisk (Vaadin's default) but is customisable.</le>
 		<le>The submit buttons disable themselves until all the required fields are all filled in. They also disable
 		if there are any errors in the fields they are watching. Menu items are treated much the same as buttons, so a submit menu item will be disabled until the form is complete.</le>
 		<le>Any appropriate Vaadin controls can be used, not just the standard ones. All the usual theme features available in ordinary Vaadin applications are still in place. The main change is the
@@ -67,843 +65,453 @@
 		<le>Choice lists dynamically change as the available choices change.</le>
 		<le>Fields may change to/from read-only or invisible as rules fire.</le>
 		<le>One or more buttons may be tied to boolean fields that are, in turn, controlled by rules. These buttons
-		become enabled or disabled depending on the current value of the boolean. Same with menu items.</le>
-		<le>Labels and read-only fields may contain data derived from rules. This automatically updates
-		as the rules change the data.</le>
+		become enabled or disabled depending on the current value of the boolean.</le>
+		<le>Labels and read-only fields may contain data derived from rules. This automatically updates as the rules change the data.</le>
 		</list>
 		<p>Still with us? Good. In addition to all that we added some extra things that come in handy:</p>
 		<list>
 		<le>Support for Mobile applications using Touchkit<referenceLink t="vaadin-touchkit"/> and PhoneGap<referenceLink t="PhoneGap"/>.</le>
-		<le>Support for SpringFrameworks<referenceLink t="Spring Framework"/> applications, which can be a bit awkward for Vaadin.</le>
-		<le>A view manager to make it easier to handle several Vaadin forms at once.</le>
-		<le>An extension of the Vaadin JPAContainer which supports @Transactional better. It also supports nice popup edit forms for each row. The edit forms use a validaton engine.</le>
-		<le>User permissions supplied through Spring Security. These are used to match against field permissions to see if this user can see this field.</le>
-		<le>Support for our perspectives manager which allows you to plug sub-applications into a perspectives framework. The result looks a bit like Eclipse perspectives. The sub-applications are
-		delivered as bundles and can be hot loaded into the perspectives manager where they contribute menu items to the main menu bar.</le>
+		<le>An extension of the Vaadin JPAContainer which supports @Transactional better. It also supports nice popup edit forms for each row. The edit forms use a validation engine.</le>
+		<le>A login filter that pops a login dialog if this user is not yet logged in. We use this for demos rather than production, but it could be customised for production..</le>
 		</list>
 		<p>The details of how to use all this are best explained by examples.</p>
 		<list>
-		<le>The address book demo<referenceLink t="madura-addressbook"/> (not the same as the Vaadin demo of the same name). This one shows the extended JPAContainer in action, including the
-		pop-up row editor, which has validation on its form.</le>
-		<le>The pizza order demo<referenceLink t="madura-pizzaorder"/> shows more advanced, ie rules based, validation. It has an on-line demo as well<referenceLink t="madura-pizzaorder-online"/></le>
-		<le>The perspectives manager demo<referenceLink t="madura-perspectives-manager"/> shows bundled sub-applications. It also has an on-line 
-		demo<referenceLink t="madura-perspectives-manager-online"/></le>
+		<le>madura-vaadin-demo: This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.</le>
+		<le>madura-rules-demo: This is the full demo that shows Madura Objects and Madura Rules working with Vaadin.</le>
+		<le>madura-address-book: Demonstrates the extended JPA container and a pop-up row editor which has Madura backind the fields.</le>
 		</list>
- 		<p>The main documentation draws on these demos for examples.</p>
- 		<p>The code here is packaged as a vaadin-addon<referenceLink t="vaadin-addon"/> available from the Vaadin site.</p>
+ 		<p>These demos form the basis of this documentation and we will refer to them extensively. The code here is packaged as a vaadin-addon<referenceLink t="vaadin-addon"/> available from the Vaadin site.</p>
 		</h1>
-		<h1 t="Techniques">
-		<p>The general techniques described here assume you want to build Vaadin applications and that you like to use SpringFrameworks
-		and configure our beans using XML. If any one of those are not true these techniques will be of limited use, but if they are you
-		should find this interesting.</p>
-		<h2 t="Application Structure">
-        <p>Like all Vaadin applications you need the usual web.xml. It needs an entry like this:</p>
+		<h1 t="Common Techniques">
+		<p>All the demos use Vaadin 7, Spring, Madura and Maven. We assume you are reasonably familiar with all of these.</p>
+		<p>To build use: <courier>mvn install</courier></p>
+		<p>To run with Jetty use: <courier>mvn jetty:run</courier> and open <courier>http://localhost:8080/</courier>. You can also run them with Eclipse WTP. We tested with Tomcat 7.</p>
+		<p>To login the user/password is always admin/admin, you can also use user/user</p>
+		<p>The login process is managed by the <courier>madura-login</courier><sectionLink t="madura-login"/> project. This provides a simple login facility suitable for demos simply by making it
+		a maven dependency and a little configuration.</p>
+        <p>As is usual in Madura Objects we have several files in the resources directory. These are mostly things like <courier>logback.xml</courier> as well as files covered in Madura Objects or Madura Rules documentation.
+        But because they are so important we will mention the XSD files which define the objects. There is an entry in the maven <courier>pom.xml</courier> file that invokes <courier>madura-objects-maven-plugin</courier>
+        which is just a jacket for JAXB that saves you having to configure JAXB for Madura. That generates annotated Java files from the XSD and puts them into the <courier>generated-sources/xjc</courier>
+        directory. You never edit those Java file, you change the XSD and regenerate.</p>
+        <p>Vaadin also has a maven plugin: <courier>vaadin-maven-plugin</courier> which generates the widgetsets.</p>
+		<p>Each demo makes use of Spring Configuration in preference to Spring XML and we also make use of the Vaadin-Spring Addon. However it is simpler to allow one
+		XML component because of the way the defaults work. So each project has an <courier>applicationContext.xml</courier> file in the <courier>WEB-INF</courier> directory. It looks like this 
+		(excluding the headers etc for brevity):</p>
         <code><![CDATA[
-<servlet>
-    <servlet-name>addressbook</servlet-name>
-    <servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
-    <init-param>
-        <param-name>application</param-name>
-        <param-value>nz.co.senanque.addressbook.AddressBook</param-value>
-    </init-param>
-    <init-param>
-        <param-name>productionMode</param-name>
-        <param-value>false</param-value>
-    </init-param>
-</servlet>
-        ]]></code>
-        <p>Our Vaadin Application class in this case is the AddressBook<footnote>Note that the address book demo
-        referred to here is the madura-addressbook demo<referenceLink t="madura-addressbook"/>. It is quite different from the Vaadin address book demo.</footnote> class which we will examine in more detail soon. You also want the following
-        in your web.xml file:</p>
-        <code><![CDATA[
-<!-- Spring context loader -->
-<listener>
-	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-</listener>
-<!-- Spring request context loader: we need this for Spring's session scope -->
-<listener>
-	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-</listener>
-        ]]></code>
-        <p>As the comments suggest these ensure the Spring context file is loaded. There are various options you can add to these which Spring documents. With
-        the entries shown the application will load a file called applicationContext.xml from your WEB-INF directory.</p>
-        <p>We actually have several Spring xml files but we will start with the applicationContext.xml. Beans defined in this file are
-        singletons unless you scope them otherwise, ie they are normal Spring beans. You use this file to define beans that will be reused across all sessions.</p>
-        <code><![CDATA[
-<!-- Assists with loading the Vaadin application -->
-<bean id="springContextLoader" class="nz.co.senanque.vaadinsupport.application.SpringApplicationLoader"/>
-        ]]></code>
-        <p>This bean is used when we come to load the Vaadin Application class. The file imports the security-context file which contains this:</p>
-        <code><![CDATA[
-<bean id="authenticationManager"
-     class="org.springframework.security.authentication.ProviderManager">
-  <property name="providers">
-    <list>
-      <ref local="daoAuthenticationProvider"/>
-    </list>
-  </property>
-</bean>
-<bean id="daoAuthenticationProvider"
-    class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-  <property name="userDetailsService" ref="userDetailsService"/>
-</bean>
-<security:user-service id="userDetailsService">
-	<security:user name="admin" password="admin" authorities="ADMIN, X, Y, Z" />
-	<security:user name="operator" password="operator" authorities="X" />
-</security:user-service>
-        ]]></code>
-        <p>These beans define the security provider and they are standard Spring security beans, well documented by Spring, so we won't go into detail here except
-        to mention that the userDetailsService contains hard coded users for demo purposes. For production you would replace that service with something more
-        elaborate, perhaps using a database or similar.</p>
-        <p>Other entries in the applicationContext.xml file might define the Madura Objects beans etc.</p>
-        <p>Now look at AddressBook.xml which also lives in WEB-INF. The name is derived from the
-        name of the Application class. This file defines session beans whether you scope them or not. So
-        every bean in this file is created once for each user session and can hold information about
-        that session without getting confused with other sessions.</p>
-        <code><![CDATA[
-<!-- Activate Spring annotation support -->
-<context:component-scan base-package="nz.co.senanque.vaadinsupport"/>
-<context:annotation-config/>
-        ]]></code>
-        <p>Some of the vaadinsupport classes are components which will be automatically created and the above entry
-        ensures this happens properly.</p>
-        <code><![CDATA[
-<bean id="application" class="nz.co.senanque.addressbook.AddressBook" factory-bean="springContextLoader" factory-method="get">
-    <property name="theme" value="pizza"/>
-</bean>
-        ]]></code>
-        <p>This bean defines the Vaadin Application bean and injects the name of the theme into it. You can see
-        that the definition refers to the springContextLoader bean we defined in the applicationContext.xml file. All the beans
-        defined there are available to this file and can be injected into beans here as normal. The AddressBook class is specific to this
-        project and you will write your own class. If you want you can inject other beans into it. You already saw this class earlier,
-        it was referred to in the web.xml file. The way this works is that the Vaadin servlet instantiates this class and, because it
-        is delivered to Spring by the springContextContainer bean, the same instance ends up as a Spring bean.</p>
-        <code><![CDATA[
-<bean id="viewManager" class="nz.co.senanque.vaadinsupport.viewmanager.ViewManagerImpl">
-    <property name="initialLayouts">
-        <list>
-            <bean class="nz.co.senanque.vaadinsupport.viewmanager.HelpLayout"/>
-            <bean class="nz.co.senanque.vaadinsupport.viewmanager.LoginLayout"/>
-        </list>
-    </property>
-    <property name="applicationLayouts">
-        <list>
-            <bean id="mainLayout" class="nz.co.senanque.addressbook.MainLayout"/>
-        </list>
-    </property>
-    <property name="adjustCaptions" value="false"/>
-</bean>
-        ]]></code>
-        <p>The viewmanager bean holds two lists of layouts. The initial layouts are initialised before
-        the user logs in but we defer initialising the others until after login. There is some overhead
-        in setting up all the application layouts and they may depend on security credentials etc to
-        obtain resources. Hence the two lists.</p>
-        <p>Everything in the lists is derived from the Vaadin Layout class and the viewmanager assists in
-        keeping track of what is displayed.</p>
-        <code><![CDATA[
-<bean id="loginListener" class="nz.co.senanque.vaadinsupport.viewmanager.SpringLoginListener"/>
-
-<bean id="maduraSessionManager" class="nz.co.senanque.vaadinsupport.application.MaduraSessionManager"/>
-        ]]></code>
-        <p>These two entries define the loginListener which is called when the user attempts to log in, and the maduraSessionManager
-        which holds session information for Madura. The loginListener shown is for demo purposes and you should implement
-        a production one. This one allows any user and uses Spring's AuthenticationManager to load some permissions for the current
-        login.</p>
-        <p>The maduraSessionManager is optional. You don't have to use Madura Objects with this, but if you do then you
-        will need the maduraSessionManager bean.</p>
-        <p>We have mentioned the Application class twice before already. Now let's take a closer look at it. Like all Vaadin Application classes it 
-        must extend com.vaadin.Application. It also needs to implement org.springframework.context.MessageSourceAware and com.vaadin.terminal.gwt.server.HttpServletRequestListener.</p>
-        <p>MessageSourceAware just ensures Spring injects the message source into this class so that you can
-        internationalise the messages. HttpServletRequestListener handles preauthentication.</p>
-        <p>Authentication is a huge subject and Spring documentation covers it well. For our purposes you need
-        to understand that you can have either a login page which asks for a user name and password (or you can customise this
-        to do something else) <emph>or</emph> you can have some kind of enterprise authentication system which
-        intercepts the request before it reaches your application, authenticates it, and adds the authentication
-        information to it. If the request is preauthenticated in this way there is no need to show the login
-        page. We just need to find the permissions this user has been given and set them up for use in our application.</p>
-        <p>This is what the HttpServletRequestListener.onRequestStart() can do. It looks like this:</p>
-        <code><![CDATA[
-public void onRequestStart(HttpServletRequest request,
-        HttpServletResponse response) {
-    m_currentRequest = request;
-    Preauthenticator preauthenticator = getPreauthenticator();
-    if (preauthenticator != null && !isPreauthenticated())
-    {
-        String userName = preauthenticator.preauthenticate(request);
-        if (userName != null)
-        {
-            setPreauthenticated(true);
-        }
-    }
-}
-        ]]></code>
-        <p>If we have defined a preauthenticator and injected it into the application bean then the preauthenticator will
-        be called to unpack the credentials in the request. If this worked then we set the preauthenticated flag.</p>
-        <p>The only other thing we have to do in the Application is initialise it like so:</p>
-        <code><![CDATA[
-public void init() {
-    if (m_messageSourceAccessor != null)
-    {
-    	throw new IllegalStateException("context already loaded");
-    }
-    if (m_currentRequest == null)
-    {
-    	throw new IllegalStateException("no current request");
-    }
-    SpringApplicationLoader.loadContext(this, m_currentRequest);
-    getViewManager().setApplication(this);
-
-	setMainWindow(getViewManager().getMainWindow());
-	if (isPreauthenticated())
-	{
-		getViewManager().loadApplication();
-	}
-	else
-	{
-		getViewManager().switchScreen(LoginLayout.class.getName());
-	}
-}
-        ]]></code>
-        <p>The init() method will be called by Vaadin <emph>after</emph> the onRequestStart() method so
-        at this point we know if we were preauthenticated or not. There are a couple of housekeeping tests at the
-        beginning to ensure the class is properly initialised then we call SpringApplicationLoader to
-        load the context. This is the part that actually loads the AddressBook.xml beans and wires them.</p>
-        <p>Once that is done we need to know if we were preauthenticated. If we were we tell
-        the viewManager to load the application, otherwise we switch to the login page</p>
-        <p>And we're done.</p>
-		</h2>
-		<h2 t="View Manager">
-		<p>A view manager is a nice way to switch between different views in a Vaadin application. It is essentially a map that holds names
-		and Component that can be loaded into your main window. It also holds a stack of these components so you can push/switch the view
-		and then pop back to where you were. This means the target view does not have to know where to jump back to, making it easier to code
-		and more reusable. We wire up the view manager like this:</p>
-		<code><![CDATA[
-<bean id="viewManager" class="nz.co.senanque.vaadinsupport.viewmanager.ViewManagerImpl">
-    <property name="initialLayouts">
-        <list>
-            <bean class="nz.co.senanque.vaadinsupport.viewmanager.HelpLayout"/>
-            <bean class="nz.co.senanque.vaadinsupport.viewmanager.LoginLayout"/>
-        </list>
-    </property>
-    <property name="applicationLayouts">
-        <list>
-            <bean id="mainLayout" class="nz.co.senanque.addressbook.MainLayout"/>
-        </list>
-    </property>
-    <property name="adjustCaptions" value="false"/>
-</bean>
-		]]></code>
-		<p>The application loads only the initialLayouts until login is complete. Once we have a login established we load the first (in this case
-		the only) of the applicationLayouts.</p>
-		<p>The adjustCaptions property causes the view manager to walk the layouts and convert them all using the current locale. For applications
-		using Madura Objects you want this to be false (the default) because Madura Objects looks after that for you.</p>
-		<p>The layouts need to implement <courier>nz.co.senanque.vaadinsupport.viewmanager.ViewManaged</courier> and they usually extend
-		<courier>com.vaadin.ui.CustomComponent</courier>. You can use the Vaadin Visual Editor to create them.</p>
-		<h3 t="HelpLayout">
-		<p>The HelpLayout displays whatever is in the property named help.form.html. It is intended to be a mockup of a real help system
-		rather than a real one. It works well enough for demos.</p>
-		</h3>
-		<h3 t="LoginLayout">
-		<p>The LoginLayout displays whatever is in the login.html file in your theme directory. This is HTML, mostly.</p>
-		<code><![CDATA[
-<div>
-	<div>{0}</div>
-	<div>{1}</div>
-	<div>
-		<input class='v-textfield' style='display: block;' type='text'
-			name='username'>
-	</div>
-	<div>{2}</div>
-	<div>
-		<input class='v-textfield' style='display: block;' type='password'
-			name='password'>
-	</div>
-	<div>
-		<div onclick="document.forms[0].submit();" tabindex="0"
-			class="v-button" role="button">
-			<span class="v-button-wrap"><span class="v-button-caption">{3}</span>
-			</span>
-		</div>
-	</div>
-	</form>
-</div>
-		]]></code>
-		<p>This is an example you can customise any way you want, as long as you input a user name and password and submit the form.</p>
-		<p>There are several arguments embedded in there to allow for localisation.</p>
-		<list>
-		<ll name="{0}">welcomeCaption, uses property <courier>welcome</courier></ll>
-		<ll name="{1}">usernameCaption, uses property <courier>username</courier></ll>
-		<ll name="{2}">passwordCaption, uses property <courier>password</courier></ll>
-		<ll name="{3}">submitCaption, uses property <courier>login.button</courier></ll>
-		</list>
-		<p>When a login happens the Loginlayout calls your implementation of <courier>com.vaadin.ui.LoginForm.LoginListener</courier>.
-		The bean is autowired into the LoginLayout so you don't have to do it.</p>
-		<p>The LoginListener you implement needs to do the following:</p>
-		<list>
-		<le>If the login fails throw a RuntimeException.</le>
-		<le>Establish the list of permissions for this user and tell the permission manager what they are.</le>
-		<le>Optionally tell the permission manager the current user name.</le>
-		</list>
-		<p>If you are implementing a <courier>Preauthentication</courier> class you might like to combine the this with the <courier>LoginListener</courier>
-		because the functions are similar.</p>
-		</h3>
-		<h3 t="MainLayout">
-		<p>The MainLayout is, of course, customised to whatever your application needs.</p>
-		</h3>
-		</h2>
-		<h2 t="Permissions">
-		<p>Each permission is a String value. A logged in user is assigned a list of permissions and if anything (usually a field) has a required
-		permission attached then the user must have that permission or the service requested is refused. In practice this means the field
-		is rendered read-only, or invisible, or the button might be disabled.</p>
-		<p>You can check permissions yourself directly using the permission manager:</p>
-		<code><![CDATA[
-if (getPermissionManager().hasPermission("some_permission"))
-{
-    ...whatever
-}
-		]]></code>
-		<p>But usually the internal code does this for you if you are using Madura Objects.</p>
-		</h2>
-		<h2 t="JPAContainerEditor">
-		<p>This an extension of the JPAContainer you can find in the Vaadin addons, adapted for easier use with Spring. Specifically it
-		handles Spring's @Transactional annotation that looks after starting and stopping transactions.</p>
-		<p>Here is a sample Spring configuration. So keep it simple we have omitted the database and transaction configuration because
-		that is well documented by Spring. If you want to see a full example take a look at MaduraAddressbook<referenceLink t="madura-addressbook"/>.</p>
-		<p>You define the container in the <courier>applicationcontext.xml</courier> file. The easiest way is to use the factory like this:</p>
-        <code><![CDATA[
-<bean id="personContainer" class="com.vaadin.addon.jpacontainer.JPAContainerEditorFactory">
-	<property name="type" value="nz.co.senanque.addressbook.instances.Person"/>
-</bean>
-		]]></code>
-		<p>That will create the container assuming you have just one entity manager, if you have more than one you will need to write your own factory, but the factory code
-		is very simple:</p>
-        <code><![CDATA[
-public class JPAContainerEditorFactory<T>  implements FactoryBean<JPAContainerEditor<T>>{
-
-@PersistenceContext
-private EntityManager entityManager;
-
-private Class<T> m_type;
-
-@Override
-public JPAContainerEditor<T> getObject() throws Exception {
-	JPAContainerEditor<T> container = new JPAContainerEditor<T>(m_type, entityManager);
-	EntityProvider<T> entityProvider = new MutableLocalEntityProvider<T>(m_type, entityManager); 
-	container.setEntityProvider(entityProvider);
-	return container;
-}
 ...
-omitted getters and setters
-		]]></code>
-		<p>If you do have multiple entity managers you just put qualifiers on your @PersistentContext to tell it which one you want your factory to use.</p>
-		</h2>
-		<h2 t="TableEditorLayout">
-		<p>While you can use the HibernateContainerTransactional in any ordinary table it works even better paired with the TableEditorLayout
-		because that allows you to edit the data in the table using popup forms. Again, this was adapted from the sample code from the
-		original HibernateContainer. First, let's look at the configuration:</p>
-		<code><![CDATA[
-<bean id="personTableLayout" class="nz.co.senanque.vaadinsupport.tableeditor.TableEditorLayout">
-    <property name="container" ref="personContainer"/>
-    <property name="columns">
-        <list>
-            <value>name</value>
-            <value>address</value>
-            <value>email</value>
-        </list>
-    </property>
-    <property name="editorWindow" ref="editorWindow"/>
-</bean> 
-		]]></code>
-		<p>That creates a layout with a table in it that is backed by the container we created earlier. But it also adds
-		a drop down menu giving the user the option to delete or modify the current row or add a new one.</p>
-		<p>The columns on the table are specified in the columns property. These are also the fields used in the generated
-		popup form used to modify or change the data.</p>
-		<p>If you need to you can also specify a headings property with the column names. Either way the names are assumed to be property
-		names and locale translation is applied.</p>
-		<p>The drop down menu needs these property names defined for locale translation: add.new.row.to.table, delete.this.row, edit.this.row</p>
-		<p>You can use other containers with this layout if you want, but they will need to implement <courier>nz.co.senanque.vaadinsupport.hibernatecontainer.Editor</courier>
-		for the popup editors to work.</p>
-		<p>The table used in this layout is not actually a <courier>com.vaadin.ui.Table</courier> but instead
-		it is a <courier>nz.co.senanque.vaadinsupport.formatting.FormattingTable</courier>. The difference is that
-		it formats numbers differently. It renders Number data types using the current locale.
-		For example French prefers to use a comma rather than a period as a decimal indicator etc. Doubles are
-		always rendered with 2 decimals, so that is good for currency representations.</p>
-		<p>Columns whose property names start with a minus sign (eg "-myfield") are right justified.</p>
-		<p>The <courier>FormattingTable</courier> also has an extra method for setContainerDataSource allowing you to
-		pass the columns and headings you want displayed in the table. That supports the locale translation.</p>
-		<p>The items in this section can be used together or independently. if you just need a numeric formatting table
-		without the popup editor function just use the <courier>FormattingTable</courier>. You can use any container
-		with it, the extra interface mentioned earlier is only to support popup editing.</p>
-		<p>If you need more popup options, perhaps for filtering, then you can extend the layout or just adapt the code to your needs.</p>
-		<p>The editor Window shown in the configuration can be replaced with your own implementation, typically you
-		extend the editor window used here. Normally you would do this to add extra fields to the editing form.
-		While it is easy to use simple fields (strings, dates, numbers etc) but fields that need lookups to other
-		objects need an extension to implement your own logic.</p>
-		<p>You can inject a permission into the TableEditorLayout and, if present, the user needs that permission to see the drop down edit
-		menu.</p>
-		</h2>
-		</h1>
-		<h1 t="Madura Objects Support">
-		<p>Before you do any of this you need to know what it gets you.</p>
+<context:component-scan base-package="nz.co.senanque.vaadindemo, nz.co.senanque.login" />
+<bean id="messageSource" class="nz.co.senanque.resourceloader.ResourceBundleMessageSourceExt">
+	<property name="basenames">
 		<list>
-		<le>All field captions are fetched from the relevant Madura label and translated to the current locale.</le>
-		<le>All validations on all fields are handled automatically. That means range checks, regex checks etc, but it also
-		means rules based validation if you have configured it. The application code is unaware of this.</le>
-		<le>Error handling and delivery of any messages is synched with Vaadin's error message delivery and messages
-		are locale translated.</le>
-		<le>Permissions are enforced. If this user only has read-only permission on a field it will be rendered
-		but disabled. If they do not have read permission it will not be rendered. If no permissions are specified on
-		the field it will be rendered normally, so you only add permissions to fields you care about.</le>
-		<le>If the field is marked as Read Only it will be rendered disabled.</le>
-		<le>Fields marked Secret are rendered as Password style fields.</le>
-		<le>Default values, if specified, will be loaded in the obvious way.</le>
-		<le>Required fields are indicated as such. This is done with a red asterisk but is customisable.</le>
-		<le>The submit buttons disable themselves until the required fields are all filled in. They also disable
-		if there are any errors in the fields they are watching.</le>
-        <le>Menu items are treated much the same as buttons.</le>
-        <le>Any appropriate Vaadin controls can be used, not just the standard ones.</le>
-		</list>
-		<p>In addition, if you have configured a rules plugin:</p>
-		<list>
-		<le>The validation can include cross field validation.</le>
-		<le>Choice lists dynamically change as the available choices change.</le>
-		<le>Fields may change to/from read-only or invisible as rules fire.</le>
-		<le>One or more buttons may be tied to boolean fields that are, in turn, controlled by rules. These buttons
-		become enabled or disabled depending on the current value of the boolean.</le>
-		<le>Labels and read-only fields may contain data derived from rules. This automatically updates
-		as the rules change the data.</le>
-		</list>
-		<p>Still with us? Good, this is what you need.</p>
-		<h2 t="Setup for Madura">
-        <p>The example application for this is madura-pizzaorder <referenceLink t="madura-pizzaorder"/>.</p>
-		<p>First you set up your application in the same way as the address book application, ie with two Spring files. This time they are called
-        applicationContext.xml and PizzaOrder.xml. In the applicationContext.xml file, and you should recall that this is where the static beans
-        are defined, you need the following beans:</p>
-		<code><![CDATA[
-<bean id="validationEngine" class="nz.co.senanque.validationengine.ValidationEngineImpl">
-	<property name="metadata" ref="metadata"/>
-	<property name="plugins">
-		<list>
-			<ref bean="MaduraRulesPlugin"/>
+			<value>ApplicationMessages</value>
 		</list>
 	</property>
 </bean>
-<bean id="metadata" class="nz.co.senanque.validationengine.metadata.AnnotationsMetadataFactory">
-	<property name="package" value="nz.co.senanque.pizzaorder.instances"/>
-	<property name="choicesDocument">
-		<bean class="nz.co.senanque.madura.spring.XMLSpringFactoryBean">
-			<property name="resource" value="classpath:choices.xml"/>
-		</bean>
-	</property>
-</bean>
-<bean id="MaduraRulesPlugin" class="nz.co.senanque.rules.RulesPlugin" />
-		]]></code>
-        <p>This is the usual configuration for any Madura Objects with Madura Rules. You also need a message source for internationalisation:</p>
-        <code><![CDATA[        
-<bean id="messageSource" class="nz.co.senanque.localemanagement.XMLMessageSource">
-    <property name="resource" value="classpath:/Messages.xml" />
-    <property name="parentMessageSource">
-        <bean
-            class="org.springframework.context.support.ResourceBundleMessageSource">
-            <property name="basenames">
-                <list>
-                    <value>org/springframework/security/messages</value>
-                    <value>ValidationMessages</value>
-                    <value>/nz/co/senanque/pizzaorder/rules/messages</value>
-                </list>
-            </property>
-        </bean>
-    </property>
 </bean>
         ]]></code>
-        <p>This application has the rules generated in the package <courier>nz.co.senanque.pizzaorder.rules</courier> so in addition to the
-        relevant messages entry in the messageSource bean we need to add the following lines somewhere in this file:</p>
-       <code><![CDATA[        
-<context:component-scan base-package="nz.co.senanque.pizzaorder.rules"/>
-<context:annotation-config/>
-        ]]></code>
-        <p>That ensures Spring will scan the rules package for rules to load.</p>
-        <p>Finally, in this file, we need to add the following session beans:</p>
-       <code><![CDATA[        
-<bean id="permissionManager" class="nz.co.senanque.vaadinsupport.permissionmanager.PermissionManagerImpl" scope="session"/>
-<!-- 
-This is the default FieldFactory and is suitable for most purposes, but if you need to extend this
-or replace it with your own just replace this class with yours
--->
-<bean id="fieldFactory" class="nz.co.senanque.vaadinsupport.FieldFactory" scope="session"/>
-<bean id="hints" class="nz.co.senanque.vaadinsupport.HintsImpl" scope="session"/>
-        ]]></code>
-		<p>In your PizzaOrder.xml file you need the following bean:</p>
-       <code><![CDATA[        
-<bean id="maduraSessionManager" class="nz.co.senanque.vaadinsupport.application.MaduraSessionManager"/>
-        ]]></code>
-		<p>That is all we need to cover in configuration. Now we can look at the code. At some point early in your application you will need to create an object and bind it to your session</p>
-		<code><![CDATA[
-m_order = new Order();
-Customer customer = new Customer();
-m_order.setCustomer(customer);
-MaduraSessionManager maduraSessionManager = getMaduraSessionManager();
-maduraSessionManager.getValidationSession().bind(m_order);
-		]]></code>
-		<p>You can find this code in the MainLayout class and it runs once per session. This is normal code for Madura Objects. 
-        You create the objects you want and use the maduraSessionManager to bind them to Madura.
-		Because the Customer is attached to the Order it is bound too, so you don't have to keep binding your objects.</p>
-		<p>So what do you do to connect these Madura Objects to your UI?</p>
-		<p>There are two general approaches. One is to extend Madura Form, point it at an object and go. The other is
-		to register fields with the Madura Manager and bind the data to them with Madura calls. The latter is more complicated
-		but flexible, the former is easy.</p>
-		</h2>
-		<h2 t="Madura Forms">
-		<p>Extend the <courier>nz.co.senanque.vaadinsupport.MaduraForm</courier>. You don't need to add any code to it.
-		Instantiate it, passing the maduraSessionManager to the constructor, and add it to a layout. Call the setFieldList(List&lt;String&gt; fields) to set the
-		list and order of fields you want displayed. If you leave that out it will display all of them. See <courier>nz.co.senanque.pizzaorder.ProductForm</courier> for
-        an example.</p>
-		<p>You might also want to add some buttons to your form. There are two steps to this: registration
-		and binding. You register early on when you create the form, and you bind when you have data to display. This code
-		registers two buttons:</p>
-		<code><![CDATA[
-maduraSessionManager.register(cancelButton, new SimpleButtonPainter());
-cancelButton.addListener(new ClickListener(){
+        <p>This does two things. It tells Spring to scan the application package for component beans, and the login package as well because it has components we want too. It also creates
+        the message source. <courier>ApplicationMessages</courier> are the messages for the current demo. <courier>ResourceBundleMessageSourceExt</courier> is just like Spring's 
+        <courier>ResourceBundleMessageSource</courier> except it can go find the properties files in various jar files by itself.</p>
+        <p>But most of the Spring configuration is in the code. Each demo has a class that extends <courier>com.vaadin.ui.UI</courier> called either 
+        <courier>MyUI</courier> or <courier>AddressBookUI</courier>. This contains the configuration.</p>
+        <code><![CDATA[
+@Theme("mytheme")
+@Title("Madura Vaadin Demo")
+@Widgetset("nz.co.senanque.vaadindemo.MyAppWidgetset")
+@SpringUI
+public class MyUI extends UI {
 
-	public void buttonClick(ClickEvent event) {
-		BeanItem<OrderItem> item = (BeanItem<OrderItem>)productForm.getItemDataSource();
-		getOwner().cancel(item.getBean());
-		getOwner().switchtoHome();
-	}});
-maduraSessionManager.register(orderButton, new SubmitButtonPainter());
-orderButton.addListener(new ClickListener(){
+    @Autowired private MaduraSessionManager m_maduraSessionManager;
+    @Autowired private DefaultView m_defaultView;
 
-	public void buttonClick(ClickEvent event) {
-		getOwner().switchtoHome();
-	}});
-		]]></code>
-		<p>First we get hold of our MaduraManager and we register the button passing it a button painter.
-		The <courier>SimpleButtonPainter</courier> does not do much, but you can instantiate it with a permission and that will mean it is
-		disabled unless the current user has that permission.</p>
-		<p>Then we add a listener to the button, which is just normal Vaadin and needs no more mention.</p>
-		<p>The second button is registered with the <courier>SubmitButtonPainer</courier>. Like the <courier>SimpleButtonPainter</courier> this one can take
-		a permission, but we aren't using that here. The <courier>SubmitButtonPainter</courier> disables itself unless all the required fields
-		on the form are filled in. It also disables if any of the fields are in error. This means that the <courier>submit</courier> button
-		is disabled automatically when you don't want the user to press it.</p>
-		<p>The next step is to bind and we need to have data before we can do that.</p>
-		<code><![CDATA[
-productForm.setItemDataSource(new BeanItem<OrderItem>(pizza));
-List<MaduraPropertyWrapper> properties = productForm.getItemDataSourceProperties();
-maduraSessionManager.bind(orderButton, properties);
-maduraSessionManager.bind(cancelButton, properties);
-productForm_1.requestRepaint();
-		]]></code>
-		<p>As usual with Vaadin we call setItemDataSource to tell the form
-		about the object it is mapped to. Note that we could stop there and we would have an active Madura Form,
-		but we still have to bind those buttons. To do that we get a list of properties from the form and
-		call the bind for each button. This is how the orderButton knows which properties it is looking at to see
-		if the required fields are filled in. The cancel button does not strictly need to be registered, but it is good
-		for consistency to do it.</p>
-		</h2>
-		<h2 t="Non-Madura Forms">
-		<p>What if we don't want to use a Madura Form? Possibly we don't want to use a form at all. This is what we do in the registration phase:</p>
-		<code><![CDATA[
-maduraSessionManager.register(m_saveButton, new SubmitButtonPainter());
-maduraSessionManager.register(m_dynamicButton, new FieldButtonPainter("dynamic"));
-maduraSessionManager.register(m_cancelButton, new SimpleButtonPainter());
-m_helpButton.addListener(new Button.ClickListener() {
-	
-	public void buttonClick(ClickEvent event) {
-		ViewManagerFactory.getViewManager().pushScreen(HelpLayout.class.getName());
-	}
-});
-maduraSessionManager.register(m_helpButton, new SimpleButtonPainter());
-maduraSessionManager.register(m_name);
-maduraSessionManager.register(m_address);
-maduraSessionManager.register(label_1);
-		]]></code>
-		<p>In this sample most of the listeners have been removed to keep it short. There are four buttons
-		registered and three fields. The last of the fields is actually a label. So the only difference here from
-		using the Madura Form is that we called register() for each field (and label).</p>
-		<p>There is another difference. For the dynamicButton we used the FieldButtonPainter and we passed the
-		name of a field to it. This field is a binary field and it is controlled by a rule. When the rule turns that
-		field to true the button will enable. If the rule turns it to false the button will disable. Actually
-		if your application code sets it the effect will be the same.</p>
-		<p>The bind phase is similar:</p>
-		<code><![CDATA[
-List<MaduraPropertyWrapper> properties = maduraSessionManager.getFieldList(customer);
-MaduraSessionManager maduraSessionManager = MaduraSessionManagerFactory.getMaduraSessionManager();
-maduraSessionManager.bind(m_saveButton,properties);
-maduraSessionManager.bind(m_dynamicButton,properties);
-maduraSessionManager.bind(m_cancelButton,properties);
-maduraSessionManager.bind(m_helpButton,properties);
-maduraSessionManager.bind(m_name,"name",properties);
-maduraSessionManager.bind(m_address,"address",properties);
-maduraSessionManager.bind(label_1,"zip",properties);
-		]]></code>
-		<p>The customer is a Madura Object that we earlier bound to our session, so Madura Objects already knows about it.
-		The rest is just individual binds for each field and each button. There is no good reason for the zip code
-		to be in a label, except to show how to do it.</p>
-		<p>All of the field and property binds search the list of properties for the field named in the second
-		argument. You could choose to do this another way which is just the same:</p>
-		<code><![CDATA[
-maduraSessionManager.bind(totalField, maduraSessionManager.getMaduraPropertyWrapper(order, "amount"));
-		]]></code>
-		<p>It is important to deregister anything you register. Registering something means the Madura Manager checks for
-		changes in that item and leaving unused items on the list is inefficient. So you need to do something like this:</p>
-		<code><![CDATA[
-maduraSessionManager.deregister(m_saveButton);
-maduraSessionManager.deregister(m_dynamicButton);
-maduraSessionManager.deregister(m_cancelButton);
-maduraSessionManager.deregister(m_helpButton);
-maduraSessionManager.deregister(m_name);
-maduraSessionManager.deregister(m_address);
-maduraSessionManager.deregister(label_1);
-		]]></code>
-		<p>You might add this to a <courier>destroy</courier> method on the object that holds the fields. MaduraForm
-		automatically registers and deregisters its internal items.</p>
-		</h2>
-		<h2 t="Menus">
-		<p>In <sectionLink t="Non-Madura Forms"/> we saw that you can register and bind button controls so that they are rendered differently
-		according to decisions made in Madura Objects. We can do the same thing with menus, but the code is a little different.</p>
-		<code><![CDATA[
-final MenuBar.MenuItem file = menuBar_1.addItem("File", null);
-m_menuItemSave = file.addItem("Save", new CommandExt(){
+    @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
+    public static class MyUIServlet extends SpringVaadinServlet {
 
-	MenuItemPainter m_menuItemPainter = new SubmitButtonPainter();
-	
-	public void menuSelected(MenuItem selectedItem) {
-		getOwner().switchtoHome();
-	}
+		private static final long serialVersionUID = 1L;
+    }
 
-	public MenuItemPainter getPainter() {
-		m_menuItemPainter.setProperties(productForm_1.getItemDataSourceProperties());
-		return m_menuItemPainter;
-	}
-
-	public MaduraSessionManager getMaduraSessionManager() {
-		return maduraSessionManager;
-	}});
-maduraSessionManager.register(m_menuItemSave);
+    @WebListener
+    public static class MyContextLoaderListener extends ContextLoaderListener {
+    	// This causes the applicationContext.xml context file to be loaded
+    	// per session.
+    }
 ...
+        ]]></code>
+		<p>The first three annotations are normal Spring-Vaadin things that ensure this class is loaded with the right theme etc. You can also see a static class that declares a servlet
+		as well as a web listener. The listener is what loads the <courier>applicationContex.xml</courier> you saw above.</p>
+		<p>There are also two auto wirings, one for the current MaduraSessionManager and one for a local class which defines most of the UI. There is
+		often more than one of these classes.</p>
+		<p>After that there is a static class that defines the configuration. It is worth noting that the above section is created and wired <emph>per session</emph> whereas this following section
+		is <emph>per application</emph>, ie singletons except for those annotated <courier>UIScope</courier> which are session beans.</p>
+        <code><![CDATA[
+...
+@Configuration
+@EnableVaadin
+@ComponentScan(basePackages = {
+		"nz.co.senanque.vaadin",
+		"nz.co.senanque.validationengine"})
+@PropertySource("classpath:config.properties")
+public static class MyConfiguration {
+	
+	public MyConfiguration() {
+	}
+   	// needed for @PropertySource
+   	@Bean
+   	public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
+   		return new PropertySourcesPlaceholderConfigurer();
+   	}
+   	@Bean(name="hints")
+   	@UIScope
+   	public Hints getHints() {
+   		return new HintsImpl();
+   	}
+}
+...
+        ]]></code>
+        <p>The things to note here are that there are more packages to scan, namely the validation engine and the components of the madura-vaadin project. We also specify a properties file which injects values
+        into these scanned components. You will see the <courier>config.properties</courier> file in the resources directory and it holds those values. The <courier>hints</courier> bean is defined here
+        rather than scanned so that you can replace it with your own implementation. The hints bean helps the field factory decide what kind of field to create in various circumstances. The one used
+        here works just fine but you might want something different.</p>
+        <p>The <courier>config.properties</courier> only needs to know what package the generated Java classes are in, like this:</p>
+        <code><![CDATA[
+nz.co.senanque.validationengine.metadata.AnnotationsMetadataFactory.packages=nz.co.senanque.pizzaorder.instances
 		]]></code>
-		<p>This shows the creation of two menu entries in a <courier>com.vaadin.ui.MenuBar</courier>. The first one, File, just contains the second one: Save. Save is
-		the interesting one and we hold it in a class property called <courier>m_menuItemSave</courier> so we can get at it later.</p>
-		<p>To implement a menu item that does something you normally create a class that implements <courier>com.vaadin.ui.MenuBar.Command</courier>, but
-		Madura Objects needs it to do a little more so we implement <courier>nz.co.senanque.vaadinsupport.CommandExt</courier> which has
-		two extra methods. The two methods return the <courier>MenuItemPainter</courier>, and you can use any of the button painters here,
-		and the <courier>MaduraSessionManager</courier>. Then we register the <courier>MenuItem</courier> with the <courier>MaduraSessionManager</courier> in the
-		same way we did earlier for the button.</p>
-		<p>Just as for the button, there is a bind after the register which looks like this:</p>
-		<code><![CDATA[
-maduraSessionManager.bind(m_menuItemSave, properties);
-		]]></code>
-		<p>Do ensure you create and store the <courier>MenuItemPainter</courier> inside your implementation of <courier>CommandExt</courier>, do not
-		instantiate it in the getPainter() method because that may be called repeatedly and it is important to always return the same
-		instance of the painter.</p>
+        <p>Next up is the <courier>init</courier> method which is called when the user session is created.</p>
+        <code><![CDATA[
+...
+    protected void init(VaadinRequest vaadinRequest) {
+    	
+    	String currentUser = (String)vaadinRequest.getWrappedSession().
+    		getAttribute(AuthenticationDelegate.USERNAME);
+		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().
+			getAttribute(AuthenticationDelegate.PERMISSIONS);
+    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
+    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
+    	this.getSession().setConverterFactory(m_maduraSessionManager.
+    		getMaduraConverterFactory());
+    	
+    	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+    	final String logout = messageSourceAccessor.getMessage("logout");
+...
+        ]]></code>
+        <p>The first few lines here are fetching the login details from <courier>madura-login</courier> and transferring them to the injected <courier>MaduraSessionManager</courier>.
+        This may seem a little clumsy but it is deliberate because we want to ensure there are no dependencies between Madura and <courier>madura-login</courier>. That allows
+        people to use their own login mechanism. All that we really need here is a way to get the user name and the permissions.</p>
+        <p>Going the other way we need to tell Vaadin about a converter factory that Madura needs.</p>
+        <p>The last part is fairly ordinary Spring code that uses a <courier>MessageSourceAccessor</courier> to translate the logout string. It is interesting because it shows that
+        for various headings or captions of components that are not controlled by Madura we still need to call a <courier>MessageSourceAccessor</courier> for I18n, but most of the time we don't.</p>
+        <p>The last part is the logout:</p>
+        <code><![CDATA[
+...
+private void logout() {
+ 	m_maduraSessionManager.close();
+ 	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+ 	getUI().close();
+    String contextPath = VaadinService.getCurrentRequest().getContextPath();
+    getUI().getPage().setLocation(contextPath);
+}
+...
+        ]]></code>
+        <p>This closes down the Madura session and the Vaadin session and redirects to the login page, well actually it redirects to the application but since we are no longer logged in the login page is popped up.</p>
+        <p>The <courier>DefaultView</courier> class was mentioned above. It is auto wired into the <courier>MyUI</courier> class and all of the demos have one or more classes like this, so let's take a brief look at
+        one of them:</p>
+        <code><![CDATA[
+...
+@UIScope
+@SpringComponent
+public class DefaultView extends VerticalLayout implements MessageSourceAware {
+
+	@Autowired private MaduraSessionManager m_maduraSessionManager;
+...
+        ]]></code>
+        <p>The two class annotations ensure that Spring loads this as a session component, and the <courier>MaduraSessionManager</courier> is auto wired. The <courier>MaduraSessionManager</courier> is the 
+        general pupose API we use to get to Madura so we need it everywhere.</p>
+		<p>Now we can look inside the first demo.</p>
+		</h1>
+		<h1 t="madura-vaadin-demo">
+		<p>The interesting things in this project are in the <courier>nz.co.senanque.vaadindemo.DefaultView</courier>. You saw it briefly in the previous section so you knowit is a session dependent bean and
+		it has a <courier>MaduraSessionManager</courier> injected.</p>
+		<p>It has an <courier>init</courier> method which runs once Spring has instantiated the bean and finished injecting everything. The first thing this does is create a <courier>MaduraFieldGroup</courier>. This
+		class is an extension of Vaadin's <courier>FieldGroup</courier> with some added methods for Madura. Here it is used to create two buttons. The two buttons don't do much (this is a demo, remember). But how they
+		are created is important.</p>
+        <code><![CDATA[
+...
+Button cancel = m_maduraFieldGroup.createButton("button.cancel", new ClickListener(){
+...
+	}});
+...
+        ]]></code>
+		<p>There is not much to this really. It creates a button, translates the name and adds the listener. But we might have used a variation on this:</p>
+        <code><![CDATA[
+...
+Button cancel = m_maduraFieldGroup.createButton("button.cancel", "ADMIN", new ClickListener(){
+...
+	}});
+...
+        ]]></code>
+        <p>In this case we added a permission. If the user does not have this permission the button will be disabled.</p>
+        <p>The second button is similar:</p>
+        <code><![CDATA[
+...
+Button submit = m_maduraFieldGroup.createSubmitButton("button.submit", new ClickListener(){
+...
+	}});
+...
+        ]]></code>
+        <p>This button is a <emph>submit</emph> button. For us that means all fields in the field group that are flagged as required must have values before the button will be enabled. They also have to be valid. 
+        The validation rules and the required flags are specified in the XSD file, not here, so the UI designer does not need to worry about those things. As with the previous button you could add a permission
+        argument. Permissions always trump everything else so even if a user has filled in the fields correctly the submit button will not enable unless they have the permission. If you want to make one of the buttons
+        the default button, ie what happens when the user presses enter, you do this:</p>
+        <code><![CDATA[
+submit.setClickShortcut( KeyCode.ENTER );
+submit.addStyleName( ValoTheme.BUTTON_PRIMARY );
+        ]]></code>
+        <p>The style is optional and we've chosen the one one appropriate to Vaadin's Valo theme. If we were using a different theme we would use a different style here.</p>
+        <p>Apart from buttons the only other thing of importance created by the <courier>init</courier> method is the <courier>m_panel</courier>, an empty <courier>VerticalLayout</courier>. The <courier>init</courier>
+        method leaves it empty.</p>
+        <p>The <courier>load</courier> method is called when we are ready to display this part of the UI. It establishes the <courier>Person</courier> object we want to back the fields. <courier>Person</courier> is,
+        of course, defined in the XSD file. This is what the <courier>load</courier> method does:</p>
+        <code><![CDATA[
+public void load(Person person) {
+	m_maduraFieldGroup.buildAndBind(m_panel,Arrays.asList(fields),new BeanItem<ValidationObject>(person));
+}
+        ]]></code>
+		<p>The list of field names as an array in the top of this class.</p>
+        <code><![CDATA[
+private String[] fields = new String[]{"name","email","address","gender","startDate","amount"};
+        ]]></code>
+        <p>Quite a few things happen in the BuildAndBind call.</p>
+        <list>
+        <le>Clear the <courier>m_panel</courier> of components (in case this is not the first time we called this).</le>
+        <le>Bind the <courier>person</courier> to the Madura Objects session.</le>
+        <le>Loop through the <courier>fields</courier> and for each one create an actual Field component, bind it to the Madura Object and add it to the <courier>m_panel</courier>.</le>
+        <le>Bind any buttons. dynamic labels and menu items.</le>
+        </list>
+        <p>The result is a display with several fields, complete with I18n captions, backed by the Madura Object <courier>person</courier>. The buttons etc are also bound so that Submit button will be disabled
+        if the <courier>person</courier> does not have all the required fields completed. The fields are all wired with validation and the field types vary by data type, so there are three text fields,
+		one drop down which is populated with choices, a date and a numeric text field.</p>
+        <p>This is not the only way to achieve this, and you will see alternative approaches in subsequent demos. They are summarised in <sectionLink t="MaduraFieldGroup"/></p>
+		</h1>
+		<h1 t="madura-rules-demo">
+		<p>This demo is more complicated, and it uses Madura Rules so there are some configuration differences too. We will look at those first.</p>
+		<p>The <courier>applicationContext.xml</courier> has an extra package to scan, this is the package we put the generated rules in.</p>
+		<p>Madura Rules uses a maven plugin to generate Java rules in much the same way Madura Objects generated Java objects from the XSD. When you use Madura Rules you always use Madura Objects as well,
+		so we have the usual XSD file and an entry for it the <courier>pom.xml</courier>. We also have a RUL file in the resources directory. That defines the rules and there is plugin configured in the pom file
+		called <courier>madura-rules-maven-plugin</courier>. That puts the rules Java into <courier>generated-sources/xjc</courier> package <courier>nz.co.senanque.pizzaorder.rules</courier> which is the
+		package specified in <courier>applicationContext.xml</courier>.</p>
+		<p>The <courier>choices.xml</courier> file is more interesting in this demo because it includes more choice list entries (some aren't actually used), a decision table and a constant. There is more Java code as well,
+		but this is not because we added rules, it is because we added more demo.</p>
+		<p>As usual there is a <courier>com.vaadin.ui.UI</courier> extension (called <courier>MyUI</courier>). It looks much the same, but we are scanning one more package: <courier>nz.co.senanque.rules</courier>
+		to pick up the rules components. These are the out-of-the-box rules component classes as opposed to the generated rules classes scanned in the <courier>applicationContex.xml</courier> file. Other than that
+		all this class does is create a <courier>TabSheet</courier> on which it places the injected UI components so we will look a those one by one.</p>
+		<p>An important point to notice here is that aprt from adding those directories to be scanned the code is comletely unaware of the rules.</p>
+		<h2 t="CustomerView">
+		<p>This is labelled 'Customer' on the UI (unless you are using the French version). It looks a bit like the first demo but with fewer fields and more buttons.</p>
+		<p>The code makes use of the <courier>MaduraForm</courier> class which, because it is based on Vaadin's <courier>Form</courier> is deprecated. It is still useful, though, as you'll see.</p>
+		<p>The <courier>enter</courier> method binds the object. This time we don't have to create the fields because the form handles that automatically based on the list of fields we set so all we need is:</p>
+        <code><![CDATA[
+customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
+        ]]></code>
+
+		<p>Like the <courier>MaduraFieldGroup</courier> you can use the <courier>MaduraForm</courier> to create buttons, with the same options and functionality. In this example we show a different sort of button.</p>
+        <code><![CDATA[
+Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ADMIN", new ClickListener(){
+        ]]></code>
+        <p>There is a boolean field called <courier>dynamic</courier> in the <courier>Customer</courier> object and this creates a button that is disabled or enabled depending on whether <courier>dynamic</courier>
+        is false or true. This would not be all that useful if nothing changed the value of <courier>dynamic</courier>. but there is a rule in the RUL file:</p>
+        <code><![CDATA[
+rule: Customer "dynamic"
+{
+	if (name == "fred")
+	{
+		dynamic = true;
+	}
+}
+        ]]></code>
+        <p>This may be fairly obvious, but if it is not then you can find more details in the Madura Rules documentation. If we enter 'fred' into the <courier>name</courier> field the rules will fire and set
+        <courier>dynamic</courier> to true, and that will cause the button to enable, unless this user doesn't have the ADMIN permission. This example should give you a feel for how the operation of the rules
+        is detached from the UI code. The UI knows about a field called <courier>dynamic</courier>, it does not know about the rule. Similarly the rule knows about <courier>dynamic</courier> but it knows nothing about
+        the UI. Yet a change from the rules propagates to the UI. We will see this a lot.</p>
+        <p>Just after we created the <courier>MaduraForm</courier> we set the field list into it. This list is turned into fields with captions on a <courier>VerticalLayout</courier>. All it needs after that is an actual object
+        and that is set in the <courier>enter</courier> method.</p>
+        <p>The <courier>BMI</courier> button has a a listener attached that actually does something:</p>
+        <code><![CDATA[
+m_oneFieldWindowFactory.createWindow(m_customer, "bmi",ValoTheme.BUTTON_PRIMARY);
+        ]]></code>
+		<p>This invokes the directed questioning mode of the rules. What happens is quite complex, but this is all you need to use it. We pass the object, it has to be a Madura Object of course, ie generated from the XSD,
+		the name of a property on the object and, optionally, a style for a submit button. The rules engine will look for rules that output that property and try and work out a value using them. Each time it finds
+		it needs more information it will prompt for it. In this  case there is a rule:</p>
+        <code><![CDATA[
+formula: Customer "BMI"
+{
+	bmi = weight / (height * height);
+}
+        ]]></code>
+        <p>So it asks for weight and height on two different pop-up windows. But it is more complicated than that. Some people like to give these measurements in imperial units, some in metric, and they don't know, say, 
+        their height in metres. But that is okay. You can say you don't know and it will ask for feet then inches (two prompts). This feature can be used to simplify complicated input sequences that may need only a few
+        relevant inputs, depending on the contex. If the property is already filled in, perhaps the height was obtained earlier, then it knows not to ask for it.</p>
 		</h2>
-		<h2 t="Field Factory">
-		<p>You can use any kind of widget with Madura Objects, but you must use the right FieldFactory.
-		Earlier we saw the field factory configured like this:</p>
-		<code><![CDATA[
-<bean id="fieldFactory" class="nz.co.senanque.vaadinsupport.FieldFactory" scope="session"/>
-<bean id="hints" class="nz.co.senanque.vaadinsupport.HintsImpl" scope="session"/>
-		]]></code>
-	<p>While Vaadin applications are always free to implement their own
-		field factory if you use a different
-		field factory to the one shown the
-		Madura features might not work. To support some customisation of the
-		field factory, however, you can inject it with hints. This is the
-		hints bean (it is autowired into the field factory).</p>
-	<p>The hints bean is used by MaduraForm to decide what kind of widget
-		to auto generate based on the data. So if you
-		wanted a different date
-		widget you would implement your own hints bean to specify that.</p>
-	<p>The hints also control using the Madura Object field description as
-		a tooltip (translated to the appropriate locale, of course), among other things.</p>
+		<h2 t="CustomerView2">
+		<p>This is labelled 'C2' on the TabSet. It is functionally the same as the Customer tab but shows a different way of doing it. In this case the <courier>MaduraFieldGroup</courier> is used and the fields are created explicitly then
+		bound to the <courier>MaduraFieldGroup</courier>. The buttons are created by calls to the <courier>MaduraFieldGroup</courier> instead of the <courier>MaduraForm</courier> but the same thing happens. THis approach
+		allows you full control over what kind of fields you want and where you want to position them. For example the <courier>ComboBox</courier> might be changed to a
+		<courier>TextBox</courier> if we wanted (though we probably don't want to because we like the drop down choice list).</p>
+		<p>As before the <courier>enter</courier> method binds the object. And as before we don't have to create the fields here because that is already done.</p>
+		</h2>
+		<h2 t="CustomerView3">
+		<p>This is labelled 'C3' on the TabSet. It is almost identicle to C2 but instead of buttons it uses a <courier>MenuBar</courier>. This is done much the same way as buttons and the submit menu item
+		enables and disables in the same way. Field buttons (eg the BMI button) are not provided for menu items so this one is a bit simpler.</p>
+		</h2>
+		<h2 t="OrderView">
+		<p>The order view is labelled 'Order' on the TabSet. This one does a little order entry function, like a shopping cart. We are ordering pizza but we need to say what kind of topping, size and base
+		we want. And not all combinations are allowed. As we order pizzas they appear in the table on the order view.</p>
+		<p>In this view we use a <courier>MaduraFieldGroup</courier> to display the status of the order in  two labels. The interesting thing about this is that instead of using input fields, which
+		you have already seen, these components are labels and they are dynamic as we shall see. If we get the <courier>MaduraFieldGroup</courier> (or the <courier>MaduraForm</courier>) to create the fields
+		it will always create input fields because it doesn't know any better. So this is an example of adding customisation.</p>
+		<p>The table is a <courier>FormattingTable</courier> which extends Vaadin's table to handle I18n headings and formating numerics. There are two columns on this table and one ofthem is numeric.
+		To set it up all we need to do is name the properties we want to display ("description","-amount") and add a minus sign to the amount to right justify it. And we also name the headings ("Description","Amount"). 
+		Those headings will be used as is if there is no resource translation, but if there is the translation will be used.</p>
+		<p>There are two buttons which popup two windows: 'Add Item' and 'Add Item 2'. Each of these create an order item, but they do it two different ways.</p>
+		<h3 t="PizzaWindow">
+		<p>This uses a <courier>MaduraForm</courier> to present the fields on the <courier>Pizza</courier> object. The code is similar to Customer view. It is worth running the demo at this point to see what it does.
+		You can see the three fields: Base, Topping, Size. Because only some combinations are valid you will find that as you pick options in, say, the Topping field, and list of options on the Size field will change, and vice versa.
+		It doesn't matter what order you pick them. This is driven by the decision table in <courier>choices.xml</courier>. It does not have to be hard coded XML either, the values can be pulled from external sources such
+		as a database. How to do that is in the Madura Rules documentation.</p>
+		<p>The other thing you will see when picking options is that the amount field, which is read only, will get a value and a new field 'testing' will appear. This is because of rules like this:</p>
+        <code><![CDATA[
+rule: Pizza "p2"
+{
+	if (size == "Small")
+	{
+		readonly(testing);
+		activate(testing);
+		amount = 10;
+	}
+}
+        ]]></code>
+        <p>The 'testing' field varies from inactive, active (ie visible), read-only, read-write and required. A description field displays the concatenation of the base, topping and size fields.</p>
+        <p>As usual there is a submit button on the display and the submit button is aware of whether the 'testing' field is required and not filled in, or not required, so it can enable and disable accordingly.</p>
+        <p>Once you click the submit button the pizza is added to the order, which means it displays in the shopping cart. The labels at the top of the Order view will change. Previously they said 'Shopping cart is empty'
+        and a value of zero. Once you add a pizza it will say '1 items in cart' and the sum of the pizza values. How does that happen? Where is the code?</p>
+        <p>You probably guessed it is in the rules.</p>
+        <code><![CDATA[
+rule: Order "shoppingcartsize"
+{
+	if (count(pizzas) > 0)
+	{
+		orderStatus = format("shopping.cart.status",count(pizzas));
+	}
+}
+rule: Order "shoppingcartsize"
+{
+	if (count(pizzas) == 0)
+	{
+		orderStatus = format("shopping.cart.status.empty",0);
+	}
+}
+        ]]></code>
+        <p>It relies on two resource strings:</p>
+        <code><![CDATA[
+shopping.cart.status.empty=Shopping cart is empty
+shopping.cart.status={0} items in cart
+        ]]></code>
+		<p>'pizzas' is a field on the Order which holds a list, and there are a number of built in functions that handle lists. What about the total? Yes, another rule:</p>
+        <code><![CDATA[
+formula: Order "sum"
+{
+	amount = sum(pizzas.amount); 
+}
+        ]]></code>
+        <p>Again, the rules do not know about the UI and the UI does not know about the rules, but the values automatically update. This demo does not provide a way to delete pizzas but if it did the total
+        an the status would update appropriately because the rules know to re-fire when the data they worked with changes.</p>
+		</h3>
+		<h3 t="PizzaWindow2">
+		<p>This also configures a pizza and it looks much the same as the PizzaWindow. The differences are that the way the fields are defined is different and the description field is a label rather than a text field. It makes use
+		of Vaadin's <courier>PropertyId</courier> annotation. When these are used we can call the <courier>buildAndBindMemberFields</courier> method to find and bind them.</p>
+		</h3>
 		</h2>
 		</h1>
-		<h1 t="Pluggable Applications">
-		<p>To really see the power of this concept you should take a look at the demo <referenceLink t="madura-perspectives-manager"/><referenceLink t="madura-pizzaorder-bundle"/>. 
-        So let's see if this is worth your while.</p>
-		<img   href="images/MaduraPerspectiveDemo.png">Madura Perspective Demo</img>
-		<p>What <figureLink t="Madura Perspective Demo"/> shows is the initial display when a user logs into the main application.</p>
-		<p>Worth noticing at this point is that there is not much there, but there is a list of sub applications on the left hand side. There
-		is also a small menu and, over on the right, the 'Logged in as: admin' indicates who logged in.</p>
-		<p>So this is what the main application's UI looks like, but this is just a demo. The details of this UI can be customised to
-		any requirements. For example if you want the list of sub-applications to appear somewhere else, perhaps over on the right, 
-		and as a drop down list you just change the code in the main layout. You probably do not want the Madura logo dominating the
-		upper left hand side either, though you're welcome to put it there. Also you can adjust the CSS definitions that Vaadin uses
-		to change colours and fonts etc. Vaadin themes are, of course, supported so you can select different themes for different users
-		if you want. The selected theme is propagated to the sub-applications as well, ensuring the user has a consistent interface.</p>
-		<p>If the user selects the <courier>User</courier> option this loads the sub-application and changes the screen.</p>
-		<img   href="images/UserDetails.png">User Details</img>
-		<p>The User Details sub application is a very simple pure Vaadin form mapped to an object. It accepts information about a user
-		but it does nothing much with it (this is only a demo). But it shows where the sub application UI appears on the screen. Notice
-		that it retains the same theme as the main application. Notice the the title on the upper right has changed, it shows the name of the
-		current sub application. If we now click the <courier>pizza</courier> option we see the 
-		<courier>Pizza Order</courier> UI.</p>
-		<img   href="images/PizzaOrder.png">Pizza Order</img>
-		<p>This sub application uses Madura Objects and Madura Rules to drive the UI, so is a bit more interesting. It uses the same
-		objects and rules as the pizza order demo. The point, though, is that this kind of functionality can be added to a sub application
-		when we want. You might also notice that the menu has an extra entry. This was contributed by the Pizza Order sub application. Menu
-		items appear and disappear as different sub applications are selected.</p>
-		<p>Now let's take a look at what these sub applications really are.</p>
-		<p>Each sub application is a Madura Bundle, which means it is a jar file with some extra bits, including a local Spring beans file.
-		Each sub application contributes:</p>
+		<h1 t="madura-address-book">
+		<p>This demo is all about displaying and editing rows from a database in a table. It uses Madura Objects but not Madura Rules. It does use the madura-tableeditor so that needs to be specified as a
+		maven dependency and the <courier>nz.co.senanque.vaadin.tableeditor</courier> package has to be scanned so that it added to the <courier>ComponentScan</courier> in the <courier>AddressBookUI</courier>
+		class.</p>
+		<p>We also define two beans in the <courier>MyConfiguration</courier> class: a table layout and an editorWindow.</p>
+		<p>The <courier>nz.co.senanque.addressbook.jpa</courier> package defines a data source and demo code to load hard coded values into an in-memory H2 database.</p>
+		<p>There is actually very little code in this demo because it is driven from the data structures. Once the table is loaded and visible you can right click to see a context menu
+		giving options to edit, add or delete records. When adding or editing you have a Madura-backed Vaadin form with the usual validation and dynamic submit button you have seen in the other demos. It does
+		not use Madura Rules but if it did there would be no change to the code except for some extra packages to scan.</p>
+		</h1>
+		<h1 t="MaduraFieldGroup and MaduraForm">
+		<p>Most of the demos make use of <courier>MaduraFieldGroup</courier> in various ways, and the ones that do not use <courier>MaduraField</courier>. How do you know what technique to use?</p>
+		<p>Bear in mind there are two distinct phases that are always present. The first phase is the initialise phase. This is called once at application startup or, more usually, at session startup. The second phase
+		is when we have an object such as a person, a customer or maybe a pizza, to bind to. This might be called multiple times as we operate on different customer or different pizzas.</p>
+		<h2 t="MaduraForm">
+		<p><courier>MaduraForm</courier> is based on Vaadin's <courier>Form</courier> which is deprecated, a possible reason not to use it. <courier>Form</courier>, and therefore <courier>MaduraForm</courier> is
+		a <courier>Component</courier> which can be added to the display. You normally let the <courier>Form</courier> create its own fields and position them where it likes, usually in a vertical layout.</p>
+		<p>The steps you perform to use <courier>MaduraForm</courier> are:</p>
 		<list>
-		<le>A name. This is used to create the link on the left.</le>
-		<le>A description. This is what you see displayed on the upper right. It is also used to make a tooltip on the link.</le>
-		<le>A UI, which is the bulk of the application.</le>
+		<le>Initialise it with the constructor passing <courier>MaduraSessionManager</courier>. You can pass an optional layout in the constructor as well and this is what the created fields will be added to. The default is a vertical layout
+		but you do have more options than that.</le>
+		<le>Set the list of field names using <courier>setFieldList</courier>. The fields will be created when there is an object bound. If you set an invalid name it will be ignored without error.</le>
+		<le>create any buttons you want using the form methods and position them where you like.</le>
 		</list>
-		<p>The sub applications can be added to the main aplication dynamically. Once a user has established a session, ie logged in, then
-		they will not see the list of applications change, but they will get the latest list of available applications. This means you can
-		dynamically add sub applications to the main application while it is still running. You can add new versions of an existing
-		sub application in the same way. All you need to do is copy the jar file to the directory Madura Bundles is monitoring.</p>
-		<p>The applications use the same theme information as the main application, so a change of theme will automatically propagate to
-		the sub applications.</p>
-		<p>Security information, specifically permissions established at login time, is also available across all sub applications.</p>
-		<p>And the sub applications can influence each other through a blackboard.</p>
-		<p>The blackboard is a publish-and-subscribe system where one application publishes something to the blackboard and other applications
-		can react to the change or ignore it.</p>
-		<h2 t="Building a Sub Application">
-		<p>Like all Madura Bundles a sub application is a jar file. It contains a Spring beans XML definition file and some special information in
-		the manifest. It also needs to include an implementation of the <courier>nz.co.senanque.perspectivemanager.AppFactory</courier></p>
-		<p>This is the beans definition of the User Details sub application.</p>
-		<code><![CDATA[
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="
-http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-
-	<bean id="bundleName" class="nz.co.senanque.madura.bundle.StringWrapperImpl">
-		<constructor-arg value="${bundle.name}"/>
-	</bean>
-	<bean id="SubApplication" class="nz.co.senanque.perspectivemanager.SubApplicationimpl">
-		<property name="icon" value="classpath:icon.png"/>
-		<property name="version" value="${Bundle-Version}"/>
-		<property name="caption" value="${Bundle-Name}"/>
-		<property name="description" value="${Bundle-Description}"/>
-		<property name="appFactory">
-			<bean class="nz.co.senanque.bundle1.AppFactoryImpl"/>
-		</property>
-		<property name="messageSource">
-			<bean class="org.springframework.context.support.ResourceBundleMessageSource">
-				<property name="basenames">
-					<list>
-						<value>messages</value>
-					</list>
-				</property>
-			</bean>
-		</property>
-	</bean>
-</beans>
-		]]></code>
-		<p>So this is just two beans and one is the bundle name. Much of the information comes from
-		the manifest and is injected into this by Madura Bundle automatically. See Madura Bundles for more information
-		on how that works.</p>
-		<p>The class <courier>nz.co.senanque.bundle1.AppFactoryImpl</courier> is the only part of the code specific to this
-		sub application so let's take a look at that.</p>
-		<code><![CDATA[
-public class AppFactoryImpl implements AppFactory {
-	
-	public App createApp(Blackboard blackboard)
-	{
-		App ret = new App();
-		final Layout layout = new Layout();
-		layout.setBlackboard(blackboard);
-		ret.setComponentContainer(layout);
-		MenuBar menuBar = new MenuBar();
-		final MenuBar.MenuItem file = menuBar.addItem("File", null);
-		file.addItem("close", new Command(){
-
-			public void menuSelected(MenuItem selectedItem) {
-				layout.close();
-				
-			}});
-		ret.setMenuBar(menuBar);
-		return ret;
-	}
-}
-		]]></code>
-		<p>It must implement <courier>nz.co.senanque.perspectivemanager.AppFactory</courier> which means it must
-		implmenent the createApp method. The createApp method creates a new <courier>nz.co.senanque.perspectivemanager.App</courier>
-		and loads it with a <courier>com.vaadin.ui.MenuBar</courier> and an extension of <courier>com.vaadin.ui.ComponentContainer</courier>. Both of these
-		are ordinary Vaadin objects. The <courier>MenuBar</courier> is actually used as a template and the items in it are added
-		to the menu in the main application (and removed when no longer applicable).</p>
-		<p>This sub application passes the blackboard to the <courier>ComponentContainer</courier>. When the UI detects a change
-		to the user name field it publishes it to the blackboard using this code:</p>
-		<code><![CDATA[
-m_blackboard.publish("userName", value);
-		]]></code>
-		<p>That informs any other sub applications listening for "userName" that there is a new value.</p>
-		<p>A listener is defined in the other application like this:</p>
-		<code><![CDATA[
-m_blackboard.add(new BlackboardListener(){
-
-	public void valueChanged(Object value) {
-		textUserName.setValue(value);
-	}
-
-	public String getName() {
-		return "userName";
-	}});
-		]]></code>
-		<p>That is about all you need to create a working sub application. You can find a complete example of this
-		at <referenceLink t="madura-perspectives-manager"/>.</p>
-		<p>Now we will look at a more complex one that uses Madura Objects. The Spring beans file looks much the same, though it has some extra
-		things in it for Madura Objects. More interesting is the <courier>AppFactory</courier> implementation.</p>
-		<code><![CDATA[
-public App createApp(Blackboard blackboard)
-{
-	// Explicitly fetch this bean to ensure it is not instantiated until the session has started.
-	m_maduraSessionManager = m_beanFactory.getBean("maduraSessionManager",MaduraSessionManager.class);
-	App ret = new App();
-	final Layout layout = new Layout(m_maduraSessionManager);
-	layout.setBlackboard(blackboard);
-	ret.setComponentContainer(layout);
-	Pizza orderItem = new Pizza();
-	orderItem.setItemType(ItemType.PIZZA);
-	m_maduraSessionManager.getValidationSession().bind(orderItem);
-	layout.setItemDataSource(new BeanItem<OrderItem>(orderItem));
-	MenuBar menuBar = new MenuBar();
-	final MenuBar.MenuItem edit = menuBar.addItem(m_messageSourceAccessor.getMessage("edit", "Edit"), null);
-	MenuItem menuItem = edit.addItem(m_messageSourceAccessor.getMessage("save", "Save"), new CommandExt(){
-
-		private static final long serialVersionUID = 7142024506317299918L;
-		MenuItemPainter m_menuItemPainter = new SubmitButtonPainter(m_maduraSessionManager);
-		
-		public void menuSelected(MenuItem selectedItem) {
-			layout.save();
-		}
-
-		public MenuItemPainter getPainter() {
-			return m_menuItemPainter;
-		}
-
-		public MaduraSessionManager getMaduraSessionManager() {
-			return m_maduraSessionManager;
-		}});
-	m_maduraSessionManager.register(menuItem);
-	m_maduraSessionManager.bind(menuItem, layout.getProperties());
-	ret.setMenuBar(menuBar);
-	return ret;
-}
-		]]></code>
-		<p>Like the previous example the createApp must return an <courier>App</courier> loaded with a <courier>MenuBar</courier>
-		and a <courier>ComponentContainer</courier>. What is different here?</p>
-		<list>
-		<le>The creation of the <courier>MaduraSessionManager</courier>. We use this to bind the newly
-		created <courier>Pizza</courier> object. Note that we don't inject it because we really want Spring to defer creating it until
-        the session is created.</le>
-		<le>The use of the messageSource to internationalise the menu items. We ought to have done this
-		in the previous example but we wanted to keep it simple. The use of Madura Objects does not automatically
-		internationalise menu items the way it does for field captions.</le>
-		<le>The menu item uses a <courier>SubmitButtonPainter</courier> in the way described in <sectionLink t="Menus"/>. Notice that it is
-		registered and bound right here. This is because we have the <courier>Pizza</courier> object already. If we created it later we would need
-		to bind the menu item later.</le>
-		</list>
-		<p>The code for this example is at <referenceLink t="madura-pizzaorder-bundle"/>.</p>
-        <p>To really see the power of this you will want to pull down the code and build it yourself so you can swap bundles in and out.
-        But if you just want to see it working right now you can go to the installed demo at <referenceLink t="madura-perspectives-manager-demo"/>. This 
-        has hard coded references to the bundles, rather than dynamic ones, but it is otherwise identicle.</p>
+		<p>That was the initialisation phase. For the bind phase use <courier>setItemDataSource</courier>, to set a data source object. This triggers the creation of the fields.</p>
+		</h2>
+		<h2 t="MaduraFieldGroup Auto Create">
+		<p>The <courier>MaduraFieldGroup</courier> is the (non-deprecated) replacement to <courier>MaduraForm</courier>, which parallels the developments at Vaadin. The essential difference in the new class is that it
+		is <emph>not</emph> a component. You get to create the fields yourself and bind them. At least that seems to be Vaadin's intention, but we rather like passing a list of fields and having them created and placed
+		for us. The first step in the initialisation phase is to get a new <courier>MaduraFieldGroup</courier>:</p>
+        <code><![CDATA[
+m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
+        ]]></code>
+        <p>The create an empty <courier>Layout</courier>. The auto created fields will be placed on this layout.</p>
+        <p>Create any buttons and menu items.</p>
+        <p>The initialisation phase it done. When you have a object you want to bind to it you do this:</p>
+        <code><![CDATA[
+m_maduraFieldGroup.buildAndBind(m_panel,fields,new BeanItem<ValidationObject>(person));
+        ]]></code>
+		<p>This creates the fields from the list passed, adds them to your layout (<courier>m_panel</courier>) and binds them all to the object (<courier>person</courier>). It also binds any
+		buttons and/or menu items you created. When you are done you should call <courier>unbind</courier> to release the resources.</p>
+		<p>The <courier>hints</courier> bean controls how auto-created fields are supplied. The default bean is class <courir>nz.co.senanque.vaadin.HintsImpl</courir>. You could, for example, supply an extension of that
+		class instead with a modified <courier>getDateField</courier> that supplies a differently configured date field and so on.</p>
+		<p>The advantage of this approach is that you do not have to know much about the object being displayed, just the list of field names. Even that can be derived on the fly so you can make a very generic display
+		that adapts to the current object. The disadvantage is that you have little control of where the fields are actually placed.</p>
+		</h2>
+		<h2 t="MaduraFieldGroup Explicit Create">
+		<p>This is still using <courier>MaduraFieldGroup</courier> but the code explicitly creates the fields and adds them to some layout. You have complete control over what kinds of fields you create and
+		how you position them. You also need to call the <courier>MaduraFieldGroup</courier> method <courier>bind</courier> like this:</p>
+       <code><![CDATA[
+fieldGroup.bind(nameField, "name");
+        ]]></code>
+        <p>You just pass a field you already created and a field name. Do this for every field. An important point to note is that the field factory used in the auto create approach will normally generate input fields
+        such as <courier>TextBox</courier> and <courier>ComboBox</courier>. Perhaps you want to use a <courier>Label</courier> instead because you only ever want to display the value. Using the explicit create approach
+        you can easily do this because you get to decide the field type.</p>
+		<p>You still use the same methods to create buttons etc.</p>
+		<p>At bind time this is all you need:</p>
+       <code><![CDATA[
+fieldGroup.setItemDataSource(new BeanItem<Customer>(customer));
+        ]]></code>
+        <p>There is a variation on this that uses Vaadin's <courier>@PropertyId</courier> annotations. Using this you create the fields explicitly as before but you annotate them like this:</p>
+       <code><![CDATA[
+@PropertyId("base")
+private ComboBox base = new ComboBox();
+@PropertyId("topping")
+private ComboBox topping = new ComboBox();
+@PropertyId("size")
+        ]]></code>
+        <p>You do a lot more at bind time with this variation. Once you have an object to bind to you do this:</p>
+       <code><![CDATA[
+maduraFieldGroup = new MaduraFieldGroup(getMaduraSessionManager());
+maduraFieldGroup.setItemDataSource(beanItem);
+maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the @PropertyId fields on this object and binds them
+ 	
+// Now we have to add the fields to the panel
+formLayout.addComponent(base);
+formLayout.addComponent(topping);
+formLayout.addComponent(size);
+        ]]></code>
+        <p>We add the buttons in the same way as usual (but at bind time) and we are done. The main advantage of this approach is that you can use Vaadin's form designer which relies on the <courier>@PropertyId</courier> annotations.
+        We don't get much use out of the form designer ourselves so this may not be a compelling advantage.</p>
 		</h2>
 		</h1>
         <h1 t="Mobile Applications">
@@ -1042,6 +650,28 @@ public App createApp(Blackboard blackboard)
         <p>The apk file for pizza order is in the downloads for the pizza order project.</p>
         <p>Date controls are implemented as ordinary text boxes in the demo because there was no useable Touchkit widget that would
         handle date input. The next version of Touchkit may have this in place.</p>
+        </h1>
+        <h1 t="madura-login">
+        <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
+        <p>To configure it into an application we need to add the maven dependency, of course, and also tell Spring about the translation strings and
+        the directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.</p>
+        <p>There are also some configuration options for this project.</p>
+        <list>
+        <le>Add a customised login.html file to your project's resources directory</le>
+        <le>Add a customised login.css file to your project's resources/css directory</le>
+        <le>Add a customised logo.gif file to your project's resources/images directory</le>
+        <le>Add a customised users.csv file to your project's WEB-INF directory this holds the list of valid users, passwords and their permissions</le>
+        <le>Deploy a different <courier>AuthenticationDelegate</courier> implementation as a bean</le>
+        </list>
+        <p>Things a production version would have to have:</p>
+        <list>
+        <le>A more secure user storage, you would implement this with a replacement <courier>AuthenticationDelegate</courier>. The replacement should not store
+        passwords in clear text etc.</le>
+        <le>A 'remember me' checkbox.</le>
+        <le>Security timeout</le>
+        <le>forgot password/change password. This would need to tie in with your <courier>AuthenticationDelegate</courier> implementation.</le>
+        </list>
+        <p>The out-of-the-box implementation has just two user/passwords: admin/admin and user/user. Admin had the ADMIN permission which is used in the rules demo.</p>
         </h1>
         
 		<a1 t="License">
