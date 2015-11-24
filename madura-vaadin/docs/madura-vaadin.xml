@@ -433,9 +433,9 @@ formula: Order "sum"
 		</h1>
 		<h1 t="madura-address-book">
 		<p>This demo is all about displaying and editing rows from a database in a table. It uses Madura Objects but not Madura Rules. It does use the madura-tableeditor so that needs to be specified as a
-		maven dependency and the <courier>nz.co.senanque.vaadin.tableeditor</courier> package has to be scanned so that it added to the <courier>ComponentScan</courier> in the <courier>AddressBookUI</courier>
+		maven dependency and the <courier>nz.co.senanque.vaadin.tableeditor</courier> package has to be scanned so that is added to the <courier>ComponentScan</courier> in the <courier>AddressBookUI</courier>
 		class.</p>
-		<p>We also define two beans in the <courier>MyConfiguration</courier> class: a table layout and an editorWindow.</p>
+		<p>We also define beans in the <courier>MyConfiguration</courier> class: a table layout for persons and for trees.</p>
 		<p>The <courier>nz.co.senanque.addressbook.jpa</courier> package defines a data source and demo code to load hard coded values into an in-memory H2 database.</p>
 		<p>There is actually very little code in this demo because it is driven from the data structures. Once the table is loaded and visible you can right click to see a context menu
 		giving options to edit, add or delete records. When adding or editing you have a Madura-backed Vaadin form with the usual validation and dynamic submit button you have seen in the other demos. It does
@@ -513,6 +513,25 @@ formLayout.addComponent(size);
         <p>We add the buttons in the same way as usual (but at bind time) and we are done. The main advantage of this approach is that you can use Vaadin's form designer which relies on the <courier>@PropertyId</courier> annotations.
         We don't get much use out of the form designer ourselves so this may not be a compelling advantage.</p>
 		</h2>
+		</h1>
+		<h1 t="Table Editor">
+		<p>The table editor is used in the address book demo. It is a bit more complicated to configure so this section details that.</p>
+		<p>First there needs to be a database defined. The address book demo only uses one database, which is more common than multiple
+		database connections. The connection is defined in the <courier>ConfigJPA</courier> class. If defined three beans: a data source, and entity manager factory and a transaction manager. Because this is a demo
+		we've used an in-memory H2 database and it gets loaded with data by the <courier>LoadJPA</courier> bean. Naturally all this would
+		be reworked for a production system.</p>
+		<p>The next class to look at is <courier>ConfigContainer</courier>. This class defines the two containers used in the demo: one for
+		the peopel and one for the trees. Apart from their data types and bean names these beans are the same, and because they are so similar we
+		need to give them names to make sure the right bean is injected into the right place. Do not be tempted to put container beans into
+		your <courier>ConfigJPA</courier> file. These beans need the <courier>EntityManager</courier> established and that is actually
+		done in the <courier>ConfigJPA</courier>, which means you cannot use it in that class hence the need for the <courier>ConfigContainer</courier>
+		class.</p>
+		<p>All of the above beans are singletons. The rest of this is tied to a session.</p>
+		<p>In <courier>AddressBook.MyConfiguration</courier> the two container are injected using their names. Thry each help define the
+		<courier>personTableLayout</courier> and <courier>treeTableLayout</courier> beans. Those are the actual table layouts, they are Vaadin
+		components and they are added to the <courier>PersonView</courier> and <courier>TreeView</courier> tabs</p>.
+		<p>The container effectively defines a database query on a table. In the demo case the query is for all records but it can be refined
+		in various ways. See the Vaadin documentation for that.</p>
 		</h1>
         <h1 t="Mobile Applications">
         <note>The mobile specific features depend on Vaadin's Touchkit and
