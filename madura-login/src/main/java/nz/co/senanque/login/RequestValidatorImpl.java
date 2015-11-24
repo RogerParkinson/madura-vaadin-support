@@ -23,6 +23,7 @@ import nz.co.senanque.resourceloader.MessageResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -54,6 +55,8 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	private String[] m_ignoreURLs;
 	private String[] m_flags = new String[]{"English","French"};
 	private String[] m_langs = new String[]{"en","fr"};
+    @Value("${nz.co.senanque.login.RequestValidatorImpl.defaultLogin:}")
+    private transient String m_defaultLogin;
 	
 	@Autowired(required=false) private AuthenticationDelegate m_authenticationDelegate;
 
@@ -83,6 +86,11 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			m_logger.debug("true");
 			return true; // ignore URLs when we are already authenticated
 		}
+		if (StringUtils.hasText(m_defaultLogin)) {
+			fakeLogin(req);
+			return true;
+		}
+
 		if (url.endsWith(".css")) {
 			return false;
 		}
@@ -108,6 +116,22 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			}
 		}
 		return false;
+	}
+	
+	private void fakeLogin(HttpServletRequest req) {
+		String[] login = StringUtils.split(m_defaultLogin, "/");
+		Set<String> permissions;
+		try {
+			permissions = m_authenticationDelegate.authenticate(req.getServletContext(),login[0],login[1]);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		HttpSession session = req.getSession(true);
+		session.setAttribute(PERMISSIONS, permissions);
+		session.setAttribute(USERNAME, login[0]);
+		session.setAttribute(LOCALE, "en");
+		m_logger.debug("Setting user: {} on session {}",login[0],req.getSession().getId());
+		
 	}
 
 	/* (non-Javadoc)
@@ -343,6 +367,14 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 
 	public void setUsers(UserRepository users) {
 		m_users = users;
+	}
+
+	public String getDefaultLogin() {
+		return m_defaultLogin;
+	}
+
+	public void setDefaultLogin(String defaultLogin) {
+		m_defaultLogin = defaultLogin;
 	}
 
 }

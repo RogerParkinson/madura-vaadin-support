@@ -682,6 +682,12 @@ formLayout.addComponent(size);
         <le>Add a customised users.csv file to your project's WEB-INF directory this holds the list of valid users, passwords and their permissions</le>
         <le>Deploy a different <courier>AuthenticationDelegate</courier> implementation as a bean</le>
         </list>
+        <p>Sometimes when testing your application you can get weary of logging in over and over. Add this to your
+        <courier>config.properties</courier> file:</p>
+        <code><![CDATA[
+nz.co.senanque.login.RequestValidatorImpl.defaultLogin:admin/admin
+        ]]></code>
+        <p>That will automatically log you in as user/password admin/admin. Naturally you remove this for production.</p>
         <p>Things a production version would have to have:</p>
         <list>
         <le>A more secure user storage, you would implement this with a replacement <courier>AuthenticationDelegate</courier>. The replacement should not store

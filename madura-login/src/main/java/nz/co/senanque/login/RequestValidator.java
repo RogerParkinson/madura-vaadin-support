@@ -35,5 +35,5 @@ public interface RequestValidator {
 	public abstract String getLoginPage();
 
 	public abstract void setLocale(HttpServletRequest req, String locale);
-
+	
 }
