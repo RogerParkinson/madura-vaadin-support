@@ -132,6 +132,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
             }
             m_object = object;
             m_newRow = newRow;
+            delete.setEnabled(!newRow);
         }
     }
 
