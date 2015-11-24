@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
+import nz.co.senanque.addressbook.instances.TreeSpecies;
 import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
@@ -60,8 +61,8 @@ public class AddressBookUI extends UI  {
 	private static Logger m_logger = LoggerFactory.getLogger(AddressBookUI.class);
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-//	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
 	@Autowired private PersonView m_personView;
+	@Autowired private TreeView m_treeView;
 
 	@WebListener
     public static class MyContextLoaderListener extends ContextLoaderListener {
@@ -80,6 +81,8 @@ public class AddressBookUI extends UI  {
     	
     	@Autowired @Qualifier("personContainer") 
     	private Container.Filterable personContainer;
+    	@Autowired @Qualifier("treeContainer") 
+    	private Container.Filterable treeContainer;
 
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
@@ -98,6 +101,15 @@ public class AddressBookUI extends UI  {
     		ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
     		ret.setEditorWindow(new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY));
     		ret.setContainer(personContainer);
+    		return ret;
+    	}
+    	@Bean(name="treeTableLayout")
+    	@UIScope
+    	public TableEditorLayout<TreeSpecies> getTreeTableLayout() {
+    		TableEditorLayout<TreeSpecies> ret = new TableEditorLayout<TreeSpecies>("people", TreeSpecies.class);
+    		ret.setColumns(new String[]{"name"});
+    		ret.setEditorWindow(new EditorWindowImpl<TreeSpecies>("person",ValoTheme.BUTTON_PRIMARY));
+    		ret.setContainer(treeContainer);
     		return ret;
     	}
     	@Bean(name="hints")
@@ -141,6 +153,11 @@ public class AddressBookUI extends UI  {
         VerticalLayout tab1 = new VerticalLayout();
         tab1.addComponent(m_personView);
         tabsheet.addTab(tab1, messageSourceAccessor.getMessage("people"));
+
+        // Create the second tab
+        VerticalLayout tab2 = new VerticalLayout();
+        tab2.addComponent(m_treeView);
+        tabsheet.addTab(tab2, messageSourceAccessor.getMessage("tree"));
 
         VerticalLayout tabLogout = new VerticalLayout();
         tabsheet.addTab(tabLogout,logout);

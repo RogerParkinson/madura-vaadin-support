@@ -90,7 +90,7 @@ public class TableEditorLayout<T> extends CustomComponent implements MessageSour
 	/*- VaadinEditorProperties={"grid":"RegularGrid,20","showGrid":true,"snapToGrid":true,"snapToObject":true,"movingGuides":false,"snappingDistance":10} */
 	private static final long serialVersionUID = -1L;
 	/*- VaadinEditorProperties={"grid":"RegularGrid,20","showGrid":true,"snapToGrid":true,"snapToObject":true,"movingGuides":false,"snappingDistance":10} */
-	@Autowired private Container.Filterable m_container;
+	private Container.Filterable m_container;
 	@Autowired private ValidationEngine m_validationEngine;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 

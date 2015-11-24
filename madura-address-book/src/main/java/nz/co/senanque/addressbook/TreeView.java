@@ -5,7 +5,7 @@ package nz.co.senanque.addressbook;
 
 import javax.annotation.PostConstruct;
 
-import nz.co.senanque.addressbook.instances.Person;
+import nz.co.senanque.addressbook.instances.TreeSpecies;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ import com.vaadin.ui.VerticalLayout;
  */
 @UIScope
 @Component
-public class PersonView extends VerticalLayout {
+public class TreeView extends VerticalLayout {
 
-	@Autowired @Qualifier("personTableLayout") private TableEditorLayout<Person> m_tableEditorLayout;
+	@Autowired @Qualifier("treeTableLayout") private TableEditorLayout<TreeSpecies> m_tableEditorLayout;
 
     @PostConstruct
     void init() {
