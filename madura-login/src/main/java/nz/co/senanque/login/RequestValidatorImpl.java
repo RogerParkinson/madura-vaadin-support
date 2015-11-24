@@ -241,7 +241,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			Locale.setDefault(new Locale(locale));
 			useLocale = new Locale(locale);
 		}
-		String flags = getLocales(locale);
+		String flags = getLocales(useLocale);
 		m_logger.debug("Current locale {}",useLocale);
 		String s = getFile("login.html",servletContext).replace("~FLAGS",flags);
 		final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
@@ -261,21 +261,20 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		return c;
 	}
 	
-	private String getLocales(String currentLocale) {
+	private String getLocales(Locale currentLocale) {
 		Class<?> clazz = this.getClass();
 		String currentFlag ="";
-		if (currentLocale == null) {
-			currentLocale = m_langs[0];
-		}
 		for (int i=0;i<m_langs.length;i++) {
-			if (currentLocale.equals(m_langs[i])) {
+			if (currentLocale.getLanguage().equals(new Locale(m_langs[i]).getLanguage())) {
 				currentFlag = m_flags[i];
-			}
+				}
+			
 		}
+			 
 		StringBuilder ret = new StringBuilder("<select name=\"locale\" class=\"icon-menu\" onchange=\"this.form.submit()\" ");
 		ret.append("style=\"background-image:url(~CONTEXTPATH/flags/~CURRENTFLAG.png);\">".replace("~CURRENTFLAG", currentFlag));
 		for (int i=0;i<m_langs.length;i++) {
-			if (currentLocale.equals(m_langs[i])) {
+			if (currentLocale.getLanguage().equals(new Locale(m_langs[i]).getLanguage())) {
 				ret.append("<option value=\"~LANG\" selected style=\"background-image:url(~CONTEXTPATH/flags/~FLAG.png)\">~FLAG</option>"
 						.replace("~FLAG", m_flags[i]).replace("~LANG", m_langs[i]));
 			} else {
