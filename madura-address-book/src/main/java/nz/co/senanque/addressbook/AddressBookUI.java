@@ -15,6 +15,7 @@ import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.Container;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.server.VaadinRequest;
@@ -58,7 +60,7 @@ public class AddressBookUI extends UI  {
 	private static Logger m_logger = LoggerFactory.getLogger(AddressBookUI.class);
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
+//	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
 	@Autowired private PersonView m_personView;
 
 	@WebListener
@@ -76,6 +78,9 @@ public class AddressBookUI extends UI  {
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
+    	@Autowired @Qualifier("personContainer") 
+    	private Container.Filterable personContainer;
+
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
     	}
@@ -88,10 +93,11 @@ public class AddressBookUI extends UI  {
 
     	@Bean(name="personTableLayout")
     	@UIScope
-    	public TableEditorLayout<Person> getTableEditorLayout() {
+    	public TableEditorLayout<Person> getPersonTableLayout() {
     		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people", Person.class);
     		ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
     		ret.setEditorWindow(new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY));
+    		ret.setContainer(personContainer);
     		return ret;
     	}
     	@Bean(name="hints")

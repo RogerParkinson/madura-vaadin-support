@@ -39,7 +39,7 @@ import com.vaadin.addon.jpacontainer.provider.MutableLocalEntityProvider;
  * @author Roger Parkinson
  *
  */
-@Component
+//@Component
 public class JPAContainerEditorFactory<T>  implements FactoryBean<JPAContainerEditor<T>>{
 
 	@PersistenceContext
