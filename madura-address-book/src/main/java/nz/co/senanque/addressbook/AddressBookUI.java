@@ -10,6 +10,7 @@ import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
+import nz.co.senanque.vaadin.tableeditor.EditorWindow;
 import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
@@ -58,7 +59,7 @@ public class AddressBookUI extends UI  {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
-	@Autowired private DefaultView m_defaultView;
+	@Autowired private PersonView m_personView;
 
 	@WebListener
     public static class MyContextLoaderListener extends ContextLoaderListener {
@@ -98,6 +99,12 @@ public class AddressBookUI extends UI  {
     	public Hints getHints() {
     		return new HintsImpl();
     	}
+    	@Bean(name="editorWindow")
+    	@UIScope
+    	public EditorWindow<Person> getEditorWIndow() {
+    		EditorWindowImpl<Person> ret = new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY);
+    		return ret;
+    	}
     }
 
     @Override
@@ -126,7 +133,7 @@ public class AddressBookUI extends UI  {
         root.addComponent(tabsheet);
         // Create the first tab
         VerticalLayout tab1 = new VerticalLayout();
-        tab1.addComponent(m_defaultView);
+        tab1.addComponent(m_personView);
         tabsheet.addTab(tab1, messageSourceAccessor.getMessage("people"));
 
         VerticalLayout tabLogout = new VerticalLayout();
@@ -158,11 +165,11 @@ public class AddressBookUI extends UI  {
     public static class AddressBookUIServlet extends SpringVaadinServlet {
     }
 
-	public DefaultView getDefaultView() {
-		return m_defaultView;
+	public PersonView getPersonView() {
+		return m_personView;
 	}
-	public void setDefaultView(DefaultView defaultView) {
-		m_defaultView = defaultView;
+	public void setPersonView(PersonView defaultView) {
+		m_personView = defaultView;
 	}
 
 }

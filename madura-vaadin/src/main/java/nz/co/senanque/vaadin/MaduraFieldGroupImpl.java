@@ -84,8 +84,8 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	// make sure the data source is bound to Madura
 		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
 		// the super call will only bind fields
-    	super.setItemDataSource(itemDataSource);
     	m_properties.clear();
+    	super.setItemDataSource(itemDataSource);
     	// this will configure labels, menuitems, and buttons
     	configure((BeanItem<ValidationObject>) itemDataSource);
 	}

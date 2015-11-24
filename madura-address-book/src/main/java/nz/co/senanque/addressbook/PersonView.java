@@ -5,10 +5,12 @@ package nz.co.senanque.addressbook;
 
 import javax.annotation.PostConstruct;
 
+import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.spring.annotation.UIScope;
@@ -20,10 +22,10 @@ import com.vaadin.ui.VerticalLayout;
  */
 @UIScope
 @Component
-public class DefaultView extends VerticalLayout {
+public class PersonView extends VerticalLayout {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-	@Autowired private TableEditorLayout<?> m_tableEditorLayout;
+	@Autowired @Qualifier("personTableLayout") private TableEditorLayout<Person> m_personTableEditorLayout;
 
     @PostConstruct
     void init() {
@@ -32,6 +34,6 @@ public class DefaultView extends VerticalLayout {
         layout.setMargin(true);
         addComponent(layout);
 
-        layout.addComponent(m_tableEditorLayout);
+        layout.addComponent(m_personTableEditorLayout);
     }
 }
