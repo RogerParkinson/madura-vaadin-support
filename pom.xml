@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -121,9 +122,8 @@
 			<dependency>
 			    <groupId>com.vaadin.addon</groupId>
 			    <artifactId>vaadin-touchkit-agpl</artifactId>
-			    <version>4.0.0.alpha3</version>
+			    <version>4.0.0</version>
 			</dependency>
-
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura.objects</artifactId>
@@ -134,6 +134,12 @@
 				<artifactId>madura-rules</artifactId>
 				<version>${madura.objects.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-vaadin-touchkit</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
 			<dependency>
 			    <groupId>org.logback-extensions</groupId>
 			    <artifactId>logback-ext-spring</artifactId>
@@ -209,10 +215,12 @@
   	<module>madura-login</module>
   	<module>vaadin7-demo</module>
   	<module>madura-vaadin</module>
+    <module>madura-vaadin-touchkit</module>
   	<module>madura-vaadin-demo</module>
   	<module>madura-vaadin-directed</module>
   	<module>madura-vaadin-tableeditor</module>
   	<module>madura-address-book</module>
   	<module>madura-rules-demo</module>
+    <module>madura-mobile-demo</module>
   </modules>
 </project>

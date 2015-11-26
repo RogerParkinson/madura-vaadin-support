@@ -1,5 +1,6 @@
+
 body {
-	background-color: #FFF;	
+	background-color: #FFF;
 }
 form {
 	background: #FFF none repeat scroll 0% 0%;
@@ -72,6 +73,9 @@ input:focus {
 
 .error {
 	color: red;
+	padding-bottom: 4.2px;
+	line-height: 80px;
+	font-size: 80px;
 }
 .logo {
 	width: 80px;
