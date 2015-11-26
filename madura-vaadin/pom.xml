@@ -63,11 +63,6 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.vaadin.addon</groupId>
-			<artifactId>vaadin-touchkit-agpl</artifactId>
-			<scope>provided</scope>
-		</dependency>
 		<!-- end of vaadin stuff -->
 
 

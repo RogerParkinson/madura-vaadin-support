@@ -36,10 +36,10 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 /**
@@ -54,7 +54,7 @@ import com.vaadin.ui.TextField;
  */
 public class TouchkitHintsImpl implements Hints, Serializable {
 	
-	private static final long serialVersionUID = -1066631793343374468L;
+	private static final long serialVersionUID = -1L;
 
 	Logger logger = LoggerFactory.getLogger(TouchkitHintsImpl.class);
 	
@@ -93,7 +93,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 	public void setForceImmediate(boolean forceImmediate) {
 		m_forceImmediate = forceImmediate;
 	}
-    public void setCommonProperties(final AbstractField ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
+    public void setCommonProperties(final AbstractField<?> ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
     {
         ret.setWidth(getWidth());
         ret.setBuffered(false);
@@ -117,8 +117,8 @@ public class TouchkitHintsImpl implements Hints, Serializable {
         }
         ret.setErrorHandler(new ErrorHandler(){
 
-            private static final long serialVersionUID = -1393935533100204195L;
-			@Override
+            private static final long serialVersionUID = -1L;
+
 			public void error(ErrorEvent event) {
                 Throwable t = event.getThrowable();
                 while (t != null)
@@ -141,7 +141,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource);
         ret.setDescription(messageSourceAccessor.getMessage(property.getDescription(), null,property.getDescription()));
     }
-	@Override
+
 	public void setCommonProperties(final Button ret,
 			MaduraPropertyWrapper property, MessageSource messageSource) {
         ret.setWidth(getWidth());
@@ -160,8 +160,8 @@ public class TouchkitHintsImpl implements Hints, Serializable {
         }
         ret.setErrorHandler(new ErrorHandler(){
 
-            private static final long serialVersionUID = -1393935533100204195L;
-			@Override
+            private static final long serialVersionUID = -1L;
+
 			public void error(ErrorEvent event) {
                 Throwable t = event.getThrowable();
                 while (t != null)
@@ -202,7 +202,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
         switch (getSelectType())
         {
         case STANDARD:
-        	select = new Select();
+        	select = new ComboBox();
             select.setMultiSelect(false);
         	break;
         case RADIO:
@@ -253,12 +253,12 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 //	public MessageSource getMessageSource() {
 //		return m_messageSource;
 //	}
-	@Override
+	
 	public void update(Object o) {
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
+	
 	public void update(TextField text) {
 		// TODO Auto-generated method stub
 		

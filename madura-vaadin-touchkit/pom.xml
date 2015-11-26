@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>nz.co.senanque</groupId>
+		<artifactId>madura-vaadin-support</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>madura-vaadin-touchkit</artifactId>
+	<name>madura-vaadin-touckit</name>
+	<description>Code to support using Madura with Vaadin's Touchkit</description>
+	<dependencies>
+		<dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-touchkit-agpl</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-vaadin</artifactId>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
+</project>
