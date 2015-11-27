@@ -198,6 +198,17 @@
 	<build>
 	    <pluginManagement>
 	    	<plugins>
+
+                <plugin>
+	                <groupId>com.vaadin</groupId>
+	                <artifactId>vaadin-maven-plugin</artifactId>
+	                <version>${vaadin.plugin.version}</version>
+				</plugin>
+	            <plugin>
+	                <groupId>org.mortbay.jetty</groupId>
+	                <artifactId>jetty-maven-plugin</artifactId>
+	                <version>${jetty.plugin.version}</version>
+	            </plugin>
 	    		<plugin>
 					<groupId>nz.co.senanque</groupId>
 					<artifactId>madura-rules-maven-plugin</artifactId>
@@ -221,5 +232,6 @@
   	<module>madura-vaadin-tableeditor</module>
   	<module>madura-address-book</module>
   	<module>madura-rules-demo</module>
+    <module>madura-mobile-demo</module>
   </modules>
 </project>
