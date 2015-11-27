@@ -221,6 +221,5 @@
   	<module>madura-vaadin-tableeditor</module>
   	<module>madura-address-book</module>
   	<module>madura-rules-demo</module>
-    <module>madura-mobile-demo</module>
   </modules>
 </project>
