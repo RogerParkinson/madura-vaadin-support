@@ -11,6 +11,7 @@ import com.vaadin.ui.UI;
  * This UI is served for browsers that don't support TouchKit.
  */
 @SuppressWarnings("serial")
+//@Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoFallbackWidgetSet")
 @Theme("mytheme")
 //// Disable browser caching the app for running it when offline
 //@CacheManifestEnabled(false)
