@@ -35,13 +35,6 @@ import com.vaadin.ui.UI;
 @SuppressWarnings("serial")
 @Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
 @Theme("touchkit")
-//// Cache static application files so as the application can be started
-//// and run even when the network is down.
-//@CacheManifestEnabled
-//// Switch to the OfflineMode client UI when the server is unreachable
-//@OfflineModeEnabled
-//// Make the server retain UI state whenever the browser reloads the app
-//@PreserveOnRefresh
 @SpringUI
 public class MaduraMobileDemoTouchKitUI extends UI {
 
@@ -58,12 +51,6 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     	// This causes the applicationContext.xml context file to be loaded
     	// per session.
     }
-//    private final MaduraMobileDemoPersistToServerRpc serverRpc = new MaduraMobileDemoPersistToServerRpc() {
-//        @Override
-//        public void persistToServer() {
-//            // TODO this method is called from client side to store offline data
-//        }
-//    };
 
     @Configuration
     @EnableVaadin
@@ -77,11 +64,6 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
     	}
-// Must not instantiate this here. MyUI is a session bean, but it is already instantiated before we get here
-//    	@Bean
-//    	public MyUI getMyUI() {
-//    		return new MyUI();
-//    	}
 
     	// needed for @PropertySource
     	@Bean
@@ -109,14 +91,6 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         tab.setIcon(FontAwesome.DOWNLOAD);
         setContent(tabBarView);
 
-//        // Use of the OfflineMode connector is optional.
-//        OfflineMode offlineMode = new OfflineMode();
-//        offlineMode.extend(this);
-//        // Maintain the session when the browser app closes.
-//        offlineMode.setPersistentSessionCookie(true);
-//        // Define the timeout in secs to wait when a server request is sent
-//        // before falling back to offline mode.
-//        offlineMode.setOfflineModeTimeout(15);
     }
 }
 

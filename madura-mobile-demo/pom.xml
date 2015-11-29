@@ -57,6 +57,10 @@
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-vaadin-touchkit</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-rules</artifactId>
+		</dependency>
         <dependency>
             <!-- Needed in eclipse for compiling widgetset -->
             <groupId>com.vaadin</groupId>
@@ -86,10 +90,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                </configuration>
+				<configuration>
+					<encoding>${project.encoding}</encoding>
+					<source>${project.source.version}</source>
+					<target>${project.target.version}</target>
+				</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -124,6 +129,7 @@
                 <executions>
                     <execution>
                         <goals>
+							<goal>update-theme</goal>
                             <goal>resources</goal>
                             <goal>update-widgetset</goal>
                             <goal>compile</goal>
@@ -149,6 +155,40 @@
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
             </plugin>
+			<plugin>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-objects-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<schemaIncludes>
+								<include>PizzaOrder.xsd</include>
+							</schemaIncludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-rules-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>xjr</goal>
+						</goals>
+						<configuration>
+							<rules>PizzaOrder.rul</rules>
+							<schema>PizzaOrder.xsd</schema>
+							<bufferSize>2000</bufferSize>
+							<packageName>nz.co.senanque.pizzaorder.rules</packageName>
+							<xsdpackageName>nz.co.senanque.pizzaorder.instances</xsdpackageName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
         </plugins>
 
         <pluginManagement>
@@ -169,11 +209,50 @@
                                         <goals>
                                             <goal>update-widgetset</goal>
                                             <goal>resources</goal>
+                                            <goal>update-theme</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
                                         <ignore></ignore>
                                     </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                	<pluginExecutionFilter>
+                                		<groupId>
+                                			nz.co.senanque
+                                		</groupId>
+                                		<artifactId>
+                                			madura-rules-maven-plugin
+                                		</artifactId>
+                                		<versionRange>
+                                			[3.0.0-SNAPSHOT,)
+                                		</versionRange>
+                                		<goals>
+                                			<goal>xjr</goal>
+                                		</goals>
+                                	</pluginExecutionFilter>
+                                	<action>
+                                		<ignore></ignore>
+                                	</action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                	<pluginExecutionFilter>
+                                		<groupId>
+                                			nz.co.senanque
+                                		</groupId>
+                                		<artifactId>
+                                			madura-objects-maven-plugin
+                                		</artifactId>
+                                		<versionRange>
+                                			[3.0.0-SNAPSHOT,)
+                                		</versionRange>
+                                		<goals>
+                                			<goal>generate</goal>
+                                		</goals>
+                                	</pluginExecutionFilter>
+                                	<action>
+                                		<ignore></ignore>
+                                	</action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
