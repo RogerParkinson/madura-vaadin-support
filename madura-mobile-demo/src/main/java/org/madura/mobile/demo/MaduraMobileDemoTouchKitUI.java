@@ -1,5 +1,6 @@
 package org.madura.mobile.demo;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
@@ -21,6 +22,9 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.ServiceException;
+import com.vaadin.server.SessionInitEvent;
+import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
@@ -44,6 +48,18 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     public static class MyUIServlet extends SpringAwareTouchKitServlet {
 
 		private static final long serialVersionUID = 1L;
+	    private MaduraMobileDemoUIProvider uiProvider = new MaduraMobileDemoUIProvider();
+
+	    @Override
+	    protected void servletInitialized() throws ServletException {
+	        super.servletInitialized();
+	        getService().addSessionInitListener(new SessionInitListener() {
+	            @Override
+	            public void sessionInit(SessionInitEvent event) throws ServiceException {
+	                event.getSession().addUIProvider(uiProvider);
+	            }
+	        });
+	    }
     }
 
     @WebListener
