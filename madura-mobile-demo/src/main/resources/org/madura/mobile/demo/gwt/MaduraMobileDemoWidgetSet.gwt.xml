@@ -12,5 +12,5 @@
     <inherits name="com.vaadin.addon.touchkit.gwt.TouchKitWidgetSet" />
 
 
-    <inherits name="org.madura.mobile.demo.gwt.MaduraMobileDemoFallbackWidgetSet" />
+    
 </module>

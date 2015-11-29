@@ -122,7 +122,6 @@
                     <runTarget>http://localhost:8080/</runTarget>
                     <extraJvmArgs>-Xmx1024M -Xss4024k -XX:MaxPermSize=128m</extraJvmArgs>
                     <modules>
-                      <module>org.madura.mobile.demo.gwt.MaduraMobileDemoFallbackWidgetSet</module>
                       <module>org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet</module>
                     </modules>
                 </configuration>
