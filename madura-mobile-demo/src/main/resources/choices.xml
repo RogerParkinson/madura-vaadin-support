@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Copyright (c)2013 Prometheus Consulting
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<MaduraValidator xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xi:noNamespaceSchemaLocation="http://oss.sonatype.org/content/repositories/releases/nz/co/senanque/madura-objects/2.2.2/choices-2.2.2.xsd">
+
+	<ChoiceList name="Genders">
+		<Choice name="M">Male</Choice>
+		<Choice name="F">Female</Choice>
+		<Choice name="O">Other</Choice>
+	</ChoiceList>
+	<ChoiceList name="customerType">
+		<Choice name="a">A</Choice>
+		<Choice name="b">B</Choice>
+		<Choice name="c">C</Choice>
+		<Choice name="d">D</Choice>
+		<Choice name="e">E</Choice>
+		<Choice name="f">F</Choice>
+	</ChoiceList>
+	<ChoiceList name="Bases">
+		<Choice name="Puff">Puff</Choice>
+		<Choice name="Flat">Flat</Choice>
+		<Choice name="GlutenFree">GlutenFree</Choice>
+	</ChoiceList>
+	<ChoiceList name="Toppings">
+		<Choice name="Seafood">Seafood</Choice>
+		<Choice name="Italian">Italian</Choice>
+		<Choice name="Spanish">Spanish</Choice>
+		<Choice name="Hawaiian">Hawaiian</Choice>
+		<Choice name="Greek">Greek</Choice>
+	</ChoiceList>
+	<ChoiceList name="Sizes">
+		<Choice name="Small">Small</Choice>
+		<Choice name="Medium">Medium</Choice>
+		<Choice name="Large">Large</Choice>
+	</ChoiceList>
+	<ChoiceList name="SizesMl">
+		<Choice name="200ml">200ml</Choice>
+		<Choice name="500ml">500ml</Choice>
+		<Choice name="1ltr">1ltr</Choice>
+	</ChoiceList>
+	<ChoiceList name="Grains">
+		<Choice name="Rye">Rye</Choice>
+		<Choice name="Wholemeal">Wholemeal</Choice>
+		<Choice name="White">White</Choice>
+	</ChoiceList>
+	<ChoiceList name="xyz">
+		<Choice name="a">A</Choice>
+	</ChoiceList>
+	<DecisionTable name="decisionTable" scope="Pizza" message="nz.co.senanque.pizzaorder.rules.decisionTable">
+		<ColumnNames>
+			<ColumnName autoAssign="false">topping</ColumnName>
+			<ColumnName>size</ColumnName>
+		</ColumnNames>
+		<Rows>
+			<Row>
+				<Column>Seafood</Column><Column>Small</Column>
+			</Row>
+			<Row>
+				<Column>Italian</Column><Column>Medium</Column>
+			</Row>
+			<Row>
+				<Column>Spanish</Column><Column>Medium</Column>
+			</Row>
+			<Row>
+				<Column>Hawaiian</Column><Column>Large</Column>
+			</Row>
+			<Row>
+				<Column>Greek</Column><Column>Large</Column>
+			</Row>
+		</Rows>
+	</DecisionTable>
+	<Constants>
+		<Constant name="xyz">aaaab</Constant>
+	</Constants>
+
+</MaduraValidator>
+	

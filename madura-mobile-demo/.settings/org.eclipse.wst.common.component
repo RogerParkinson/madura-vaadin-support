@@ -3,8 +3,10 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="madura-vaadin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin/madura-vaadin">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="madura-mobile-demo"/>
         <property name="java-output-path" value="/madura-mobile-demo/target/classes"/>
     </wb-module>

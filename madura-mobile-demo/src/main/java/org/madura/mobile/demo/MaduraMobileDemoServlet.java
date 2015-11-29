@@ -8,8 +8,8 @@ import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 
-@SuppressWarnings("serial")
-@WebServlet("/*")
+//@SuppressWarnings("serial")
+//@WebServlet("/*")
 public class MaduraMobileDemoServlet extends TouchKitServlet {
 
     private MaduraMobileDemoUIProvider uiProvider = new MaduraMobileDemoUIProvider();

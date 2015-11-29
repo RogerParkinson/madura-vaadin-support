@@ -20,5 +20,11 @@
 			<artifactId>madura-vaadin</artifactId>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
