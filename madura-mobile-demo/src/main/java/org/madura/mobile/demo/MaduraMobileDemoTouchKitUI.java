@@ -1,15 +1,14 @@
 package org.madura.mobile.demo;
 
-import java.util.Set;
-
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
+import nz.co.senanque.vaadin.RequestWrapper;
 import nz.co.senanque.vaadin.SpringAwareTouchKitServlet;
+import nz.co.senanque.vaadin.TouchkitHintsImpl;
 
 import org.madura.mobile.demo.ui.MenuView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,21 +82,26 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     	@Bean(name="hints")
     	@UIScope
     	public Hints getHints() {
-    		return new HintsImpl();
+            if (RequestWrapper.isMobile()) {
+                return new TouchkitHintsImpl();
+            } else {
+                return new HintsImpl();
+            }
     	}
     }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-    	// Initialise the permission manager using data from the login
-    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
-    	// but they should all populate the permission manager.
-    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
-    	@SuppressWarnings("unchecked")
-		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
-    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
-    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
-    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
+//    	m_maduraSessionManager.updatePermissions();
+//    	// Initialise the permission manager using data from the login
+//    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
+//    	// but they should all populate the permission manager.
+//    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
+//    	@SuppressWarnings("unchecked")
+//		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
+//    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
+//    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
+//    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
     	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
     	final String logout = messageSourceAccessor.getMessage("Logout");

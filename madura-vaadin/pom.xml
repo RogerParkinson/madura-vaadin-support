@@ -88,6 +88,10 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-login</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-objects</artifactId>
 			<version>${madura.objects.version}</version>
 			<exclusions>

@@ -26,6 +26,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
 
+import com.vaadin.addon.touchkit.ui.DatePicker;
 import com.vaadin.addon.touchkit.ui.EmailField;
 import com.vaadin.addon.touchkit.ui.NumberField;
 import com.vaadin.server.ErrorEvent;
@@ -72,8 +73,6 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 		m_hideInactive = hideInactive;
 	}
 	private SelectType m_selectType = SelectType.RADIO;
-
-//	private transient MessageSource m_messageSource;
 
 	public SelectType getSelectType() {
 		return m_selectType;
@@ -187,12 +186,8 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 		return true;
 	}
 	public AbstractField<?> getDateField(MaduraPropertyWrapper property) {
-		TextField ret = new TextField(); // use a touchkit date field when one becomes available
+		DatePicker ret = new DatePicker(); // use a touchkit date field when one becomes available
 		return ret;
-//        final DateField df = new DateField();
-//        df.setResolution(DateField.RESOLUTION_DAY);
-//        df.setStyleName("calendar");
-//        return df;
 	}
 	public AbstractField<?> getBooleanField(MaduraPropertyWrapper property) {
 		return new CheckBox();
@@ -244,23 +239,5 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource);
 		Button ret = new Button(messageSourceAccessor.getMessage(name,null,name));
 		return ret;
-	}
-//	public void setMessageSource(MessageSource messageSource) {
-//		m_messageSource = messageSource;
-//		
-//	}
-//	@Override
-//	public MessageSource getMessageSource() {
-//		return m_messageSource;
-//	}
-	
-	public void update(Object o) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public void update(TextField text) {
-		// TODO Auto-generated method stub
-		
 	}
 }

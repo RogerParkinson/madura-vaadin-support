@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import nz.co.senanque.vaadin.application.MaduraConverterFactory;
@@ -55,6 +56,8 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
@@ -95,6 +98,11 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     @Value("${nz.co.senanque.vaadin.application.MaduraSessionManager.suppressUpdates:false}")
     private transient boolean m_suppressUpdates;
     
+	@PostConstruct
+	public void init() {
+		VaadinSession session = VaadinSession.getCurrent();
+		session.setConverterFactory(getMaduraConverterFactory());
+	}
     private class MenuItemWrapper extends AbstractComponent {
     	
     	private static final long serialVersionUID = -1L;
@@ -273,6 +281,18 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 			}
 		}
 	}
+	
+//	public void updatePermissions() {
+//		updatePermissions(VaadinService.getCurrentRequest());
+//	}
+//
+//	public void updatePermissions(VaadinRequest vaadinRequest) {
+//    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
+//    	@SuppressWarnings("unchecked")
+//		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
+//    	getPermissionManager().setPermissionsList(currentPermissions);
+//    	getPermissionManager().setCurrentUser(currentUser);
+//	}
 
 	private boolean getParentReadOnly(AbstractComponent abstractField) {
 		AbstractComponent parent = (AbstractComponent)abstractField.getParent();

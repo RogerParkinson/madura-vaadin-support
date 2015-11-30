@@ -55,10 +55,6 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-login</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-vaadin-touchkit</artifactId>
 		</dependency>
 		<dependency>

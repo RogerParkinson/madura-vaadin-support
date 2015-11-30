@@ -22,8 +22,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
+import nz.co.senanque.login.AuthenticationDelegate;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.WrappedSession;
 import com.vaadin.spring.annotation.UIScope;
 
 /**
@@ -36,15 +43,25 @@ import com.vaadin.spring.annotation.UIScope;
  */
 @Component("permissionManager")
 @UIScope
-public class PermissionManagerImpl implements PermissionManager, Serializable {
+public class PermissionManagerImpl implements PermissionManager, PermissionResolver, Serializable {
     
-	private static final long serialVersionUID = -2867965292303559579L;
+	private static final long serialVersionUID = -1L;
 	private Set<String> m_permissionsList = new HashSet<String>();
     private String m_currentUser;
     private List<ChangeUserListener> m_changeUserListeners = new ArrayList<ChangeUserListener>();
+    
+    @Autowired(required=false) PermissionResolver m_permissionResolver;
 
 	public PermissionManagerImpl () {
     }
+	
+	@PostConstruct
+	public void init() {
+		if (m_permissionResolver == null) {
+			m_permissionResolver = this;
+		}
+		m_permissionResolver.unpackPermissions();
+	}
     
 	/* (non-Javadoc)
      * @see nz.co.senanque.vaadin.permissions.PermissionManager#hasPermission(java.lang.String)
@@ -82,6 +99,24 @@ public class PermissionManagerImpl implements PermissionManager, Serializable {
 
 	public Set<String> getPermissionsList() {
 		return Collections.unmodifiableSet(m_permissionsList);
+	}
+
+	public PermissionResolver getPermissionResolver() {
+		return m_permissionResolver;
+	}
+
+	public void setPermissionResolver(PermissionResolver permissionResolver) {
+		m_permissionResolver = permissionResolver;
+	}
+
+	@Override
+	public void unpackPermissions() {
+		WrappedSession session = VaadinService.getCurrentRequest().getWrappedSession();
+    	String currentUser = (String)session.getAttribute(AuthenticationDelegate.USERNAME);
+    	@SuppressWarnings("unchecked")
+		Set<String> currentPermissions = (Set<String>)session.getAttribute(AuthenticationDelegate.PERMISSIONS);
+    	setPermissionsList(currentPermissions);
+    	setCurrentUser(currentUser);
 	}
 
 }

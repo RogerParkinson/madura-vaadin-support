@@ -22,10 +22,6 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-login</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-vaadin</artifactId>
 		</dependency>
 		<dependency>
@@ -86,7 +82,6 @@
 			<plugin>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
-				<version>${vaadin.plugin.version}</version>
 				<configuration>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
 					<webappDirectory>${basedir}/target/classes/VAADIN/widgetsets</webappDirectory>

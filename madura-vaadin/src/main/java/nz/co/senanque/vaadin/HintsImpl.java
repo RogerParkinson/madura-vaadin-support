@@ -17,14 +17,12 @@ package nz.co.senanque.vaadin;
 
 import java.io.Serializable;
 
-import nz.co.senanque.vaadin.application.MaduraConverterFactory;
 import nz.co.senanque.vaadin.converter.StringToChoiceBase;
 import nz.co.senanque.validationengine.ValidationException;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -63,7 +61,6 @@ public class HintsImpl implements Hints, Serializable {
 	private String m_width = "200px";
 	private boolean m_forceImmediate = true;
 	private boolean m_hideInactive = true;
-	@Autowired private MaduraConverterFactory m_maduraConverterFactory;
 	public HintsImpl()
 	{
 	    logger.debug("Constructing...");
@@ -249,19 +246,4 @@ public class HintsImpl implements Hints, Serializable {
 		return ret;
 	}
 
-	public MaduraConverterFactory getMaduraConverterFactory() {
-		return m_maduraConverterFactory;
-	}
-	public void setMaduraConverterFactory(
-			MaduraConverterFactory maduraConverterFactory) {
-		m_maduraConverterFactory = maduraConverterFactory;
-	}
-	@Override
-	public void update(Object whatever) {
-		throw new RuntimeException("Need to add a handler for "+whatever.getClass().getName());
-	}
-	@Override
-	public void update(TextField text) {
-		String.valueOf(text);
-	}
 }

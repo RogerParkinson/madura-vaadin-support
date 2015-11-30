@@ -48,6 +48,4 @@ public interface Hints {
 	public void setCommonProperties(Button field,
 			MaduraPropertyWrapper property, MessageSource m_messageSource);
 
-	public void update(Object o);
-	public void update(TextField text);
 }

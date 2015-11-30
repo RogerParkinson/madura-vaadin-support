@@ -1,13 +1,10 @@
 package nz.co.senanque.addressbook;
 
-import java.util.Set;
-
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.addressbook.instances.TreeSpecies;
-import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
@@ -127,16 +124,6 @@ public class AddressBookUI extends UI  {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-    	
-    	// Initialise the permission manager using data from the login
-    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
-    	// but they should all populate the permission manager.
-    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
-    	@SuppressWarnings("unchecked")
-		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
-    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
-    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
-    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
     	
     	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
     	final String logout = messageSourceAccessor.getMessage("logout");
