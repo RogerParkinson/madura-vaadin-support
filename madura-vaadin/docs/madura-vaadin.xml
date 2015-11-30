@@ -225,7 +225,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 ...
         ]]></code>
         <p>The two class annotations ensure that Spring loads this as a session component, and the <courier>MaduraSessionManager</courier> is auto wired. The <courier>MaduraSessionManager</courier> is the 
-        general pupose API we use to get to Madura so we need it everywhere.</p>
+        general purpose API we use to get to Madura so we need it everywhere.</p>
 		<p>Now we can look inside the first demo.</p>
 		</h1>
 		<h1 t="madura-vaadin-demo">
@@ -672,9 +672,40 @@ formLayout.addComponent(size);
         </h1>
         <h1 t="madura-login">
         <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
-        <p>To configure it into an application we need to add the maven dependency, of course, and also tell Spring about the translation strings and
-        the directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.</p>
-        <p>There are also some configuration options for this project.</p>
+        <p>To configure it into an application we need to tell Spring which directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.</p>
+        <p>That is the minimum. But we can do more with security. First, we can remove the existing login mechanism on any of the demos and replce it with something else. Second,
+        we can keep the existing login mechanism and reconfigure it or extend it.</p>
+        <h2 t="Replacing madura-login">
+        <p>The connection between madura-login and the application is deliberately loose. The login process puts some attributes into the session
+        and the application code pulls them out and uses them to configure the <courier>PermissionManager</courier>. Madura uses the <courier>PermissionManager</courier>
+        for all security references. So it you don't want to use madura-login you need to provide another way to configure the <courier>PermissionManager</courier>.</p>
+        <p>This is easily done by supplying a bean that implements the <courier>PermissionResolver</courier> interface:</p>
+        <code><![CDATA[
+@Component("permissionResolver")
+@UIScope
+public class PermissionResolverImpl implements PermissionResolver {
+
+	@Autowired PermissionManager permissionManager;
+    
+    @PostConstruct
+	public void unpackPermissions() {
+		WrappedSession session = VaadinService.getCurrentRequest().getWrappedSession();
+    	String currentUser = (String)session.getAttribute(AuthenticationDelegate.USERNAME);
+    	@SuppressWarnings("unchecked")
+		Set<String> currentPermissions = (Set<String>)session.getAttribute(AuthenticationDelegate.PERMISSIONS);
+    	permissionManager.setPermissionsList(currentPermissions);
+    	permissionManager.setCurrentUser(currentUser);
+	}
+}	
+        ]]></code>
+        <p>This is the out-of-the-box behaviour.</p>
+        <p>The class is instantiated once per session and the <courier>PostConstruct</courier> method will be run once the <courier>PermissionManager</courier>
+        has been injected and is ready for further configuration with the permissions list and the user name fetched, in this case, from the
+        session attributes. Using session attributes is a typical way to pass authentication information but the actual details and structure of what is passed
+        varies from authentication product to authentication product. Implementing your own version with different attribute names should be fairly simple.</p>
+        </h2>
+        <h2 t="Reconfiguring madura-login">
+        <p>You can configure the following:</p>
         <list>
         <le>Add a customised login.html file to your project's resources directory</le>
         <le>Add a customised login.css file to your project's resources/css directory</le>
@@ -688,6 +719,8 @@ formLayout.addComponent(size);
 nz.co.senanque.login.RequestValidatorImpl.defaultLogin:admin/admin
         ]]></code>
         <p>That will automatically log you in as user/password admin/admin. Naturally you remove this for production.</p>
+        </h2>
+        <h2 t="Extending madura-login">
         <p>Things a production version would have to have:</p>
         <list>
         <le>A more secure user storage, you would implement this with a replacement <courier>AuthenticationDelegate</courier>. The replacement should not store
@@ -696,7 +729,8 @@ nz.co.senanque.login.RequestValidatorImpl.defaultLogin:admin/admin
         <le>Security timeout</le>
         <le>forgot password/change password. This would need to tie in with your <courier>AuthenticationDelegate</courier> implementation.</le>
         </list>
-        <p>The out-of-the-box implementation has just two user/passwords: admin/admin and user/user. Admin had the ADMIN permission which is used in the rules demo.</p>
+        <p>The out-of-the-box implementation has just two user/passwords: admin/admin and user/user. Admin has the ADMIN permission which is used in the rules demo.</p>
+        </h2>
         </h1>
         
 		<a1 t="License">
