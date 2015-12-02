@@ -130,12 +130,16 @@ public class HintsImpl implements Hints, Serializable {
                 }
 				
 			}});
-        if (ret instanceof ComboBox) {
-        	((ComboBox)ret).setConverter(new StringToChoiceBase(property));
-        }
-        if (ret instanceof OptionGroup) {
-        	((OptionGroup)ret).setConverter(new StringToChoiceBase(property));
-        }
+		if (ret instanceof AbstractSelect) {
+			AbstractSelect select = (AbstractSelect) ret;
+			select.setConverter(new StringToChoiceBase(property));
+			for (ChoiceBase v : property.getAvailableValues()) {
+				select.addItem(v);
+				if (v.getKey().equals(property.getValue())) {
+					select.setValue(v);
+				}
+			}
+		}
         ret.setBuffered(false);
 
     }
@@ -215,15 +219,15 @@ public class HintsImpl implements Hints, Serializable {
             select.setMultiSelect(false);
         	break;
         }
-        for (ChoiceBase v: property.getAvailableValues())
-        {
-        	select.addItem(v);
-        	if (v.getKey().equals(property.getValue()))
-        	{
-        	    select.setValue(v);
-        	}
-        }
-        select.setConverter(new StringToChoiceBase(property));
+//        for (ChoiceBase v: property.getAvailableValues())
+//        {
+//        	select.addItem(v);
+//        	if (v.getKey().equals(property.getValue()))
+//        	{
+//        	    select.setValue(v);
+//        	}
+//        }
+//        select.setConverter(new StringToChoiceBase(property));
 
         return select;
 	}

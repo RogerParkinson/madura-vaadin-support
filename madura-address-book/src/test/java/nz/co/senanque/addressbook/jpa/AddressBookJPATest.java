@@ -58,7 +58,7 @@ public class AddressBookJPATest {
 		List<TreeSpecies> trees = getTreeSpeciesDAO().getAllTrees();
 		assertEquals(trees.size(),3);
 		Object id = getTreeSpeciesDAO().getId(trees.get(0));
-		assertEquals(14L,id);
+		assertEquals(1L,id);
 	}
 
 	protected AddressBookDAO getAddressBookDAO() {

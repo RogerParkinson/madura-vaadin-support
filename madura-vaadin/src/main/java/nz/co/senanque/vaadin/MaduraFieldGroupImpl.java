@@ -133,6 +133,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	ValidationObject source = getDataSource();
     	MaduraPropertyWrapper p = getMaduraPropertyWrapper(source,getPropertyId(field),true);
     	AbstractField<?> f = (AbstractField<?>)field;
+    	m_hints.setCommonProperties(f, p, m_messageSource);
     	m_maduraSessionManager.bind(f, p);
     }
     
@@ -169,6 +170,9 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	{
     		CommandExt commandExt = (CommandExt)command;
     		MenuItemPainter painter = commandExt.getPainter();
+    		if (painter.getProperty() != null) {
+    			m_hints.setCommonProperties(menuItem, painter.getProperty(), m_messageSource);
+    		}
     		painter.paint(menuItem);
     	}
     }
@@ -179,12 +183,13 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
         ButtonPainter painter = buttonProperty.getPainter();
         if (painter.getPropertyName() != null) {
         	ValidationObject source = getDataSource();
-        	this.getMaduraPropertyWrapper(source, painter.getPropertyName(), true);
+        	getMaduraPropertyWrapper(source, painter.getPropertyName(), true);
         }
         painter.setPropertiesSource(this);
         painter.paint(button);
         MaduraPropertyWrapper wrapper = buttonProperty.getPainter().getProperty();
         if (wrapper != null) {
+            m_hints.setCommonProperties(button, wrapper, m_messageSource);
         	final Button finalButton = button;
         	m_maduraSessionManager.getValidationSession().addListener(wrapper.getOwner(),wrapper.getName(), new SetterListener(){
 

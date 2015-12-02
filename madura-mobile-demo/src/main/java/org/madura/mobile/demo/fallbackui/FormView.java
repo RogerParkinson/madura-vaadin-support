@@ -1,4 +1,4 @@
-package org.madura.mobile.demo.ui;
+package org.madura.mobile.demo.fallbackui;
 
 import com.vaadin.addon.touchkit.ui.EmailField;
 import com.vaadin.ui.Button;
@@ -11,9 +11,9 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class FormView2 extends FormLayout {
+public class FormView extends FormLayout {
 
-    public FormView2() {
+    public FormView() {
         setCaption("Form");
         final VerticalLayout content = new VerticalLayout();
 

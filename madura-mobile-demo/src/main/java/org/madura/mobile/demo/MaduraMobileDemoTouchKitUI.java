@@ -11,6 +11,7 @@ import nz.co.senanque.vaadin.SpringAwareTouchKitServlet;
 import nz.co.senanque.vaadin.TouchkitHintsImpl;
 
 import org.madura.mobile.demo.ui.MenuView;
+import org.madura.mobile.demo.ui.PizzaView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -47,6 +48,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 	private static Logger m_logger = LoggerFactory.getLogger(MaduraMobileDemoTouchKitUI.class);
 	
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
+	@Autowired private PizzaView m_pizzaView;
 
 	@WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringAwareTouchKitServlet {
@@ -92,17 +94,6 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-//    	m_maduraSessionManager.updatePermissions();
-//    	// Initialise the permission manager using data from the login
-//    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
-//    	// but they should all populate the permission manager.
-//    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
-//    	@SuppressWarnings("unchecked")
-//		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
-//    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
-//    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
-//    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
-    	
     	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
     	final String logout = messageSourceAccessor.getMessage("Logout");
 
@@ -113,12 +104,18 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         Tab tab;
         tab = tabBarView.addTab(navigationManager);
         tab.setIcon(FontAwesome.BOOK);
-        tab = tabBarView.addTab(new Label("Tab 2"), "Tab 2");
+        tab = tabBarView.addTab(m_pizzaView, "Tab 2");
         tab.setIcon(FontAwesome.AMBULANCE);
         tab = tabBarView.addTab(new Label("Tab 3"), "Tab 3");
         tab.setIcon(FontAwesome.DOWNLOAD);
         setContent(tabBarView);
 
     }
+	public PizzaView getPizzaView() {
+		return m_pizzaView;
+	}
+	public void setPizzaView(PizzaView pizzaView) {
+		m_pizzaView = pizzaView;
+	}
 }
 

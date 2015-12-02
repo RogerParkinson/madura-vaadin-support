@@ -48,12 +48,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<pdf>target/${project.artifactId}-${project.version}.pdf</pdf>
-		<spring.framework.version>4.1.6.RELEASE</spring.framework.version>
+		<spring.framework.version>4.2.3.RELEASE</spring.framework.version>
 		<vaadin.version>7.5.6</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
 		<madura.objects.version>3.0.0-SNAPSHOT</madura.objects.version>
-		<hibernate-version>4.1.4.Final</hibernate-version>
+<!-- 		<hibernate-version>4.1.4.Final</hibernate-version> -->
 		<project.scm.id>github</project.scm.id>
 		<project.source.version>1.7</project.source.version>
 		<project.target.version>1.7</project.target.version>
@@ -184,7 +184,7 @@
 			<dependency>
 			    <groupId>org.springframework</groupId>
 			    <artifactId>spring-test</artifactId>
-			    <version>4.1.7.RELEASE</version>
+			    <version>${spring.framework.version}</version>
 			    <scope>test</scope>
 			</dependency>
 			<dependency>

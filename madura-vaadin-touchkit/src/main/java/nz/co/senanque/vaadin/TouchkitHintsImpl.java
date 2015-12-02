@@ -17,6 +17,7 @@ package nz.co.senanque.vaadin;
 
 import java.io.Serializable;
 
+import nz.co.senanque.vaadin.converter.StringToChoiceBase;
 import nz.co.senanque.validationengine.ValidationException;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 
@@ -29,6 +30,7 @@ import org.springframework.context.support.MessageSourceAccessor;
 import com.vaadin.addon.touchkit.ui.DatePicker;
 import com.vaadin.addon.touchkit.ui.EmailField;
 import com.vaadin.addon.touchkit.ui.NumberField;
+import com.vaadin.addon.touchkit.ui.Switch;
 import com.vaadin.server.ErrorEvent;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.UserError;
@@ -36,7 +38,6 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.OptionGroup;
@@ -130,6 +131,16 @@ public class TouchkitHintsImpl implements Hints, Serializable {
                 }
 				
 			}});
+		if (ret instanceof AbstractSelect) {
+			AbstractSelect select = (AbstractSelect) ret;
+			select.setConverter(new StringToChoiceBase(property));
+			for (ChoiceBase v : property.getAvailableValues()) {
+				select.addItem(v);
+				if (v.getKey().equals(property.getValue())) {
+					select.setValue(v);
+				}
+			}
+		}
 
     }
     public void setCommonProperties(final MenuItem ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
@@ -190,7 +201,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 		return ret;
 	}
 	public AbstractField<?> getBooleanField(MaduraPropertyWrapper property) {
-		return new CheckBox();
+		return new Switch();
 	}
 	public AbstractField<?> getSelectField(MaduraPropertyWrapper property) {
         AbstractSelect select = null;
@@ -213,7 +224,8 @@ public class TouchkitHintsImpl implements Hints, Serializable {
         	    select.setValue(v);
         	}
         }
-         return select;
+        select.setConverter(new StringToChoiceBase(property));
+        return select;
 	}
     public AbstractField<?> getTextField(MaduraPropertyWrapper property) {
     	AbstractTextField ret = null;

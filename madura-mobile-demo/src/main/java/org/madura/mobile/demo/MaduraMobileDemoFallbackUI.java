@@ -2,7 +2,7 @@ package org.madura.mobile.demo;
 
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
-import org.madura.mobile.demo.ui.FormView2;
+import org.madura.mobile.demo.fallbackui.FormView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
@@ -54,7 +54,7 @@ public class MaduraMobileDemoFallbackUI extends UI {
 
         // Create the first tab
         VerticalLayout tab1 = new VerticalLayout();
-        tab1.addComponent(new FormView2());
+        tab1.addComponent(new FormView());
         tabsheet.addTab(tab1, messageSourceAccessor.getMessage("Customer"));
 
         VerticalLayout tabLogout = new VerticalLayout();
