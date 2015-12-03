@@ -11,6 +11,9 @@
         <dependent-module archiveName="madura-login-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-login/madura-login">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="madura-vaadin-directed-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-directed/madura-vaadin-directed">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="madura-rules-demo"/>
         <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>
         <property name="java-output-path" value="/madura-rules-demo/target/classes"/>

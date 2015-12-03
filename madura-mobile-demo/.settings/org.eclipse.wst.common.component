@@ -13,5 +13,6 @@
         </dependent-module>
         <property name="context-root" value="madura-mobile-demo"/>
         <property name="java-output-path" value="/madura-mobile-demo/target/classes"/>
+        <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>
     </wb-module>
 </project-modules>

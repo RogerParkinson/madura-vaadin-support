@@ -2,7 +2,7 @@ package org.madura.mobile.demo;
 
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
-import org.madura.mobile.demo.fallbackui.FormView;
+import org.madura.mobile.demo.fallbackui.PizzaView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
@@ -26,20 +26,11 @@ import com.vaadin.ui.VerticalLayout;
 public class MaduraMobileDemoFallbackUI extends UI {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-
+	@Autowired private PizzaView m_pizzaView;
+	
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
 
-//		// Initialise the permission manager using data from the login
-//    	// This assumes madura-login handled the login. Other authentication mechanisms will need different code
-//    	// but they should all populate the permission manager.
-//    	String currentUser = (String)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.USERNAME);
-//    	@SuppressWarnings("unchecked")
-//		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().getAttribute(AuthenticationDelegate.PERMISSIONS);
-//    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
-//    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
-//    	this.getSession().setConverterFactory(m_maduraSessionManager.getMaduraConverterFactory());
-    	
     	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
     	final String logout = messageSourceAccessor.getMessage("Logout");
 
@@ -54,7 +45,7 @@ public class MaduraMobileDemoFallbackUI extends UI {
 
         // Create the first tab
         VerticalLayout tab1 = new VerticalLayout();
-        tab1.addComponent(new FormView());
+        tab1.addComponent(m_pizzaView);
         tabsheet.addTab(tab1, messageSourceAccessor.getMessage("Customer"));
 
         VerticalLayout tabLogout = new VerticalLayout();
@@ -79,5 +70,17 @@ public class MaduraMobileDemoFallbackUI extends UI {
         String contextPath = VaadinService.getCurrentRequest().getContextPath();
         getUI().getPage().setLocation(contextPath);
     }
+	public MaduraSessionManager getMaduraSessionManager() {
+		return m_maduraSessionManager;
+	}
+	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
+		m_maduraSessionManager = maduraSessionManager;
+	}
+	public PizzaView getPizzaView() {
+		return m_pizzaView;
+	}
+	public void setPizzaView(PizzaView pizzaView) {
+		m_pizzaView = pizzaView;
+	}
 
 }

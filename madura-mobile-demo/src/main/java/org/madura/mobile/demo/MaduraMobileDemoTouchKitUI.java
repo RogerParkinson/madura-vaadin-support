@@ -7,8 +7,8 @@ import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.RequestWrapper;
-import nz.co.senanque.vaadin.SpringAwareTouchKitServlet;
-import nz.co.senanque.vaadin.TouchkitHintsImpl;
+import org.madura.temp.SpringAwareTouchKitServlet;
+import org.madura.temp.TouchkitHintsImpl;
 
 import org.madura.mobile.demo.ui.MenuView;
 import org.madura.mobile.demo.ui.PizzaView;

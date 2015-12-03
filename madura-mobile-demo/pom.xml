@@ -51,8 +51,19 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-vaadin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-touchkit-agpl</artifactId>
+			<type>jar</type>
+		</dependency>
+<!-- 
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-vaadin-touchkit</artifactId>
 		</dependency>
+ -->
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-rules</artifactId>
@@ -67,22 +78,16 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiler</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <!-- Desktop fallback uses reindeer theme -->
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-themes</artifactId>
-        </dependency>
-        <dependency>
-            <!-- Desktop fallback uses default widgetset -->
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-client-compiled</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>6.0</version>
-            <scope>provided</scope>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>ant</artifactId>
+            		<groupId>ant</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>ant-launcher</artifactId>
+            		<groupId>ant</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -91,51 +96,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<encoding>${project.encoding}</encoding>
-					<source>${project.source.version}</source>
-					<target>${project.target.version}</target>
-				</configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
             </plugin>
-
             <plugin>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
-                <configuration>
-                    <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
-                    <hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
-                    <extraJvmArgs>-Xmx1g -Xss4024k</extraJvmArgs>
-                    <noServer>true</noServer>
-                    <!-- Remove draftCompile when project is ready -->
-                    <draftCompile>false</draftCompile>
-                    <compileReport>false</compileReport>
-                    <style>OBF</style>
-                    <persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
-                    <deploy>${project.build.directory}/gwt-deploy</deploy>
-                    <runTarget>http://localhost:8080/</runTarget>
-                    <extraJvmArgs>-Xmx1024M -Xss4024k -XX:MaxPermSize=128m</extraJvmArgs>
-                    <modules>
-                      <module>org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet</module>
-                    </modules>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-							<goal>update-theme</goal>
-                            <goal>resources</goal>
-                            <goal>update-widgetset</goal>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
+	                <configuration>
+	                    <modules>
+	                      <module>org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet</module>
+	                    </modules>
+	                </configuration>
             </plugin>
 
             <!-- As we are doing "inplace" GWT compilatio, ensure the widgetset -->

@@ -1,4 +1,4 @@
-package org.madura.mobile.demo.ui;
+package org.madura.mobile.demo.fallbackui;
 
 import javax.annotation.PostConstruct;
 
@@ -9,8 +9,6 @@ import nz.co.senanque.vaadin.MaduraSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vaadin.addon.touchkit.ui.NavigationView;
-import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -20,26 +18,26 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 @UIScope
-@Component("mobile-pizza")
-public class PizzaView extends NavigationView {
+@Component("desktop-pizza")
+public class PizzaView extends FormLayout {
 
 	private MaduraFieldGroup m_maduraFieldGroup;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
     @PropertyId("base")
-    private NativeSelect base = new NativeSelect();
+    private ComboBox base = new ComboBox();
     @PropertyId("topping")
-    private NativeSelect topping = new NativeSelect();
+    private ComboBox topping = new ComboBox();
     @PropertyId("size")
-    private NativeSelect size = new NativeSelect();
+    private ComboBox size = new ComboBox();
     @PropertyId("amount")
     private TextField amount = new TextField();
     @PropertyId("testing")
@@ -52,7 +50,7 @@ public class PizzaView extends NavigationView {
 	@PostConstruct
 	public void init() {
 
-        final VerticalComponentGroup formLayout = new VerticalComponentGroup();
+        final VerticalLayout formLayout = new VerticalLayout();
         
         final Pizza pizza = new Pizza();
 
@@ -80,7 +78,8 @@ public class PizzaView extends NavigationView {
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
-        setContent(new CssLayout(formLayout, OK));
+        addComponent(formLayout);
+        addComponent(OK);
     }
 
 	public MaduraSessionManager getMaduraSessionManager() {
