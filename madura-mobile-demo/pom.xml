@@ -51,19 +51,9 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-vaadin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin.addon</groupId>
-			<artifactId>vaadin-touchkit-agpl</artifactId>
-			<type>jar</type>
-		</dependency>
-<!-- 
-		<dependency>
-			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-vaadin-touchkit</artifactId>
 		</dependency>
- -->
+
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-rules</artifactId>
