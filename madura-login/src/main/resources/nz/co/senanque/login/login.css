@@ -22,11 +22,11 @@ form {
 }
 
 input {
-	width: 90%;
+	width: 50%;
 	display: block;
 	border: 1px solid #C5C5C5;
-	height: 30px;
-	padding-bottom: 4px;
+	height: 28px;
+	padding-bottom: 8px;
 	padding-left: 9px;
 	padding-right: 9px;
 	padding-top: 4px;
@@ -74,8 +74,8 @@ input:focus {
 .error {
 	color: red;
 	padding-bottom: 4.2px;
-	line-height: 80px;
-	font-size: 80px;
+	line-height: 22px;
+	font-size: 14px;
 }
 .logo {
 	width: 80px;
@@ -85,6 +85,13 @@ input:focus {
 	background-size: 95%;
 	left: 20px;
 	bottom: 20px;
+}
+.heading {
+	width: 100%;
+	font-size: 20px;
+	font-weight: 10;
+	color: #5E5D55;
+	text-align: center;
 }
 
 h1 {
@@ -117,4 +124,17 @@ select.icon-menu option {
 }
 label>span {
 	padding-bottom: 4.2px;
+	width: 50%;
+}
+label {
+	border-top: medium none;
+	min-height: 42px;
+	position: relative;
+	display: flex;
+	padding: 0px 10px;
+	text-align: left;
+	white-space: normal;
+	font-size: 16px;
+	line-height: normal;
+	vertical-align:middle;
 }
