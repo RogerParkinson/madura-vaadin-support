@@ -534,8 +534,79 @@ formLayout.addComponent(size);
 		in various ways. See the Vaadin documentation for that.</p>
 		</h1>
         <h1 t="Mobile Applications">
+        <h2 t="Touchkit">
+        <p>Touchkit is an addon product produced by Vaadin to enable 'touch' devices like phones and tablets, so this
+        is what you need for a mobile application. There is a lot to Touchkit that we will not cover here (just as there
+        is a lot to Vaadin that we don't cover). But we will do the basics and show it working with Madura.</p>
+        <p>Touchkit is a dual licence product. If your project qualifies for AGPL then you use the free agpl version. If not
+        you need to buy a licence from Vaadin. Our demos are AGPL so they use the agpl version.</p>
+        <p>At the time of writing the version of Touchkit we need was not in the maven central repository so there are some
+        repository references in the pom file for the demos.</p>
+        <p>But the demo project does not refer to Touchkit directly. There is a <courier>madura-vaadin-touchkit</courier>library that
+        adds some Touchkit specifics to help Madura, and that has the dependency</p>
+        <code><![CDATA[
+<dependency>
+	<groupId>com.vaadin.addon</groupId>
+	<artifactId>vaadin-touchkit-agpl</artifactId>
+	<version>4.0.0</version>
+	<type>jar</type>
+</dependency>
+        ]]></code>
+        <p>But what you will find in the <courier>madura-mobile-demo</courier> is this:</p>
+        <code><![CDATA[
+<dependency>
+	<groupId>nz.co.senanque</groupId>
+	<artifactId>madura-vaadin-touchkit</artifactId>
+</dependency>
+        ]]></code>
+        </h2>
+		<h2 t="The Demo">
+		<p>The <courier>madura-rules-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
+		and a mobile UI. The two UIs do mush the same thing, they certainly have the same underlying objects and rules (using Madura Objects)and Madura Rules, of course).
+		Part of the point is to show that while you might have to deliver a different UI for a different technology you do not
+		have to re-engineer the object and rules to doit.</p>
+		<p>The desktop UI is called the fallback UI in this demo because the convention is that the mobile UI has to fall back to the desktop when it is
+		not invoked by a mobile device. In practice it seems more like the other way around but there are multiple ways to achieve this
+		and this demo uses just one ofthose ways.</p>
+		<p>The <courier>MaduraMobileFallbackUI</courier> is essentially no different from the UI class in the other demos. It is
+		an extention of the <courier>com.vaadin.ui.UI</courier> class and has similar annotations. The one thing you might find puzzling there is
+		that the various static classes that define the web servlet, web listener and Spring configuration are missing.
+		They are in the mobile UI class. There have to be only one instance of these
+		in the application and in this case the one isntance is in the other class. But
+		it does not matter where they are as long as they are present somewhere.</p>
+		<p>The more insteresting class at this point is the <courier>MaduraMobileDemoTouchKitUI</courier> class.</p>
+		<p>The first thing to notice abut this class is that the static classes are present here, but the
+		servlet class extends <courier>SpringAwareTouchkitServlet</courier>. This implements some things needed for
+		Touchkit to work correctly with Spring. The class is adapted from Matti Tahvonen's version. Matti Tahvonen
+		works for Vaadin.</p>
+		<p>The next thing to notice is the annotations on the UI are a little different.</p>
+        <code><![CDATA[
+@Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
+@Theme("mytouchkit")
+@SpringUI(path="mobile")
+public class MaduraMobileDemoTouchKitUI extends UI {
+...
+        ]]></code>
+        <p>The theme is one derived from the Touchkit theme, which is different from the desktop theme. Touchkit requires its own theme
+        and we've added a small addition to it to make numeric fields justify right. This means you need the theme definition in the VAADIN
+        directory.</p>
+        <p>To get to the mobile UI there needs to be a <courier>/mobile</courier> added to the URL. This is
+        actually done for us by the login sequence is you are using <courier>madura-login</courier>, but if your application
+        uses something else instead you will need to have it redirect to the right UI.</p>
+        <p>The rest of the UI, including the classes it invokes are much the same as the desktop UI except that there
+        are some Touchkit specific controls used such as <courier>NavigationManager</courier>. You can use the same
+        techniques for creating and binding objects to your UI. When it creates UI fields for you a different field factory
+        is invoked to supply Touchkit fields rather than desktop ones.</p>
+        <p>That brings us to the last thing to notice about the UI class namely the definition of the <courier>hints</courier>
+        bean. In the other demos this just returned <courier>HintsImpl</courier> but here we need to make a decision about what
+        hints we want because they are different. As with the other demos this gives youthe opportunity to customise the hints
+        by supplying your own hints classes.</p>
+		</h2>
+		<h2 t="Building the Mobile Version">
+		<!-- TODO -->
+		</h2>
         <note>The mobile specific features depend on Vaadin's Touchkit and
-        while it works perfectly fine, the version it works with is not in the maven library. The version that <emph>is</emph>
+        while it works perfectly fine, the version it works with is not in the maven central repositor at the time of writing. The version that <emph>is</emph>
         in the library requires an upgrade to Vaadin 7 (currently version 6), which is yet to be done. So the simplest
         intermediate solution it to add an explicit repository to the pom file until we can work through the V7 upgrade. The Touchkit
         product is an optional dependency, so may not be needed if your project does not need mobile features.</note>
@@ -547,7 +618,11 @@ formLayout.addComponent(size);
         browser on the mobile device, but it still has access to local settings like GPS.</p>
         <p>To include the touchkit library in your project you will need something like this in your ivy file:</p>
         <code><![CDATA[
-<dependency org="com.vaadin.addon" name="vaadin-touchkit-agpl" rev="2.1.3" conf="compile->default" />
+<dependency>
+	<groupId>com.vaadin.addon</groupId>
+	<artifactId>vaadin-touchkit-agpl</artifactId>
+	<type>jar</type>
+</dependency>
         ]]></code>
         <p>or for a maven pom file:</p>
         <code><![CDATA[
@@ -719,6 +794,25 @@ public class PermissionResolverImpl implements PermissionResolver {
 nz.co.senanque.login.RequestValidatorImpl.defaultLogin:admin/admin
         ]]></code>
         <p>That will automatically log you in as user/password admin/admin. Naturally you remove this for production.</p>
+        </h2>
+        <h2 t="Login and Mobile">
+        <p>When developing mobile applications you often need to include two UIs in the same application. The login page itself
+        uses <courier>@media</courier> queries to adjust itself for different devices, specifically a Galaxy S4 and an iPad mini,
+        but the adjustments are generic enough to cover more devices than that. It will also
+        redirect to your application's mobile UI as well. This is controlled by another config setting:</p>
+        <code><![CDATA[
+nz.co.senanque.login.RequestValidatorImpl.mobilePathPrefix:mobile
+        ]]></code>
+        <p>This is the default setting so all you need to do is have your application's mobile UI look like this:</p>
+        <code><![CDATA[
+@SuppressWarnings("serial")
+@Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
+@Theme("mytouchkit")
+@SpringUI(path="mobile")
+public class MaduraMobileDemoTouchKitUI extends UI {
+...
+        ]]></code>
+        <p>The vital bit there is the <courier>@SpringUI</courier> which specifies a path. The path there must match the value in the config file.</p>
         </h2>
         <h2 t="Extending madura-login">
         <p>Things a production version would have to have:</p>
