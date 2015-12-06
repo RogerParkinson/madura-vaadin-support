@@ -41,7 +41,7 @@ import com.vaadin.ui.UI;
  */
 @SuppressWarnings("serial")
 @Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
-@Theme("touchkit")
+@Theme("mytouchkit")
 @SpringUI(path="mobile")
 public class MaduraMobileDemoTouchKitUI extends UI {
 

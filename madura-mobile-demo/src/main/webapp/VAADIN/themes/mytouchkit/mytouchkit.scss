@@ -1,0 +1,11 @@
+@import "../touchkit/touchkit.scss";
+
+@mixin mytouchkit {
+  @include touchkit;
+
+.v-textfield-align-right {
+	text-align: right;
+}
+}
+
+
