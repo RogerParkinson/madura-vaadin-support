@@ -32,6 +32,7 @@ public class AuthenticationServlet extends HttpServlet {
 			.getLogger(AuthenticationServlet.class);
 	private String loginURL;
 	private RequestValidator m_validator;
+	private String m_mobilePathPrefix;
 
 	public AuthenticationServlet() {
 	}
@@ -42,6 +43,7 @@ public class AuthenticationServlet extends HttpServlet {
 		m_validator = applicationContext.getBean(RequestValidator.class);
 		loginURL = sc.getContextPath()
 				+ m_validator.getLoginPage();
+		m_mobilePathPrefix = m_validator.getMobilePathPrefix();
 	}
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -53,22 +55,32 @@ public class AuthenticationServlet extends HttpServlet {
 	// Check the password
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		String url = StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath();
 		try {
+			String pathPrefix = getPrefix(req);
 			m_validator.setErrorAttribute(req, null);
 			m_validator.authenticate(req);
-			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
-			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // on to application
+			m_logger.debug("redirecting to {}",url+pathPrefix);
+			resp.sendRedirect(url+pathPrefix); // on to application
 		} catch (LocaleChangeException e) {
 			m_validator.setLocale(req, e.getLocale());
 			resp.setLocale(new Locale(e.getLocale()));
-			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
-			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // back to login page
+			m_logger.debug("redirecting to {}",url);
+			resp.sendRedirect(url); // back to login page
 		} catch (Exception e) {
 			m_logger.error(e.getMessage(),e);
 			m_validator.setErrorAttribute(req, e.getLocalizedMessage());
-			m_logger.debug("redirecting to {}",StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath());
-			resp.sendRedirect(StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath()); // back to login page
+			m_logger.debug("redirecting to {}",url);
+			resp.sendRedirect(url); // back to login page
 		}
+	}
+	private String getPrefix(HttpServletRequest req) {
+//        boolean mobileUserAgent = req.getHeader("user-agent")
+//                .toLowerCase().contains("mobile");
+//        if (mobileUserAgent) {
+//        	return "/"+m_mobilePathPrefix;
+//        }
+        return "/";
 	}
 
 }

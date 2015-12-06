@@ -63,6 +63,9 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	private MessageSource m_messageSource;
 
 	@Autowired(required=false) private UserRepository m_users;
+
+    @Value("${nz.co.senanque.login.RequestValidatorImpl.mobilePathPrefix:mobile}")
+	private String m_mobilePathPrefix;
 	
 	@PostConstruct
 	public void init() {
@@ -286,7 +289,6 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	}
 	
 	private String getLocales(Locale currentLocale) {
-		Class<?> clazz = this.getClass();
 		String currentFlag ="";
 		for (int i=0;i<m_langs.length;i++) {
 			if (currentLocale.getLanguage().equals(new Locale(m_langs[i]).getLanguage())) {
@@ -375,6 +377,15 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 
 	public void setDefaultLogin(String defaultLogin) {
 		m_defaultLogin = defaultLogin;
+	}
+
+	@Override
+	public String getMobilePathPrefix() {
+		return m_mobilePathPrefix;
+	}
+
+	public void setMobilePathPrefix(String mobilePathPrefix) {
+		m_mobilePathPrefix = mobilePathPrefix;
 	}
 
 }

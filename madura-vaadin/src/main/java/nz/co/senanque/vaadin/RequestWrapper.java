@@ -1,7 +1,5 @@
 package nz.co.senanque.vaadin;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 
