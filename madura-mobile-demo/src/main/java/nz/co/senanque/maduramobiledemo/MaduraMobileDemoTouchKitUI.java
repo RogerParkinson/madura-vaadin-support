@@ -1,8 +1,10 @@
-package org.madura.mobile.demo;
+package nz.co.senanque.maduramobiledemo;
 
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
+import nz.co.senanque.maduramobiledemo.touchkit.MenuView;
+import nz.co.senanque.maduramobiledemo.touchkit.PizzaView;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
@@ -10,8 +12,6 @@ import nz.co.senanque.vaadin.RequestWrapper;
 import nz.co.senanque.vaadin.SpringAwareTouchKitServlet;
 import nz.co.senanque.vaadin.TouchkitHintsImpl;
 
-import org.madura.mobile.demo.ui.MenuView;
-import org.madura.mobile.demo.ui.PizzaView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,8 +40,8 @@ import com.vaadin.ui.UI;
  * The UI's "main" class
  */
 @SuppressWarnings("serial")
-@Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
-@Theme("mytouchkit")
+@Widgetset("nz.co.senanque.maduramobiledemo.gwt.MaduraMobileDemoWidgetSet")
+@Theme("madura-touchkit-theme")
 @SpringUI(path="mobile")
 public class MaduraMobileDemoTouchKitUI extends UI {
 

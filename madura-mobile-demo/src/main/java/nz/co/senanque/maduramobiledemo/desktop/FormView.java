@@ -1,4 +1,4 @@
-package org.madura.mobile.demo.fallbackui;
+package nz.co.senanque.maduramobiledemo.desktop;
 
 import com.vaadin.addon.touchkit.ui.EmailField;
 import com.vaadin.ui.Button;

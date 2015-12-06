@@ -1,4 +1,4 @@
-package org.madura.mobile.demo.ui;
+package nz.co.senanque.maduramobiledemo.touchkit;
 
 import javax.annotation.PostConstruct;
 

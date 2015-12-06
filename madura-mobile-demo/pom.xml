@@ -96,7 +96,7 @@
                 <artifactId>vaadin-maven-plugin</artifactId>
 	                <configuration>
 	                    <modules>
-	                      <module>org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet</module>
+	                      <module>nz.co.senanque.maduramobiledemo.gwt.MaduraMobileDemoWidgetSet</module>
 	                    </modules>
 	                </configuration>
             </plugin>

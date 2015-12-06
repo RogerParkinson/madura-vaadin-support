@@ -1,4 +1,4 @@
-package org.madura.mobile.demo.fallbackui;
+package nz.co.senanque.maduramobiledemo.desktop;
 
 import javax.annotation.PostConstruct;
 

@@ -1,8 +1,8 @@
-package org.madura.mobile.demo;
+package nz.co.senanque.maduramobiledemo;
 
+import nz.co.senanque.maduramobiledemo.desktop.PizzaView;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
-import org.madura.mobile.demo.fallbackui.PizzaView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
@@ -23,7 +23,7 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 @Theme("mytheme")
 @SpringUI
-public class MaduraMobileDemoFallbackUI extends UI {
+public class MaduraMobileDemoDesktopUI extends UI {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private PizzaView m_pizzaView;

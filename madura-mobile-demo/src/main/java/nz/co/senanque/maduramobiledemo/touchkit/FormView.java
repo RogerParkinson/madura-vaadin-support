@@ -1,4 +1,4 @@
-package org.madura.mobile.demo.ui;
+package nz.co.senanque.maduramobiledemo.touchkit;
 
 import com.vaadin.addon.touchkit.ui.DatePicker;
 import com.vaadin.addon.touchkit.ui.EmailField;
