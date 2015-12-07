@@ -581,15 +581,15 @@ formLayout.addComponent(size);
 		works for Vaadin.</p>
 		<p>The next thing to notice is the annotations on the UI are a little different.</p>
         <code><![CDATA[
-@Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
-@Theme("mytouchkit")
+@Widgetset("nz.co.senanque.maduramobiledemo.gwt.MaduraMobileDemoWidgetSet")
+@Theme("madura-touchkit-theme")
 @SpringUI(path="mobile")
 public class MaduraMobileDemoTouchKitUI extends UI {
 ...
         ]]></code>
         <p>The theme is one derived from the Touchkit theme, which is different from the desktop theme. Touchkit requires its own theme
-        and we've added a small addition to it to make numeric fields justify right. This means you need the theme definition in the VAADIN
-        directory.</p>
+        and we've added a small addition to it to make numeric fields justify right. The theme comes from the <courier>madura-vaadin-touchkit</courier>
+        dependency. If you don't care about the right justify you can use 'touchkit' there instead.</p>
         <p>To get to the mobile UI there needs to be a <courier>/mobile</courier> added to the URL. This is
         actually done for us by the login sequence is you are using <courier>madura-login</courier>, but if your application
         uses something else instead you will need to have it redirect to the right UI.</p>
