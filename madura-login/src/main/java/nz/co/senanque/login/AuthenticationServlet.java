@@ -75,11 +75,11 @@ public class AuthenticationServlet extends HttpServlet {
 		}
 	}
 	private String getPrefix(HttpServletRequest req) {
-//        boolean mobileUserAgent = req.getHeader("user-agent")
-//                .toLowerCase().contains("mobile");
-//        if (mobileUserAgent) {
-//        	return "/"+m_mobilePathPrefix;
-//        }
+        boolean mobileUserAgent = req.getHeader("user-agent")
+                .toLowerCase().contains("mobile");
+        if (mobileUserAgent) {
+        	return "/"+m_mobilePathPrefix;
+        }
         return "/";
 	}
 
