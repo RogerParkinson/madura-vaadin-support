@@ -217,34 +217,39 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			httpServletResponse.getOutputStream().print(css);
 			return;
 		}
-		if (uri.endsWith("gif")) {
-			InputStream is = getStream(uri, servletContext);
-			OutputStream out = httpServletResponse.getOutputStream();
-			pipe(is,out);
-			return;
-		}
-		if (uri.endsWith("png")) {
-			InputStream is = getStream(uri, servletContext);
-			OutputStream out = httpServletResponse.getOutputStream();
-			pipe(is,out);
-			return;
-		}
-		if (uri.endsWith("jpg")) {
-			InputStream is = getStream(uri, servletContext);
-			OutputStream out = httpServletResponse.getOutputStream();
-			pipe(is,out);
-			return;
-		}
-		if (uri.endsWith("jpeg")) {
-			InputStream is = getStream(uri, servletContext);
-			OutputStream out = httpServletResponse.getOutputStream();
-			pipe(is,out);
-			return;
-		}
-		if (uri.endsWith("ico")) {
-			InputStream is = getStream(uri, servletContext);
-			OutputStream out = httpServletResponse.getOutputStream();
-			pipe(is,out);
+		try {
+			if (uri.endsWith("gif")) {
+				InputStream is = getStream(uri, servletContext);
+				OutputStream out = httpServletResponse.getOutputStream();
+				pipe(is,out);
+				return;
+			}
+			if (uri.endsWith("png")) {
+				InputStream is = getStream(uri, servletContext);
+				OutputStream out = httpServletResponse.getOutputStream();
+				pipe(is,out);
+				return;
+			}
+			if (uri.endsWith("jpg")) {
+				InputStream is = getStream(uri, servletContext);
+				OutputStream out = httpServletResponse.getOutputStream();
+				pipe(is,out);
+				return;
+			}
+			if (uri.endsWith("jpeg")) {
+				InputStream is = getStream(uri, servletContext);
+				OutputStream out = httpServletResponse.getOutputStream();
+				pipe(is,out);
+				return;
+			}
+			if (uri.endsWith("ico")) {
+				InputStream is = getStream(uri, servletContext);
+				OutputStream out = httpServletResponse.getOutputStream();
+				pipe(is, out);
+				return;
+			}
+		} catch (Exception e) {
+			m_logger.warn("{}",e.toString());
 			return;
 		}
 		String login = getLoginHTML(getErrorAttribute(req),getLocale(req), servletContext);
