@@ -250,6 +250,7 @@ public class TableEditorLayout<T> extends CustomComponent implements MessageSour
     
                 private static final long serialVersionUID = -1L;
 
+				@SuppressWarnings({ "unchecked", "rawtypes" })
 				public void componentEvent(Event event)
                 {
                     if (event instanceof DeleteEvent)

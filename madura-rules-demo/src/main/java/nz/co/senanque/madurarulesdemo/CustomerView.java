@@ -32,20 +32,21 @@ import com.vaadin.ui.themes.ValoTheme;
  * @author Roger Parkinson
  *
  */
+@SuppressWarnings("deprecation")
 @UIScope
 @Component
 public class CustomerView extends VerticalLayout {
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private OneFieldWindowFactory m_oneFieldWindowFactory;
     private Customer m_customer = null;
-    private MaduraForm customerForm;
+	private MaduraForm customerForm;
 
     /*
      * Defines the form, buttons and their connections to Madura
      * At this point we don't have an actual data object, so all this gets done once
      * and will not need redoing if we add or change a data object.
      */
-    @PostConstruct
+	@PostConstruct
     void init() {
     	
     	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
@@ -97,7 +98,7 @@ public class CustomerView extends VerticalLayout {
      * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
      * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
      */
-    public void load(Customer customer) {
+	public void load(Customer customer) {
 		m_customer = customer;
     	customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
     }

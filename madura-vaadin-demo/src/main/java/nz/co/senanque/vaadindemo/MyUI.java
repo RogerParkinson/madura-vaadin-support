@@ -1,12 +1,9 @@
 package nz.co.senanque.vaadindemo;
 
-import java.util.Set;
-
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
-import nz.co.senanque.login.AuthenticationDelegate;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;

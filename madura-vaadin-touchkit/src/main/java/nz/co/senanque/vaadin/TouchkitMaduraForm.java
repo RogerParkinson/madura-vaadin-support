@@ -28,6 +28,7 @@ import com.vaadin.ui.Layout;
  * @author Roger Parkinson
  *
  */
+@SuppressWarnings("deprecation")
 public class TouchkitMaduraForm extends MaduraForm {
 		
 	private static final long serialVersionUID = 1L;

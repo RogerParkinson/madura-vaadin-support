@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -93,9 +92,6 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-
-    	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
-    	final String logout = messageSourceAccessor.getMessage("Logout");
 
     	final TabBarView tabBarView = new TabBarView();
         final NavigationManager navigationManager = new NavigationManager();

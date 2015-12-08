@@ -11,8 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
-import ch.qos.logback.ext.spring.web.LogbackConfigListener;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;

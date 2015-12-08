@@ -30,6 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * @author Roger Parkinson
  *
  */
+@SuppressWarnings("deprecation")
 @org.springframework.stereotype.Component
 @UIScope
 public class PizzaWindow extends Window {

@@ -117,6 +117,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
 	protected void extraFields(Layout main) {
 	}
     
+	@SuppressWarnings("unchecked")
 	protected void setItemDataSource(BeanItem<T> newDataSource) {
 		m_maduraFieldGroup.buildAndBind(m_panel,getFields(),(BeanItem<ValidationObject>)newDataSource);
 	}

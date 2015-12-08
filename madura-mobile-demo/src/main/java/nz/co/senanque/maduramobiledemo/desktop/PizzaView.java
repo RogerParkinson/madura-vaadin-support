@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -58,7 +57,6 @@ public class PizzaView extends FormLayout {
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
     	m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
     	m_maduraFieldGroup.setItemDataSource(beanItem);
-    	VaadinSession session = VaadinSession.getCurrent();
     	m_maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
 
     	// Now we have to add the fields to the panel

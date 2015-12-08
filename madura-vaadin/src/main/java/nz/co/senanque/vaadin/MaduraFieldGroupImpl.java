@@ -138,7 +138,8 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     }
     
     private ValidationObject getDataSource() {
-    	BeanItem<ValidationObject> dataSource = (BeanItem<ValidationObject>)getItemDataSource();
+    	@SuppressWarnings("unchecked")
+		BeanItem<ValidationObject> dataSource = (BeanItem<ValidationObject>)getItemDataSource();
     	if (dataSource == null) {
     		return null;
     	}
@@ -148,7 +149,8 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     
     protected void configureLabel(Label label) {
     	ValidationObject source = getDataSource();
-    	final LabelProperty<?> property = new LabelProperty(getMaduraPropertyWrapper(source,m_labels.get(label),true));
+    	@SuppressWarnings("rawtypes")
+		final LabelProperty<?> property = new LabelProperty(getMaduraPropertyWrapper(source,m_labels.get(label),true));
     	label.setPropertyDataSource(property);
     	m_maduraSessionManager.setPermissions(property.getProperty(), label);
         MaduraPropertyWrapper wrapper = property.getProperty();
@@ -276,7 +278,8 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
      *  We don't trust this call to work right so this override just throws an exception
      * @see com.vaadin.data.fieldgroup.FieldGroup#build(java.lang.String, java.lang.Class, java.lang.Class)
      */
-    protected <T extends Field> T build(String caption, Class<?> dataType,
+    @SuppressWarnings("rawtypes")
+	protected <T extends Field> T build(String caption, Class<?> dataType,
             Class<T> fieldType) throws BindException {
     	throw new RuntimeException("Using the buildxxx methods is not supported by Madura");
     }

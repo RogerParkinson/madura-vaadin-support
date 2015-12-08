@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/ DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <title>~TITLE</title>
@@ -6,11 +6,11 @@
 </head>
 <body>
 	<div>
-		<form id='loginf' action='~CONTEXTPATH/auth/login' method='post' autofocus>
+		<form id='loginf' action='~CONTEXTPATH/auth/login' method='post' >
 			<div>
 				<h1>~TITLE</h1>
 				<label> 
-					<span>~NAME</span><input type="text" name="name" />
+					<span>~NAME</span><input type="text" name="name" autofocus/>
 				</label> 
 				<label>
 					<span>~PASSWORD</span><input type="password" name="password" />
@@ -19,7 +19,7 @@
 					<input type="submit" value="~LOGIN" />
 				</label> 
 				<label> <span class="error">~ERROR</span></label>
-				<label class="logo"/>
+				<label class="logo"></label>
 			</div>
 		</form>
 	</div>

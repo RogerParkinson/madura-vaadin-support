@@ -46,6 +46,7 @@ import org.springframework.context.support.MessageSourceAccessor;
  * @author Roger Parkinson
  *
  */
+@SuppressWarnings("rawtypes")
 public class MaduraPropertyWrapper implements com.vaadin.data.Property {
 	
     private static final long serialVersionUID = 1L;

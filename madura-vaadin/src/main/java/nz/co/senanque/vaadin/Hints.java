@@ -20,7 +20,6 @@ import org.springframework.context.MessageSource;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.TextField;
 
 /**
  * Describes the various hints that can be applied to new widgets as they are created

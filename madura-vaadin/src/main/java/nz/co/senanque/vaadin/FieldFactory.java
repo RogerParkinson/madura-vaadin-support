@@ -180,6 +180,7 @@ public final class FieldFactory extends DefaultFieldFactory {
 		}
 		return ret;
 	}
+	@SuppressWarnings("deprecation")
 	private MaduraForm getParentForm(AbstractField<?> field)
 	{
 		Component parent = field.getParent();

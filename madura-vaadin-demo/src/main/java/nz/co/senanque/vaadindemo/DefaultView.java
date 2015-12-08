@@ -9,7 +9,6 @@ import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
-import nz.co.senanque.vaadin.MaduraFieldGroupImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.validationengine.ValidationObject;
 

@@ -196,6 +196,7 @@ public class HintsImpl implements Hints, Serializable {
 		}
 		return true;
 	}
+	@SuppressWarnings({ "deprecation", "static-access" })
 	public AbstractField<?> getDateField(MaduraPropertyWrapper property) {
         final DateField df = new DateField();
         df.setResolution(DateField.RESOLUTION_DAY.DAY);
