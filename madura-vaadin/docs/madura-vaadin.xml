@@ -561,20 +561,20 @@ formLayout.addComponent(size);
         ]]></code>
         </h2>
 		<h2 t="The Demo">
-		<p>The <courier>madura-rules-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
+		<p>The <courier>madura-mobile-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
 		and a mobile UI. The two UIs do mush the same thing, they certainly have the same underlying objects and rules (using Madura Objects)and Madura Rules, of course).
 		Part of the point is to show that while you might have to deliver a different UI for a different technology you do not
 		have to re-engineer the object and rules to doit.</p>
 		<p>The desktop UI is called the fallback UI in this demo because the convention is that the mobile UI has to fall back to the desktop when it is
 		not invoked by a mobile device. In practice it seems more like the other way around but there are multiple ways to achieve this
 		and this demo uses just one ofthose ways.</p>
-		<p>The <courier>MaduraMobileFallbackUI</courier> is essentially no different from the UI class in the other demos. It is
+		<p>The <courier>MaduraMobileDemoDesktopUI</courier> is essentially no different from the UI class in the other demos. It is
 		an extention of the <courier>com.vaadin.ui.UI</courier> class and has similar annotations. The one thing you might find puzzling there is
 		that the various static classes that define the web servlet, web listener and Spring configuration are missing.
 		They are in the mobile UI class. There have to be only one instance of these
 		in the application and in this case the one isntance is in the other class. But
 		it does not matter where they are as long as they are present somewhere.</p>
-		<p>The more insteresting class at this point is the <courier>MaduraMobileDemoTouchKitUI</courier> class.</p>
+		<p>The more interesting class at this point is the <courier>MaduraMobileDemoTouchKitUI</courier> class.</p>
 		<p>The first thing to notice abut this class is that the static classes are present here, but the
 		servlet class extends <courier>SpringAwareTouchkitServlet</courier>. This implements some things needed for
 		Touchkit to work correctly with Spring. The class is adapted from Matti Tahvonen's version. Matti Tahvonen
@@ -599,151 +599,28 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         is invoked to supply Touchkit fields rather than desktop ones.</p>
         <p>That brings us to the last thing to notice about the UI class namely the definition of the <courier>hints</courier>
         bean. In the other demos this just returned <courier>HintsImpl</courier> but here we need to make a decision about what
-        hints we want because they are different. As with the other demos this gives youthe opportunity to customise the hints
+        hints we want because they are different. As with the other demos this gives you the opportunity to customise the hints
         by supplying your own hints classes.</p>
 		</h2>
 		<h2 t="Building the Mobile Version">
-		<!-- TODO -->
-		</h2>
-        <note>The mobile specific features depend on Vaadin's Touchkit and
-        while it works perfectly fine, the version it works with is not in the maven central repositor at the time of writing. The version that <emph>is</emph>
-        in the library requires an upgrade to Vaadin 7 (currently version 6), which is yet to be done. So the simplest
-        intermediate solution it to add an explicit repository to the pom file until we can work through the V7 upgrade. The Touchkit
-        product is an optional dependency, so may not be needed if your project does not need mobile features.</note>
-        <p>Vaadin offer an add-on product called the vaadin-touchkit<referenceLink t="vaadin-touchkit"/> which allows you to build applications that look and feel like
-        they are native mobile applications running on iOS or Android. The product is licensed as APGL but you can buy a commercial licence from Vaadin if that applies
-        to your project.</p>
-        <p>The people at Vaadin can do a better job of selling this concept than I can but one of the obvious advantages is
-        that you can write your application just once and deploy it across multiple mobile platforms. It actually runs in the
-        browser on the mobile device, but it still has access to local settings like GPS.</p>
-        <p>To include the touchkit library in your project you will need something like this in your ivy file:</p>
-        <code><![CDATA[
-<dependency>
-	<groupId>com.vaadin.addon</groupId>
-	<artifactId>vaadin-touchkit-agpl</artifactId>
-	<type>jar</type>
-</dependency>
-        ]]></code>
-        <p>or for a maven pom file:</p>
-        <code><![CDATA[
-<dependency>
-    <groupId>com.vaadin.addon</groupId>
-    <artifactId>vaadin-touchkit-agpl</artifactId>
-    <version>2.1.3</version>
-    <scope>provided</scope>
-</dependency>
-        ]]></code>
-        <p>The precise name of the touchkit artifact id varies depending on the licence you are using. The version shown is the
-        one that madura has been tested with.</p>
-        <p>To use Vaadin Touchkit with Madura is quite trivial. The pizza order demo supports both mobile and non mobile. This is
-        from its web.xml file:</p>
-        <code><![CDATA[
-<servlet>
-    <servlet-name>pizzaorder</servlet-name>
-    <servlet-class>com.vaadin.addon.touchkit.server.TouchKitApplicationServlet</servlet-class>
-    <init-param>
-        <description>Vaadin application class to start</description>
-        <param-name>application</param-name>
-        <param-value>nz.co.senanque.pizzaordermobile.PizzaorderMobile</param-value>
-    </init-param>
-    <init-param>
-        <description>Application widgetset</description>
-        <param-name>widgetset</param-name>
-        <param-value>nz.co.senanque.pizzaordermobile.widgetset.PizzaordermobileWidgetset</param-value>
-    </init-param>
-    <init-param>
-        <param-name>fallbackApplication</param-name>
-        <param-value>nz.co.senanque.pizzaorder.PizzaOrder</param-value>
-    </init-param>
-    <init-param>
-        <param-name>fallbackWidgetset</param-name>
-        <param-value>com.vaadin.terminal.gwt.DefaultWidgetSet</param-value>
-    </init-param>
-    <init-param>
-        <param-name>productionMode</param-name>
-        <param-value>false</param-value>
-    </init-param>
-</servlet>
-        ]]></code>
-        <p>Touchkit applications need a variation on the usual Vaadin servlet. This example shows the mobile Application
-        class and the fallback Application class. The fallback is invoked if the browser isn't derived from webkit. If you
-        want to try this out on a desktop use Chrome, which is a webkit browser, and it will show the mobile interface.
-        Firefox will show you the desktop interface.</p>
-        <p>Touchkit has its own NavigationManager which provides similar functionality as the ViewManager used by the desktop. Rather
-        than rewrite the Vaadin demos for that this demo simplifies the pizza demo down to just two pages: the login page and the
-        pizza configuration page. Also the login functionality in Touchkit is less rich than the desktop version so we implemented
-        our own login form.</p>
-        <p>Because of these differences the navigation code is trivial and it is coded into the Application class. Vaadin requires that
-        this class extends <courier>com.vaadin.addon.touchkit.ui.TouchKitApplication</courier> and some variations in the
-        layout make it necessary for you to use <courier>nz.co.senanque.vaadinsupport.TouchkitMaduraForm</courier> rather than
-        <courier>nz.co.senanque.vaadinsupport.MaduraForm</courier>. Otherwise the code is the same. Madura Rules will, as normal,
-        dynamically adjust the form as user inputs determine other fields are required etc. The drop down lists on select boxes
-        will adjust to only display valid options and the buttons will disable and enable appropriately.</p>
-        <img   href="images/PizzaOrderMobile.png">Mobile Demo</img>
-        <p><figureLink t="Mobile Demo"/> shows the result and you can see it for yourself if you access the pizza order demo<referenceLink t="madura-pizzaorder"/> with the
-        Chromium browser (or a mobile device). Remember if you use a FireFox browser you will see the standard UI.</p>
-        <p>There is a minor difference in the login API. Rather than simply implement Vaadin's com.vaadin.ui.LoginForm.LoginListener we have added a 
-        nz.co.senanque.vaadinsupport.viewmanager.TouchLoginListener because the LoginListener needs a protected class.
-        TouchLoginListener does not, allowing us to call it from TouchLoginForm. If com.vaadin.ui.LoginForm rendered under Touchkit this
-        would be unnecessary, however it does not so the solution is to use TouchLoginForm, or some varation on that if you don't like
-        the way it formats.</p>
-        <p>But this still looks like a web application rather than a mobile application. For example you still see the URL at the top
-        of the display. Also we cannot put this into an app store and have users install it from there. Yes we can!</p>
-        <p>The key to this is a product called PhoneGap which can do a lot more than we need at the moment. The details of how
+		<p>If you build madura-mobile-demo with maven in the usual way you will get a war file you can deploy and browse to, including from your mobile
+		devices. But this still looks like a web application rather than a mobile application. For example you still see the URL at the top
+        of the browser display. Also we cannot put this into an app store and have users install it from there. Yes we can!</p>
+        <p>The key to this is a product called PhoneGap. The details of how
         to use it to package a Vaadin application for an app store are in <referenceLink t="PhoneGap"/>.</p>
-        <p>But there is very little to it. In the pizza order demo sources you will find a directory called PhoneGap which
-        contains an icon and two xml files.</p>
-        <code><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns		= "http://www.w3.org/ns/widgets"
-	xmlns:gap	= "http://phonegap.com/ns/1.0"
-	id		= "nz.co.senanque.pizzaordermobile"
-	version 	= "1.0.0">
-
-	<name>Pizza Order Demo</name>
-
-	<description>
-		Demonstrates a wrapped Vaadin App that uses Madura
-	</description>
-
-	<!-- I have not set this up in github 'cos it is a trivial copy of mstahv's version -->
-	<author href="http://mstahv.github.com"
-		email="roger.parkinson35@gmail.com">
-		Roger Parkinson
-	</author>
-
-	<icon src="astrolab-icon.png" gap:role="default" />
-
-	<feature name="http://api.phonegap.com/1.0/network"/>
-	
-	<!-- These rules lets demo.vaadin.com take over the web view created by cordova/phonegap -->
-	<preference name="stay-in-webview" value="true" />
-	<access origin="http://pizzaorder.cloudfoundry.com/" />
-
-</widget>
-        ]]></code>
-        <p>That's the first file (config.xml). It mostly just tells the 'app' to point to the URL. The second file (index.xml) is even shorter</p>
-        <code><![CDATA[
-<!doctype html>
-<html>
-    <head>
-        <title>Pizza Order Demo</title>
-        <script type="text/javascript">
-        function redirectToHostedApp() {
-            window.location = "http://pizzaorder.cloudfoundry.com//";
-        }
-        </script>
-    </head>
-    <body onload="redirectToHostedApp();">
-    </body>
-</html>
-        ]]></code>
-        <p>To build an app you zip these files up and upload them to the PhoneGap site. It will generate apps for all the major platforms.
-        Some of those platforms require you to set up certificates for security reasons, especially if you want to put something
-        in an app store. But you can generate an Android apk file suitable for side loading with none of that.</p>
-        <p>The apk file for pizza order is in the downloads for the pizza order project.</p>
-        <p>Date controls are implemented as ordinary text boxes in the demo because there was no useable Touchkit widget that would
-        handle date input. The next version of Touchkit may have this in place.</p>
+        <p>But there is very little to it. In the madura-mobile-demo sources you will find a directory called <courier>cordova</courier> which
+        contains the files to build the PhoneGap application. Most of this is specific to Phonegap and it documented by that product, but the
+        thing you need to know for now is that this application is essentially a wrapper for the browser. Phonegap can do a lot more than that
+        but this is a demo so we will keep it simple. If there is a deployed war file there must be a url somewhere, that is in the <courier>index.html</courier> file.
+        There is also a <courier>config.xml</courier> file which holds the name and description of the application, the name generates the final
+        file name of the apk file.</p>
+        <p>The Phonegap part of the build is disabled by default and to use it you need to run the <courier>phonegap</courier> maven profile.
+        But first you need to sign up to Phonegap and get a user name, password and create an application id. These need to be defined as maven properties
+        <courier>phonegap-build.username, phonegap-build.password</courier> and <courier>phonegap-build.appId</courier>.</p>
+        <p>This apk file is the simplest kind of application you can build, and because it is not signed it cannot be put into the app store. Only
+        the Android variation lets you generate unsigned applications, which is why we are using it here. To generate signed applications you need
+        to apply to the relevant app stores for an id and tell Phonegap about it. Phonegap supports builds for Apple iOS devices and several others.</p>
+        </h2>
         </h1>
         <h1 t="madura-login">
         <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
