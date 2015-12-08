@@ -10,6 +10,7 @@
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>madura-mobile-demo </name>
+    <description>Demo using Madura, Vaadin and Touchkit</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -97,6 +98,24 @@
 			</resource>
 		</resources>
         <plugins>
+			<plugin>
+				<groupId>org.kuali.maven.plugins</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<locations>
+								<location>${HOME}/madura.properties</location>
+							</locations>
+							<quiet>true</quiet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -166,6 +185,25 @@
 					</execution>
 				</executions>
 			</plugin>
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-assembly-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>create-distribution</id>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>single</goal>
+		            </goals>
+		            <configuration>
+		                <outputDirectory>${project.build.directory}/phonegap-build</outputDirectory>
+		              <descriptors>
+		                <descriptor>cordova/assembly.xml</descriptor>
+		              </descriptors>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
         </plugins>
 
         <pluginManagement>
@@ -231,6 +269,27 @@
                                 		<ignore></ignore>
                                 	</action>
                                 </pluginExecution>
+                                <pluginExecution>
+                                	<pluginExecutionFilter>
+                                		<groupId>
+                                			org.kuali.maven.plugins
+                                		</groupId>
+                                		<artifactId>
+                                			properties-maven-plugin
+                                		</artifactId>
+                                		<versionRange>
+                                			[1.1.9,)
+                                		</versionRange>
+                                		<goals>
+                                			<goal>
+                                				read-project-properties
+                                			</goal>
+                                		</goals>
+                                	</pluginExecutionFilter>
+                                	<action>
+                                		<ignore></ignore>
+                                	</action>
+                                </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
                     </configuration>
@@ -251,5 +310,44 @@
             </plugins>
         </pluginManagement>
     </build>
-    <description>Demo using Madura, Vaadin and Touchkit</description>
+ <profiles> 
+   <profile>
+     <id>phonegap</id>
+     <activation>
+     	<activeByDefault>false</activeByDefault>
+     </activation>
+         <build>
+            <plugins>
+      			<plugin>
+				<groupId>com.github.chrisprice</groupId>
+				<artifactId>phonegap-build-maven-plugin</artifactId>
+				<version>0.0.10</version>
+				<executions>
+					<execution>
+						<id>phonegap-build</id>
+						<!-- the goals are lifecycle bound by default -->
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<preparedPackage>${basedir}/target/phonegap-build/${project.artifactId}-${project.version}-cordova.zip</preparedPackage>
+<!-- 						
+							Change these to use your own values
+							or create a ${HOME}/madura.properties file
+							with your values in it
+-->
+							<build.username>${phonegap-build.username}</build.username>
+							<build.password>${phonegap-build.password}</build.password>
+							<appId>${phonegap-build.appId}</appId>
+							<platforms>
+								<platform>android</platform>
+							</platforms>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+            </plugins>
+         </build>
+   </profile>
+ </profiles>
 </project>
