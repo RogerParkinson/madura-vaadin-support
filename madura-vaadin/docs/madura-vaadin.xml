@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <?xml-stylesheet type="text/xsl" href="MaduraHTML.xsl" ?>
 
 <doc xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -11,6 +13,7 @@
 		<references>
 			<reference t="Spring Framework" url="http://www.springframework.org" />
 			<reference t="Vaadin" url="https://vaadin.com/home"/>
+			<reference t="JPAContainer" url="https://vaadin.com/directory#!addon/vaadin-jpacontainer"/>
 			<reference t="MaduraObjects" url="https://github.com/RogerParkinson/madura-objects-parent"/>
 			<reference t="MaduraRules" url="https://github.com/RogerParkinson/MaduraRules"/>
 			<reference t="MaduraBundles" url="https://github.com/RogerParkinson/madura-bundles"/>
@@ -89,7 +92,7 @@
 		<p>To login the user/password is always admin/admin, you can also use user/user</p>
 		<p>The login process is managed by the <courier>madura-login</courier><sectionLink t="madura-login"/> project. This provides a simple login facility suitable for demos simply by making it
 		a maven dependency and a little configuration.</p>
-        <p>As is usual in Madura Objects we have several files in the resources directory. These are mostly things like <courier>logback.xml</courier> as well as files covered in Madura Objects or Madura Rules documentation.
+        <p>As is usual in Madura Objects we have some files in the resources directory. These are mostly things like <courier>logback.xml</courier> as well as files covered in Madura Objects or Madura Rules documentation.
         But because they are so important we will mention the XSD files which define the objects. There is an entry in the maven <courier>pom.xml</courier> file that invokes <courier>madura-objects-maven-plugin</courier>
         which is just a jacket for JAXB that saves you having to configure JAXB for Madura. That generates annotated Java files from the XSD and puts them into the <courier>generated-sources/xjc</courier>
         directory. You never edit those Java file, you change the XSD and regenerate.</p>
@@ -138,7 +141,7 @@ public class MyUI extends UI {
 ...
         ]]></code>
 		<p>The first three annotations are normal Spring-Vaadin things that ensure this class is loaded with the right theme etc. You can also see a static class that declares a servlet
-		as well as a web listener. The listener is what loads the <courier>applicationContex.xml</courier> you saw above.</p>
+		as well as a web listener. The listener is what loads the <courier>applicationContext.xml</courier> you saw above.</p>
 		<p>There are also two auto wirings, one for the current MaduraSessionManager and one for a local class which defines most of the UI. There is
 		often more than one of these classes.</p>
 		<p>After that there is a static class that defines the configuration. It is worth noting that the above section is created and wired <emph>per session</emph> whereas this following section
@@ -181,24 +184,11 @@ nz.co.senanque.validationengine.metadata.AnnotationsMetadataFactory.packages=nz.
 ...
     protected void init(VaadinRequest vaadinRequest) {
     	
-    	String currentUser = (String)vaadinRequest.getWrappedSession().
-    		getAttribute(AuthenticationDelegate.USERNAME);
-		Set<String> currentPermissions = (Set<String>)vaadinRequest.getWrappedSession().
-			getAttribute(AuthenticationDelegate.PERMISSIONS);
-    	m_maduraSessionManager.getPermissionManager().setPermissionsList(currentPermissions);
-    	m_maduraSessionManager.getPermissionManager().setCurrentUser(currentUser);
-    	this.getSession().setConverterFactory(m_maduraSessionManager.
-    		getMaduraConverterFactory());
-    	
     	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
     	final String logout = messageSourceAccessor.getMessage("logout");
 ...
         ]]></code>
-        <p>The first few lines here are fetching the login details from <courier>madura-login</courier> and transferring them to the injected <courier>MaduraSessionManager</courier>.
-        This may seem a little clumsy but it is deliberate because we want to ensure there are no dependencies between Madura and <courier>madura-login</courier>. That allows
-        people to use their own login mechanism. All that we really need here is a way to get the user name and the permissions.</p>
-        <p>Going the other way we need to tell Vaadin about a converter factory that Madura needs.</p>
-        <p>The last part is fairly ordinary Spring code that uses a <courier>MessageSourceAccessor</courier> to translate the logout string. It is interesting because it shows that
+        <p>This is fairly ordinary Spring code that uses a <courier>MessageSourceAccessor</courier> to translate the logout string. It is interesting because it shows that
         for various headings or captions of components that are not controlled by Madura we still need to call a <courier>MessageSourceAccessor</courier> for I18n, but most of the time we don't.</p>
         <p>The last part is the logout:</p>
         <code><![CDATA[
@@ -229,7 +219,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 		<p>Now we can look inside the first demo.</p>
 		</h1>
 		<h1 t="madura-vaadin-demo">
-		<p>The interesting things in this project are in the <courier>nz.co.senanque.vaadindemo.DefaultView</courier>. You saw it briefly in the previous section so you knowit is a session dependent bean and
+		<p>The interesting things in this project are in the <courier>nz.co.senanque.vaadindemo.DefaultView</courier>. You saw it briefly in the previous section so you know it is a session dependent bean and
 		it has a <courier>MaduraSessionManager</courier> injected.</p>
 		<p>It has an <courier>init</courier> method which runs once Spring has instantiated the bean and finished injecting everything. The first thing this does is create a <courier>MaduraFieldGroup</courier>. This
 		class is an extension of Vaadin's <courier>FieldGroup</courier> with some added methods for Madura. Here it is used to create two buttons. The two buttons don't do much (this is a demo, remember). But how they
@@ -290,7 +280,7 @@ private String[] fields = new String[]{"name","email","address","gender","startD
         <p>The result is a display with several fields, complete with I18n captions, backed by the Madura Object <courier>person</courier>. The buttons etc are also bound so that Submit button will be disabled
         if the <courier>person</courier> does not have all the required fields completed. The fields are all wired with validation and the field types vary by data type, so there are three text fields,
 		one drop down which is populated with choices, a date and a numeric text field.</p>
-        <p>This is not the only way to achieve this, and you will see alternative approaches in subsequent demos. They are summarised in <sectionLink t="MaduraFieldGroup"/></p>
+        <p>This is not the only way to achieve this, and you will see alternative approaches in subsequent demos. They are summarised in <sectionLink t="MaduraFieldGroup and MaduraForm"/></p>
 		</h1>
 		<h1 t="madura-rules-demo">
 		<p>This demo is more complicated, and it uses Madura Rules so there are some configuration differences too. We will look at those first.</p>
@@ -302,9 +292,9 @@ private String[] fields = new String[]{"name","email","address","gender","startD
 		<p>The <courier>choices.xml</courier> file is more interesting in this demo because it includes more choice list entries (some aren't actually used), a decision table and a constant. There is more Java code as well,
 		but this is not because we added rules, it is because we added more demo.</p>
 		<p>As usual there is a <courier>com.vaadin.ui.UI</courier> extension (called <courier>MyUI</courier>). It looks much the same, but we are scanning one more package: <courier>nz.co.senanque.rules</courier>
-		to pick up the rules components. These are the out-of-the-box rules component classes as opposed to the generated rules classes scanned in the <courier>applicationContex.xml</courier> file. Other than that
+		to pick up the rules components. These are the out-of-the-box rules component classes as opposed to the generated rules classes scanned in the <courier>applicationContext.xml</courier> file. Other than that
 		all this class does is create a <courier>TabSheet</courier> on which it places the injected UI components so we will look a those one by one.</p>
-		<p>An important point to notice here is that aprt from adding those directories to be scanned the code is comletely unaware of the rules.</p>
+		<p>An important point to notice here is that apart from adding those directories to be scanned the code is comletely unaware of the rules.</p>
 		<h2 t="CustomerView">
 		<p>This is labelled 'Customer' on the UI (unless you are using the French version). It looks a bit like the first demo but with fewer fields and more buttons.</p>
 		<p>The code makes use of the <courier>MaduraForm</courier> class which, because it is based on Vaadin's <courier>Form</courier> is deprecated. It is still useful, though, as you'll see.</p>
@@ -312,7 +302,6 @@ private String[] fields = new String[]{"name","email","address","gender","startD
         <code><![CDATA[
 customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
         ]]></code>
-
 		<p>Like the <courier>MaduraFieldGroup</courier> you can use the <courier>MaduraForm</courier> to create buttons, with the same options and functionality. In this example we show a different sort of button.</p>
         <code><![CDATA[
 Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ADMIN", new ClickListener(){
@@ -347,13 +336,14 @@ formula: Customer "BMI"
 	bmi = weight / (height * height);
 }
         ]]></code>
-        <p>So it asks for weight and height on two different pop-up windows. But it is more complicated than that. Some people like to give these measurements in imperial units, some in metric, and they don't know, say, 
+        <p>So it asks for weight and height on two different pop-up windows. It can be more complicated than that. Some people like to give these measurements in imperial units, some in metric, and they don't know, say, 
         their height in metres. But that is okay. You can say you don't know and it will ask for feet then inches (two prompts). This feature can be used to simplify complicated input sequences that may need only a few
-        relevant inputs, depending on the contex. If the property is already filled in, perhaps the height was obtained earlier, then it knows not to ask for it.</p>
+        relevant inputs, depending on the context. If the property is already filled in, perhaps the height was obtained earlier, then it knows not to ask for it. This example shows a fairly simple level of nesting,
+        but it can go infinitely deep.</p>
 		</h2>
 		<h2 t="CustomerView2">
 		<p>This is labelled 'C2' on the TabSet. It is functionally the same as the Customer tab but shows a different way of doing it. In this case the <courier>MaduraFieldGroup</courier> is used and the fields are created explicitly then
-		bound to the <courier>MaduraFieldGroup</courier>. The buttons are created by calls to the <courier>MaduraFieldGroup</courier> instead of the <courier>MaduraForm</courier> but the same thing happens. THis approach
+		bound to the <courier>MaduraFieldGroup</courier>. The buttons are created by calls to the <courier>MaduraFieldGroup</courier> instead of the <courier>MaduraForm</courier> but the same thing happens. This approach
 		allows you full control over what kind of fields you want and where you want to position them. For example the <courier>ComboBox</courier> might be changed to a
 		<courier>TextBox</courier> if we wanted (though we probably don't want to because we like the drop down choice list).</p>
 		<p>As before the <courier>enter</courier> method binds the object. And as before we don't have to create the fields here because that is already done.</p>
@@ -368,12 +358,12 @@ formula: Customer "BMI"
 		<p>In this view we use a <courier>MaduraFieldGroup</courier> to display the status of the order in  two labels. The interesting thing about this is that instead of using input fields, which
 		you have already seen, these components are labels and they are dynamic as we shall see. If we get the <courier>MaduraFieldGroup</courier> (or the <courier>MaduraForm</courier>) to create the fields
 		it will always create input fields because it doesn't know any better. So this is an example of adding customisation.</p>
-		<p>The table is a <courier>FormattingTable</courier> which extends Vaadin's table to handle I18n headings and formating numerics. There are two columns on this table and one ofthem is numeric.
+		<p>The table is a <courier>FormattingTable</courier> which extends Vaadin's table to handle I18n headings and formating numerics. There are two columns on this table and one of them is numeric.
 		To set it up all we need to do is name the properties we want to display ("description","-amount") and add a minus sign to the amount to right justify it. And we also name the headings ("Description","Amount"). 
 		Those headings will be used as is if there is no resource translation, but if there is the translation will be used.</p>
 		<p>There are two buttons which popup two windows: 'Add Item' and 'Add Item 2'. Each of these create an order item, but they do it two different ways.</p>
 		<h3 t="PizzaWindow">
-		<p>This uses a <courier>MaduraForm</courier> to present the fields on the <courier>Pizza</courier> object. The code is similar to Customer view. It is worth running the demo at this point to see what it does.
+		<p>The 'Add Item' button invokes the <courier>PizzaWindow</courier>. This uses a <courier>MaduraForm</courier> to present the fields on the <courier>Pizza</courier> object. The code is similar to Customer view. It is worth running the demo at this point to see what it does.
 		You can see the three fields: Base, Topping, Size. Because only some combinations are valid you will find that as you pick options in, say, the Topping field, and list of options on the Size field will change, and vice versa.
 		It doesn't matter what order you pick them. This is driven by the decision table in <courier>choices.xml</courier>. It does not have to be hard coded XML either, the values can be pulled from external sources such
 		as a database. How to do that is in the Madura Rules documentation.</p>
@@ -423,7 +413,7 @@ formula: Order "sum"
 }
         ]]></code>
         <p>Again, the rules do not know about the UI and the UI does not know about the rules, but the values automatically update. This demo does not provide a way to delete pizzas but if it did the total
-        an the status would update appropriately because the rules know to re-fire when the data they worked with changes.</p>
+        and the status would update appropriately because the rules know to re-fire when the data they worked with changes.</p>
 		</h3>
 		<h3 t="PizzaWindow2">
 		<p>This also configures a pizza and it looks much the same as the PizzaWindow. The differences are that the way the fields are defined is different and the description field is a label rather than a text field. It makes use
@@ -440,9 +430,29 @@ formula: Order "sum"
 		<p>There is actually very little code in this demo because it is driven from the data structures. Once the table is loaded and visible you can right click to see a context menu
 		giving options to edit, add or delete records. When adding or editing you have a Madura-backed Vaadin form with the usual validation and dynamic submit button you have seen in the other demos. It does
 		not use Madura Rules but if it did there would be no change to the code except for some extra packages to scan.</p>
+		<h2 t="Table Editor">
+		<p>The table editor is used in the address book demo. It is a bit more complicated to configure than the other components so this section details that.</p>
+		<p>First there needs to be a database defined. The address book demo only uses one database, which is more common than multiple
+		database connections. The connection is defined in the <courier>ConfigJPA</courier> class. If defines three beans: a data source, and entity manager factory and a transaction manager. Because this is a demo
+		we've used an in-memory H2 database and it gets loaded with data by the <courier>LoadJPA</courier> bean. Naturally this would
+		be reworked for a production system.</p>
+		<p>The next class to look at is <courier>ConfigContainer</courier>. This class defines the two containers used in the demo: one for
+		the people and one for the trees. Apart from their data types and bean names these beans are the same, and because they are so similar we
+		need to give them names to make sure the right bean is injected into the right place. Do not be tempted to put container beans into
+		your <courier>ConfigJPA</courier> file. These beans need the <courier>EntityManager</courier> established and that is actually
+		done in the <courier>ConfigJPA</courier>, which means you cannot use it in that class hence the need for the <courier>ConfigContainer</courier>
+		class.</p>
+		<p>All of the above beans are singletons. The rest of this is tied to a session.</p>
+		<p>In <courier>AddressBook.MyConfiguration</courier> the two containers are injected using their names. They each help define the
+		<courier>personTableLayout</courier> and <courier>treeTableLayout</courier> beans. Those are the actual table layouts, they are Vaadin
+		components and they are added to the <courier>PersonView</courier> and <courier>TreeView</courier> tabs</p>.
+		<p>The container effectively defines a database query on a table. In the demo case the query is for all records but it can be refined
+		in various ways. See the Vaadin documentation for that.<referenceLink t="JPAContainer"/></p>
+		</h2>
+
 		</h1>
 		<h1 t="MaduraFieldGroup and MaduraForm">
-		<p>Most of the demos make use of <courier>MaduraFieldGroup</courier> in various ways, and the ones that do not use <courier>MaduraField</courier>. How do you know what technique to use?</p>
+		<p>Most of the demos make use of <courier>MaduraFieldGroup</courier> in various ways, and the ones that do not use <courier>MaduraForm</courier>. How do you know what technique to use?</p>
 		<p>Bear in mind there are two distinct phases that are always present. The first phase is the initialise phase. This is called once at application startup or, more usually, at session startup. The second phase
 		is when we have an object such as a person, a customer or maybe a pizza, to bind to. This might be called multiple times as we operate on different customer or different pizzas.</p>
 		<h2 t="MaduraForm">
@@ -455,7 +465,7 @@ formula: Order "sum"
 		<le>Set the list of field names using <courier>setFieldList</courier>. The fields will be created when there is an object bound. If you set an invalid name it will be ignored without error.</le>
 		<le>create any buttons you want using the form methods and position them where you like.</le>
 		</list>
-		<p>That was the initialisation phase. For the bind phase use <courier>setItemDataSource</courier>, to set a data source object. This triggers the creation of the fields.</p>
+		<p>That was the initialisation phase. For the bind phase use <courier>setItemDataSource</courier>, to set a data source object. This triggers the creation of the UI fields.</p>
 		</h2>
 		<h2 t="MaduraFieldGroup Auto Create">
 		<p>The <courier>MaduraFieldGroup</courier> is the (non-deprecated) replacement to <courier>MaduraForm</courier>, which parallels the developments at Vaadin. The essential difference in the new class is that it
@@ -466,7 +476,7 @@ m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
         ]]></code>
         <p>The create an empty <courier>Layout</courier>. The auto created fields will be placed on this layout.</p>
         <p>Create any buttons and menu items.</p>
-        <p>The initialisation phase it done. When you have a object you want to bind to it you do this:</p>
+        <p>The initialisation phase is done. When you have a object you want to bind to it you do this:</p>
         <code><![CDATA[
 m_maduraFieldGroup.buildAndBind(m_panel,fields,new BeanItem<ValidationObject>(person));
         ]]></code>
@@ -478,20 +488,20 @@ m_maduraFieldGroup.buildAndBind(m_panel,fields,new BeanItem<ValidationObject>(pe
 		that adapts to the current object. The disadvantage is that you have little control of where the fields are actually placed.</p>
 		</h2>
 		<h2 t="MaduraFieldGroup Explicit Create">
-		<p>This is still using <courier>MaduraFieldGroup</courier> but the code explicitly creates the fields and adds them to some layout. You have complete control over what kinds of fields you create and
-		how you position them. You also need to call the <courier>MaduraFieldGroup</courier> method <courier>bind</courier> like this:</p>
+		<p>This is still using <courier>MaduraFieldGroup</courier> but the code explicitly creates the UI fields and adds them to some layout. You have complete control over what kinds of fields you create and
+		how you position them. You also need to call the <courier>MaduraFieldGroup</courier> method <courier>bind</courier> for each field like this:</p>
        <code><![CDATA[
 fieldGroup.bind(nameField, "name");
         ]]></code>
-        <p>You just pass a field you already created and a field name. Do this for every field. An important point to note is that the field factory used in the auto create approach will normally generate input fields
-        such as <courier>TextBox</courier> and <courier>ComboBox</courier>. Perhaps you want to use a <courier>Label</courier> instead because you only ever want to display the value. Using the explicit create approach
+        <p>You just pass a UI field you already created and an object field name. Do this for every UI field. An important point to note is that the field factory used in the auto create approach will normally generate input fields
+        such as <courier>TextBox</courier> and <courier>ComboBox</courier>. Perhaps you want to use a <courier>Label</courier> instead because you only ever want to display the value. Using this explicit create approach
         you can easily do this because you get to decide the field type.</p>
 		<p>You still use the same methods to create buttons etc.</p>
 		<p>At bind time this is all you need:</p>
        <code><![CDATA[
 fieldGroup.setItemDataSource(new BeanItem<Customer>(customer));
         ]]></code>
-        <p>There is a variation on this that uses Vaadin's <courier>@PropertyId</courier> annotations. Using this you create the fields explicitly as before but you annotate them like this:</p>
+        <p>There is a variation on this that uses Vaadin's <courier>@PropertyId</courier> annotations. You create the fields explicitly as before but you annotate them like this:</p>
        <code><![CDATA[
 @PropertyId("base")
 private ComboBox base = new ComboBox();
@@ -513,25 +523,6 @@ formLayout.addComponent(size);
         <p>We add the buttons in the same way as usual (but at bind time) and we are done. The main advantage of this approach is that you can use Vaadin's form designer which relies on the <courier>@PropertyId</courier> annotations.
         We don't get much use out of the form designer ourselves so this may not be a compelling advantage.</p>
 		</h2>
-		</h1>
-		<h1 t="Table Editor">
-		<p>The table editor is used in the address book demo. It is a bit more complicated to configure so this section details that.</p>
-		<p>First there needs to be a database defined. The address book demo only uses one database, which is more common than multiple
-		database connections. The connection is defined in the <courier>ConfigJPA</courier> class. If defined three beans: a data source, and entity manager factory and a transaction manager. Because this is a demo
-		we've used an in-memory H2 database and it gets loaded with data by the <courier>LoadJPA</courier> bean. Naturally all this would
-		be reworked for a production system.</p>
-		<p>The next class to look at is <courier>ConfigContainer</courier>. This class defines the two containers used in the demo: one for
-		the peopel and one for the trees. Apart from their data types and bean names these beans are the same, and because they are so similar we
-		need to give them names to make sure the right bean is injected into the right place. Do not be tempted to put container beans into
-		your <courier>ConfigJPA</courier> file. These beans need the <courier>EntityManager</courier> established and that is actually
-		done in the <courier>ConfigJPA</courier>, which means you cannot use it in that class hence the need for the <courier>ConfigContainer</courier>
-		class.</p>
-		<p>All of the above beans are singletons. The rest of this is tied to a session.</p>
-		<p>In <courier>AddressBook.MyConfiguration</courier> the two container are injected using their names. Thry each help define the
-		<courier>personTableLayout</courier> and <courier>treeTableLayout</courier> beans. Those are the actual table layouts, they are Vaadin
-		components and they are added to the <courier>PersonView</courier> and <courier>TreeView</courier> tabs</p>.
-		<p>The container effectively defines a database query on a table. In the demo case the query is for all records but it can be refined
-		in various ways. See the Vaadin documentation for that.</p>
 		</h1>
         <h1 t="Mobile Applications">
         <h2 t="Touchkit">
@@ -602,8 +593,8 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         hints we want because they are different. As with the other demos this gives you the opportunity to customise the hints
         by supplying your own hints classes.</p>
 		</h2>
-		<h2 t="Building the Mobile Version">
-		<p>If you build madura-mobile-demo with maven in the usual way you will get a war file you can deploy and browse to, including from your mobile
+		<h2 t="Building the Mobile App">
+		<p>If you build <courier>madura-mobile-demo</courier> with maven in the usual way you will get a war file you can deploy and browse to, including from your mobile
 		devices. But this still looks like a web application rather than a mobile application. For example you still see the URL at the top
         of the browser display. Also we cannot put this into an app store and have users install it from there. Yes we can!</p>
         <p>The key to this is a product called PhoneGap. The details of how
@@ -639,7 +630,7 @@ public class PermissionResolverImpl implements PermissionResolver {
 
 	@Autowired PermissionManager permissionManager;
     
-    @PostConstruct
+	@PostConstruct
 	public void unpackPermissions() {
 		WrappedSession session = VaadinService.getCurrentRequest().getWrappedSession();
     	String currentUser = (String)session.getAttribute(AuthenticationDelegate.USERNAME);
