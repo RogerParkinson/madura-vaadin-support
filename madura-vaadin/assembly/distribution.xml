@@ -5,6 +5,7 @@
   <formats>
     <format>jar</format>
   </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
       <directory>${basedir}/target/apidocs/</directory>
@@ -14,45 +15,20 @@
       <directory>${basedir}/src/</directory>
       <outputDirectory>src</outputDirectory>
     </fileSet>
-<!-- 
-    <fileSet>
-      <directory>${basedir}/assembly/</directory>
-      <outputDirectory>../META-INF</outputDirectory>
-      <includes>
-        <include>*.MF</include>
-      </includes>
-    </fileSet>
--->
     <fileSet>
       <directory>${basedir}/target/</directory>
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>${project.artifactId}-${project.version}.jar</include>
         <include>*.pdf</include>
-        <include>*.html</include>
-      </includes>
-    </fileSet>
-    <fileSet>
-      <directory>${basedir}/target/extra-resources</directory>
-      <outputDirectory>/</outputDirectory>
-      <includes>
-        <include>*.html</include>
       </includes>
     </fileSet>
     <fileSet>
       <directory>${basedir}</directory>
-<!--       <outputDirectory>/</outputDirectory> -->
       <includes>
         <include>LICENSE</include>
         <include>*.md</include>
       </includes>
     </fileSet>
   </fileSets>
-<!--  
-  <dependencySets>
-  	<dependencySet>
-  		<outputDirectory>lib</outputDirectory>
-  	</dependencySet>
-  </dependencySets>
--->
 </assembly>

@@ -191,7 +191,6 @@
 									<directory>assembly</directory>
 									<includes>
 										<include>MANIFEST.MF</include>
-										<include>readme.html</include>
 									</includes>
 									<filtering>true</filtering>
 								</resource>
