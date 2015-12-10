@@ -7,6 +7,7 @@ import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.addon.touchkit.ui.NavigationView;
@@ -49,6 +50,8 @@ public class PizzaView extends NavigationView {
     }
 	@PostConstruct
 	public void init() {
+        MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+        setCaption(messageSourceAccessor.getMessage("Pizza"));
 
         final VerticalComponentGroup formLayout = new VerticalComponentGroup();
         

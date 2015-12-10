@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -48,6 +49,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 	
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private PizzaView m_pizzaView;
+	@Autowired private MenuView m_menuView;
 
 	@WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringAwareTouchKitServlet {
@@ -95,23 +97,28 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 
     	final TabBarView tabBarView = new TabBarView();
         final NavigationManager navigationManager = new NavigationManager();
-        navigationManager.setCaption("Tab 1");
-        navigationManager.setCurrentComponent(new MenuView());
+        MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+
+        navigationManager.setCaption(messageSourceAccessor.getMessage("Form"));
+        navigationManager.setCurrentComponent(m_menuView);
         Tab tab;
         tab = tabBarView.addTab(navigationManager);
-        tab.setIcon(FontAwesome.BOOK);
-        tab = tabBarView.addTab(m_pizzaView, "Tab 2");
-        tab.setIcon(FontAwesome.AMBULANCE);
-        tab = tabBarView.addTab(new Label("Tab 3"), "Tab 3");
-        tab.setIcon(FontAwesome.DOWNLOAD);
+        tab.setIcon(FontAwesome.MALE);
+        tab = tabBarView.addTab(m_pizzaView, messageSourceAccessor.getMessage("Pizza"));
+        tab.setIcon(FontAwesome.DELICIOUS);
         setContent(tabBarView);
-
     }
 	public PizzaView getPizzaView() {
 		return m_pizzaView;
 	}
 	public void setPizzaView(PizzaView pizzaView) {
 		m_pizzaView = pizzaView;
+	}
+	public MenuView getMenuView() {
+		return m_menuView;
+	}
+	public void setMenuView(MenuView menuView) {
+		m_menuView = menuView;
 	}
 }
 
