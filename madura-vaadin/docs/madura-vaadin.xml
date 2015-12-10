@@ -660,7 +660,7 @@ nz.co.senanque.login.RequestValidatorImpl.defaultLogin:admin/admin
         </h2>
         <h2 t="Login and Mobile">
         <p>When developing mobile applications you often need to include two UIs in the same application. The login page itself
-        uses <courier>@media</courier> queries to adjust itself for different devices, specifically a Galaxy S4 and an iPad mini,
+        uses <courier>@media</courier> queries in the css file to adjust itself for different devices, specifically a Galaxy S4 and an iPad mini,
         but the adjustments are generic enough to cover more devices than that. It will also
         redirect to your application's mobile UI as well. This is controlled by another config setting:</p>
         <code><![CDATA[
@@ -669,8 +669,8 @@ nz.co.senanque.login.RequestValidatorImpl.mobilePathPrefix:mobile
         <p>This is the default setting so all you need to do is have your application's mobile UI look like this:</p>
         <code><![CDATA[
 @SuppressWarnings("serial")
-@Widgetset("org.madura.mobile.demo.gwt.MaduraMobileDemoWidgetSet")
-@Theme("mytouchkit")
+@Widgetset("nz.co.senanque.maduramobiledemo.gwt.MaduraMobileDemoWidgetSet")
+@Theme("madura-touchkit-themet")
 @SpringUI(path="mobile")
 public class MaduraMobileDemoTouchKitUI extends UI {
 ...
@@ -678,6 +678,8 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <p>The vital bit there is the <courier>@SpringUI</courier> which specifies a path. The path there must match the value in the config file.</p>
         </h2>
         <h2 t="Extending madura-login">
+        <p>Each demo includes its own version of <courier>login.html</courier> with a help link, mostly to show how it can be done
+        and also to help people using the online demos. The link uses different urls for different demos.</p>
         <p>Things a production version would have to have:</p>
         <list>
         <le>A more secure user storage, you would implement this with a replacement <courier>AuthenticationDelegate</courier>. The replacement should not store
