@@ -63,7 +63,7 @@ public class EditorWindowImpl<T> extends Window implements ClickListener, Editor
     private boolean m_newRow;
 	private final String m_caption;
 	private final String m_submitStyle;
-	private final Layout m_panel = new VerticalLayout();
+	private final VerticalLayout m_panel = new VerticalLayout();
 	
 	public EditorWindowImpl(String caption) {
 		m_caption = caption;

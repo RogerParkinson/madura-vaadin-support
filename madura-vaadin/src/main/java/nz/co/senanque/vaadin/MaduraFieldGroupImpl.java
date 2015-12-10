@@ -17,12 +17,12 @@ import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.util.ReflectTools;
@@ -297,7 +297,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
 	 * @see nz.co.senanque.vaadin.MaduraFieldGroup#buildAndBind(com.vaadin.ui.Layout, java.util.List, com.vaadin.data.util.BeanItem)
 	 */
 	@Override
-	public void buildAndBind(Layout panel, List<String> fields, BeanItem<ValidationObject> itemDataSource) {
+	public void buildAndBind(AbstractComponentContainer panel, List<String> fields, BeanItem<ValidationObject> itemDataSource) {
 		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
 		// the super call will only bind fields
     	super.setItemDataSource(itemDataSource);

@@ -6,11 +6,11 @@ import nz.co.senanque.validationengine.ValidationObject;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.MenuBar.MenuItem;
 
 public interface MaduraFieldGroup {
@@ -22,7 +22,7 @@ public interface MaduraFieldGroup {
 	 */
 	public abstract void setItemDataSource(Item itemDataSource);
 
-	public abstract void buildAndBind(Layout panel, List<String> fields,
+	public abstract void buildAndBind(AbstractComponentContainer panel, List<String> fields,
 			BeanItem<ValidationObject> itemDataSource);
 
 	public abstract void unbind();
