@@ -287,6 +287,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		c = c.replace("~NAME", messageSourceAccessor.getMessage("login.name","User",useLocale));
 		c = c.replace("~PASSWORD", messageSourceAccessor.getMessage("login.password","Password",useLocale));
 		c = c.replace("~LOGIN", messageSourceAccessor.getMessage("login.login","Login",useLocale));
+		c = c.replace("~HELP", messageSourceAccessor.getMessage("login.help","Help",useLocale));
 		c = c.replace("~ERROR", (error==null?"":error));
 		c = c.replace("~LOCALE", (locale==null?"":locale.toString()));
 		m_logger.debug("\n{}",c);

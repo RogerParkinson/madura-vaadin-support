@@ -94,6 +94,11 @@ input:focus {
 	color: #5E5D55;
 	text-align: center;
 }
+.help {
+	right: 30px;
+	top: 3px;
+	position: absolute;
+}
 
 h1 {
 	font-style: italic;
