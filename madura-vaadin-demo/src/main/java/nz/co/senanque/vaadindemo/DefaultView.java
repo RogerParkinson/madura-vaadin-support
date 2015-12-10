@@ -27,7 +27,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
@@ -46,7 +45,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class DefaultView extends VerticalLayout implements MessageSourceAware {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    private final Layout m_panel = new VerticalLayout();
+    private final VerticalLayout m_panel = new VerticalLayout();
     protected MaduraFieldGroup m_maduraFieldGroup;
 	private MessageSource m_messageSource;
 	private String[] fields = new String[]{"name","email","address","gender","startDate","amount"};
