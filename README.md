@@ -2,7 +2,7 @@
 
 We love Vaadin's UI approach, so we've made sure Madura plays well with it. The following sub projects provide libraries and demonstrations supporting what we've done. 
 
- * [madura-login](./madura-vaadin-support/blob/master/madura-login/README.md): Provides a demo-ware web fragment that does authentication and authorisation and is compatible with Vaadin. This one is not actually dependent on Vaadin or Madura, but it is dependent on Spring and the demos use it.
+ * [madura-login](./blob/master/madura-login/README.md): Provides a demo-ware web fragment that does authentication and authorisation and is compatible with Vaadin. This one is not actually dependent on Vaadin or Madura, but it is dependent on Spring and the demos use it.
  * [madura-vaadin](./madura-vaadin/READ.me): The Madura integration library for Vaadin.
  * [madura-vaadin-tableeditor](./madura-vaadin-tableeditor/READ.me): Library containing the table editor.
  * [madura-vaadin-directed](./madura-vaadin-directed/READ.me): Library containing the directed questioning function.
