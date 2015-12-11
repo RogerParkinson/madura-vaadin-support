@@ -12,7 +12,7 @@ These are driven entirely by the underlying Madura validation engine, with no sp
 
 The JPA container is an extension of Vaadin's JPA Container and is configured here through the [ConfigJPA](src/main/java/nz/co/senanque/addressbook/jpa/ConfigJPA.java) class to use an in-memory H2 database.
 
-More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
+More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 
 ##Build and Run##
 

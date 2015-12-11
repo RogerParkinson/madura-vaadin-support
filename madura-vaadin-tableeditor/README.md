@@ -2,7 +2,7 @@
 
 Extended table editor that uses popup editor windows and an extension of Vaadin's JPAContainer addon that supports Spring's @Transactional.
 
-Example configuration (taken from: [madura-address-book](../madura-address-book/READ.me)):
+Example configuration (taken from: [madura-address-book](../madura-address-book/README.md)):
 
 ```
 	@Bean(name="personTableLayout")
