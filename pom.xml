@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
   <name>madura-vaadin-support</name>
   <url>www.madurasoftware.com</url>
-  <description>madura-vaadin-support</description>
+  <description>Support for using Madura Objects and Rules with Vaadin UI</description>
     <licenses>
       <license>
         <name>Apache License, Version 2.0</name>
