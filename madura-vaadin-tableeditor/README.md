@@ -2,25 +2,25 @@
 
 Extended table editor that uses popup editor windows and an extension of Vaadin's JPAContainer addon that supports Spring's @Transactional.
 
-Example configuration:
+Example configuration (taken from: [madura-address-book](../madura-address-book/READ.me)):
 
 ```
 	@Bean(name="personTableLayout")
 	@UIScope
 	public TableEditorLayout<Person> getTableEditorLayout() {
 		TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people", Person.class);
-		ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
-		return ret;
+    	ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
+    	ret.setEditorWindow(new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY));
+    	ret.setContainer(personContainer);
+    	return ret;
 	}
-	@Bean(name="editorWindow")
-	@UIScope
-	public EditorWindow<Person> getEditorWIndow() {
-		EditorWindowImpl<Person> ret = new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY);
-		return ret;
-	}
+```
 
-Also make sure Spring scans the {@code nz.co.senanque.vaadin.tableeditor} package. You also need to configure the JPAContainerEditorFactory.
+Make sure Spring scans the {@code nz.co.senanque.vaadin.tableeditor} package. 
 
+You also need to configure the EntityManagerFactory. This is a memory-only database useful for demos:
+
+```
 	@Configuration
 	@EnableJpaRepositories
 	@EnableTransactionManagement
