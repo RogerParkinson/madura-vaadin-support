@@ -548,12 +548,9 @@ formLayout.addComponent(size);
         </h2>
 		<h2 t="The Demo">
 		<p>The <courier>madura-mobile-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
-		and a mobile UI. The two UIs do mush the same thing, they certainly have the same underlying objects and rules (using Madura Objects)and Madura Rules, of course).
+		and a mobile UI. The two UIs do much the same thing, they certainly have the same underlying objects and rules (using Madura Objects)and Madura Rules, of course).
 		Part of the point is to show that while you might have to deliver a different UI for a different technology you do not
 		have to re-engineer the object and rules to doit.</p>
-		<p>The desktop UI is called the fallback UI in this demo because the convention is that the mobile UI has to fall back to the desktop when it is
-		not invoked by a mobile device. In practice it seems more like the other way around but there are multiple ways to achieve this
-		and this demo uses just one ofthose ways.</p>
 		<p>The <courier>MaduraMobileDemoDesktopUI</courier> is essentially no different from the UI class in the other demos. It is
 		an extention of the <courier>com.vaadin.ui.UI</courier> class and has similar annotations. The one thing you might find puzzling there is
 		that the various static classes that define the web servlet, web listener and Spring configuration are missing.
