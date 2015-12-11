@@ -13,6 +13,7 @@ import com.vaadin.addon.touchkit.ui.NavigationButton.NavigationButtonClickEvent;
 import com.vaadin.addon.touchkit.ui.NavigationButton.NavigationButtonClickListener;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.UIScope;
 
 @SuppressWarnings("serial")
@@ -31,11 +32,23 @@ public class MenuView extends NavigationView {
 
         final VerticalComponentGroup content = new VerticalComponentGroup();
         MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
-        NavigationButton button = new NavigationButton(messageSourceAccessor.getMessage("Form"));
-        button.addClickListener(new NavigationButtonClickListener() {
+        NavigationButton formButton = new NavigationButton(messageSourceAccessor.getMessage("Form"));
+        formButton.addClickListener(new NavigationButtonClickListener() {
             @Override
             public void buttonClick(NavigationButtonClickEvent event) {
                 getNavigationManager().navigateTo(m_formView);
+            }
+        });
+        content.addComponent(formButton);
+        NavigationButton button = new NavigationButton(messageSourceAccessor.getMessage("Logout"));
+        button.addClickListener(new NavigationButtonClickListener() {
+            @Override
+            public void buttonClick(NavigationButtonClickEvent event) {
+        		m_maduraSessionManager.close();
+        		VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+        		getUI().close();
+        	    String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        	    getUI().getPage().setLocation(contextPath);		
             }
         });
         content.addComponent(button);

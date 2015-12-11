@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-import com.vaadin.addon.touchkit.ui.DatePicker;
-import com.vaadin.addon.touchkit.ui.EmailField;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.VerticalComponentGroup;
 import com.vaadin.data.util.BeanItem;
@@ -24,7 +22,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
 @UIScope

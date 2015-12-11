@@ -32,7 +32,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.UI;
 
@@ -50,6 +49,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private PizzaView m_pizzaView;
 	@Autowired private MenuView m_menuView;
+//	@Autowired private LogoutView m_logoutView;
 
 	@WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringAwareTouchKitServlet {

@@ -1,5 +1,6 @@
 package nz.co.senanque.maduramobiledemo;
 
+import nz.co.senanque.maduramobiledemo.desktop.FormView;
 import nz.co.senanque.maduramobiledemo.desktop.PizzaView;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
@@ -27,6 +28,7 @@ public class MaduraMobileDemoDesktopUI extends UI {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private PizzaView m_pizzaView;
+	@Autowired private FormView m_formView;
 	
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -44,9 +46,14 @@ public class MaduraMobileDemoDesktopUI extends UI {
         root.addComponent(tabsheet);
 
         // Create the first tab
-        VerticalLayout tab1 = new VerticalLayout();
-        tab1.addComponent(m_pizzaView);
-        tabsheet.addTab(tab1, messageSourceAccessor.getMessage("Customer"));
+        VerticalLayout tab = new VerticalLayout();
+        tab.addComponent(m_formView);
+        tabsheet.addTab(tab, messageSourceAccessor.getMessage("Form"));
+
+        // Create the Second tab
+        tab = new VerticalLayout();
+        tab.addComponent(m_pizzaView);
+        tabsheet.addTab(tab, messageSourceAccessor.getMessage("Pizza"));
 
         VerticalLayout tabLogout = new VerticalLayout();
         tabsheet.addTab(tabLogout,logout);
