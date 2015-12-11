@@ -10,7 +10,4 @@ We love Vaadin's UI approach, so we've made sure Madura plays well with it. The 
  * [madura-rules-demo](./madura-rules-demo/READ.me): Example application demonstrating Madura working with Vaadin and with the rules engine and directed questioning. 
  * [madura-address-book](./madura-vaadin-demo/READ.me): Example application demonstrating Madura working with Vaadin and with the table editor. 
  * [vaadin7-demo](./vaadin7-demo/READ.me): Pure Vaadin demo (no Madura) that uses Spring configuration.
-=======
-# madura-vaadin-support
-Support for using Madura Objects and Rules with Vaadin UI
 
