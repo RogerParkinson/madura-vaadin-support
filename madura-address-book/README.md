@@ -2,7 +2,7 @@
 
 A demo program that illustrates the extended JPAContainer and the table editor from [madura-vaadin-tableeditor](../madura-vaadin-tableeditor/READ.me).
 
-This combination provides an almost out-of-the box table editor complete with a pop-up dialog box to insert and edit table rows. The dialog automatically uses the Madura validation engine for validation. In this example we do not use Madura Rules which would enable cross field validation, however this could be added without changing the code. What we do see here in terms of validation is:
+This combination provides an almost out-of-the box database table editor complete with a pop-up dialog box to insert and edit table rows. The dialog automatically uses the Madura validation engine for validation. In this example we do not use Madura Rules which would enable cross field validation, however this could be added without changing the code. What we do see here in terms of validation is:
 
  * the email field requires an '@' symbol in it or we show an error message.
  * both name and email are required.
