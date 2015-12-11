@@ -8,7 +8,7 @@ We love Vaadin's UI approach, so we've made sure Madura plays well with it. The 
  * [madura-vaadin-directed](./madura-vaadin-directed/README.md): Library containing the directed questioning function.
  * [madura-vaadin-demo](./madura-vaadin-demo/README.md): Example application demonstrating Madura working with Vaadin, without using the rules engine. 
  * [madura-rules-demo](./madura-rules-demo/README.md): Example application demonstrating Madura working with Vaadin and with the rules engine and directed questioning. 
- * [madura-address-book](./madura-vaadin-demo/README.md): Example application demonstrating Madura working with Vaadin and with the table editor. 
+ * [madura-address-book](./madura-address-book/README.md): Example application demonstrating Madura working with Vaadin and with the table editor. 
  * [madura-mobile-demo](./madura-mobile-demo/README.md): Example showing Madura working with Vaadin's Touchkit UI suitable for mobile devices.
  * [vaadin7-demo](./vaadin7-demo/README.md): Pure Vaadin demo (no Madura) that uses Spring configuration.
 

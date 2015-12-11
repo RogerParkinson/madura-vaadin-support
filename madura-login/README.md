@@ -22,5 +22,5 @@ To do:
 
  * doesn't work at all on Chromium browser, ie doesn't redirect to application.
  
-More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
+More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 

@@ -10,7 +10,7 @@ There is also a button enabled and disabled more directly by the rules. This is 
 
 Finally there is an example of directed questioning. This uses the rules to work out what field we need to know about next and prompt for it. In this case we want to know the BMI which is calculated using the subject's weight and hieght, so we need to know those. But both of those items can be specified in imperial or metric units and the subject may, for example, know his weight in feet and inches but not metres. It is easier to ask in metric because that is only one prompt, but if the subject does not know the metric value the rules prompt for feet and inches (two fields). The example is very simple and only shows numeric inputs but each prompt is a fully monitored by Madura. So if the field is a choice list a list of valid options will present and so on, but only the fields the rules need to figure the BMI. Other fields will not be prompted.
 
-More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
+More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 
 ##Build and Run##
 
@@ -23,7 +23,7 @@ Or you can use Eclipse and WTP, which is our development environment, using Tomc
 
 login with admin/admin
 
-The Customer tab has two required fields, one of the email. This is the same as the (madura-vaadin-demo)[../madura-vaadindemo/READ.me]. But it also has another button which is disabled for now.
+The Customer tab has two required fields, one of the email. This is the same as the (madura-vaadin-demo)[../madura-vaadin-demo/README.md]. But it also has another button which is disabled for now.
 
 Enter 'fred' into the Name field and the BMI button enables
 This is driven from a rule, ie no UI coding needed.
