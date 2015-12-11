@@ -4,7 +4,7 @@ This demo shows Vaadin and Madura Objects working together providing single fiel
 
 It does not use Madura Rules so there is no cross-field validation, but it illustrates the configuration and code required to implement this much functionality. This is to show that Madura can be used without the rules engine and still be useful. 
 
-More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
+More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 
 ##Build and Run##
 

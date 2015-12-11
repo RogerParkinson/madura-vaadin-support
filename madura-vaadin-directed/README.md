@@ -4,4 +4,4 @@ Library to provide directed questioning driven by the rules. This makes use of t
 
 This is way to simplify a very complex user input process that has multiple pathways and a lot of fields that are only useful in  particular contexts and can be ignored in others.
 
-More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/READ.me) project.
+More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
