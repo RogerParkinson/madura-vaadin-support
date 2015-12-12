@@ -46,7 +46,7 @@ import com.vaadin.ui.VerticalLayout;
  */
 @Theme("mytheme")
 @Title("Madura Rules Demo")
-@Widgetset("nz.co.senanque.madurarulesdemo.MyAppWidgetset")
+@Widgetset("com.vaadin.DefaultWidgetSet")
 @SpringUI
 public class MyUI extends UI {
 

@@ -53,6 +53,10 @@
             		<artifactId>spring-oxm</artifactId>
             		<groupId>org.springframework</groupId>
             	</exclusion>
+            	<exclusion>
+            		<artifactId>vaadin-client-compiled</artifactId>
+            		<groupId>com.vaadin</groupId>
+            	</exclusion>
             </exclusions>
 		</dependency>
 		<dependency>
@@ -107,12 +111,11 @@
 			<scope>test</scope>
             <version>4.12</version>
 		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client-compiler</artifactId>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+		    <dependency>
+		        <groupId>com.vaadin</groupId>
+		        <artifactId>vaadin-client-compiled</artifactId>
+		    </dependency>   
+    	</dependencies>
 
 	<build>
 		<resources>
@@ -137,14 +140,6 @@
 				<configuration>
 					<encoding>${project.encoding}</encoding>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

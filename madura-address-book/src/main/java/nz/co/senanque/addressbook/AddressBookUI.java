@@ -51,7 +51,7 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @Theme("addressbooktheme")
 @Title("Madura Address Book")
-@Widgetset("nz.co.senanque.addressbook.AddressBookWidgetset")
+@Widgetset("com.vaadin.DefaultWidgetSet")
 @SpringUI
 public class AddressBookUI extends UI  {
 	
