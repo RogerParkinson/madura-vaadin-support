@@ -38,8 +38,8 @@ import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
@@ -208,7 +208,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
         switch (getSelectType())
         {
         case STANDARD:
-        	select = new ComboBox();
+        	select = new NativeSelect();
             select.setMultiSelect(false);
         	break;
         case RADIO:
