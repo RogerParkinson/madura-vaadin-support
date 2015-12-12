@@ -114,12 +114,6 @@ public class AddressBookUI extends UI  {
     	public Hints getHints() {
     		return new HintsImpl();
     	}
-    	@Bean(name="editorWindow")
-    	@UIScope
-    	public EditorWindow<Person> getEditorWIndow() {
-    		EditorWindowImpl<Person> ret = new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY);
-    		return ret;
-    	}
     }
 
     @Override
