@@ -30,7 +30,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 @Theme("valo")
-@Widgetset("nz.co.senanque.vaadin7demo.MyAppWidgetset")
+@Widgetset("com.vaadin.DefaultWidgetSet")
 @SpringUI
 public class MyUI extends UI {
 
