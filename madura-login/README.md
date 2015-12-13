@@ -24,3 +24,4 @@ To do:
  
 More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 
+![Default login screen](../madura-vaadin/docs/images/Login.png)

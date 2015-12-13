@@ -30,4 +30,4 @@ required fields (name and email) are entered without error. The other is the piz
 was chosen, sets the amount field with a value and also makes the testing field active and/or required depending on what was chosen.
 
 You can try this on the desktop in the obvious way, and you can browse to the same URL from a mobile device to see the mobile UI.
-
+![Mobile UI on a Samsung S4](../madura-vaadin/docs/images/MobileDemo.png)
