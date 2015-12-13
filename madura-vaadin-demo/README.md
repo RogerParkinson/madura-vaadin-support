@@ -20,3 +20,4 @@ Login with admin/admin
 The Submit button is inactive until the form is completed, and without errors 'complete' means all the required fields have valid values. Name and Email are required but address is not, also Email needs an '@' in it to be valid Try different values in the different fields and note how the Submit button changes
 
 On the login dialog you can specify English or French. Try French, even if you don't speak French. You will see all the labels and options now in French once you log in. The translation is done in a normal Java resource bundle. Madura manages using the resource bundle to adjust the captions on the fields and buttons, as well as the choices in the drop down.
+![Vaadin Demo Screen](../madura-vaadin/docs/images/VadinDemo.png)

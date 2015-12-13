@@ -47,4 +47,8 @@ The C3 tab is also similar but instead of submit and cancel buttons there is a m
 
 You can change the language in the login dialog and see the French version. The captions on the fields and buttons, and the choices in the drop downs now appear in French.
 
-If you log out and log back in as user/user, then enter 'fred' into the name field you should notice the BMI button remains disabled. This is because the button has an attached permission value. The admin login has the permission, the user login does not, so the button remains disabled for user even though the rule triggered by 'fred' fired. Permissions always trump rules.  
+If you log out and log back in as user/user, then enter 'fred' into the name field you should notice the BMI button remains disabled. This is because the button has an attached permission value. The admin login has the permission, the user login does not, so the button remains disabled for user even though the rule triggered by 'fred' fired. Permissions always trump rules.
+
+![Customer Screen](../madura-vaadin/docs/images/RulesDemo1.png)
+![Pizza Order with popup](../madura-vaadin/docs/images/RulesDemo2.png)
+  
