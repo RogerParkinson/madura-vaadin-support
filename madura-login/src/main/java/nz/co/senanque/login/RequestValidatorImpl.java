@@ -57,6 +57,8 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	private String[] m_langs = new String[]{"en","fr"};
     @Value("${nz.co.senanque.login.RequestValidatorImpl.defaultLogin:}")
     private transient String m_defaultLogin;
+    
+    private String[] m_imageExtensions = new String[]{".ico",".gif",".png",".jpg",".jpeg",".css",};
 	
 	@Autowired(required=false) private AuthenticationDelegate m_authenticationDelegate;
 
@@ -93,25 +95,30 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			fakeLogin(req);
 			return true;
 		}
-
-		if (url.endsWith(".css")) {
-			return false;
+		for (String ext: m_imageExtensions) {
+			if (url.endsWith(ext)) {
+				return false;
+			}
 		}
-		if (url.endsWith(".ico")) {
-			return false;
-		}
-		if (url.endsWith(".gif")) {
-			return false;
-		}
-		if (url.endsWith(".png")) {
-			return false;
-		}
-		if (url.endsWith(".jpg")) {
-			return false;
-		}
-		if (url.endsWith(".jpeg")) {
-			return false;
-		}
+//
+//		if (url.endsWith(".css")) {
+//			return false;
+//		}
+//		if (url.endsWith(".ico")) {
+//			return false;
+//		}
+//		if (url.endsWith(".gif")) {
+//			return false;
+//		}
+//		if (url.endsWith(".png")) {
+//			return false;
+//		}
+//		if (url.endsWith(".jpg")) {
+//			return false;
+//		}
+//		if (url.endsWith(".jpeg")) {
+//			return false;
+//		}
 		String context = req.getContextPath();
 		for (String ignoreURL: m_ignoreURLs) {
 			if (url.startsWith(context+ignoreURL)) {
@@ -203,7 +210,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	/* (non-Javadoc)
 	 * @see nz.co.senanque.login.RequestValidator#write(javax.servlet.http.HttpServletRequest, javax.servlet.ServletContext, javax.servlet.http.HttpServletResponse)
 	 */
-	public void write(HttpServletRequest req,ServletContext servletContext,
+	public boolean write(HttpServletRequest req,ServletContext servletContext,
 			HttpServletResponse httpServletResponse) throws IOException {
 		
 		String contextPath = servletContext.getContextPath();
@@ -215,45 +222,55 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		if (uri.endsWith("css")) {
 			String css = getLoginCSS(uri, servletContext);
 			httpServletResponse.getOutputStream().print(css);
-			return;
+			return true;
 		}
 		try {
-			if (uri.endsWith("gif")) {
-				InputStream is = getStream(uri, servletContext);
-				OutputStream out = httpServletResponse.getOutputStream();
-				pipe(is,out);
-				return;
+			for (String ext: m_imageExtensions) {
+				if (uri.endsWith(ext)) {
+					InputStream is = getStream(uri, servletContext);
+					OutputStream out = httpServletResponse.getOutputStream();
+					pipe(is,out);
+					return true;
+				}
 			}
-			if (uri.endsWith("png")) {
-				InputStream is = getStream(uri, servletContext);
-				OutputStream out = httpServletResponse.getOutputStream();
-				pipe(is,out);
-				return;
-			}
-			if (uri.endsWith("jpg")) {
-				InputStream is = getStream(uri, servletContext);
-				OutputStream out = httpServletResponse.getOutputStream();
-				pipe(is,out);
-				return;
-			}
-			if (uri.endsWith("jpeg")) {
-				InputStream is = getStream(uri, servletContext);
-				OutputStream out = httpServletResponse.getOutputStream();
-				pipe(is,out);
-				return;
-			}
-			if (uri.endsWith("ico")) {
-				InputStream is = getStream(uri, servletContext);
-				OutputStream out = httpServletResponse.getOutputStream();
-				pipe(is, out);
-				return;
-			}
+			
+//			if (uri.endsWith("gif")) {
+//				InputStream is = getStream(uri, servletContext);
+//				OutputStream out = httpServletResponse.getOutputStream();
+//				pipe(is,out);
+//				return;
+//			}
+//			if (uri.endsWith("png")) {
+//				InputStream is = getStream(uri, servletContext);
+//				OutputStream out = httpServletResponse.getOutputStream();
+//				pipe(is,out);
+//				return;
+//			}
+//			if (uri.endsWith("jpg")) {
+//				InputStream is = getStream(uri, servletContext);
+//				OutputStream out = httpServletResponse.getOutputStream();
+//				pipe(is,out);
+//				return;
+//			}
+//			if (uri.endsWith("jpeg")) {
+//				InputStream is = getStream(uri, servletContext);
+//				OutputStream out = httpServletResponse.getOutputStream();
+//				pipe(is,out);
+//				return;
+//			}
+//			if (uri.endsWith("ico")) {
+//				InputStream is = getStream(uri, servletContext);
+//				OutputStream out = httpServletResponse.getOutputStream();
+//				pipe(is, out);
+//				return;
+//			}
 		} catch (Exception e) {
 			m_logger.warn("{}",e.toString());
-			return;
+			return false;
 		}
 		String login = getLoginHTML(getErrorAttribute(req),getLocale(req), servletContext);
 		httpServletResponse.getOutputStream().print(login);
+		return true;
 	}
 	
 	private void pipe(InputStream in, OutputStream out) throws IOException {

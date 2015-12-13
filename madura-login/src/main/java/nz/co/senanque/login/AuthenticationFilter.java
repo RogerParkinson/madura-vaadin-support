@@ -60,8 +60,9 @@ public class AuthenticationFilter extends GenericFilterBean {
 			}
 		}
 		if (!m_validator.isURLIgnored(httpServletRequest)) {
-			m_validator.write(httpServletRequest, this.getServletContext(),httpServletResponse);
-			return;
+			if (m_validator.write(httpServletRequest, this.getServletContext(),httpServletResponse)) {
+				return;
+			}
 		}
 		chain.doFilter(request, response);
 	}

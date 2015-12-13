@@ -25,7 +25,7 @@ public interface RequestValidator {
 
 	public abstract String getErrorAttribute(HttpServletRequest req);
 
-	public abstract void write(HttpServletRequest req,
+	public abstract boolean write(HttpServletRequest req,
 			ServletContext servletContext,
 			HttpServletResponse httpServletResponse) throws IOException;
 
