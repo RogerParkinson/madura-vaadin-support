@@ -73,7 +73,7 @@ public class TouchkitHintsImpl implements Hints, Serializable {
 	public void setHideInactive(boolean hideInactive) {
 		m_hideInactive = hideInactive;
 	}
-	private SelectType m_selectType = SelectType.RADIO;
+	private SelectType m_selectType = SelectType.STANDARD;
 
 	public SelectType getSelectType() {
 		return m_selectType;
