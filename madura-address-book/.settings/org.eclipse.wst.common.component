@@ -5,13 +5,13 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/generated-sources/xjc"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="madura-login-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-login/madura-login">
+        <dependent-module archiveName="madura-login-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-login/madura-login">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="madura-vaadin-tableeditor-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-tableeditor/madura-vaadin-tableeditor">
+        <dependent-module archiveName="madura-vaadin-tableeditor-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-tableeditor/madura-vaadin-tableeditor">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="madura-vaadin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin/madura-vaadin">
+        <dependent-module archiveName="madura-vaadin-3.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin/madura-vaadin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="madura-address-book"/>
