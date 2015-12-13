@@ -29,3 +29,5 @@ Right click on any entry in the table to see options to add, delete and edit the
 The popup form that edits uses Madura to validate as described above.
 
 You can change the language by selecting French in the login form and the captions etc will change accordingly.
+
+![Address Book with Popup Editor](../madura-vaadin/docs/images/Table.png)

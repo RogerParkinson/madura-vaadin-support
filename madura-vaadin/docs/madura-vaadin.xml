@@ -115,7 +115,7 @@
         <code><![CDATA[
 @Theme("mytheme")
 @Title("Madura Vaadin Demo")
-@Widgetset("nz.co.senanque.vaadindemo.MyAppWidgetset")
+@Widgetset("com.vaadin.DefaultWidgetSet")
 @SpringUI
 public class MyUI extends UI {
 
@@ -276,6 +276,8 @@ private String[] fields = new String[]{"name","email","address","gender","startD
         if the <courier>person</courier> does not have all the required fields completed. The fields are all wired with validation and the field types vary by data type, so there are three text fields,
 		one drop down which is populated with choices, a date and a numeric text field.</p>
         <p>This is not the only way to achieve this, and you will see alternative approaches in subsequent demos. They are summarised in <sectionLink t="MaduraFieldGroup and MaduraForm"/></p>
+        <p>The result is in <figureLink t="Madura Vaadin Demo"/></p>
+        <img width="12cm" href="images/VaadinDemo.png">Madura Vaadin Demo</img>
 		</h1>
 		<h1 t="madura-rules-demo">
 		<p>This demo is more complicated, and it uses Madura Rules so there are some configuration differences too. We will look at those first.</p>
@@ -291,6 +293,7 @@ private String[] fields = new String[]{"name","email","address","gender","startD
 		all this class does is create a <courier>TabSheet</courier> on which it places the injected UI components so we will look a those one by one.</p>
 		<p>An important point to notice here is that apart from adding those directories to be scanned the code is comletely unaware of the rules.</p>
 		<h2 t="CustomerView">
+        <img width="12cm" href="images/RulesDemo1.png">Customer Screen</img>
 		<p>This is labelled 'Customer' on the UI (unless you are using the French version). It looks a bit like the first demo but with fewer fields and more buttons.</p>
 		<p>The code makes use of the <courier>MaduraForm</courier> class which, because it is based on Vaadin's <courier>Form</courier> is deprecated. It is still useful, though, as you'll see.</p>
 		<p>The <courier>enter</courier> method binds the object. This time we don't have to create the fields because the form handles that automatically based on the list of fields we set so all we need is:</p>
@@ -358,6 +361,7 @@ formula: Customer "BMI"
 		Those headings will be used as is if there is no resource translation, but if there is the translation will be used.</p>
 		<p>There are two buttons which popup two windows: 'Add Item' and 'Add Item 2'. Each of these create an order item, but they do it two different ways.</p>
 		<h3 t="PizzaWindow">
+        <img width="12cm" href="images/RulesDemo2.png">Pizza Screen</img>
 		<p>The 'Add Item' button invokes the <courier>PizzaWindow</courier>. This uses a <courier>MaduraForm</courier> to present the fields on the <courier>Pizza</courier> object. The code is similar to Customer view. It is worth running the demo at this point to see what it does.
 		You can see the three fields: Base, Topping, Size. Because only some combinations are valid you will find that as you pick options in, say, the Topping field, and list of options on the Size field will change, and vice versa.
 		It doesn't matter what order you pick them. This is driven by the decision table in <courier>choices.xml</courier>. It does not have to be hard coded XML either, the values can be pulled from external sources such
@@ -417,6 +421,7 @@ formula: Order "sum"
 		</h2>
 		</h1>
 		<h1 t="madura-address-book">
+        <img width="12cm" href="images/Table.png">Address Book</img>
 		<p>This demo is all about displaying and editing rows from a database in a table. It uses Madura Objects but not Madura Rules. It does use the madura-tableeditor so that needs to be specified as a
 		maven dependency and the <courier>nz.co.senanque.vaadin.tableeditor</courier> package has to be scanned so that is added to the <courier>ComponentScan</courier> in the <courier>AddressBookUI</courier>
 		class.</p>
@@ -564,12 +569,13 @@ formLayout.addComponent(size);
 		works for Vaadin.</p>
 		<p>The next thing to notice is the annotations on the UI are a little different.</p>
         <code><![CDATA[
-@Widgetset("nz.co.senanque.maduramobiledemo.gwt.MaduraMobileDemoWidgetSet")
+@Widgetset("com.vaadin.addon.touchkit.gwt.TouchKitWidgetSet")
 @Theme("madura-touchkit-theme")
 @SpringUI(path="mobile")
 public class MaduraMobileDemoTouchKitUI extends UI {
 ...
         ]]></code>
+        <p>The widgetset is the default one for Touchkit.</p>
         <p>The theme is one derived from the Touchkit theme, which is different from the desktop theme. Touchkit requires its own theme
         and we've added a small addition to it to make numeric fields justify right. The theme comes from the <courier>madura-vaadin-touchkit</courier>
         dependency. If you don't care about the right justify you can use 'touchkit' there instead.</p>
@@ -584,6 +590,9 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         bean. In the other demos this just returned <courier>HintsImpl</courier> but here we need to make a decision about what
         hints we want because they are different. As with the other demos this gives you the opportunity to customise the hints
         by supplying your own hints classes.</p>
+        <p>The desktop screen looks much like the rules demo you saw earlier. The mobile screens look like this:</p>
+        <img width="12cm" href="images/MobileDemo.png">Mobile Screens</img>
+        
 		</h2>
 		<h2 t="Building the Mobile App">
 		<p>If you build <courier>madura-mobile-demo</courier> with maven in the usual way you will get a war file you can deploy and browse to, including from your mobile
@@ -606,6 +615,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         </h2>
         </h1>
         <h1 t="madura-login">
+        <img width="12cm" href="images/Login.png">Login Screen</img>
         <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
         <p>To configure it into an application we need to tell Spring which directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.</p>
         <p>That is the minimum. But we can do more with security. First, we can remove the existing login mechanism on any of the demos and replce it with something else. Second,
@@ -666,13 +676,14 @@ nz.co.senanque.login.RequestValidatorImpl.mobilePathPrefix:mobile
         <p>This is the default setting so all you need to do is have your application's mobile UI look like this:</p>
         <code><![CDATA[
 @SuppressWarnings("serial")
-@Widgetset("nz.co.senanque.maduramobiledemo.gwt.MaduraMobileDemoWidgetSet")
-@Theme("madura-touchkit-themet")
+@Widgetset("com.vaadin.addon.touchkit.gwt.TouchKitWidgetSet")
+@Theme("madura-touchkit-theme")
 @SpringUI(path="mobile")
 public class MaduraMobileDemoTouchKitUI extends UI {
 ...
         ]]></code>
-        <p>The vital bit there is the <courier>@SpringUI</courier> which specifies a path. The path there must match the value in the config file.</p>
+        <p>The vital bit there is the <courier>@SpringUI</courier> which specifies a path. The path there must match the value in the config file.
+        The widgetset being used is the default touchkit widgetset.</p>
         </h2>
         <h2 t="Extending madura-login">
         <p>Each demo includes its own version of <courier>login.html</courier> with a help link, mostly to show how it can be done
@@ -701,6 +712,21 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 		<note>You need Java 1.7 to compile this project.</note>
 		<table width="12cm">
 			<tw>12cm</tw>
+        <tr>
+            <th>3.0.0</th>
+        </tr>
+        <tr>
+        	<td>Major rework/rerwite of the Madura Vaadin code.</td>
+        </tr>       
+        <tr>
+        	<td>Supports Vaadin 7, Touchkit 4, Madura 3.0.0 and Spring 4.</td>
+        </tr>       
+        <tr>
+        	<td>Uses more compact configuration.</td>
+        </tr>       
+        <tr>
+        	<td>Better organisation of sub projects.</td>
+        </tr>       
         <tr>
             <th>2.6.0</th>
         </tr>
