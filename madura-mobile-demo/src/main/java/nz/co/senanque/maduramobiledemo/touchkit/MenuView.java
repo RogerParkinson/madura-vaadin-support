@@ -44,11 +44,7 @@ public class MenuView extends NavigationView {
         button.addClickListener(new NavigationButtonClickListener() {
             @Override
             public void buttonClick(NavigationButtonClickEvent event) {
-        		m_maduraSessionManager.close();
-        		VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-        		getUI().close();
-        	    String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        	    getUI().getPage().setLocation(contextPath);		
+            	m_maduraSessionManager.logout(getUI());
             }
         });
         content.addComponent(button);

@@ -65,17 +65,10 @@ public class MaduraMobileDemoDesktopUI extends UI {
 				Component c = tabSheet.getSelectedTab();
 				String caption = tabSheet.getTab(c).getCaption();
 				if (caption.equals(logout)) {
-					logout();
+					m_maduraSessionManager.logout(getUI());
 				}
 			}});
 
-    }
-    private void logout() {
-    	m_maduraSessionManager.close();
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-    	getUI().close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        getUI().getPage().setLocation(contextPath);
     }
 	public MaduraSessionManager getMaduraSessionManager() {
 		return m_maduraSessionManager;

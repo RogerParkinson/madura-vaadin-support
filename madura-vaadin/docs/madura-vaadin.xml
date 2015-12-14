@@ -185,19 +185,6 @@ nz.co.senanque.validationengine.metadata.AnnotationsMetadataFactory.packages=nz.
         ]]></code>
         <p>This is fairly ordinary Spring code that uses a <courier>MessageSourceAccessor</courier> to translate the logout string. It is interesting because it shows that
         for various headings or captions of components that are not controlled by Madura we still need to call a <courier>MessageSourceAccessor</courier> for I18n, but most of the time we don't.</p>
-        <p>The last part is the logout:</p>
-        <code><![CDATA[
-...
-private void logout() {
- 	m_maduraSessionManager.close();
- 	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
- 	getUI().close();
-    String contextPath = VaadinService.getCurrentRequest().getContextPath();
-    getUI().getPage().setLocation(contextPath);
-}
-...
-        ]]></code>
-        <p>This closes down the Madura session and the Vaadin session and redirects to the login page, well actually it redirects to the application but since we are no longer logged in the login page is popped up.</p>
         <p>The <courier>DefaultView</courier> class was mentioned above. It is auto wired into the <courier>MyUI</courier> class and all of the demos have one or more classes like this, so let's take a brief look at
         one of them:</p>
         <code><![CDATA[
@@ -726,6 +713,12 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         </tr>       
         <tr>
         	<td>Better organisation of sub projects.</td>
+        </tr>       
+        <tr>
+        	<td>Uses Vaadin's Spring addon rather than SpringApplicationLoader.</td>
+        </tr>       
+        <tr>
+        	<td>Removed dependencies on Madura Bundles.</td>
         </tr>       
         <tr>
             <th>2.6.0</th>
