@@ -1,5 +1,8 @@
 package nz.co.senanque.maduramobiledemo;
 
+import java.io.IOException;
+
+import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
@@ -20,6 +23,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.ServletContextAware;
 
 import com.vaadin.addon.touchkit.ui.NavigationManager;
 import com.vaadin.addon.touchkit.ui.TabBarView;
@@ -49,7 +53,6 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private PizzaView m_pizzaView;
 	@Autowired private MenuView m_menuView;
-//	@Autowired private LogoutView m_logoutView;
 
 	@WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
     public static class MyUIServlet extends SpringAwareTouchKitServlet {
@@ -94,7 +97,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     }
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-
+    	
     	final TabBarView tabBarView = new TabBarView();
         final NavigationManager navigationManager = new NavigationManager();
         MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());

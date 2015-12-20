@@ -2,14 +2,15 @@ package nz.co.senanque.maduramobiledemo;
 
 import nz.co.senanque.maduramobiledemo.desktop.FormView;
 import nz.co.senanque.maduramobiledemo.desktop.PizzaView;
+import nz.co.senanque.vaadin.AboutInfo;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.MessageSourceAccessor;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
@@ -29,13 +30,15 @@ public class MaduraMobileDemoDesktopUI extends UI {
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private PizzaView m_pizzaView;
 	@Autowired private FormView m_formView;
+	@Autowired(required=false) @Qualifier("applicationVersion") private String m_applicationVersion;
+	@Autowired @Qualifier("aboutInfo") private AboutInfo m_aboutInfo;
 	
 	@Override
     protected void init(VaadinRequest vaadinRequest) {
 
     	MessageSourceAccessor messageSourceAccessor= new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
     	final String logout = messageSourceAccessor.getMessage("Logout");
-
+    	
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
         root.setMargin(true);

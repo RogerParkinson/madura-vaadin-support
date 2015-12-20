@@ -611,10 +611,7 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
     }
     public void logout(UI ui) {
     	close();
-    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
-    	ui.close();
-        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-        ui.getPage().setLocation(contextPath);
+    	m_permissionManager.close(ui);
     }
     
     @PreDestroy

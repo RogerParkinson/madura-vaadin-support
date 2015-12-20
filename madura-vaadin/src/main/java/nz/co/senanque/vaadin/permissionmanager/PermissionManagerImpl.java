@@ -32,6 +32,7 @@ import org.springframework.stereotype.Component;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.UI;
 
 /**
  * 
@@ -48,7 +49,6 @@ public class PermissionManagerImpl implements PermissionManager, PermissionResol
 	private static final long serialVersionUID = -1L;
 	private Set<String> m_permissionsList = new HashSet<String>();
     private String m_currentUser;
-    private List<ChangeUserListener> m_changeUserListeners = new ArrayList<ChangeUserListener>();
     
     @Autowired(required=false) PermissionResolver m_permissionResolver;
 
@@ -87,14 +87,6 @@ public class PermissionManagerImpl implements PermissionManager, PermissionResol
     {
         m_currentUser = currentUser;
         ChangeUserEvent event = new ChangeUserEvent(currentUser);
-        for (ChangeUserListener changeUserListener: m_changeUserListeners)
-        {
-            changeUserListener.changeUser(event);
-        }
-    }
-    public void addListener(ChangeUserListener changeUserListener)
-    {
-        m_changeUserListeners.add(changeUserListener);
     }
 
 	public Set<String> getPermissionsList() {
@@ -117,6 +109,14 @@ public class PermissionManagerImpl implements PermissionManager, PermissionResol
 		Set<String> currentPermissions = (Set<String>)session.getAttribute(AuthenticationDelegate.PERMISSIONS);
     	setPermissionsList(currentPermissions);
     	setCurrentUser(currentUser);
+	}
+
+	@Override
+	public void close(UI ui) {
+    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+    	ui.close();
+        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        ui.getPage().setLocation(contextPath);
 	}
 
 }

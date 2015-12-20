@@ -8,7 +8,6 @@ import nz.co.senanque.addressbook.instances.TreeSpecies;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
-import nz.co.senanque.vaadin.tableeditor.EditorWindow;
 import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
@@ -30,7 +29,6 @@ import com.vaadin.data.Container;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;

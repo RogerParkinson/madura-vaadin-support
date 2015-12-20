@@ -25,11 +25,9 @@ import com.vaadin.event.EventRouter;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
@@ -52,7 +50,6 @@ public class MyUI extends UI {
 
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
-	@Autowired private SpringViewProvider viewProvider;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
 	@Autowired private CustomerView m_customerView;
 	@Autowired private CustomerView2 m_customerView2;

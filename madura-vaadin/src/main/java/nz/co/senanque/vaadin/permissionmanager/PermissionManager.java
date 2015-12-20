@@ -17,6 +17,8 @@ package nz.co.senanque.vaadin.permissionmanager;
 
 import java.util.Set;
 
+import com.vaadin.ui.UI;
+
 
 /**
  * 
@@ -31,16 +33,13 @@ public interface PermissionManager
 {
 	public static final String PERMISSIONS = "nz.co.senanque.login.RequestValidator.AUTHENTICATED";
 
-    public interface ChangeUserListener
-    {
-        public void changeUser(ChangeUserEvent event);
-    }
     public abstract boolean hasPermission(String permission);
 
     public abstract void setCurrentUser(String currentUser);
 
     public abstract String getCurrentUser();
-    public void addListener(ChangeUserListener changeUserListener);
     public void setPermissionsList(Set<String> permissionsList);
+
+	public abstract void close(UI ui);
 
 }

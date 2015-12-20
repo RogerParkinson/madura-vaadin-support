@@ -23,6 +23,7 @@ import nz.co.senanque.resourceloader.MessageResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -57,6 +58,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	private String[] m_langs = new String[]{"en","fr"};
     @Value("${nz.co.senanque.login.RequestValidatorImpl.defaultLogin:}")
     private transient String m_defaultLogin;
+	@Autowired(required=false) @Qualifier("applicationVersion") private String m_applicationVersion;
     
     private String[] m_imageExtensions = new String[]{".ico",".gif",".png",".jpg",".jpeg",".css",};
 	
@@ -234,36 +236,6 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 				}
 			}
 			
-//			if (uri.endsWith("gif")) {
-//				InputStream is = getStream(uri, servletContext);
-//				OutputStream out = httpServletResponse.getOutputStream();
-//				pipe(is,out);
-//				return;
-//			}
-//			if (uri.endsWith("png")) {
-//				InputStream is = getStream(uri, servletContext);
-//				OutputStream out = httpServletResponse.getOutputStream();
-//				pipe(is,out);
-//				return;
-//			}
-//			if (uri.endsWith("jpg")) {
-//				InputStream is = getStream(uri, servletContext);
-//				OutputStream out = httpServletResponse.getOutputStream();
-//				pipe(is,out);
-//				return;
-//			}
-//			if (uri.endsWith("jpeg")) {
-//				InputStream is = getStream(uri, servletContext);
-//				OutputStream out = httpServletResponse.getOutputStream();
-//				pipe(is,out);
-//				return;
-//			}
-//			if (uri.endsWith("ico")) {
-//				InputStream is = getStream(uri, servletContext);
-//				OutputStream out = httpServletResponse.getOutputStream();
-//				pipe(is, out);
-//				return;
-//			}
 		} catch (Exception e) {
 			m_logger.warn("{}",e.toString());
 			return false;
@@ -307,6 +279,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		c = c.replace("~HELP", messageSourceAccessor.getMessage("login.help","Help",useLocale));
 		c = c.replace("~ERROR", (error==null?"":error));
 		c = c.replace("~LOCALE", (locale==null?"":locale.toString()));
+		c = c.replace("~VERSION", (m_applicationVersion==null)?"":m_applicationVersion);
 		m_logger.debug("\n{}",c);
 		return c;
 	}
