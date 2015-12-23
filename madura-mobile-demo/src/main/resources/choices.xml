@@ -15,7 +15,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<MaduraValidator>
+<MaduraValidator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://www.madurasoftware.com/choices.xsd">
 	<ChoiceList name="Genders">
 		<Choice name="M">Male</Choice>
 		<Choice name="F">Female</Choice>
