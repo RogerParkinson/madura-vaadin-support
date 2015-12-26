@@ -109,11 +109,27 @@
 		        <groupId>com.vaadin</groupId>
 		        <artifactId>vaadin-client-compiled</artifactId>
 		        <version>${vaadin.version}</version> 
+				<exclusions>
+					<exclusion>
+						<artifactId>ant</artifactId>
+						<groupId>ant</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>ant-launcher</artifactId>
+						<groupId>ant</groupId>
+					</exclusion>
+				</exclusions>
 		    </dependency>   
 			<dependency>
 	            <groupId>com.vaadin</groupId>
 	            <artifactId>vaadin-spring</artifactId>
 	            <version>1.0.0</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
@@ -366,6 +382,65 @@
 			        <configuration>
 			          <lifecycleMappingMetadata>
 			            <pluginExecutions>
+     						<pluginExecution>
+     							<pluginExecutionFilter>
+     								<groupId>
+     									org.kuali.maven.plugins
+     								</groupId>
+     								<artifactId>
+     									properties-maven-plugin
+     								</artifactId>
+     								<versionRange>
+     									[1.1.9,)
+     								</versionRange>
+     								<goals>
+     									<goal>
+     										read-project-properties
+     									</goal>
+     								</goals>
+     							</pluginExecutionFilter>
+     							<action>
+     								<ignore></ignore>
+     							</action>
+     						</pluginExecution>
+     						<pluginExecution>
+     							<pluginExecutionFilter>
+     								<groupId>
+     									nz.co.senanque
+     								</groupId>
+     								<artifactId>
+     									madura-rules-maven-plugin
+     								</artifactId>
+     								<versionRange>
+     									[3.0.0-SNAPSHOT,)
+     								</versionRange>
+     								<goals>
+     									<goal>xjr</goal>
+     								</goals>
+     							</pluginExecutionFilter>
+     							<action>
+     								<ignore></ignore>
+     							</action>
+     						</pluginExecution>
+						<pluginExecution>
+							<pluginExecutionFilter>
+								<groupId>
+									nz.co.senanque
+								</groupId>
+								<artifactId>
+									madura-objects-maven-plugin
+								</artifactId>
+								<versionRange>
+									[3.0.0-SNAPSHOT,)
+								</versionRange>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</pluginExecutionFilter>
+							<action>
+								<ignore></ignore>
+							</action>
+						</pluginExecution>
 			              <pluginExecution>
 			                <pluginExecutionFilter>
 			                  <groupId>org.apache.maven.plugins</groupId>

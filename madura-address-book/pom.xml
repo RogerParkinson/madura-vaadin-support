@@ -220,25 +220,6 @@
 										<ignore></ignore>
 									</action>
 								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											nz.co.senanque
-										</groupId>
-										<artifactId>
-											madura-objects-maven-plugin
-										</artifactId>
-										<versionRange>
-											[3.0.0-SNAPSHOT,)
-										</versionRange>
-										<goals>
-											<goal>generate</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
