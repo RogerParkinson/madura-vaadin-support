@@ -432,7 +432,7 @@ formula: Order "sum"
 		<p>All of the above beans are singletons. The rest of this is tied to a session.</p>
 		<p>In <courier>AddressBook.MyConfiguration</courier> the two containers are injected using their names. They each help define the
 		<courier>personTableLayout</courier> and <courier>treeTableLayout</courier> beans. Those are the actual table layouts, they are Vaadin
-		components and they are added to the <courier>PersonView</courier> and <courier>TreeView</courier> tabs</p>.
+		components and they are added to the <courier>PersonView</courier> and <courier>TreeView</courier> tabs</p>
 		<p>The container effectively defines a database query on a table. In the demo case the query is for all records but it can be refined
 		in various ways. See the Vaadin documentation for that.<referenceLink t="JPAContainer"/></p>
 		</h2>
@@ -469,7 +469,7 @@ m_maduraFieldGroup.buildAndBind(m_panel,fields,new BeanItem<ValidationObject>(pe
         ]]></code>
 		<p>This creates the fields from the list passed, adds them to your layout (<courier>m_panel</courier>) and binds them all to the object (<courier>person</courier>). It also binds any
 		buttons and/or menu items you created. When you are done you should call <courier>unbind</courier> to release the resources.</p>
-		<p>The <courier>hints</courier> bean controls how auto-created fields are supplied. The default bean is class <courir>nz.co.senanque.vaadin.HintsImpl</courir>. You could, for example, supply an extension of that
+		<p>The <courier>hints</courier> bean controls how auto-created fields are supplied. The default bean is class <courier>nz.co.senanque.vaadin.HintsImpl</courier>. You could, for example, supply an extension of that
 		class instead with a modified <courier>getDateField</courier> that supplies a differently configured date field and so on.</p>
 		<p>The advantage of this approach is that you do not have to know much about the object being displayed, just the list of field names. Even that can be derived on the fly so you can make a very generic display
 		that adapts to the current object. The disadvantage is that you have little control of where the fields are actually placed.</p>
