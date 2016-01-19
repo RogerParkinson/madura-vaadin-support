@@ -24,6 +24,8 @@ import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
@@ -47,7 +49,7 @@ import com.vaadin.ui.Field;
 @SuppressWarnings("unchecked")
 @SpringComponent("fieldFactory") // need the expanded name because there is a class called Component somewhere
 @UIScope
-public final class FieldFactory extends DefaultFieldFactory {
+public class FieldFactory extends DefaultFieldFactory {
 	
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(FieldFactory.class);
