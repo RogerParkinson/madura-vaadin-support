@@ -16,10 +16,8 @@
 package nz.co.senanque.vaadin.permissionmanager;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -27,11 +25,10 @@ import javax.annotation.PostConstruct;
 import nz.co.senanque.login.AuthenticationDelegate;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.WrappedSession;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.UI;
 
 /**
@@ -42,15 +39,13 @@ import com.vaadin.ui.UI;
  * @author Roger Parkinson
  * @version $Revision:$
  */
-@Component("permissionManager")
-@UIScope
 public class PermissionManagerImpl implements PermissionManager, PermissionResolver, Serializable {
     
 	private static final long serialVersionUID = -1L;
 	private Set<String> m_permissionsList = new HashSet<String>();
     private String m_currentUser;
     
-    @Autowired(required=false) PermissionResolver m_permissionResolver;
+    @Autowired(required=false) @Qualifier("permissionResolver") PermissionResolver m_permissionResolver;
 
 	public PermissionManagerImpl () {
     }
