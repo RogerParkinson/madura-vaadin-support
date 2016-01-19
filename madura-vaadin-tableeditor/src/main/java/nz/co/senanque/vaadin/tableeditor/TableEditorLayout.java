@@ -44,38 +44,43 @@ import com.vaadin.ui.Window;
 
 /**
  * 
- * Layout with a table that handles popup editors. It can be used quite generically with just Spring wiring:
+ * Layout with a table that handles popup editors. It can be used quite generically with just Spring wiring:<br>
  * 
- *   &lt;bean id="personTableLayout" class="nz.co.senanque.vaadinsupport.tableeditor.TableEditorLayout"&gt;
- *       &lt;property name="container" ref="personContainer"/&gt;
- *       &lt;property name="columns"&gt;
- *           &lt;list&gt;
- *               &lt;value&gt;name&lt;/value&gt;
- *               &lt;value&gt;address&lt;/value&gt;
- *               &lt;value&gt;email&lt;/value&gt;
- *           &lt;/list&gt;
- *       &lt;/property&gt;
- *       &lt;property name="editorWindow" ref="editorWindow"/&gt;
- *   &lt;/bean&gt;
- *   
- *   &lt;bean id="editorWindow" class="nz.co.senanque.vaadinsupport.tableeditor.EditorWindowImpl" &gt;
- *       &lt;constructor-arg ref="maduraSessionManager"/&gt;
- *       &lt;constructor-arg ref="viewManager"/&gt;
- *       &lt;constructor-arg value="person"/&gt;
- *       &lt;constructor-arg ref="messageSource"/&gt;
- *   &lt;/bean&gt;
+ * <pre>
+ * &#64;Autowired @Qualifier("personContainer") 
+ * private Container.Filterable personContainer;
+ * 
+ * &#64;Bean(name="personTableLayout")
+ * &#64;UIScope
+ * public TableEditorLayout<Person> getPersonTableLayout() {
+ *   TableEditorLayout<Person> ret = new TableEditorLayout<Person>("people", Person.class);
+ *   ret.setColumns(new String[]{"name","email","address","gender","startDate","amount"});
+ *   ret.setEditorWindow(new EditorWindowImpl<Person>("person",ValoTheme.BUTTON_PRIMARY));
+ *   ret.setContainer(personContainer);
+ *   return ret;
+ * }
+ * </pre>
  *
- * So you can inject your container, a list of fields and an editor implementation and you have a table that displays and edits
+ * So you can inject your container, a list of fields and an editor implementation and you get a table that displays and edits
  * the contents of the container. Extend the EditorWindow to add special fields if necessary. You can also inject a list of headings
  * which will override the field names when displaying the table heading. Regardless these are translated to the current user's locale.
  * 
  *  The container needs to implement com.vaadin.addon.jpacontainer.Editor<T> if you want to use
  *  the editor functions (and if you don't you might wonder why you need this). The obvious container to use is com.vaadin.addon.jpacontainer.JPAContainerEditor<T>
- *  and you normally use a factory wired like this (using a locally defined Person type):
+ *  and you normally use a configuration like this (using a locally defined Person type):<br>
  *  
- *   &lt;bean id="personContainer" class="com.vaadin.addon.jpacontainer.JPAContainerEditorFactory"&gt;
- *   	&lt;property name="type" value="nz.co.senanque.addressbook.instances.Person"/&gt;
- *   &lt;/bean&gt;
+ * <pre>
+ * &#64;PersistenceContext
+ * private EntityManager entityManager;
+ *
+ * &#64;Bean(name="personContainer")
+ * public JPAContainerEditor<Person> getPersonContainer() throws Exception {
+ *  JPAContainerEditor<Person> container = new JPAContainerEditor<Person>(Person.class, entityManager);
+ *  EntityProvider<Person> entityProvider = new MutableLocalEntityProvider<Person>(Person.class, entityManager); 
+ *  container.setEntityProvider(entityProvider);
+ *  return container;
+ * }
+ * </pre>
  * 
  * @author Roger Parkinson
  * @version $Revision:$

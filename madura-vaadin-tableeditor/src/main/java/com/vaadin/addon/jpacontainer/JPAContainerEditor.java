@@ -18,17 +18,28 @@ package com.vaadin.addon.jpacontainer;
 import java.io.Serializable;
 
 import javax.persistence.EntityManager;
+
 import nz.co.senanque.vaadin.tableeditor.Editor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * This extends the com.vaadin.addon.jpacontainer.JPAContainer to add Spring's Transactional capabilities. Use a factory to create it, like this:
+ * This extends the com.vaadin.addon.jpacontainer.JPAContainer to add Spring's Transactional capabilities. Create it as a bean like this:<br>
  *  
- *   &lt;bean id="personContainer" class="com.vaadin.addon.jpacontainer.JPAContainerEditorFactory"&gt;
- *   	&lt;property name="type" value="nz.co.senanque.addressbook.instances.Person"/&gt;
- *   &lt;/bean&gt;
+ * <pre>
+ * &#64;PersistenceContext
+ * private EntityManager entityManager;
+ *
+ * &#64;Bean(name="personContainer")
+ * public JPAContainerEditor<Person> getPersonContainer() throws Exception {
+ *  JPAContainerEditor<Person> container = new JPAContainerEditor<Person>(Person.class, entityManager);
+ *  EntityProvider<Person> entityProvider = new MutableLocalEntityProvider<Person>(Person.class, entityManager); 
+ *  container.setEntityProvider(entityProvider);
+ *  return container;
+ * }
+ * </pre>
  * 
  * @author Roger Parkinson
  *

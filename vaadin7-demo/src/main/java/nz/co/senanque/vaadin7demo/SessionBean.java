@@ -16,7 +16,7 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 
 /**
- * @author roger
+ * @author Roger Parkinson
  *
  */
 @Component

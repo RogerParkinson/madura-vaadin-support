@@ -24,8 +24,6 @@ import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
