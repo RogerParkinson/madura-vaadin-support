@@ -2,6 +2,7 @@ package nz.co.senanque.vaadin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,13 +90,14 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	// this will configure labels, menuitems, and buttons
     	configure((BeanItem<ValidationObject>) itemDataSource);
 	}
-    
+	
+   
     /**
      * Establish the Madura binding for the fields.
      * 
      * @param dataSource
      */
-    private void configure(BeanItem<ValidationObject> dataSource) {
+    private void configure(BeanItem<? extends ValidationObject> dataSource) {
     	if (m_maduraSessionManager == null) {
     		return; // too early
     	}
@@ -293,12 +295,15 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	throw new RuntimeException("use buildAndBind(Layout panel, String[] fields, BeanItem<ValidationObject> itemDataSource) instead");
     }
     
+	public void buildAndBind(AbstractComponentContainer panel, String[] fields, BeanItem<? extends ValidationObject> itemDataSource) {
+		buildAndBind(panel,Arrays.asList(fields),itemDataSource);
+	}
 	/* (non-Javadoc)
 	 * @see nz.co.senanque.vaadin.MaduraFieldGroup#buildAndBind(com.vaadin.ui.Layout, java.util.List, com.vaadin.data.util.BeanItem)
 	 */
 	@Override
-	public void buildAndBind(AbstractComponentContainer panel, List<String> fields, BeanItem<ValidationObject> itemDataSource) {
-		m_maduraSessionManager.getValidationSession().bind(((BeanItem<ValidationObject>)itemDataSource).getBean());
+	public void buildAndBind(AbstractComponentContainer panel, List<String> fields, BeanItem<? extends ValidationObject> itemDataSource) {
+		m_maduraSessionManager.getValidationSession().bind(((BeanItem<? extends ValidationObject>)itemDataSource).getBean());
 		// the super call will only bind fields
     	super.setItemDataSource(itemDataSource);
     	m_properties.clear();
