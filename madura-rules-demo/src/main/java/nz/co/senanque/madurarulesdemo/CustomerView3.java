@@ -116,11 +116,6 @@ public class CustomerView3 extends VerticalLayout {
         fieldGroup.bind(menuItemSubmit);
 
     }
-    /* 
-     * This is where we establish the actual customer object. 
-     * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
-     * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
-     */
     public void load(Customer customer) {
 		m_customer = customer;
 		fieldGroup.setItemDataSource(new BeanItem<Customer>(m_customer));
