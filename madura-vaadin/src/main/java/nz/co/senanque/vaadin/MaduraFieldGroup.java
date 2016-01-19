@@ -21,9 +21,27 @@ public interface MaduraFieldGroup {
 	 * @see com.vaadin.data.fieldgroup.FieldGroup#setItemDataSource(com.vaadin.data.Item)
 	 */
 	public abstract void setItemDataSource(Item itemDataSource);
+	
+	public Item getItemDataSource();
+	
+	/**
+	 * Creates the fields on the panel and binds them to properties in the data source.
+	 * 
+	 * @param panel
+	 * @param fields
+	 * @param itemDataSource
+	 */
+	public void buildAndBind(AbstractComponentContainer panel, String[] fields, BeanItem<? extends ValidationObject> itemDataSource);
 
+	/**
+	 * Creates the fields on the panel and binds them to properties in the data source.
+	 * 
+	 * @param panel
+	 * @param fields
+	 * @param itemDataSource
+	 */
 	public abstract void buildAndBind(AbstractComponentContainer panel, List<String> fields,
-			BeanItem<ValidationObject> itemDataSource);
+			BeanItem<? extends ValidationObject> itemDataSource);
 
 	public abstract void unbind();
 
