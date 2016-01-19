@@ -49,6 +49,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -56,9 +58,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.UserError;
-import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractSelect;
@@ -79,7 +79,8 @@ import com.vaadin.ui.UI;
  * @version $Revision:$
  */
 @Component("maduraSessionManager")
-@UIScope
+@Scope(value="vaadin-ui", proxyMode = ScopedProxyMode.TARGET_CLASS)
+//@UIScope
 public class MaduraSessionManager implements Serializable, MessageSourceAware, InitializingBean
 {
 	private static final long serialVersionUID = -1L;
