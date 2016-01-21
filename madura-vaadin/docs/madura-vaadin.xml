@@ -98,6 +98,7 @@
         <code><![CDATA[
 ...
 <context:component-scan base-package="nz.co.senanque.vaadindemo, nz.co.senanque.login" />
+<bean id="permissionManager" class="nz.co.senanque.vaadin.permissionmanager.PermissionManagerImpl" scope="vaadin-ui"/>
 <bean id="messageSource" class="nz.co.senanque.resourceloader.ResourceBundleMessageSourceExt">
 	<property name="basenames">
 		<list>
@@ -107,7 +108,9 @@
 </bean>
 </bean>
         ]]></code>
-        <p>This does two things. It tells Spring to scan the application package for component beans, and the login package as well because it has components we want too. It also creates
+        <p>This does three things. It tells Spring to scan the application package for component beans, and the login package as well because it has components we want too. 
+        It defines the <courier>permissionManager</courier> bean which is needed to hold this user's permissions. There is more about this in <sectionLink t="madura-login"/>. 
+        The context file also creates
         the message source. <courier>ApplicationMessages</courier> are the messages for the current demo. <courier>ResourceBundleMessageSourceExt</courier> is just like Spring's 
         <courier>ResourceBundleMessageSource</courier> except it can go find the properties files in various jar files by itself.</p>
         <p>But most of the Spring configuration is in the code. Each demo has a class that extends <courier>com.vaadin.ui.UI</courier> called either 
@@ -604,13 +607,23 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <h1 t="madura-login">
         <img width="12cm" href="images/Login.png">Login Screen</img>
         <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
-        <p>To configure it into an application we need to tell Spring which directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.</p>
-        <p>That is the minimum. But we can do more with security. First, we can remove the existing login mechanism on any of the demos and replce it with something else. Second,
+        <p>To configure it into an application we need to tell Spring which directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.
+        That file also defines the <courier>permissionManager</courier> bean, although we could have added it with a <courier>@Bean</courier> in the <courier>@Configuration</courier> like this:</p>
+        <code><![CDATA[
+@Bean(name="permissionManager")
+@UIScope
+public PermissionManager getPermissionManager() {
+	PermissionManagerImpl ret = new PermissionManagerImpl();
+	return ret;
+	}
+        ]]></code>
+        <p>The <courier>@UIScope</courier> does the same job as the <courier>scope="vaadin-ui"</courier> on the bean definition in the context file.</p>
+        <p>That is the minimum. But we can do more with security. First, we can remove the existing login mechanism on any of the demos and replace it with something else. Second,
         we can keep the existing login mechanism and reconfigure it or extend it.</p>
         <h2 t="Replacing madura-login">
         <p>The connection between madura-login and the application is deliberately loose. The login process puts some attributes into the session
         and the application code pulls them out and uses them to configure the <courier>PermissionManager</courier>. Madura uses the <courier>PermissionManager</courier>
-        for all security references. So it you don't want to use madura-login you need to provide another way to configure the <courier>PermissionManager</courier>.</p>
+        for all security references. So if you don't want to use madura-login you need to provide another way to configure the <courier>PermissionManager</courier>.</p>
         <p>This is easily done by supplying a bean that implements the <courier>PermissionResolver</courier> interface:</p>
         <code><![CDATA[
 @Component("permissionResolver")
