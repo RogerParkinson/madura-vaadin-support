@@ -28,6 +28,7 @@ import java.util.Map.Entry;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import nz.co.senanque.logging.HashIdLogger;
 import nz.co.senanque.vaadin.application.MaduraConverterFactory;
 import nz.co.senanque.vaadin.application.PropertyNotFoundException;
 import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
@@ -81,7 +82,7 @@ import com.vaadin.ui.UI;
 @Component("maduraSessionManager")
 @Scope(value="vaadin-ui", proxyMode = ScopedProxyMode.TARGET_CLASS)
 //@UIScope
-public class MaduraSessionManager implements Serializable, MessageSourceAware, InitializingBean
+public class MaduraSessionManager implements Serializable, MessageSourceAware
 {
 	private static final long serialVersionUID = -1L;
 	private static Logger logger = LoggerFactory.getLogger(MaduraSessionManager.class);
@@ -104,6 +105,8 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	public void init() {
 		VaadinSession session = VaadinSession.getCurrent();
 		session.setConverterFactory(getMaduraConverterFactory());
+		m_formFieldFactory.setMaduraSessionManager(this);
+		HashIdLogger.log(this,session);
 	}
     private class MenuItemWrapper extends AbstractComponent {
     	
@@ -669,9 +672,6 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware, I
 	}
 	public MessageSource getMessageSource() {
 		return m_messageSource;
-	}
-	public void afterPropertiesSet() throws Exception {
-		m_formFieldFactory.setMaduraSessionManager(this);
 	}
 	public MaduraConverterFactory getMaduraConverterFactory() {
 		return m_maduraConverterFactory;
