@@ -30,6 +30,10 @@ public class FormatterFactory
     {
         if (type == Double.TYPE || type == Double.class)
         {
+            return new FormatterFloat();
+        }
+        if (type == Float.TYPE || type == Float.class)
+        {
             return new FormatterDouble();
         }
         if (type == Long.TYPE || type == Long.class)
