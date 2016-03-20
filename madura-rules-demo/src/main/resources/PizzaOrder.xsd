@@ -36,6 +36,20 @@
 		</xsd:appinfo>
 	</xsd:annotation>
 
+    <xsd:simpleType name="TaskStatus">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="pending"/>
+            <xsd:enumeration value="done"/>
+            <xsd:enumeration value="busy"/>
+            <xsd:enumeration value="error"/>
+            <xsd:enumeration value="aborted"/>
+            <xsd:enumeration value="aborting"/>
+            <xsd:enumeration value="wait"/>
+            <xsd:enumeration value="timeout"/>
+            <xsd:enumeration value="go"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
 	<complexType name="Customer">
 		<sequence>
 			<element name="id" type="long">
@@ -190,6 +204,7 @@
 					</xsd:appinfo>
 				</xsd:annotation>
 			</element>
+            <element name="status" type="tns:TaskStatus" nillable="true"/>
 		</sequence>
 	</complexType>
 

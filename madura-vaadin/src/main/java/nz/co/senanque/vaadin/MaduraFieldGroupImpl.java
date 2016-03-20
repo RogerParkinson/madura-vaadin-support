@@ -18,6 +18,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
@@ -135,7 +136,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	ValidationObject source = getDataSource();
     	MaduraPropertyWrapper p = getMaduraPropertyWrapper(source,getPropertyId(field),true);
     	AbstractField<?> f = (AbstractField<?>)field;
-    	m_hints.setCommonProperties(f, p, m_messageSource);
+//    	m_hints.setCommonProperties(f, p, m_messageSource);
     	m_maduraSessionManager.bind(f, p);
     }
     
@@ -287,7 +288,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     }
     
     /**
-     * Using this in inevitably wrong
+     * Using this is inevitably wrong
      * 
      * @see com.vaadin.data.fieldgroup.FieldGroup#buildAndBind(java.lang.Object)
      */
@@ -328,6 +329,19 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     		return maduraPropertyWrapper;
     	}
     	throw new RuntimeException("No such property defined: "+propertyId);
+    }
+    public void destroy()
+    {
+        MaduraSessionManager maduraSessionManager = getMaduraSessionManager();
+        for (MaduraPropertyWrapper property: m_properties)
+        {
+            AbstractComponent field = (AbstractComponent)getField(property.getName());
+            maduraSessionManager.deregister(field);
+        }
+        for (Button button : m_myButtons)
+        {
+            maduraSessionManager.deregister(button);
+        }
     }
     
     /* (non-Javadoc)

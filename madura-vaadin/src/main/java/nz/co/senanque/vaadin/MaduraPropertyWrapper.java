@@ -17,6 +17,7 @@ package nz.co.senanque.vaadin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -127,7 +128,31 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
 	 * @see com.vaadin.data.Property#getType()
 	 */
 	public Class<?> getType() {
-		return (m_dataType==Date.class)?Date.class:String.class;
+		if (m_dataType == String.class) {
+			return String.class;
+		}
+		if (m_dataType == Float.TYPE) {
+			return Float.class;
+		}
+		if (m_dataType == Double.TYPE) {
+			return Double.class;
+		}
+		if (m_dataType == Boolean.TYPE) {
+			return Boolean.class;
+		}
+		if (m_dataType == Integer.TYPE) {
+			return Integer.class;
+		}
+		if (m_dataType == Long.TYPE) {
+			return Long.class;
+		}
+		if (m_dataType == Date.class) {
+			return Date.class;
+		}
+		if (m_dataType == BigDecimal.class) {
+			return BigDecimal.class;
+		}
+		return String.class;
 	}
 
 	/* (non-Javadoc)
@@ -162,7 +187,7 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
             }
             if (m_propertyFormatter != null)
             {
-                ret = m_propertyFormatter.format(ret);
+//                ret = m_propertyFormatter.format(ret);
             }
 //            logger.debug("getValue() {} {}",getFullName(),ret); 
             return ret;
@@ -203,7 +228,7 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
             {
                 try
                 {
-                    converted =  m_propertyFormatter.parse(String.valueOf(newValue));
+//                    converted =  m_propertyFormatter.parse(String.valueOf(newValue));
                 }
                 catch (Exception e)
                 {

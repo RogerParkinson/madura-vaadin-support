@@ -43,11 +43,11 @@ public class ApplicationVersionFactory implements FactoryBean<String>,ServletCon
 	@PostConstruct
 	public void init() throws IOException {
 		InputStream is = getClass().getClassLoader().getResourceAsStream(name);
-		if (is == null) {
+		if (is == null && m_servletContext != null) {
 			is = m_servletContext.getResourceAsStream("/META-INF/MANIFEST.MF");
-			if (is == null) {
-				return;
-			}
+		}
+		if (is == null) {
+			return;
 		}
 		m_props.load(is);
 	}

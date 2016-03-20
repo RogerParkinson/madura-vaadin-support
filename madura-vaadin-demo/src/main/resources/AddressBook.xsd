@@ -135,12 +135,72 @@ limitations under the License.
 					</xsd:appinfo>
 				</xsd:annotation>
 			</element>
-			<element name="amount" type="double" default="10000.50">
+			<element name="amountDouble" type="double" default="10000.50">
 				<xsd:annotation>
 					<xsd:appinfo>
 						<annox:annotate>
 							<md:Label labelName="person.amount" />
 							<md:Range maxInclusive="11000"/>
+							<md:Digits integerDigits="8" fractionalDigits="2"/>
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="amountFloat" type="float" default="10000.50">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="person.float" />
+							<md:Range maxInclusive="11000"/>
+							<md:Digits integerDigits="8" fractionalDigits="2"/>
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="booleanValue" type="boolean">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="person.boolean" />
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="longValue" type="long">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="long" />
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="integerValue" type="int">
+				<xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="int" />
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="decimalValue" type="decimal" >
+				
+                    <xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="decimal" />
+							<md:Digits integerDigits="8" fractionalDigits="2"/>
+						</annox:annotate>
+					</xsd:appinfo>
+				</xsd:annotation>
+			</element>
+			<element name="mydecimalValue" type="tns:myNumber" >
+				
+                    <xsd:annotation>
+					<xsd:appinfo>
+						<annox:annotate>
+							<md:Label labelName="mydecimal" />
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>
@@ -149,7 +209,13 @@ limitations under the License.
 		</sequence>
 	</complexType>
 
-
+	<xsd:simpleType name="myNumber">
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="5" />
+			<xsd:fractionDigits value="2" />
+		</xsd:restriction>
+	</xsd:simpleType> 
+  
 	<element name="Session" type="tns:Session"></element>
 
 	<complexType name="Session">

@@ -41,7 +41,8 @@ public class LabelProperty<T> extends AbstractProperty<T> {
 
 	@SuppressWarnings("unchecked")
 	public T getValue() {
-        String ret = (m_property.getValue()==null)?null:String.valueOf(m_property.getValue());
+//        String ret = (m_property.getValue()==null)?null:String.valueOf(m_property.getValue());
+        T ret = (T)m_property.getValue();
         return (T)ret;
 	}
 

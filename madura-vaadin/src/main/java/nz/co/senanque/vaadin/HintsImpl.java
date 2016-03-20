@@ -94,7 +94,24 @@ public class HintsImpl implements Hints, Serializable {
     public void setCommonProperties(final AbstractField<?> ret, final MaduraPropertyWrapper property, final MessageSource messageSource)
     {
         ret.setWidth(getWidth());
-        ret.setPropertyDataSource(property);
+		if (ret instanceof AbstractSelect) {
+			AbstractSelect select = (AbstractSelect) ret;
+			select.setConverter(new StringToChoiceBase(property));
+			for (ChoiceBase v : property.getAvailableValues()) {
+				select.addItem(v);
+//				if (v.getKey().equals(property.getValue())) {
+//					select.setValue(v);
+//				}
+			}
+			ChoiceBase v = (ChoiceBase)property.getValue();
+			select.setValue(v);
+		}
+        try {
+			ret.setPropertyDataSource(property);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         ret.setCaption(property.getLabel());
         ret.setRequired(property.isRequired());
         if (property.isRequired())
@@ -130,16 +147,6 @@ public class HintsImpl implements Hints, Serializable {
                 }
 				
 			}});
-		if (ret instanceof AbstractSelect) {
-			AbstractSelect select = (AbstractSelect) ret;
-			select.setConverter(new StringToChoiceBase(property));
-			for (ChoiceBase v : property.getAvailableValues()) {
-				select.addItem(v);
-				if (v.getKey().equals(property.getValue())) {
-					select.setValue(v);
-				}
-			}
-		}
         ret.setBuffered(false);
 
     }

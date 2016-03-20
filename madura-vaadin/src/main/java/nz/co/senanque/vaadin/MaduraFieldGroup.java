@@ -153,6 +153,8 @@ public interface MaduraFieldGroup {
 	public abstract void setReadOnly(boolean b);
 
 	public abstract void buildAndBindMemberFields(Object objectWithMemberFields);
+	
+	public void destroy();
 
 
 }

@@ -85,5 +85,8 @@ public class ButtonProperty implements Property<Boolean>, MessageSourceAware {
 		// TODO Auto-generated method stub
 		
 	}
+	public String toString() {
+		return m_rawCaption;
+	}
 
 }

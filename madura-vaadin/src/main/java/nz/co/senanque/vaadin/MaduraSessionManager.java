@@ -101,6 +101,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware
     @Value("${nz.co.senanque.vaadin.application.MaduraSessionManager.suppressUpdates:false}")
     private transient boolean m_suppressUpdates;
     
+    public MaduraSessionManager() {
+    	HashIdLogger.log(this,"constructor");
+    }
+    
 	@PostConstruct
 	public void init() {
 		VaadinSession session = VaadinSession.getCurrent();
@@ -190,10 +194,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware
 			if (fieldx.equals(field)) continue;
 			if ((fieldx instanceof Button) && !(fieldx instanceof CheckBox))
 			{
-				ButtonProperty p = (ButtonProperty)fieldx.getData();
+				Object p = fieldx.getData();
 				if (p != null && p instanceof ButtonProperty)
 				{
-					p.getPainter().paint((Button)fieldx);
+					((ButtonProperty)p).getPainter().paint((Button)fieldx);
 					fieldx.markAsDirty();
 				}
 				continue;

@@ -48,7 +48,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
     private final VerticalLayout m_panel = new VerticalLayout();
     protected MaduraFieldGroup m_maduraFieldGroup;
 	private MessageSource m_messageSource;
-	private String[] fields = new String[]{"name","email","address","gender","startDate","amount"};
+	private String[] fields = new String[]{"name","email","address","gender","startDate","amountDouble","amountFloat","booleanValue","longValue","integerValue","decimalValue","mydecimalValue"};
 
     /*
      * Defines the form, buttons and their connections to Madura

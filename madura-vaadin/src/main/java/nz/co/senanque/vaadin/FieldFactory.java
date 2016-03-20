@@ -18,6 +18,8 @@ package nz.co.senanque.vaadin;
 import java.util.Date;
 import java.util.List;
 
+import nz.co.senanque.logging.HashIdLogger;
+import nz.co.senanque.vaadin.application.MaduraNumericConverter;
 import nz.co.senanque.validationengine.ValidationObject;
 import nz.co.senanque.validationengine.choicelists.ChoiceBase;
 
@@ -27,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.spring.annotation.SpringComponent;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
@@ -45,7 +47,7 @@ import com.vaadin.ui.Field;
  *
  */
 @SuppressWarnings("unchecked")
-@SpringComponent("fieldFactory") // need the expanded name because there is a class called Component somewhere
+@org.springframework.stereotype.Component("fieldFactory") // need the expanded name because there is a class called Component somewhere
 @UIScope
 public class FieldFactory extends DefaultFieldFactory {
 	
@@ -55,8 +57,8 @@ public class FieldFactory extends DefaultFieldFactory {
     @Autowired private Hints m_hints;
     private MaduraSessionManager m_maduraSessionManager;
 
-    public FieldFactory()
-	{
+    public FieldFactory() {
+    	HashIdLogger.log(this,"constructor");
 	}
 	
     public Hints getHints() {
@@ -155,6 +157,11 @@ public class FieldFactory extends DefaultFieldFactory {
         if (ret == null)
         {
         	ret = hints.getTextField(property);
+        	ret.setConverter(type);
+        	Converter<?,Object> c = ret.getConverter();
+        	if (c != null && c instanceof MaduraNumericConverter) {
+        		((MaduraNumericConverter)c).setFractionDigits(property.getFieldMetadata().getFractionalDigits());
+        	}
         }
         ret.setInvalidCommitted(true);
     	getMaduraSessionManager().bind(getParentForm(ret), ret, property);
@@ -201,6 +208,7 @@ public class FieldFactory extends DefaultFieldFactory {
 
 	public void setMaduraSessionManager(MaduraSessionManager maduraSessionManager) {
 		m_maduraSessionManager = maduraSessionManager;
+		HashIdLogger.log(this,"");
 	}
 
 }
