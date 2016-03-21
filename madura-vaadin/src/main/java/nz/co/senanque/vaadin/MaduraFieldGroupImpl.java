@@ -45,6 +45,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
 	private List<MaduraPropertyWrapper> m_properties = new ArrayList<>();
 	private Map<Label,String> m_labels = new HashMap<>();
 	private List<MenuItem> m_menuItems = new ArrayList<>();
+	private String m_id;
 
     /**
      * Constructor insists on a {link nz.co.senanque.vaadin.application.MaduraSessionManager}.
@@ -54,10 +55,15 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
      * @param maduraSessionManager
      */
     protected MaduraFieldGroupImpl(MaduraSessionManager maduraSessionManager) {
+    	this(maduraSessionManager,null);
+	}
+
+    protected MaduraFieldGroupImpl(MaduraSessionManager maduraSessionManager, String id) {
 		m_maduraSessionManager = maduraSessionManager;
 		m_fieldFactory = maduraSessionManager.getFieldFactory();
 		m_messageSource = maduraSessionManager.getMessageSource();
 		m_hints = maduraSessionManager.getHints();
+		m_id = id;
 	}
 
 	/**
@@ -90,6 +96,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	super.setItemDataSource(itemDataSource);
     	// this will configure labels, menuitems, and buttons
     	configure((BeanItem<ValidationObject>) itemDataSource);
+    	m_maduraSessionManager.updateOtherFields(null);
 	}
 	
    

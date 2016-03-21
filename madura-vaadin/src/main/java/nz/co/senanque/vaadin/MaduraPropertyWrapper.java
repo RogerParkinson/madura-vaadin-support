@@ -252,8 +252,12 @@ public class MaduraPropertyWrapper implements com.vaadin.data.Property {
                     {
                         if (clazz.isEnum())
                         {
-                            Method fromValueMethod = clazz.getMethod("fromValue", String.class);
-                            converted = fromValueMethod.invoke(null,new Object[]{String.valueOf(newValue)});
+                            if (newValue == null) {
+                            	converted = null;
+                            } else {
+                            	Method fromValueMethod = clazz.getMethod("fromValue", String.class);
+                                converted = fromValueMethod.invoke(null,new Object[]{String.valueOf(newValue)});
+                            }
                         }
                         else
                         {

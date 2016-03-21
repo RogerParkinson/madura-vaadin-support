@@ -54,6 +54,7 @@ public class MyUI extends UI {
 	@Autowired private CustomerView m_customerView;
 	@Autowired private CustomerView2 m_customerView2;
 	@Autowired private CustomerView3 m_customerView3;
+	@Autowired private CustomerView4 m_customerView4;
 	@Autowired private OrderView m_orderView;
 	@Autowired private MyEventRouter m_eventRouter;
 	
@@ -112,24 +113,15 @@ public class MyUI extends UI {
 
         TabSheet tabsheet = new TabSheet();
         root.addComponent(tabsheet);
-
-        // Create the first tab
-        VerticalLayout tab1 = new VerticalLayout();
-        tab1.addComponent(m_customerView);
+        
+        tabsheet.addTab(createView(m_customerView), messageSourceAccessor.getMessage("Customer"));
         m_customerView.load(new Customer());
-        tabsheet.addTab(tab1, messageSourceAccessor.getMessage("Customer"));
-
-        // This tab gets its caption from the component caption
-        VerticalLayout tab3 = new VerticalLayout();
-        tab3.addComponent(m_customerView2);
+        tabsheet.addTab(createView(m_customerView2), "C2");
         m_customerView2.load(new Customer());
-        tabsheet.addTab(tab3,"C2");
-
-        // This tab gets its caption from the component caption
-        VerticalLayout tab4 = new VerticalLayout();
-        tab4.addComponent(m_customerView3);
+        tabsheet.addTab(createView(m_customerView3), "C3");
         m_customerView3.load(new Customer());
-        tabsheet.addTab(tab4,"C3");
+        tabsheet.addTab(createView(m_customerView4), "C4");
+        m_customerView4.load(new Customer());
 
         // This tab gets its caption from the component caption
         VerticalLayout tabOrder = new VerticalLayout();
@@ -152,6 +144,11 @@ public class MyUI extends UI {
 				}
 			}});
 
+    }
+    public VerticalLayout createView(VerticalLayout view) {
+        VerticalLayout tab = new VerticalLayout();
+        tab.addComponent(view);
+        return tab;
     }
 
 	public EventRouter getEventRouter() {

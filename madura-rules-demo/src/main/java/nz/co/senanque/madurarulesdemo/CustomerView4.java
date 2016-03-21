@@ -6,6 +6,7 @@ package nz.co.senanque.madurarulesdemo;
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
+import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
+import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
@@ -23,8 +25,10 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -38,12 +42,21 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @UIScope
 @Component
-public class CustomerView2 extends VerticalLayout {
+public class CustomerView4 extends VerticalLayout {
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private OneFieldWindowFactory m_oneFieldWindowFactory;
+	private Layout panel;
     private Customer m_customer;
     private FormLayout customerForm;
     private MaduraFieldGroup fieldGroup;
+    @PropertyId("name")
+    private TextField nameField = new TextField();
+    @PropertyId("email")
+    private TextField emailField = new TextField();
+    @PropertyId("gender")
+    private ComboBox genderField = new ComboBox();
+    @PropertyId("status")
+    private ComboBox statusField = new ComboBox();
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -53,28 +66,41 @@ public class CustomerView2 extends VerticalLayout {
     @PostConstruct
     void init() {
     	
-    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+        panel = new VerticalLayout();
+        addComponent(panel);
+    }
+    /* 
+     * This is where we establish the actual customer object. 
+     * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
+     * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
+     */
+    public void load(Customer customer) {
+        final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
 
-        final VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.setMargin(true);
-        verticalLayout.setSpacing(true);
-        addComponent(verticalLayout);
+		// Clean the panel of any previous fields
+		panel.removeAllComponents();
+		// bind the object to the Madura session
+		m_maduraSessionManager.getValidationSession().bind(customer);
+    	BeanItem<Customer> beanItem = new BeanItem<Customer>(customer);
 
-        customerForm = new FormLayout();
-        customerForm.setWidth("30%");
-        TextField nameField = new TextField();
-        TextField emailField = new TextField();
-        ComboBox genderField = new ComboBox();
+    	// make a new layout and add to the panel
+    	customerForm = new FormLayout();
+    	panel.addComponent(customerForm);
+    	
+    	fieldGroup = m_maduraSessionManager.createMaduraFieldGroup("CustomerView4");
+    	HorizontalLayout actions = createActions(messageSourceAccessor);
+    	fieldGroup.setItemDataSource(beanItem);
+    	fieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
+
         customerForm.addComponent(nameField);
         customerForm.addComponent(emailField);
         customerForm.addComponent(genderField);
-      
-        fieldGroup = m_maduraSessionManager.createMaduraFieldGroup("CustomerView2");
-        fieldGroup.bind(nameField, "name");
-        fieldGroup.bind(emailField, "email");
-        fieldGroup.bind(genderField, "gender");
-        verticalLayout.addComponent(customerForm);
+        customerForm.addComponent(statusField);
 
+        m_customer = customer;
+		customerForm.addComponent(actions);
+    }
+    private HorizontalLayout createActions(final MessageSourceAccessor messageSourceAccessor) {
 		HorizontalLayout actions = new HorizontalLayout();
 		Button cancel = fieldGroup.createButton("button.cancel", new ClickListener(){
 
@@ -105,16 +131,7 @@ public class CustomerView2 extends VerticalLayout {
 		actions.addComponent(cancel);
 		actions.addComponent(submit);
 		actions.addComponent(bmi);
-		customerForm.addComponent(actions);
-    }
-    /* 
-     * This is where we establish the actual customer object. 
-     * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
-     * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
-     */
-    public void load(Customer customer) {
-		m_customer = customer;
-		fieldGroup.setItemDataSource(new BeanItem<Customer>(m_customer));
+    	return actions;
     }
 	public OneFieldWindowFactory getOneFieldWindowFactory() {
 		return m_oneFieldWindowFactory;

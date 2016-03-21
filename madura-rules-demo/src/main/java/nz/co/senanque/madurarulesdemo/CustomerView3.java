@@ -83,7 +83,7 @@ public class CustomerView3 extends VerticalLayout {
 		headingButtonslLayout.addComponent(menuBar);
 		customerForm.addComponent(headingButtonslLayout, 0);
 
-        fieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
+        fieldGroup = m_maduraSessionManager.createMaduraFieldGroup("CustomerView3");
         fieldGroup.bind(nameField, "name");
         fieldGroup.bind(emailField, "email");
         fieldGroup.bind(genderField, "gender");

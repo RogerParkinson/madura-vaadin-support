@@ -45,7 +45,6 @@ import nz.co.senanque.validationengine.metadata.PropertyMetadata;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -412,6 +411,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware
     
     public MaduraFieldGroup createMaduraFieldGroup() {
     	return new MaduraFieldGroupImpl(this);
+    }
+
+    public MaduraFieldGroup createMaduraFieldGroup(String id) {
+    	return new MaduraFieldGroupImpl(this,id);
     }
 
     public void bind(final PropertiesSource form, final AbstractField<?> field,
