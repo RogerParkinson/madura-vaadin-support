@@ -300,29 +300,52 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
      * @see com.vaadin.data.fieldgroup.FieldGroup#buildAndBind(java.lang.Object)
      */
     public Field<?> buildAndBind(Object propertyId) throws BindException {
-    	throw new RuntimeException("use buildAndBind(Layout panel, String[] fields, BeanItem<ValidationObject> itemDataSource) instead");
+    	throw new RuntimeException("use buildAndBind(String[] fields, BeanItem<ValidationObject> itemDataSource) instead");
     }
     
+	@Override
+	public void buildAndBind(AbstractComponentContainer panel,
+			List<String> fields,
+			BeanItem<? extends ValidationObject> itemDataSource) {
+		Map<String,Field<?>> fieldList = buildAndBind(fields,itemDataSource);
+		panel.removeAllComponents();
+		for (Field<?> f: fieldList.values()) {
+			panel.addComponent(f);
+		}		
+	}
+	@Override
 	public void buildAndBind(AbstractComponentContainer panel, String[] fields, BeanItem<? extends ValidationObject> itemDataSource) {
-		buildAndBind(panel,Arrays.asList(fields),itemDataSource);
+		Map<String,Field<?>> fieldList = buildAndBind(Arrays.asList(fields),itemDataSource);
+		panel.removeAllComponents();
+		for (Field<?> f: fieldList.values()) {
+			panel.addComponent(f);
+		}
 	}
 	/* (non-Javadoc)
 	 * @see nz.co.senanque.vaadin.MaduraFieldGroup#buildAndBind(com.vaadin.ui.Layout, java.util.List, com.vaadin.data.util.BeanItem)
 	 */
 	@Override
-	public void buildAndBind(AbstractComponentContainer panel, List<String> fields, BeanItem<? extends ValidationObject> itemDataSource) {
+	public Map<String,Field<?>> buildAndBind(String[] fields, BeanItem<? extends ValidationObject> itemDataSource) {
+		return buildAndBind(Arrays.asList(fields),itemDataSource);
+	}
+	/* (non-Javadoc)
+	 * @see nz.co.senanque.vaadin.MaduraFieldGroup#buildAndBind(com.vaadin.ui.Layout, java.util.List, com.vaadin.data.util.BeanItem)
+	 */
+	@Override
+	public Map<String,Field<?>> buildAndBind(List<String> fields, BeanItem<? extends ValidationObject> itemDataSource) {
 		m_maduraSessionManager.getValidationSession().bind(((BeanItem<? extends ValidationObject>)itemDataSource).getBean());
 		// the super call will only bind fields
     	super.setItemDataSource(itemDataSource);
+    	Map<String,Field<?>> ret = new HashMap<>();
     	m_properties.clear();
-		panel.removeAllComponents();
 		for (String propertyId : fields) {
 	    	ValidationObject validationObject = getDataSource();
 	    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(validationObject,propertyId,true);
 	    	final Field<?> field = m_fieldFactory.createFieldByPropertyType(maduraPropertyWrapper);
-			panel.addComponent(field);
+			ret.put(propertyId,field);
 		}
 		configure(itemDataSource);
+		return ret;
 	}
     private MaduraPropertyWrapper getMaduraPropertyWrapper(ValidationObject validationObject, Object propertyId, boolean create) {
     	for (MaduraPropertyWrapper maduraPropertyWrapper: m_properties) {
@@ -420,6 +443,9 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
 	}
 
 	public Button createButton(String name, ButtonPainter painter, ClickListener listener) {
+		if (this.getItemDataSource() != null) {
+			throw new RuntimeException("Do not create components after setItemDataSource or buildAndBindMemberFields");
+		}
 		Button ret = m_hints.getButtonField(name, m_messageSource);
 		if (listener != null) {
 			ret.addClickListener(listener);
@@ -463,6 +489,9 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
 	}
 	public CommandExt createMenuItemCommandExt(final MenuItemPainter painter,
 			final ClickListener listener) {
+		if (this.getItemDataSource() != null) {
+			throw new RuntimeException("Do not create components after setItemDataSource or buildAndBindMemberFields");
+		}
 		final MaduraFieldGroupImpl me = this;
 		CommandExt ret = new CommandExt() {
 			MenuItemPainter m_menuItemPainter = painter;
@@ -508,6 +537,10 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
 	}
 	public MaduraPropertyWrapper findProperty(String propertyName) {
 		return m_maduraSessionManager.findProperty(propertyName, getProperties());
+	}
+
+	public String getId() {
+		return m_id;
 	}
 
 }

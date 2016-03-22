@@ -55,6 +55,7 @@ public class MyUI extends UI {
 	@Autowired private CustomerView2 m_customerView2;
 	@Autowired private CustomerView3 m_customerView3;
 	@Autowired private CustomerView4 m_customerView4;
+	@Autowired private CustomerView5 m_customerView5;
 	@Autowired private OrderView m_orderView;
 	@Autowired private MyEventRouter m_eventRouter;
 	
@@ -122,6 +123,8 @@ public class MyUI extends UI {
         m_customerView3.load(new Customer());
         tabsheet.addTab(createView(m_customerView4), "C4");
         m_customerView4.load(new Customer());
+        tabsheet.addTab(createView(m_customerView5), "C5");
+        m_customerView5.load(new Customer());
 
         // This tab gets its caption from the component caption
         VerticalLayout tabOrder = new VerticalLayout();

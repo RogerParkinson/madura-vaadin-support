@@ -1,6 +1,7 @@
 package nz.co.senanque.vaadin;
 
 import java.util.List;
+import java.util.Map;
 
 import nz.co.senanque.validationengine.ValidationObject;
 
@@ -42,6 +43,24 @@ public interface MaduraFieldGroup {
 	 */
 	public abstract void buildAndBind(AbstractComponentContainer panel, List<String> fields,
 			BeanItem<? extends ValidationObject> itemDataSource);
+
+	/**
+	 * Creates the fields and binds them to the properties in the data source. 
+	 * The fields are returned and can be placed on the window by the caller.
+	 * @param fields
+	 * @param itemDataSource
+	 * @return Map of created fields
+	 */
+	public abstract Map<String,Field<?>> buildAndBind(String[] fields, BeanItem<? extends ValidationObject> itemDataSource);
+
+	/**
+	 * Creates the fields and binds them to the properties in the data source. 
+	 * The fields are returned and can be placed on the window by the caller.
+	 * @param fields
+	 * @param itemDataSource
+	 * @return Map of created fields
+	 */
+	public abstract Map<String,Field<?>> buildAndBind(List<String> fields, BeanItem<? extends ValidationObject> itemDataSource);
 
 	public abstract void unbind();
 
