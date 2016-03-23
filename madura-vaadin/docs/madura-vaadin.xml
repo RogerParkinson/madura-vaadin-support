@@ -14,8 +14,10 @@
 			<reference t="Spring Framework" url="http://www.springframework.org" />
 			<reference t="Vaadin" url="https://vaadin.com/home"/>
 			<reference t="JPAContainer" url="https://vaadin.com/directory#!addon/vaadin-jpacontainer"/>
+			<reference t="madura-login" url="https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-login"/>
 			<reference t="MaduraObjects" url="https://github.com/RogerParkinson/madura-objects-parent"/>
 			<reference t="MaduraRules" url="https://github.com/RogerParkinson/madura-objects-parent/tree/master/madura-rules"/>
+			<reference t="Madura Rules Demo" url="https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-rules-demo"/>
 			<reference t="vaadin-touchkit" url="https://vaadin.com/add-ons/touchkit"/>
 			<reference t="vaadin-addon" url="https://vaadin.com/directory#!authoring/edit/addon=449"/>
 			<reference t="PhoneGap" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
@@ -26,7 +28,7 @@
 		<process-log/>
 		<process-references/>
 		<h1 t="Purpose">
-		<p><courier>madura-vaadin</courier> ties together all the back-end Madura projects (Madura Objects<referenceLink t="MaduraObjects"/> and Madura Rules<referenceLink t="MaduraRules"/>, and delivers 
+		<p><courier>madura-vaadin</courier> ties together all the back-end Madura projects (Madura Objects<referenceLink t="MaduraObjects"/> and Madura Rules<referenceLink t="MaduraRules"/> etc), and delivers 
 		them with a Vaadin UI<referenceLink t="Vaadin"/>. So it is worth taking a brief moment to review what those back-ends do:</p>
 		<list>
 		<le>Madura Objects builds your domain objects as annotated POJOs from an XSD file (using JAXB). The resulting objects behave just like POJOs except, when configured with the Madura Objects validation
@@ -48,7 +50,7 @@
 		<le>Permissions are enforced. If this user only has read-only permission on a field it will be rendered
 		but disabled. If they do not have read permission it will not be rendered. If no permissions are specified on
 		the field it will be rendered normally, so you only add permissions to fields you care about.</le>
-		<le>Fields marked Secret are rendered as Password style fields.</le>
+		<le>Fields marked Secret in the XSD are rendered as Password style fields.</le>
 		<le>Default values, if specified in the XSD, will be loaded in the obvious way.</le>
 		<le>Required fields are indicated as such using Vaadin defaults.</le>
 		<le>The submit buttons disable themselves until all the required fields are all filled in. They also disable
@@ -143,7 +145,7 @@ public class MyUI extends UI {
 		<p>There are also two auto wirings, one for the current MaduraSessionManager and one for a local class which defines most of the UI. There is
 		often more than one of these classes.</p>
 		<p>After that there is a static class that defines the configuration. It is worth noting that the above section is created and wired <emph>per session</emph> whereas this following section
-		is <emph>per application</emph>, ie singletons except for those annotated <courier>UIScope</courier> which are session beans.</p>
+		is <emph>per application</emph> ie singletons, except for those annotated <courier>UIScope</courier> which are session beans.</p>
         <code><![CDATA[
 ...
 @Configuration
@@ -206,12 +208,23 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 		<h1 t="madura-vaadin-demo">
 		<p>The interesting things in this project are in the <courier>nz.co.senanque.vaadindemo.DefaultView</courier>. You saw it briefly in the previous section so you know it is a session dependent bean and
 		it has a <courier>MaduraSessionManager</courier> injected.</p>
-		<p>It has an <courier>init</courier> method which runs once Spring has instantiated the bean and finished injecting everything. The first thing this does is create a <courier>MaduraFieldGroup</courier>. This
-		class is an extension of Vaadin's <courier>FieldGroup</courier> with some added methods for Madura. Here it is used to create two buttons. The two buttons don't do much (this is a demo, remember). But how they
-		are created is important.</p>
+		<p>It has an <courier>init</courier> method which runs once Spring has instantiated the bean and finished injecting everything. All it does is set up a layout called <courier>panel</courier>.</p>
+		<p>The <courier>load()</courier> method is passed a <courier>Person</courier> object. It does the following:</p>
+		<list>
+		<le>clears the <courier>panel</courier> layout we created in the <courier>init()</courier>.</le>
+		<le>makes sure the <courier>Person</courier> is bound to our validation session.</le>
+		<le>clears the <courier>panel</courier> layout we created in the <courier>init()</courier>.</le>
+		<le>Wrap the <courier>Person</courier> in a <courier>BeanItem</courier>.</le>
+		<le>Create a new layout and add it to the <courier>panel</courier>.</le>
+		<le>Use the Madura Session Manager to create a Madura Field Group.</le>
+		<le>Create the buttons, more detail below.</le>
+		<le>Create the fields using <courier>buildAndBind</courier>. Then add them to the form using a loop.</le>
+		</list>
+		<p>Creating the buttons is done <emph>before</emph> the rest of the fields are created. The code is in the <courier>createActions</courier> method which creates two buttons. The two 
+		buttons don't do much (this is a demo, remember). But how they are created is important.</p>
         <code><![CDATA[
 ...
-Button cancel = m_maduraFieldGroup.createButton("button.cancel", new ClickListener(){
+Button cancel = fieldGroup.createButton("button.cancel", new ClickListener(){
 ...
 	}});
 ...
@@ -219,7 +232,7 @@ Button cancel = m_maduraFieldGroup.createButton("button.cancel", new ClickListen
 		<p>There is not much to this really. It creates a button, translates the name and adds the listener. But we might have used a variation on this:</p>
         <code><![CDATA[
 ...
-Button cancel = m_maduraFieldGroup.createButton("button.cancel", "ADMIN", new ClickListener(){
+Button cancel = fieldGroup.createButton("button.cancel", "ADMIN", new ClickListener(){
 ...
 	}});
 ...
@@ -228,7 +241,7 @@ Button cancel = m_maduraFieldGroup.createButton("button.cancel", "ADMIN", new Cl
         <p>The second button is similar:</p>
         <code><![CDATA[
 ...
-Button submit = m_maduraFieldGroup.createSubmitButton("button.submit", new ClickListener(){
+Button submit = fieldGroup.createSubmitButton("button.submit", new ClickListener(){
 ...
 	}});
 ...
@@ -242,32 +255,20 @@ submit.setClickShortcut( KeyCode.ENTER );
 submit.addStyleName( ValoTheme.BUTTON_PRIMARY );
         ]]></code>
         <p>The style is optional and we've chosen the one one appropriate to Vaadin's Valo theme. If we were using a different theme we would use a different style here.</p>
-        <p>Apart from buttons the only other thing of importance created by the <courier>init</courier> method is the <courier>m_panel</courier>, an empty <courier>VerticalLayout</courier>. The <courier>init</courier>
-        method leaves it empty.</p>
-        <p>The <courier>load</courier> method is called when we are ready to display this part of the UI. It establishes the <courier>Person</courier> object we want to back the fields. <courier>Person</courier> is,
-        of course, defined in the XSD file. This is what the <courier>load</courier> method does:</p>
+        <p>After the buttons are created the next thing that happens is:</p>
         <code><![CDATA[
-public void load(Person person) {
-	m_maduraFieldGroup.buildAndBind(m_panel,Arrays.asList(fields),new BeanItem<ValidationObject>(person));
-}
+Map<String,Field<?>> fields = fieldGroup.buildAndBind(m_fields, beanItem);
         ]]></code>
-		<p>The list of field names as an array in the top of this class.</p>
-        <code><![CDATA[
-private String[] fields = new String[]{"name","email","address","gender","startDate","amount"};
-        ]]></code>
-        <p>Quite a few things happen in the BuildAndBind call.</p>
-        <list>
-        <le>Clear the <courier>m_panel</courier> of components (in case this is not the first time we called this).</le>
-        <le>Bind the <courier>person</courier> to the Madura Objects session.</le>
-        <le>Loop through the <courier>fields</courier> and for each one create an actual Field component, bind it to the Madura Object and add it to the <courier>m_panel</courier>.</le>
-        <le>Bind any buttons. dynamic labels and menu items.</le>
-        </list>
+        <p>This calls the field factory to create a field for each of the property ids in the <courier>m_fields</courier> array, binding each one to the <courier>beanitem</courier> object.
+        A short loop just after that adds these fields to the layout created earlier and they end up on the form.</p>
         <p>The result is a display with several fields, complete with I18n captions, backed by the Madura Object <courier>person</courier>. The buttons etc are also bound so that Submit button will be disabled
         if the <courier>person</courier> does not have all the required fields completed. The fields are all wired with validation and the field types vary by data type, so there are three text fields,
-		one drop down which is populated with choices, a date and a numeric text field.</p>
+		one drop down which is populated with choices, a date and several numeric text fields.</p>
         <p>This is not the only way to achieve this, and you will see alternative approaches in subsequent demos. They are summarised in <sectionLink t="MaduraFieldGroup and MaduraForm"/></p>
         <p>The result is in <figureLink t="Madura Vaadin Demo"/></p>
         <img width="12cm" href="images/VaadinDemo.png">Madura Vaadin Demo</img>
+        <p>Notice that two of the numeric fields are formatted with commas and periods. This is done according to the formating rules in the XSD. These adapt according to locale. The different field types,
+        including the boolean, are derived from the <courier>hints</courier> bean which you can customise for your own needs.</p>
 		</h1>
 		<h1 t="madura-rules-demo">
 		<p>This demo is more complicated, and it uses Madura Rules so there are some configuration differences too. We will look at those first.</p>
@@ -285,17 +286,17 @@ private String[] fields = new String[]{"name","email","address","gender","startD
 		<h2 t="CustomerView">
         <img width="12cm" href="images/RulesDemo1.png">Customer Screen</img>
 		<p>This is labelled 'Customer' on the UI (unless you are using the French version). It looks a bit like the first demo but with fewer fields and more buttons.</p>
-		<p>The code makes use of the <courier>MaduraForm</courier> class which, because it is based on Vaadin's <courier>Form</courier> is deprecated. It is still useful, though, as you'll see.</p>
-		<p>The <courier>enter</courier> method binds the object. This time we don't have to create the fields because the form handles that automatically based on the list of fields we set so all we need is:</p>
-        <code><![CDATA[
-customerForm.setItemDataSource(new BeanItem<Customer>(m_customer));
-        ]]></code>
-		<p>Like the <courier>MaduraFieldGroup</courier> you can use the <courier>MaduraForm</courier> to create buttons, with the same options and functionality. In this example we show a different sort of button.</p>
+		<p>There are 5 variants of this customer UI and you can see the others on tabs labelled C2...C5. They are functionally equivalent but each uses a different coding technique to achieve the
+		same result. The details of the code are covered in <referenceLink t="MaduraFieldGroup and MaduraForm"/>. For now you need to know the fields you see are bound to a <courier>Customer</courier>
+		object and will display fields from that object. There are two required fields (marked with red asterisks) on the form. That means they have to be given values, and they have to
+		be correct values. This becomes important in the <courier>email</courier> field which needs to be of the form <courier>xx@xxx</courier>. You should try the demo with different values
+		and see how errors are displayed etc. Notice that the Submit button does not enable until both required fields have valid values. This is the same as the madura-vaadin-demo <sectionLink t="madura-vaadin-demo"/>.</p>
+		<p>The demo also has a disabled BMI button. This is a different sort of button, created using:</p>
         <code><![CDATA[
 Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ADMIN", new ClickListener(){
         ]]></code>
-        <p>There is a boolean field called <courier>dynamic</courier> in the <courier>Customer</courier> object and this creates a button that is disabled or enabled depending on whether <courier>dynamic</courier>
-        is false or true. This would not be all that useful if nothing changed the value of <courier>dynamic</courier>. but there is a rule in the RUL file:</p>
+        <p>There is a boolean field called <courier>dynamic</courier> in the <courier>Customer</courier> object and this code creates a button that is disabled or enabled depending on whether <courier>dynamic</courier>
+        is false or true. This would not be all that useful if nothing changed the value of <courier>dynamic</courier>, but there is a rule in the <courier>PizzaOrder.rul</courier> file:</p>
         <code><![CDATA[
 rule: Customer "dynamic"
 {
@@ -328,31 +329,21 @@ formula: Customer "BMI"
         their height in metres. But that is okay. You can say you don't know and it will ask for feet then inches (two prompts). This feature can be used to simplify complicated input sequences that may need only a few
         relevant inputs, depending on the context. If the property is already filled in, perhaps the height was obtained earlier, then it knows not to ask for it. This example shows a fairly simple level of nesting,
         but it can go infinitely deep.</p>
-		</h2>
-		<h2 t="CustomerView2">
-		<p>This is labelled 'C2' on the TabSet. It is functionally the same as the Customer tab but shows a different way of doing it. In this case the <courier>MaduraFieldGroup</courier> is used and the fields are created explicitly then
-		bound to the <courier>MaduraFieldGroup</courier>. The buttons are created by calls to the <courier>MaduraFieldGroup</courier> instead of the <courier>MaduraForm</courier> but the same thing happens. This approach
-		allows you full control over what kind of fields you want and where you want to position them. For example the <courier>ComboBox</courier> might be changed to a
-		<courier>TextBox</courier> if we wanted (though we probably don't want to because we like the drop down choice list).</p>
-		<p>As before the <courier>enter</courier> method binds the object. And as before we don't have to create the fields here because that is already done.</p>
-		</h2>
-		<h2 t="CustomerView3">
-		<p>This is labelled 'C3' on the TabSet. It is almost identicle to C2 but instead of buttons it uses a <courier>MenuBar</courier>. This is done much the same way as buttons and the submit menu item
-		enables and disables in the same way. Field buttons (eg the BMI button) are not provided for menu items so this one is a bit simpler.</p>
+        <p>The other tabs (C2...C5) do the same thing, with a slight variation in C3 which uses a menu item rather than a Submit button.</p>
 		</h2>
 		<h2 t="OrderView">
 		<p>The order view is labelled 'Order' on the TabSet. This one does a little order entry function, like a shopping cart. We are ordering pizza but we need to say what kind of topping, size and base
 		we want. And not all combinations are allowed. As we order pizzas they appear in the table on the order view.</p>
 		<p>In this view we use a <courier>MaduraFieldGroup</courier> to display the status of the order in  two labels. The interesting thing about this is that instead of using input fields, which
-		you have already seen, these components are labels and they are dynamic as we shall see. If we get the <courier>MaduraFieldGroup</courier> (or the <courier>MaduraForm</courier>) to create the fields
-		it will always create input fields because it doesn't know any better. So this is an example of adding customisation.</p>
+		you have already seen, these components are labels and they are dynamic as we shall see. If we get the <courier>MaduraFieldGroup</courier> to create the fields
+		it will always create input fields, possibly disabled ones, because it doesn't know any better. So this is an example of adding customisation.</p>
 		<p>The table is a <courier>FormattingTable</courier> which extends Vaadin's table to handle I18n headings and formating numerics. There are two columns on this table and one of them is numeric.
 		To set it up all we need to do is name the properties we want to display ("description","-amount") and add a minus sign to the amount to right justify it. And we also name the headings ("Description","Amount"). 
 		Those headings will be used as is if there is no resource translation, but if there is the translation will be used.</p>
-		<p>There are two buttons which popup two windows: 'Add Item' and 'Add Item 2'. Each of these create an order item, but they do it two different ways.</p>
+		<p>The 'Add Item' button creates a popup window which allows you to create an order item.</p>
 		<h3 t="PizzaWindow">
         <img width="12cm" href="images/RulesDemo2.png">Pizza Screen</img>
-		<p>The 'Add Item' button invokes the <courier>PizzaWindow</courier>. This uses a <courier>MaduraForm</courier> to present the fields on the <courier>Pizza</courier> object. The code is similar to Customer view. It is worth running the demo at this point to see what it does.
+		<p>The 'Add Item' button invokes the <courier>PizzaWindow</courier>. This uses a <courier>MaduraFieldGroup</courier> to present the fields on the <courier>Pizza</courier> object. The code is similar to Customer view. It is worth running the demo at this point to see what it does.
 		You can see the three fields: Base, Topping, Size. Because only some combinations are valid you will find that as you pick options in, say, the Topping field, and list of options on the Size field will change, and vice versa.
 		It doesn't matter what order you pick them. This is driven by the decision table in <courier>choices.xml</courier>. It does not have to be hard coded XML either, the values can be pulled from external sources such
 		as a database. How to do that is in the Madura Rules documentation.</p>
@@ -404,10 +395,6 @@ formula: Order "sum"
         <p>Again, the rules do not know about the UI and the UI does not know about the rules, but the values automatically update. This demo does not provide a way to delete pizzas but if it did the total
         and the status would update appropriately because the rules know to re-fire when the data they worked with changes.</p>
 		</h3>
-		<h3 t="PizzaWindow2">
-		<p>This also configures a pizza and it looks much the same as the PizzaWindow. The differences are that the way the fields are defined is different and the description field is a label rather than a text field. It makes use
-		of Vaadin's <courier>PropertyId</courier> annotation. When these are used we can call the <courier>buildAndBindMemberFields</courier> method to find and bind them.</p>
-		</h3>
 		</h2>
 		</h1>
 		<h1 t="madura-address-book">
@@ -445,6 +432,7 @@ formula: Order "sum"
 		<p>Most of the demos make use of <courier>MaduraFieldGroup</courier> in various ways, and the ones that do not use <courier>MaduraForm</courier>. How do you know what technique to use?</p>
 		<p>Bear in mind there are two distinct phases that are always present. The first phase is the initialise phase. This is called once at application startup or, more usually, at session startup. The second phase
 		is when we have an object such as a person, a customer or maybe a pizza, to bind to. This might be called multiple times as we operate on different customer or different pizzas.</p>
+		<p>This section refers to a number of examples and they are all found in Madura Rules Demo<referenceLink t="Madura Rules Demo"/> under <courier>src/main/java</courier>.</p>
 		<h2 t="MaduraForm">
 		<p><courier>MaduraForm</courier> is based on Vaadin's <courier>Form</courier> which is deprecated, a possible reason not to use it. <courier>Form</courier>, and therefore <courier>MaduraForm</courier> is
 		a <courier>Component</courier> which can be added to the display. You normally let the <courier>Form</courier> create its own fields and position them where it likes, usually in a vertical layout.</p>
@@ -456,62 +444,39 @@ formula: Order "sum"
 		<le>create any buttons you want using the form methods and position them where you like.</le>
 		</list>
 		<p>That was the initialisation phase. For the bind phase use <courier>setItemDataSource</courier>, to set a data source object. This triggers the creation of the UI fields.</p>
+		<p>The example for this is <courier>nz.co.senanque.madurarulesdemo.CustomerView</courier> and you will find this class running in the CustomerView tab.</p>
 		</h2>
-		<h2 t="MaduraFieldGroup Auto Create">
+		<h2 t="MaduraFieldGroup">
 		<p>The <courier>MaduraFieldGroup</courier> is the (non-deprecated) replacement to <courier>MaduraForm</courier>, which parallels the developments at Vaadin. The essential difference in the new class is that it
-		is <emph>not</emph> a component. You get to create the fields yourself and bind them. At least that seems to be Vaadin's intention, but we rather like passing a list of fields and having them created and placed
-		for us. The first step in the initialisation phase is to get a new <courier>MaduraFieldGroup</courier>:</p>
-        <code><![CDATA[
-m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
-        ]]></code>
-        <p>The create an empty <courier>Layout</courier>. The auto created fields will be placed on this layout.</p>
-        <p>Create any buttons and menu items.</p>
-        <p>The initialisation phase is done. When you have a object you want to bind to it you do this:</p>
-        <code><![CDATA[
-m_maduraFieldGroup.buildAndBind(m_panel,fields,new BeanItem<ValidationObject>(person));
-        ]]></code>
-		<p>This creates the fields from the list passed, adds them to your layout (<courier>m_panel</courier>) and binds them all to the object (<courier>person</courier>). It also binds any
-		buttons and/or menu items you created. When you are done you should call <courier>unbind</courier> to release the resources.</p>
-		<p>The <courier>hints</courier> bean controls how auto-created fields are supplied. The default bean is class <courier>nz.co.senanque.vaadin.HintsImpl</courier>. You could, for example, supply an extension of that
-		class instead with a modified <courier>getDateField</courier> that supplies a differently configured date field and so on.</p>
-		<p>The advantage of this approach is that you do not have to know much about the object being displayed, just the list of field names. Even that can be derived on the fly so you can make a very generic display
-		that adapts to the current object. The disadvantage is that you have little control of where the fields are actually placed.</p>
-		</h2>
-		<h2 t="MaduraFieldGroup Explicit Create">
-		<p>This is still using <courier>MaduraFieldGroup</courier> but the code explicitly creates the UI fields and adds them to some layout. You have complete control over what kinds of fields you create and
-		how you position them. You also need to call the <courier>MaduraFieldGroup</courier> method <courier>bind</courier> for each field like this:</p>
-       <code><![CDATA[
-fieldGroup.bind(nameField, "name");
-        ]]></code>
-        <p>You just pass a UI field you already created and an object field name. Do this for every UI field. An important point to note is that the field factory used in the auto create approach will normally generate input fields
-        such as <courier>TextBox</courier> and <courier>ComboBox</courier>. Perhaps you want to use a <courier>Label</courier> instead because you only ever want to display the value. Using this explicit create approach
-        you can easily do this because you get to decide the field type.</p>
-		<p>You still use the same methods to create buttons etc.</p>
-		<p>At bind time this is all you need:</p>
-       <code><![CDATA[
-fieldGroup.setItemDataSource(new BeanItem<Customer>(customer));
-        ]]></code>
-        <p>There is a variation on this that uses Vaadin's <courier>@PropertyId</courier> annotations. You create the fields explicitly as before but you annotate them like this:</p>
-       <code><![CDATA[
-@PropertyId("base")
-private ComboBox base = new ComboBox();
-@PropertyId("topping")
-private ComboBox topping = new ComboBox();
-@PropertyId("size")
-        ]]></code>
-        <p>You do a lot more at bind time with this variation. Once you have an object to bind to you do this:</p>
-       <code><![CDATA[
-maduraFieldGroup = new MaduraFieldGroup(getMaduraSessionManager());
-maduraFieldGroup.setItemDataSource(beanItem);
-maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the @PropertyId fields on this object and binds them
- 	
-// Now we have to add the fields to the panel
-formLayout.addComponent(base);
-formLayout.addComponent(topping);
-formLayout.addComponent(size);
-        ]]></code>
-        <p>We add the buttons in the same way as usual (but at bind time) and we are done. The main advantage of this approach is that you can use Vaadin's form designer which relies on the <courier>@PropertyId</courier> annotations.
-        We don't get much use out of the form designer ourselves so this may not be a compelling advantage.</p>
+		is <emph>not</emph> a component. You get to create the fields yourself and bind them. At least that seems to be Vaadin's intention, but we rather like passing a list of fields and having them created
+		for us. There are three different ways to use <courier>MaduraFieldGroup</courier> and these are covered in four examples: <courier>nz.co.senanque.madurarulesdemo.CustomerView2, nz.co.senanque.madurarulesdemo.CustomerView3, nz.co.senanque.madurarulesdemo.CustomerView4, nz.co.senanque.madurarulesdemo.CustomerView5</courier>.
+		When running the demo you can find these classes running under tabs C2, C3, C4 and C5.</p>
+		<p>But before you feel overcome by too many choices here we can say that our preference is for C5, and that C3 is a minor variation on C2, the difference being that it uses a menu bar rather than a button, so it does not really
+		count as a different approach. So what are the essential differences between these approaches and how do they work?</p>
+		<p>First let's look at the common elements: each of these classes is a Vaadin component, they extend <courier>com.vaadin.ui.VerticalLayout</courier>. They are all <courier>@UIScope</courier> components which means
+		they are all created per session by Spring. They each have a <courier>@PostConstruct</courier> method (named <courier>init</courier>) called by Spring, a <courier>load()</courier> method called by the aplication. They
+		are all injected with a <courier>MaduraSessionManager</courier> object because they all use Madura Objects.</p>
+		<p>When <courier>init()</courier> is called we do not have an object to display and update, that is passed in the <courier>load()</courier> method.</p>
+		<h3 t="C2 (and C3)">
+		<p>The <courier>init()</courier> method creates the field components and adds them to the layout, including the buttons and/or menu items. It does this using the injected <courier>MaduraSessionManager</courier>
+		object to create a <courier>MaduraFieldGroup</courier> and this is called to create menu items and buttons, as well as to bind the fields to the field group.</p>
+		<p>The <courier>load()</courier> just calls the <courier>setItemDataSource()</courier> on the field group already created.</p>
+		<p>You get complete control over what kinds of fields are created and where they are put with this approach. This can be an advantage and a disadvantage. You get precisely what you want, of course, but you have
+		to maintain consistency yourself. If, say, the status field is normally rendered as a <courier>ComboBox</courier> it is up to you to ensure it is a <courier>ComboBox</courier> here.</p>
+		</h3>
+		<h3 t="C4">
+		<p>In this example the <courier>init()</courier> method does very little, it just sets up a layout for us to add fields to later. The main work is done in the <courier>load()</courier> method which calls the field group <courier>buildAndBind()</courier> method.
+		The <courier>buildAndBind()</courier> method accepts a list of property ids and for each of those it creates a field driven by the customisable hints (<courier>nz.co.senanque.vaadin.Hints</courier>) bean. It
+		returns a map of property ids and components which are then added to the layout in whatever way we want.</p>
+		<p>The advantages of this approach is that you will get consistencey of field types generated for properties automatically, you do not have to remember that the status field ought to be a <courier>ComboBox</courier> but
+		you get complete control over where the fields are placed on the layout. You can even coerce them into different enabled/disabled states if you want, though we prefer to use Madura Objects to do that for us because, like
+		the field type, it gives us automatic consistency.</p>
+		</h3>
+		<h3 t="C5">
+		<p>This is very like the C4 example except that it uses another variant of the <courier>buildAndBind()</courier> method. It passes a layout in the first argument and dispenses with the
+		loop C4 used to add the fields to the layout. This <courier>buildAndBind()</courier> variant does the loop internally. It gives you less control over the placement of the fields but
+		it is less to code.</p> 
+		</h3>
 		</h2>
 		</h1>
         <h1 t="Mobile Applications">
