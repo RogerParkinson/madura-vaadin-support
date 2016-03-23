@@ -79,14 +79,9 @@ public class CustomerView5 extends VerticalLayout {
     	
     	fieldGroup = m_maduraSessionManager.createMaduraFieldGroup("CustomerView4");
     	HorizontalLayout actions = createActions(messageSourceAccessor);
-    	Map<String,Field<?>> fields = fieldGroup.buildAndBind(
+    	fieldGroup.buildAndBind(customerForm,
     			new String[]{"name","email","gender","status"},
     			beanItem);
-
-        customerForm.addComponent(fields.get("status"));
-        customerForm.addComponent(fields.get("name"));
-        customerForm.addComponent(fields.get("email"));
-        customerForm.addComponent(fields.get("gender"));
 
         m_customer = customer;
 		customerForm.addComponent(actions);

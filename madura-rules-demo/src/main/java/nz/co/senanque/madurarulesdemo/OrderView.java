@@ -52,7 +52,6 @@ public class OrderView extends VerticalLayout {
     public static final String VIEW_NAME = "order";
     @Autowired private MaduraSessionManager m_maduraSessionManager;
     @Autowired private PizzaWindow m_pizzaWindow;
-    @Autowired private PizzaWindow2 m_pizzaWindow2;
 	@Autowired private MyEventRouter m_eventRouter;
 	private MaduraFieldGroup fieldGroup;
 
@@ -108,16 +107,6 @@ public class OrderView extends VerticalLayout {
 				
 			}});
 		actions.addComponent(addItem);
-		Button addItem2 = fieldGroup.createButton("button.addItem2", new ClickListener(){
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				Pizza pizza = new Pizza();
-				pizza.setId(System.currentTimeMillis());
-				m_pizzaWindow2.load(pizza);
-				
-			}});
-		actions.addComponent(addItem2);
 		verticalLayout.addComponent(actions);
 		getEventRouter().addListener(AddItemEvent.class, this, "addItem");
 		m_itemsTable = new FormattingTable();

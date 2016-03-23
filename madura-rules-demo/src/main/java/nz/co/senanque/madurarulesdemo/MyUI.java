@@ -116,15 +116,15 @@ public class MyUI extends UI {
         root.addComponent(tabsheet);
         
         tabsheet.addTab(createView(m_customerView), messageSourceAccessor.getMessage("Customer"));
-        m_customerView.load(new Customer());
+        m_customerView.load(createCustomer("C1"));
         tabsheet.addTab(createView(m_customerView2), "C2");
-        m_customerView2.load(new Customer());
+        m_customerView2.load(createCustomer("C2"));
         tabsheet.addTab(createView(m_customerView3), "C3");
-        m_customerView3.load(new Customer());
+        m_customerView3.load(createCustomer("C3"));
         tabsheet.addTab(createView(m_customerView4), "C4");
-        m_customerView4.load(new Customer());
+        m_customerView4.load(createCustomer("C4"));
         tabsheet.addTab(createView(m_customerView5), "C5");
-        m_customerView5.load(new Customer());
+        m_customerView5.load(createCustomer("C5"));
 
         // This tab gets its caption from the component caption
         VerticalLayout tabOrder = new VerticalLayout();
@@ -152,6 +152,11 @@ public class MyUI extends UI {
         VerticalLayout tab = new VerticalLayout();
         tab.addComponent(view);
         return tab;
+    }
+    public Customer createCustomer(String id) {
+    	Customer ret = new Customer();
+    	ret.setName(id);
+    	return ret;
     }
 
 	public EventRouter getEventRouter() {

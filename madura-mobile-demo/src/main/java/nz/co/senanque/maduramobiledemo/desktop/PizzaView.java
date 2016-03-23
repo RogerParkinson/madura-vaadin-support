@@ -7,6 +7,7 @@ import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import com.vaadin.data.fieldgroup.PropertyId;
@@ -18,6 +19,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
@@ -56,17 +58,6 @@ public class PizzaView extends FormLayout {
 		getMaduraSessionManager().getValidationSession().bind(pizza);
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
     	m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
-    	m_maduraFieldGroup.setItemDataSource(beanItem);
-    	m_maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
-
-    	// Now we have to add the fields to the panel
-		formLayout.addComponent(base);
-		formLayout.addComponent(topping);
-		formLayout.addComponent(size);
-		formLayout.addComponent(amount);
-		formLayout.addComponent(testing);
-		formLayout.addComponent(descr);
-
 		Button OK = m_maduraFieldGroup.createSubmitButton("button.OK", new ClickListener(){
 
 			@Override
@@ -75,6 +66,19 @@ public class PizzaView extends FormLayout {
 			}});
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
+//    	m_maduraFieldGroup.setItemDataSource(beanItem);
+    	m_maduraFieldGroup.buildAndBind(formLayout,
+    			new String[]{"base","topping","size","amount","testing","description"},
+    			beanItem); // This discovers the fields on this object and binds them
+
+    	// Now we have to add the fields to the panel
+//		formLayout.addComponent(base);
+//		formLayout.addComponent(topping);
+//		formLayout.addComponent(size);
+//		formLayout.addComponent(amount);
+//		formLayout.addComponent(testing);
+//		formLayout.addComponent(descr);
+
 
         addComponent(formLayout);
         addComponent(OK);

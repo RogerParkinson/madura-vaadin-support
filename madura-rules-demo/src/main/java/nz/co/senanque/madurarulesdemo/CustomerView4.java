@@ -3,10 +3,11 @@
  */
 package nz.co.senanque.madurarulesdemo;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Customer;
-import nz.co.senanque.pizzaorder.instances.Pizza;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.directed.OneFieldWindowFactory;
@@ -15,20 +16,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
-import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Field;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -49,14 +47,6 @@ public class CustomerView4 extends VerticalLayout {
     private Customer m_customer;
     private FormLayout customerForm;
     private MaduraFieldGroup fieldGroup;
-    @PropertyId("name")
-    private TextField nameField = new TextField();
-    @PropertyId("email")
-    private TextField emailField = new TextField();
-    @PropertyId("gender")
-    private ComboBox genderField = new ComboBox();
-    @PropertyId("status")
-    private ComboBox statusField = new ComboBox();
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -88,13 +78,15 @@ public class CustomerView4 extends VerticalLayout {
     	panel.addComponent(customerForm);
     	
     	fieldGroup = m_maduraSessionManager.createMaduraFieldGroup("CustomerView4");
-    	fieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
     	HorizontalLayout actions = createActions(messageSourceAccessor);
+    	Map<String,Field<?>> fields = fieldGroup.buildAndBind(
+    			new String[]{"name","email","gender","status"},
+    			beanItem);
 
-        customerForm.addComponent(nameField);
-        customerForm.addComponent(emailField);
-        customerForm.addComponent(genderField);
-        customerForm.addComponent(statusField);
+        customerForm.addComponent(fields.get("status"));
+        customerForm.addComponent(fields.get("name"));
+        customerForm.addComponent(fields.get("email"));
+        customerForm.addComponent(fields.get("gender"));
 
         m_customer = customer;
 		customerForm.addComponent(actions);

@@ -3,14 +3,13 @@
  */
 package nz.co.senanque.vaadindemo;
 
-import java.util.Arrays;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
-import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,14 +20,14 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -42,13 +41,11 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @UIScope
 @SpringComponent
-public class DefaultView extends VerticalLayout implements MessageSourceAware {
+public class DefaultView extends VerticalLayout {
 
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    private final VerticalLayout m_panel = new VerticalLayout();
-    protected MaduraFieldGroup m_maduraFieldGroup;
-	private MessageSource m_messageSource;
-	private String[] fields = new String[]{"name","email","address","gender","startDate","amountDouble","amountFloat","booleanValue","longValue","integerValue","decimalValue","mydecimalValue"};
+    private final VerticalLayout panel = new VerticalLayout();
+	private String[] m_fields = new String[]{"name","email","address","gender","startDate","amountDouble","amountFloat","booleanValue","longValue","integerValue","decimalValue","mydecimalValue"};
 
     /*
      * Defines the form, buttons and their connections to Madura
@@ -58,19 +55,38 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
     @PostConstruct
     void init() {
     	
-    	final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_messageSource);
-		m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
+        addComponent(panel);
+    }
+    /* 
+     * This is where we establish the actual person object. 
+     * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
+     * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
+     */
+    public void load(Person person) {
+        final MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
 
-        final VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.setMargin(true);
-        verticalLayout.setSpacing(true);
-        addComponent(verticalLayout);
+		// Clean the panel of any previous fields
+		panel.removeAllComponents();
+    	BeanItem<Person> beanItem = new BeanItem<Person>(person);
 
-        m_panel.setWidth("30%");
-        verticalLayout.addComponent(m_panel);
+    	// make a new layout and add to the panel
+    	Layout form = new FormLayout();
+    	panel.addComponent(form);
+    	
+    	MaduraFieldGroup fieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
+    	Layout actions = createActions(messageSourceAccessor, fieldGroup);
+    	Map<String,Field<?>> fields = fieldGroup.buildAndBind(
+    			m_fields,
+    			beanItem);
 
+    	for (Field<?> f: fields.values()) {
+    		form.addComponent(f);
+    	}
+        form.addComponent(actions);
+    }
+    private Layout createActions(final MessageSourceAccessor messageSourceAccessor,MaduraFieldGroup fieldGroup) {
 		HorizontalLayout actions = new HorizontalLayout();
-		Button cancel = m_maduraFieldGroup.createButton("button.cancel", new ClickListener(){
+		Button cancel = fieldGroup.createButton("button.cancel", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -79,7 +95,7 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 						Notification.Type.HUMANIZED_MESSAGE);
 				
 			}});
-		Button submit = m_maduraFieldGroup.createSubmitButton("button.submit", new ClickListener(){
+		Button submit = fieldGroup.createSubmitButton("button.submit", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -94,34 +110,6 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 		actions.addComponent(submit);
         actions.setMargin(true);
         actions.setSpacing(true);
-		verticalLayout.addComponent(actions);
-		Component instructions = getInstructions(messageSourceAccessor);
-		verticalLayout.addComponent(instructions);
-		instructions.setWidth("30%");
-		verticalLayout.setComponentAlignment(instructions, Alignment.MIDDLE_LEFT);
-
+        return actions;
     }
-    private VerticalLayout getInstructions(MessageSourceAccessor messageSourceAccessor) {
-		VerticalLayout panel = new VerticalLayout();
-		TextArea textArea = new TextArea();
-		textArea.setWidth("100%");
-		textArea.setHeight("100%");
-		textArea.setValue(messageSourceAccessor.getMessage("demo.instructions"));
-		textArea.setReadOnly(true);
-        panel.addComponent(textArea);
-        panel.setComponentAlignment(textArea, Alignment.MIDDLE_CENTER);
-        return panel;
-    }
-    /* 
-     * This is where we establish the actual person object. 
-     * We just get it from the UI object and assume to knows how to supply it(non-Javadoc)
-     * @see com.vaadin.navigator.View#enter(com.vaadin.navigator.ViewChangeListener.ViewChangeEvent)
-     */
-    public void load(Person person) {
-		m_maduraFieldGroup.buildAndBind(m_panel,Arrays.asList(fields),new BeanItem<ValidationObject>(person));
-    }
-	@Override
-	public void setMessageSource(MessageSource messageSource) {
-		m_messageSource = messageSource;
-	}
 }

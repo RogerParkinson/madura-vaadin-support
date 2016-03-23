@@ -60,17 +60,6 @@ public class PizzaView extends NavigationView {
 		getMaduraSessionManager().getValidationSession().bind(pizza);
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
     	m_maduraFieldGroup = m_maduraSessionManager.createMaduraFieldGroup();
-    	m_maduraFieldGroup.setItemDataSource(beanItem);
-    	m_maduraFieldGroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
-
-    	// Now we have to add the fields to the panel
-		formLayout.addComponent(base);
-		formLayout.addComponent(topping);
-		formLayout.addComponent(size);
-		formLayout.addComponent(amount);
-		formLayout.addComponent(testing);
-		formLayout.addComponent(descr);
-
 		Button OK = m_maduraFieldGroup.createSubmitButton("button.OK", new ClickListener(){
 
 			@Override
@@ -79,6 +68,10 @@ public class PizzaView extends NavigationView {
 			}});
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
+//    	m_maduraFieldGroup.setItemDataSource(beanItem);
+    	m_maduraFieldGroup.buildAndBind(formLayout,
+    			new String[]{"base","topping","size","amount","testing","description"},
+    			beanItem); // This discovers the fields on this object and binds them
 
         setContent(new CssLayout(formLayout, OK));
     }

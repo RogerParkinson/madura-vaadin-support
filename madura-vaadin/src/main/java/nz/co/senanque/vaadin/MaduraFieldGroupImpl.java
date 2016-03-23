@@ -129,10 +129,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
      */
     protected void buildAndBindMemberFields(Object objectWithMemberFields,
             boolean buildFields) throws BindException {
-    	super.buildAndBindMemberFields(objectWithMemberFields,
-                buildFields);
-    	processLabels(objectWithMemberFields, buildFields);
-    }
+    	throw new RuntimeException("buildAndBindMemberFields is not supported by Madura");    }
     
     /**
      * We get here when there is a bind() call and the data source has been set.
@@ -143,7 +140,6 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     	ValidationObject source = getDataSource();
     	MaduraPropertyWrapper p = getMaduraPropertyWrapper(source,getPropertyId(field),true);
     	AbstractField<?> f = (AbstractField<?>)field;
-//    	m_hints.setCommonProperties(f, p, m_messageSource);
     	m_maduraSessionManager.bind(f, p);
     }
     
@@ -279,7 +275,6 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
             }
             if (label != null) {
                 // Bind it to the property id
-//            	ValidationObject validationObject = (ValidationObject)((BeanItem<ValidationObject>)getItemDataSource()).getBean();
             	bind(label,propertyId.toString());
             }
         }    	
@@ -444,7 +439,7 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
 
 	public Button createButton(String name, ButtonPainter painter, ClickListener listener) {
 		if (this.getItemDataSource() != null) {
-			throw new RuntimeException("Do not create components after setItemDataSource or buildAndBindMemberFields");
+			throw new RuntimeException("Do not create components after setItemDataSource");
 		}
 		Button ret = m_hints.getButtonField(name, m_messageSource);
 		if (listener != null) {

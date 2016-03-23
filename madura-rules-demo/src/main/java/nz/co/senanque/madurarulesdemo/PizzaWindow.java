@@ -1,46 +1,66 @@
 package nz.co.senanque.madurarulesdemo;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import nz.co.senanque.pizzaorder.instances.Pizza;
-import nz.co.senanque.vaadin.MaduraForm;
+import nz.co.senanque.vaadin.MaduraFieldGroup;
 import nz.co.senanque.vaadin.MaduraSessionManager;
-import nz.co.senanque.validationengine.ValidationObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 
+import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
- * This is a popup window that uses the deprecated MaduraForm to configure the pizza.
+ * This is a popup window that uses the MaduraFieldGroup to configure the pizza.
  * 
  * @author Roger Parkinson
  *
  */
-@SuppressWarnings("deprecation")
 @org.springframework.stereotype.Component
 @UIScope
 public class PizzaWindow extends Window {
 
 	private Layout main;
 	private Layout panel;
-	private MaduraForm m_maduraForm;
+	private MaduraFieldGroup fieldgroup;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    private String m_windowWidth = "300px";
-    private String m_windowHeight = "550px";
+    private String m_windowWidth = "400px";
+    private String m_windowHeight = "500px";
+    
+    @PropertyId("base")
+    private ComboBox base = new ComboBox();
+    @PropertyId("topping")
+    private ComboBox topping = new ComboBox();
+    @PropertyId("size")
+    private ComboBox size = new ComboBox();
+    @PropertyId("amount")
+    private TextField amount = new TextField();
+    @PropertyId("testing")
+    private TextField testing = new TextField();
+    @PropertyId("description")
+    private Label descr = new Label();
 
 	public PizzaWindow() {
 	}
@@ -73,19 +93,48 @@ public class PizzaWindow extends Window {
         setCaption(messageSourceAccessor.getMessage("pizza", "Pizza"));
 	}
 	
+	/**
+	 * Loads an existing (or new/empty) pizza object and binds it to the fields.
+	 * 
+	 * @param pizza
+	 */
 	public void load(final Pizza pizza) {
+        MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+		// Clean the panel of any previous fields
 		panel.removeAllComponents();
+		// bind the object to the Madura session
 		getMaduraSessionManager().getValidationSession().bind(pizza);
     	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
 
-    	m_maduraForm = new MaduraForm(getMaduraSessionManager());
-    	String[] fieldList = new String[]{"base","topping","size","amount","testing","description"};
-    	m_maduraForm.setFieldList(fieldList);
-    	m_maduraForm.setItemDataSource(beanItem);
-    	panel.addComponent(m_maduraForm);
+    	// make a new layout and add to the panel
+    	FormLayout formLayout = new FormLayout();
+    	panel.addComponent(formLayout);
     	
+    	fieldgroup = m_maduraSessionManager.createMaduraFieldGroup();
+    	HorizontalLayout actions = createActions(messageSourceAccessor,pizza);
+    	Map<String,Field<?>> fields = fieldgroup.buildAndBind(
+    			new String[]{"base","topping","size","amount","testing","description"},
+    			beanItem);
+//    	fieldgroup.setItemDataSource(beanItem);
+//    	fieldgroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
+    	
+    	// Now we have to add the fields to the panel
+		formLayout.addComponent(fields.get("base"));
+		formLayout.addComponent(fields.get("topping"));
+		formLayout.addComponent(fields.get("size"));
+		formLayout.addComponent(fields.get("amount"));
+		formLayout.addComponent(fields.get("testing"));
+		formLayout.addComponent(fields.get("description"));
+		formLayout.addComponent(actions);
+
+    	if (getParent() == null) {
+    		UI.getCurrent().addWindow(this);
+        	this.center();
+        }
+	}
+    private HorizontalLayout createActions(final MessageSourceAccessor messageSourceAccessor, final Pizza pizza) {
 		HorizontalLayout actions = new HorizontalLayout();
-		Button OK = m_maduraForm.createSubmitButton("button.OK", new ClickListener(){
+		Button OK = fieldgroup.createSubmitButton("button.OK", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -95,23 +144,17 @@ public class PizzaWindow extends Window {
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		actions.addComponent(OK);
-		Button cancel = m_maduraForm.createButton("button.cancel", new ClickListener(){
+		Button cancel = fieldgroup.createButton("button.cancel", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {
 				getMaduraSessionManager().getValidationSession().unbind(pizza);
 				close();
 			}});
-		actions.addComponent(cancel);
-		m_maduraForm.setFooter(actions);
-
-    	if (getParent() == null) {
-    		UI.getCurrent().addWindow(this);
-        	this.center();
-        }
-	}
+    	return actions;
+    }
     public void close() {
-    	getMaduraSessionManager().getValidationSession().unbind((ValidationObject) m_maduraForm.getData());
+    	fieldgroup.unbind();
     	UI.getCurrent().removeWindow(this);
     }
 
@@ -129,6 +172,14 @@ public class PizzaWindow extends Window {
 
 	public String getWindowHeight() {
 		return m_windowHeight;
+	}
+
+	public Label getDescr() {
+		return descr;
+	}
+
+	public void setDescr(Label descr) {
+		this.descr = descr;
 	}
 
 }
