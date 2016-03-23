@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nz.co.senanque.vaadin.application.MaduraNumericConverter;
 import nz.co.senanque.validationengine.SetterListener;
 import nz.co.senanque.validationengine.ValidationObject;
 import nz.co.senanque.validationengine.ValidationSession;
@@ -18,6 +19,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.AbstractField;
@@ -155,9 +157,15 @@ public class MaduraFieldGroupImpl extends FieldGroup implements PropertiesSource
     
     protected void configureLabel(Label label) {
     	ValidationObject source = getDataSource();
+    	MaduraPropertyWrapper maduraPropertyWrapper = getMaduraPropertyWrapper(source,m_labels.get(label),true);
     	@SuppressWarnings("rawtypes")
-		final LabelProperty<?> property = new LabelProperty(getMaduraPropertyWrapper(source,m_labels.get(label),true));
+		final LabelProperty<?> property = new LabelProperty(maduraPropertyWrapper);
     	label.setPropertyDataSource(property);
+    	Converter<?,Object> c = label.getConverter();
+    	if (c != null && c instanceof MaduraNumericConverter) {
+    		((MaduraNumericConverter)c).setFractionDigits(maduraPropertyWrapper.getFieldMetadata().getFractionalDigits());
+    	}
+
     	m_maduraSessionManager.setPermissions(property.getProperty(), label);
         MaduraPropertyWrapper wrapper = property.getProperty();
         if (wrapper != null) {
