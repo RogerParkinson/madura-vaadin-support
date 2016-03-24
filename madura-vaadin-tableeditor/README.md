@@ -1,4 +1,7 @@
-#madura-vaadin-tableeditor#
+madura-vaadin-tableeditor
+==
+
+(A more detailed document can be found at [Madura Vaadin (PDF)](http://www.madurasoftware.com/madura-vaadin.pdf)) 
 
 Extended table editor that uses popup editor windows and an extension of Vaadin's JPAContainer addon that supports Spring's @Transactional.
 

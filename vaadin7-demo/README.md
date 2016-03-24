@@ -1,11 +1,13 @@
-#vaadin7-demo#
+vaadin7-demo
+==
+
+(A more detailed document can be found at [Madura Vaadin (PDF)](http://www.madurasoftware.com/madura-vaadin.pdf)) 
 
 Template for a simple Vaadin application that only requires a Servlet 3.0 container to run. The reason for including this is to give us a baseline of Vaadin without Madura. It is mostly Vaadin tutorial examples running with vaadin-spring. The rest of the (madura) applications use this as a template.
 
 
 Workflow
-========
-
+--
 To compile the entire project, run "mvn install".
 To run the application, run "mvn jetty:run" and open http://localhost:8080/ .
 

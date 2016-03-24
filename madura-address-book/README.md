@@ -1,5 +1,5 @@
-#madura-address-book#
-
+madura-address-book
+==
 A demo program that illustrates the extended JPAContainer and the table editor from [madura-vaadin-tableeditor](../madura-vaadin-tableeditor/README.md).
 
 This combination provides an almost out-of-the box database table editor complete with a pop-up dialog box to insert and edit table rows. The dialog automatically uses the Madura validation engine for validation. In this example we do not use Madura Rules which would enable cross field validation, however this could be added without changing the code. What we do see here in terms of validation is:
@@ -14,15 +14,15 @@ The JPA container is an extension of Vaadin's JPA Container and is configured he
 
 More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 
-##Build and Run##
-
+Build and Run
+--
 To compile the entire project, run "mvn install".
 To run the application, run "mvn jetty:run" and open http://localhost:8080/
 
 Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
 
-##Script##
-
+Script
+--
 login with admin/admin
 
 Right click on any entry in the table to see options to add, delete and edit the entries.

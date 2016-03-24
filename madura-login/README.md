@@ -1,4 +1,7 @@
-#madura-login#
+madura-login
+==
+
+(A more detailed document can be found at [Madura Vaadin (PDF)](http://www.madurasoftware.com/madura-vaadin.pdf)) 
 
 Web fragment that provides authentication and authorization services for application.
 Probably only useful for demos.
@@ -18,10 +21,6 @@ Things a production version ought to have:
  * forgot password, change password
  * a more dynamic/robust way of storing the password (ie a production implementation of AuthenticationDelegate.java)
   
-To do:
-
- * doesn't work at all on Chromium browser, ie doesn't redirect to application.
- 
 More detailed documentation for this is found in the [madura-vaadin](../madura-vaadin/README.md) project.
 
 ![Default login screen](../madura-vaadin/docs/images/Login.png)

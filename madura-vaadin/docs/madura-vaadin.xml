@@ -5,7 +5,7 @@
 <doc xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://www.madurasoftware.com/maduradocs.xsd">
 	<title>
-		<MainTitle>MaduraVaadinSupport</MainTitle>
+		<MainTitle>Madura Vaadin Support</MainTitle>
 		<SubTitle>User Guide</SubTitle>
 		<Author>Roger Parkinson</Author>
 		<Revision>$Revision: 1$</Revision>
@@ -19,7 +19,7 @@
 			<reference t="MaduraRules" url="https://github.com/RogerParkinson/madura-objects-parent/tree/master/madura-rules"/>
 			<reference t="Madura Rules Demo" url="https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-rules-demo"/>
 			<reference t="vaadin-touchkit" url="https://vaadin.com/add-ons/touchkit"/>
-			<reference t="vaadin-addon" url="https://vaadin.com/directory#!authoring/edit/addon=449"/>
+			<reference t="vaadin-addon" url="https://vaadin.com/directory#!addon/madura-vaadinsupport"/>
 			<reference t="PhoneGap" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 		</references>
