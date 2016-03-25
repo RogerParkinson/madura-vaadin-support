@@ -3,7 +3,7 @@
   <parent>
     <groupId>nz.co.senanque</groupId>
     <artifactId>madura-vaadin-support</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.0.0</version>
   </parent>
   <artifactId>madura-vaadin-demo</artifactId>
   <packaging>war</packaging>
@@ -150,7 +150,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

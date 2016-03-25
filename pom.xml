@@ -8,7 +8,7 @@
 	</parent>
   <groupId>nz.co.senanque</groupId>
   <artifactId>madura-vaadin-support</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <version>3.0.0</version>
   <packaging>pom</packaging>
   <name>madura-vaadin-support</name>
   <url>www.madurasoftware.com</url>
@@ -81,22 +81,22 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-login</artifactId>
-				<version>3.0.0-SNAPSHOT</version>
+				<version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin</artifactId>
-	            <version>3.0.0-SNAPSHOT</version>
+	            <version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-tableeditor</artifactId>
-	            <version>3.0.0-SNAPSHOT</version>
+	            <version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-directed</artifactId>
-	            <version>3.0.0-SNAPSHOT</version>
+	            <version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
@@ -133,17 +133,17 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-objects</artifactId>
-				<version>3.0.0-SNAPSHOT</version>
+				<version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-rules</artifactId>
-				<version>3.0.0-SNAPSHOT</version>
+				<version>3.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-touchkit</artifactId>
-				<version>3.0.0-SNAPSHOT</version>
+				<version>3.0.0</version>
 			</dependency>
 
 			<dependency>
@@ -352,12 +352,12 @@
 	    		<plugin>
 					<groupId>nz.co.senanque</groupId>
 					<artifactId>madura-rules-maven-plugin</artifactId>
-					<version>3.0.0-SNAPSHOT</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>nz.co.senanque</groupId>
 					<artifactId>madura-objects-maven-plugin</artifactId>
-					<version>3.0.0-SNAPSHOT</version>
+					<version>3.0.0</version>
 				</plugin>
 			      <plugin>
 			        <groupId>org.eclipse.m2e</groupId>
