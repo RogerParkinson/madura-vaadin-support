@@ -80,7 +80,9 @@
 		<le>madura-address-book: Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.</le>
 		<le>madura-mobile-demo: Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules.</le>
 		</list>
- 		<p>These demos form the basis of this documentation and we will refer to them extensively. The code here is packaged as a vaadin-addon<referenceLink t="vaadin-addon"/> available from the Vaadin site.</p>
+ 		<p>These demos form the basis of this documentation and we will refer to them extensively. 
+<!--  		The core code is packaged as a vaadin-addon<referenceLink t="vaadin-addon"/> available from the Vaadin site. -->
+ 		</p>
 		</h1>
 		<h1 t="Common Techniques">
 		<p>All the demos use Vaadin 7, Spring<referenceLink t="Spring Framework"/>, Madura and Maven. We assume you are reasonably familiar with all of these.</p>
