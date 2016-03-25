@@ -131,6 +131,11 @@
 						</manifest>
 						<manifestEntries>
 							<Built-By>${username}</Built-By>
+							<Vaadin-Package-Version>1</Vaadin-Package-Version>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Title>${project.artifactId}</Implementation-Title>
+							<Implementation-Vendor>Prometheus Consulting</Implementation-Vendor>
+							<Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
 						</manifestEntries>
 					</archive>
 				</configuration>
@@ -161,7 +166,14 @@
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 						</manifest>
-						<manifestFile>${basedir}/target/extra-resources/MANIFEST.MF</manifestFile>
+						<manifestEntries>
+							<Built-By>${username}</Built-By>
+							<Vaadin-Package-Version>1</Vaadin-Package-Version>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Title>${project.artifactId}</Implementation-Title>
+							<Implementation-Vendor>Prometheus Consulting</Implementation-Vendor>
+							<Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>

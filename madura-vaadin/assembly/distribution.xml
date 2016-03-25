@@ -17,7 +17,7 @@
     </fileSet>
     <fileSet>
       <directory>${basedir}/target/</directory>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory></outputDirectory>
       <includes>
         <include>${project.artifactId}-${project.version}.jar</include>
         <include>*.pdf</include>

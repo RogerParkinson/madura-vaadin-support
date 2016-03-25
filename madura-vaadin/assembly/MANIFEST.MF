@@ -1,6 +1,0 @@
-Built-By: ${username}
-Vaadin-Package-Version: 1
-Implementation-Version: ${project.version}
-Implementation-Title: ${project.artifactId}
-Implementation-Vendor: Prometheus Consulting
-Vaadin-Addon: ${project.artifactId}-${project.version}.jar
