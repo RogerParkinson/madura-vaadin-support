@@ -24,7 +24,7 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-support</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${project.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -218,6 +218,25 @@
 											<goal>compile</goal>
 											<goal>compile-theme</goal>
 											<goal>update-theme</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											nz.co.senanque
+										</groupId>
+										<artifactId>
+											madura-objects-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.0.0-SNAPSHOT,)
+										</versionRange>
+										<goals>
+											<goal>generate</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
