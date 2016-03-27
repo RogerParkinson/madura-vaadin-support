@@ -35,6 +35,7 @@ public class AuthenticationServlet extends HttpServlet {
 	private String m_mobilePathPrefix;
 
 	public AuthenticationServlet() {
+		m_logger.debug("");
 	}
 
 	public void init(ServletConfig config) throws ServletException {
