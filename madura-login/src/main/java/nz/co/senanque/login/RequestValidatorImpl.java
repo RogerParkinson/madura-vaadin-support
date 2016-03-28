@@ -223,12 +223,14 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		}
 		if (uri.endsWith("css")) {
 			String css = getLoginCSS(uri, servletContext);
+			httpServletResponse.setContentType("text/css; charset=UTF-8");
 			httpServletResponse.getOutputStream().print(css);
 			return true;
 		}
 		try {
 			for (String ext: m_imageExtensions) {
 				if (uri.endsWith(ext)) {
+					httpServletResponse.setContentType("image/*");
 					InputStream is = getStream(uri, servletContext);
 					OutputStream out = httpServletResponse.getOutputStream();
 					pipe(is,out);
@@ -241,6 +243,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			return false;
 		}
 		String login = getLoginHTML(getErrorAttribute(req),getLocale(req), servletContext);
+		httpServletResponse.setContentType("text/html; charset=UTF-8");
 		httpServletResponse.getOutputStream().print(login);
 		return true;
 	}

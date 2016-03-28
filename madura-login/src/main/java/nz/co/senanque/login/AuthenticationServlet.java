@@ -50,13 +50,16 @@ public class AuthenticationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		m_logger.debug("redirecting to {}",loginURL);
+		resp.setContentType("text/html; charset=UTF-8");
 		resp.sendRedirect(loginURL);
 	}
 
 	// Check the password
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String url = StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath();
+//		String url = StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath();
+		String url = StringUtils.isEmpty(req.getContextPath())?"":req.getContextPath();
+		resp.setContentType("text/html; charset=UTF-8");
 		try {
 			String pathPrefix = getPrefix(req);
 			m_validator.setErrorAttribute(req, null);

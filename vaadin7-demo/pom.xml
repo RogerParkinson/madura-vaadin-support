@@ -120,6 +120,25 @@
 					</filesets>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <configuration>
+                    <gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
+                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                </configuration>
+			    <executions>
+			      <execution>
+			        <goals>
+			          <goal>clean</goal>
+			          <goal>resources</goal>
+			          <goal>update-theme</goal>
+			          <goal>compile-theme</goal>
+			          <goal>compile</goal>
+			        </goals>
+			      </execution>
+			    </executions>
+			</plugin>
 
 			<!-- The Jetty plugin allows us to easily test the development build by 
 				running jetty:run on the command line. -->

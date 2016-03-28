@@ -149,7 +149,26 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <plugin>
+			<plugin>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-maven-plugin</artifactId>
+                <configuration>
+                    <gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
+                    <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+                </configuration>
+			    <executions>
+			      <execution>
+			        <goals>
+			          <goal>clean</goal>
+			          <goal>resources</goal>
+			          <goal>update-theme</goal>
+			          <goal>compile-theme</goal>
+			          <goal>compile</goal>
+			        </goals>
+			      </execution>
+			    </executions>
+			</plugin>
+			<plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
             </plugin>
@@ -275,6 +294,28 @@
         							</pluginExecutionFilter>
         							<action>
         								<ignore />
+        							</action>
+        						</pluginExecution>
+        						<pluginExecution>
+        							<pluginExecutionFilter>
+        								<groupId>com.vaadin</groupId>
+        								<artifactId>
+        									vaadin-maven-plugin
+        								</artifactId>
+        								<versionRange>
+        									[7.5.6,)
+        								</versionRange>
+        								<goals>
+        									<goal>update-theme</goal>
+        									<goal>compile-theme</goal>
+        									<goal>
+        										update-widgetset
+        									</goal>
+        									<goal>resources</goal>
+        								</goals>
+        							</pluginExecutionFilter>
+        							<action>
+        								<ignore></ignore>
         							</action>
         						</pluginExecution>
         					</pluginExecutions>
