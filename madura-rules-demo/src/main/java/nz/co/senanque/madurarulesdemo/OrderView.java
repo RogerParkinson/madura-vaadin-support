@@ -141,8 +141,6 @@ public class OrderView extends VerticalLayout {
     public void load(Order order) {
 		m_order = order;
 		fieldGroup.setItemDataSource(new BeanItem<Order>(m_order));
-//    	m_maduraSessionManager.bind(orderStatusLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"orderStatus")));
-//    	m_maduraSessionManager.bind(orderAmountLabel, new LabelProperty<Object>(m_maduraSessionManager.getMaduraPropertyWrapper(m_order,"amount")));
     }
 	public PizzaWindow getPizzaWindow() {
 		return m_pizzaWindow;

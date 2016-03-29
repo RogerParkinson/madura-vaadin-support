@@ -33,18 +33,6 @@ public class PizzaView extends NavigationView {
 
 	private MaduraFieldGroup m_maduraFieldGroup;
 	@Autowired private MaduraSessionManager m_maduraSessionManager;
-    @PropertyId("base")
-    private NativeSelect base = new NativeSelect();
-    @PropertyId("topping")
-    private NativeSelect topping = new NativeSelect();
-    @PropertyId("size")
-    private NativeSelect size = new NativeSelect();
-    @PropertyId("amount")
-    private TextField amount = new TextField();
-    @PropertyId("testing")
-    private TextField testing = new TextField();
-    @PropertyId("description")
-    private Label descr = new Label();
 
     public PizzaView() {
     }
@@ -68,10 +56,9 @@ public class PizzaView extends NavigationView {
 			}});
         OK.setClickShortcut(KeyCode.ENTER );
         OK.addStyleName(ValoTheme.BUTTON_PRIMARY);
-//    	m_maduraFieldGroup.setItemDataSource(beanItem);
     	m_maduraFieldGroup.buildAndBind(formLayout,
     			new String[]{"base","topping","size","amount","testing","description"},
-    			beanItem); // This discovers the fields on this object and binds them
+    			beanItem);
 
         setContent(new CssLayout(formLayout, OK));
     }

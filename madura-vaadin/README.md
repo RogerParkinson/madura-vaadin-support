@@ -10,10 +10,10 @@ Madura Vaadin Support
 
 This project wraps those tools to make them easy to use in a Vaadin application. The result delivers highly dynamic applications with very little application code. For example:
 
- * You can pass a POJO to a generic form which builds display fields for all the POJO fields. Each field is automatically validated according to specifications in the XSD (eg field length, numeric range checks) and error messages delivered where necessary. Required fields (again, as specfied in the XSD) are noted and the submit button is disabled until they are filled in, it is also disabled if there is an error. The generic form can accept a list of fields so you can specify which ones you want, you don't have to have them all.
+ * You can pass a POJO to a generic form which builds display fields for all the POJO fields. Each field is automatically validated according to specifications in the XSD (eg field length, numeric range checks) and error messages delivered where necessary. Required fields (again, as specified in the XSD) are noted and the submit button is disabled until they are filled in, it is also disabled if there is an error. The generic form can accept a list of fields so you can specify which ones you want, you don't have to have them all.
  * All field captions are fetched from the relevant XSD label and translated to the current locale.
  * All validations on all fields are handled automatically. That means range checks, regex checks etc, but it also means rules based validation if you have configured it. The application code is unaware any validation is active.
- * Error handling and delivery of any messages is synched with Vaadin's error message delivery and messages are locale translated.
+ * Error handling and delivery of any messages is synced with Vaadin's error message delivery and messages are locale translated.
  * Permissions are enforced. If this user only has read-only permission on a field it will be rendered but disabled. If they do not have read permission it will not be rendered. If no permissions are specified on the field it will be rendered normally, so you only add permissions to fields you care about.
  * Fields marked Secret are rendered as Password style fields.
  * Default values, if specified in the XSD, will be loaded in the obvious way.
@@ -38,7 +38,7 @@ Still with us? Good. In addition to all that we added some extra things that com
 The details of how to use all this are best explained by examples.
 
  * [madura-vaadin-demo](../madura-vaadin-demo/README.md): This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.
- * [madura-rules-demo](../madura-rules-demo/README.md): This is the full demo that shows Madura Objects and Madura Rules working with Vaadin.
+ * [madura-rules-demo](../madura-rules-demo/README.md): This is the full demo that shows Madura Objects and Madura Rules working with Vaadin. Also see the [online demo](http://rulesdemo-madura.rhcloud.com/)
  * [madura-address-book](../madura-address-book/README.md): Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.
- * [madura-mobile-demo](../madura-mobile-demo/README.md): Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules.
+ * [madura-mobile-demo](../madura-mobile-demo/README.md): Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules. Also see the [online demo](http://mobiledemo-madura.rhcloud.com/)
 

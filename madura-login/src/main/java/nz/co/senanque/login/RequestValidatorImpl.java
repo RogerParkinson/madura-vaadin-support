@@ -103,25 +103,6 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 				return false;
 			}
 		}
-//
-//		if (url.endsWith(".css")) {
-//			return false;
-//		}
-//		if (url.endsWith(".ico")) {
-//			return false;
-//		}
-//		if (url.endsWith(".gif")) {
-//			return false;
-//		}
-//		if (url.endsWith(".png")) {
-//			return false;
-//		}
-//		if (url.endsWith(".jpg")) {
-//			return false;
-//		}
-//		if (url.endsWith(".jpeg")) {
-//			return false;
-//		}
 		String context = req.getContextPath();
 		for (String ignoreURL: m_ignoreURLs) {
 			if (url.startsWith(context+ignoreURL)) {

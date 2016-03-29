@@ -45,7 +45,6 @@ public class AuthenticationFilter extends GenericFilterBean {
 			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		if (httpServletRequest.getHeader("User-Agent") == null) {
-//			chain.doFilter(request, response);
 			return;
 		}
 		m_logger.debug("User-Agent {}",httpServletRequest.getHeader("User-Agent"));

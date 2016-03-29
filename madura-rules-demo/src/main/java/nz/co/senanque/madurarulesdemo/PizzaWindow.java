@@ -49,19 +49,6 @@ public class PizzaWindow extends Window {
     private String m_windowWidth = "400px";
     private String m_windowHeight = "500px";
     
-    @PropertyId("base")
-    private ComboBox base = new ComboBox();
-    @PropertyId("topping")
-    private ComboBox topping = new ComboBox();
-    @PropertyId("size")
-    private ComboBox size = new ComboBox();
-    @PropertyId("amount")
-    private TextField amount = new TextField();
-    @PropertyId("testing")
-    private TextField testing = new TextField();
-    @PropertyId("description")
-    private Label descr = new Label();
-
 	public PizzaWindow() {
 	}
 
@@ -115,8 +102,6 @@ public class PizzaWindow extends Window {
     	Map<String,Field<?>> fields = fieldgroup.buildAndBind(
     			new String[]{"base","topping","size","amount","testing","description"},
     			beanItem);
-//    	fieldgroup.setItemDataSource(beanItem);
-//    	fieldgroup.buildAndBindMemberFields(this); // This discovers the fields on this object and binds them
     	
     	// Now we have to add the fields to the panel
 		formLayout.addComponent(fields.get("base"));
@@ -172,14 +157,6 @@ public class PizzaWindow extends Window {
 
 	public String getWindowHeight() {
 		return m_windowHeight;
-	}
-
-	public Label getDescr() {
-		return descr;
-	}
-
-	public void setDescr(Label descr) {
-		this.descr = descr;
 	}
 
 }

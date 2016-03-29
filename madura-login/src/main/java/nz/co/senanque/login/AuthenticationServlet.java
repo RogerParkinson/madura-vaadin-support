@@ -57,7 +57,6 @@ public class AuthenticationServlet extends HttpServlet {
 	// Check the password
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-//		String url = StringUtils.isEmpty(req.getContextPath())?"/":req.getContextPath();
 		String url = StringUtils.isEmpty(req.getContextPath())?"":req.getContextPath();
 		resp.setContentType("text/html; charset=UTF-8");
 		try {

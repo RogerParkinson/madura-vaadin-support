@@ -100,35 +100,10 @@ public class MyUI extends UI {
         Navigator navigator = new Navigator(this, viewContainer);
         navigator.addProvider(viewProvider);
     	
-    	
-    	
-    	
-    	
-//    	final VerticalLayout layout = new VerticalLayout();
-//        layout.setMargin(true);
-//        setContent(layout);
-//        Button button = new Button("Click Me");
-//        button.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(ClickEvent event) {
-//                layout.addComponent(new Label("Thank you for clicking"));
-//            }
-//        });
-//        layout.addComponent(button);
-//        Button logout = new Button("Logout");
-//        logout.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(ClickEvent event) {
-//                logout();
-//            }
-//        });
-//        layout.addComponent(logout);
-
     }
     private Button createNavigationButton(String caption, final String viewName) {
         Button button = new Button(caption);
         button.addStyleName(ValoTheme.BUTTON_SMALL);
-        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
         button.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
