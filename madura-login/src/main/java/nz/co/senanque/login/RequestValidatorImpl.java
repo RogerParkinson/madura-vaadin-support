@@ -6,6 +6,7 @@ package nz.co.senanque.login;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Set;
 
@@ -242,6 +243,26 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			m_logger.warn("{}",e.toString());
 			return false;
 		}
+		if (m_logger.isDebugEnabled()) {
+			m_logger.debug("ContentType: {}",httpServletResponse.getContentType());
+			m_logger.debug("status: {}",httpServletResponse.getStatus());
+			Enumeration<String> nameEnum = req.getHeaderNames();
+			while (nameEnum.hasMoreElements()) {
+				String name = nameEnum.nextElement();
+				m_logger.debug("header name: {} value: {}",name,req.getHeader(name));
+			}
+			nameEnum = req.getAttributeNames();
+			while (nameEnum.hasMoreElements()) {
+				String name = nameEnum.nextElement();
+				m_logger.debug("Attribute name: {} value: {}",name,req.getAttribute(name));
+			}
+			nameEnum = req.getParameterNames();
+			while (nameEnum.hasMoreElements()) {
+				String name = nameEnum.nextElement();
+				m_logger.debug("Parameter name: {} value: {}",name,req.getParameter(name));
+			}
+		}
+		m_logger.debug("Context path: {} uri: {} content-type: {}",contextPath,uri, req.getContentType());
 		String login = getLoginHTML(getErrorAttribute(req),getLocale(req), servletContext);
 		httpServletResponse.setContentType("text/html; charset=UTF-8");
 		httpServletResponse.getOutputStream().print(login);
