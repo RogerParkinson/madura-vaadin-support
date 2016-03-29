@@ -24,6 +24,7 @@
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 			<reference t="Madura Rules Online" url="http://rulesdemo-madura.rhcloud.com/"/>
 			<reference t="Madura Mobile Online" url="http://mobiledemo-madura.rhcloud.com/"/>
+			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/Madura Mobile Demo.apk"/>
 		</references>
 	</title>
 	<body>
@@ -573,6 +574,9 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <p>This apk file is the simplest kind of application you can build, and because it is not signed it cannot be put into the app store. Only
         the Android variation lets you generate unsigned applications, which is why we are using it here. To generate signed applications you need
         to apply to the relevant app stores for an id and tell Phonegap about it. Phonegap supports builds for Apple iOS devices and several others.</p>
+        <p>If you want to try out a pre-built copy of the application you can find a copy at <referenceLink t="Madura Mobile Demo.apk"/>. This can be
+        side loaded onto an Android device. You will need to modify the security settings on the device to allow it to install files from unknown sources,
+        and you do this at your own risk. We have tested this on several Samsung devices.</p>
         </h2>
         </h1>
         <h1 t="madura-login">

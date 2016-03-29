@@ -52,7 +52,6 @@
 		<vaadin.version>7.5.6</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
-		<madura.objects.version>3.0.0-SNAPSHOT</madura.objects.version>
 		<project.scm.id>github</project.scm.id>
 		<project.source.version>1.7</project.source.version>
 		<project.target.version>1.7</project.target.version>
@@ -81,22 +80,22 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-login</artifactId>
-				<version>3.1.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin</artifactId>
-	            <version>3.1.0-SNAPSHOT</version>
+	            <version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-tableeditor</artifactId>
-	            <version>3.1.0-SNAPSHOT</version>
+	            <version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-directed</artifactId>
-	            <version>3.1.0-SNAPSHOT</version>
+	            <version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
@@ -143,7 +142,7 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin-touchkit</artifactId>
-				<version>3.1.0-SNAPSHOT</version>
+				<version>${project.version}</version>
 			</dependency>
 
 			<dependency>
@@ -196,7 +195,7 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-resource-loader</artifactId>
-				<version>1.1.0</version>
+				<version>1.1.1</version>
 			</dependency>
 
 		</dependencies>
