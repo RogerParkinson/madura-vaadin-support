@@ -22,6 +22,8 @@
 			<reference t="vaadin-addon" url="https://vaadin.com/directory#!addon/madura-vaadinsupport"/>
 			<reference t="PhoneGap" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
+			<reference t="Madura Rules Online" url="http://rulesdemo-madura.rhcloud.com/"/>
+			<reference t="Madura Mobile Online" url="http://mobiledemo-madura.rhcloud.com/"/>
 		</references>
 	</title>
 	<body>
@@ -76,9 +78,9 @@
 		<p>The details of how to use all this are best explained by examples.</p>
 		<list>
 		<le>madura-vaadin-demo: This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.</le>
-		<le>madura-rules-demo: This is the full demo that shows Madura Objects and Madura Rules working with Vaadin.</le>
+		<le>madura-rules-demo: This is the full demo that shows Madura Objects and Madura Rules working with Vaadin. See <referenceLink t="Madura Rules Online"/> for the on-line demo.</le>
 		<le>madura-address-book: Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.</le>
-		<le>madura-mobile-demo: Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules.</le>
+		<le>madura-mobile-demo: Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules. See <referenceLink t="Madura Mobile Online"/> for the on-line demo.</le>
 		</list>
  		<p>These demos form the basis of this documentation and we will refer to them extensively. 
 <!--  		The core code is packaged as a vaadin-addon<referenceLink t="vaadin-addon"/> available from the Vaadin site. -->
@@ -273,6 +275,7 @@ Map<String,Field<?>> fields = fieldGroup.buildAndBind(m_fields, beanItem);
         including the boolean, are derived from the <courier>hints</courier> bean which you can customise for your own needs.</p>
 		</h1>
 		<h1 t="madura-rules-demo">
+		<p>There is an on-line demo of this at <referenceLink t="Madura Rules Online"/>.</p>
 		<p>This demo is more complicated, and it uses Madura Rules so there are some configuration differences too. We will look at those first.</p>
 		<p>The <courier>applicationContext.xml</courier> has an extra package to scan, this is the package we put the generated rules in.</p>
 		<p>Madura Rules uses a maven plugin to generate Java rules in much the same way Madura Objects generated Java objects from the XSD. When you use Madura Rules you always use Madura Objects as well,
@@ -482,6 +485,7 @@ formula: Order "sum"
 		</h2>
 		</h1>
         <h1 t="Mobile Applications">
+        <p>There is an on-line demo of the mobile application described here at <referenceLink t="Madura Mobile Online"/>.</p>
         <h2 t="Touchkit">
         <p>Touchkit is an addon product produced by Vaadin to enable 'touch' devices like phones and tablets, so this
         is what you need for a mobile application. There is a lot to Touchkit that we will not cover here (just as there
@@ -679,6 +683,12 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 		<note>You need Java 1.7 to compile this project.</note>
 		<table width="12cm">
 			<tw>12cm</tw>
+        <tr>
+            <th>3.1.0</th>
+        </tr>
+        <tr>
+        	<td>Fixed several problems in login which prevented clean deloyment on Openshift.</td>
+        </tr>       
         <tr>
             <th>3.0.0</th>
         </tr>
