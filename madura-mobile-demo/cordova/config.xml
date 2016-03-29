@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <widget xmlns="http://www.w3.org/ns/widgets"
-	id="nz.co.senanque.pizza-order-demo"
+	id="nz.co.senanque.madura-mobile-demo"
 	xmlns:gap= "http://phonegap.com/ns/1.0"
 	xmlns:android= "http://schemas.android.com/apk/res/android"
 	version="0.0.1-SNAPSHOT">
