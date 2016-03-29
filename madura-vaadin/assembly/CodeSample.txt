@@ -1,0 +1,33 @@
+	public void load(final Pizza pizza) {
+        MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(m_maduraSessionManager.getMessageSource());
+		// Clean the panel of any previous fields
+		panel.removeAllComponents();
+		// bind the object to the Madura session
+		getMaduraSessionManager().getValidationSession().bind(pizza);
+    	BeanItem<Pizza> beanItem = new BeanItem<Pizza>(pizza);
+
+    	// make a new layout and add to the panel
+    	FormLayout formLayout = new FormLayout();
+    	panel.addComponent(formLayout);
+    	
+    	fieldgroup = m_maduraSessionManager.createMaduraFieldGroup();
+    	HorizontalLayout actions = createActions(messageSourceAccessor,pizza);
+    	Map<String,Field<?>> fields = fieldgroup.buildAndBind(
+    			new String[]{"base","topping","size","amount","testing","description"},
+    			beanItem);
+    	
+    	// Now we have to add the fields to the panel
+		formLayout.addComponent(fields.get("base"));
+		formLayout.addComponent(fields.get("topping"));
+		formLayout.addComponent(fields.get("size"));
+		formLayout.addComponent(fields.get("amount"));
+		formLayout.addComponent(fields.get("testing"));
+		formLayout.addComponent(fields.get("description"));
+		formLayout.addComponent(actions);
+
+    	if (getParent() == null) {
+    		UI.getCurrent().addWindow(this);
+        	this.center();
+        }
+	}
+
