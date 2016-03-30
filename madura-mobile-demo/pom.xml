@@ -207,25 +207,6 @@
 				</executions>
 			</plugin>
 
-		      <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-assembly-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <id>create-distribution</id>
-		            <phase>package</phase>
-		            <goals>
-		              <goal>single</goal>
-		            </goals>
-		            <configuration>
-		                <outputDirectory>${project.build.directory}/phonegap-build</outputDirectory>
-		              <descriptors>
-		                <descriptor>cordova/assembly.xml</descriptor>
-		              </descriptors>
-		            </configuration>
-		          </execution>
-		        </executions>
-		      </plugin>
         </plugins>
         <pluginManagement>
         	<plugins>
@@ -333,6 +314,25 @@
      </activation>
          <build>
             <plugins>
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-assembly-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>create-distribution</id>
+		            <phase>package</phase>
+		            <goals>
+		              <goal>single</goal>
+		            </goals>
+		            <configuration>
+		                <outputDirectory>${project.build.directory}/phonegap-build</outputDirectory>
+		              <descriptors>
+		                <descriptor>cordova/assembly.xml</descriptor>
+		              </descriptors>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
       			<plugin>
 				<groupId>com.github.chrisprice</groupId>
 				<artifactId>phonegap-build-maven-plugin</artifactId>
