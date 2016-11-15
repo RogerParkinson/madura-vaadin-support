@@ -24,7 +24,7 @@
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 			<reference t="Madura Rules Online" url="http://rulesdemo-madura.rhcloud.com/"/>
 			<reference t="Madura Mobile Online" url="http://mobiledemo-madura.rhcloud.com/"/>
-			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/Madura Mobile Demo.apk"/>
+			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/madura-mobile-demo.apk"/>
 		</references>
 	</title>
 	<body>
@@ -501,7 +501,7 @@ formula: Order "sum"
 <dependency>
 	<groupId>com.vaadin.addon</groupId>
 	<artifactId>vaadin-touchkit-agpl</artifactId>
-	<version>4.0.0</version>
+	<version>4.1.0</version>
 	<type>jar</type>
 </dependency>
         ]]></code>
@@ -515,14 +515,18 @@ formula: Order "sum"
         </h2>
 		<h2 t="The Demo">
 		<p>The <courier>madura-mobile-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
-		and a mobile UI. The two UIs do much the same thing, they certainly have the same underlying objects and rules (using Madura Objects)and Madura Rules, of course).
+		and a mobile UI. The two UIs do much the same thing, they certainly have the same underlying objects and rules (using Madura Objects and Madura Rules, of course).
 		Part of the point is to show that while you might have to deliver a different UI for a different technology you do not
 		have to re-engineer the object and rules to doit.</p>
+		<note>
+		The demos displays a message complaining about the widgeset being the wrong version. This is assumed to be a bug in Touchkit 
+		and seems to cause no problems. 
+		</note>
 		<p>The <courier>MaduraMobileDemoDesktopUI</courier> is essentially no different from the UI class in the other demos. It is
 		an extention of the <courier>com.vaadin.ui.UI</courier> class and has similar annotations. The one thing you might find puzzling there is
 		that the various static classes that define the web servlet, web listener and Spring configuration are missing.
 		They are in the mobile UI class. There have to be only one instance of these
-		in the application and in this case the one isntance is in the other class. But
+		in the application and in this case the one instance is in the other class. But
 		it does not matter where they are as long as they are present somewhere.</p>
 		<p>The more interesting class at this point is the <courier>MaduraMobileDemoTouchKitUI</courier> class.</p>
 		<p>The first thing to notice abut this class is that the static classes are present here, but the
@@ -688,11 +692,23 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 		<table width="12cm">
 			<tw>12cm</tw>
         <tr>
+            <th>3.2.0</th>
+        </tr>
+        <tr>
+        	<td>Fixed a problem with the slash at the end of the URL.</td>
+        </tr>
+        <tr>
+        	<td>Added dual widgeset to mobile demo.</td>
+        </tr>
+        <tr>
+        	<td>Compiled under Java 1.8, Vaadin 7.7.3, Touchkit 4.1.0.</td>
+        </tr>
+        <tr>
             <th>3.1.0</th>
         </tr>
         <tr>
         	<td>Fixed several problems in login which prevented clean deloyment on Openshift.</td>
-        </tr>       
+        </tr>
         <tr>
             <th>3.0.0</th>
         </tr>

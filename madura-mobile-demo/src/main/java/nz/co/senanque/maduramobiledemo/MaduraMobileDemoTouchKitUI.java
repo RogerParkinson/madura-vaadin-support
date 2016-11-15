@@ -51,7 +51,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 	@Autowired private PizzaView m_pizzaView;
 	@Autowired private MenuView m_menuView;
 
-	@WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
+	@WebServlet(name = "MyUIServlet", urlPatterns = {"/*","/UI/*","/VAADIN/*"}, asyncSupported = true)
     public static class MyUIServlet extends SpringAwareTouchKitServlet {
 
 		private static final long serialVersionUID = 1L;
