@@ -8,7 +8,7 @@
 	</parent>
   <groupId>nz.co.senanque</groupId>
   <artifactId>madura-vaadin-support</artifactId>
-  <version>3.2.0-SNAPSHOT</version>
+  <version>3.2.0</version>
   <packaging>pom</packaging>
   <name>madura-vaadin-support</name>
   <url>www.madurasoftware.com</url>
@@ -145,12 +145,12 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-objects</artifactId>
-				<version>3.1.0-SNAPSHOT</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-rules</artifactId>
-				<version>3.1.0-SNAPSHOT</version>
+				<version>3.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
