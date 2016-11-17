@@ -20,10 +20,12 @@
 			<reference t="Madura Rules Demo" url="https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-rules-demo"/>
 			<reference t="vaadin-touchkit" url="https://vaadin.com/add-ons/touchkit"/>
 			<reference t="vaadin-addon" url="https://vaadin.com/directory#!addon/madura-vaadinsupport"/>
-			<reference t="PhoneGap" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
+			<reference t="PhoneGap-tutorial" url="https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap"/>
+			<reference t="PhoneGap" url="https://build.phonegap.com"/>
+			<reference t="PhoneGap-Build" url="http://docs.phonegap.com/phonegap-build/overview/"/>
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-			<reference t="Madura Rules Online" url="http://rulesdemo-madura.rhcloud.com/"/>
-			<reference t="Madura Mobile Online" url="http://mobiledemo-madura.rhcloud.com/"/>
+			<reference t="Madura Rules Online" url="http://demos-madura.rhcloud.com/madura-rules-demo/"/>
+			<reference t="Madura Mobile Online" url="http://demos-madura.rhcloud.com/madura-mobile-demo/"/>
 			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/madura-mobile-demo.apk"/>
 		</references>
 	</title>
