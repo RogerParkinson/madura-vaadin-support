@@ -4,7 +4,8 @@
 	id="nz.co.senanque.madura-mobile-demo"
 	xmlns:gap= "http://phonegap.com/ns/1.0"
 	xmlns:android= "http://schemas.android.com/apk/res/android"
-	version="0.0.1-SNAPSHOT">
+	versionCode = "10"
+	version="0.0.2-SNAPSHOT">
 	<name>madura-mobile-demo</name>
 	<description>
 		Demonstrates a wrapped Vaadin App that uses Madura
@@ -13,8 +14,11 @@
 		email="roger.parkinson35@gmail.com">
 		Roger Parkinson
 	</author>
-	<gap:platform name="android" />
-	<preference name="phonegap-version" value="3.6.3" /> 
+	<platform name="android">
+		<icon src="astrolab-icon.png" width="100" height="100" qualifier="mdpi" />
+	</platform>
+	<splash src="astrolab-splash.png" platform="android" qualifier="mdpi"/>
+	<preference name="phonegap-version" value="cli-6.3.0" />
 	<preference name="orientation" value="portrait" />
 	<preference name="fullscreen" value="true" />
 	<!-- These rules lets demo.vaadin.com take over the web view created by 
@@ -27,9 +31,13 @@
     android:normalScreens="true" 
     android:largeScreens="true" 
     android:xlargeScreens="true" />
-	<icon src="astrolab-icon.png" gap:platform="android" width="100" height="100" gap:density="mdpi" />
+<!-- 	<icon src="astrolab-icon.png" gap:platform="android" width="100" height="100" gap:density="mdpi" /> -->
 	<feature name="http://api.phonegap.com/1.0/network"/>
-	<gap:plugin name="org.apache.cordova.inappbrowser" version="0.2.4" />
+<!-- 	<gap:plugin name="org.apache.cordova.inappbrowser" version="0.2.4" />
+	<gap:plugin name="org.apache.cordova.inappbrowser" source="pgb" spec="0.2.4" /> 
+	<gap:plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />-->
+	<gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.5.0" />
+
 	<content src="index.html" />
 	<access origin="*" />
 	<!-- 
@@ -39,11 +47,11 @@
 	<gap:splash src="res/screen/android/screen-hdpi-portrait.png" gap:platform="android" gap:qualifier="port-hdpi" />
 	<gap:splash src="res/screen/android/screen-xhdpi-portrait.png" gap:platform="android" gap:qualifier="port-xhdpi" />
 	<gap:splash src="res/screen/android/screen-xxhdpi-portrait.png" gap:platform="android" gap:qualifier="port-xxhdpi" />
-	 -->
 	<icon src="astrolab-icon.png"/>
 	<icon gap:platform="android" gap:qualifier="mdpi" src="res/icon/android/icon-48-mdpi.png"/>
 	<icon gap:platform="android" gap:qualifier="hdpi" src="res/icon/android/icon-72-hdpi.png"/>
 	<icon gap:platform="android" gap:qualifier="xhdpi" src="res/icon/android/icon-96-xhdpi.png"/>
+	 -->
 
 
 </widget>

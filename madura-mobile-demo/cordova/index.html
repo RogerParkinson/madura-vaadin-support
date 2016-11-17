@@ -2,13 +2,25 @@
 <html>
 	<head>
 		<title>Vaadin Training App</title>
-		<script type="text/javascript" src="phonegap.js"></script>
-		<script type="text/javascript">
-		function redirectToHostedApp() {
-			window.location = "http://demos-madura.rhcloud.com/madura-mobile-demo/";
-		}
-		</script>
-	</head>
-	<body onload="redirectToHostedApp();">
-	</body>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+         var ref = window.open('http://demos-madura.rhcloud.com/madura-mobile-demo/', '_blank', 'location=yes');
+//          ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
+//          ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
+//          ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
+//          ref.addEventListener('exit', function(event) { alert(event.type); });
+    }
+
+    </script>
+  </head>
+  <body>
+  </body>
 </html>
