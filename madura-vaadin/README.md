@@ -38,7 +38,7 @@ Still with us? Good. In addition to all that we added some extra things that com
 The details of how to use all this are best explained by examples.
 
  * [madura-vaadin-demo](../madura-vaadin-demo/README.md): This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.
- * [madura-rules-demo](../madura-rules-demo/README.md): This is the full demo that shows Madura Objects and Madura Rules working with Vaadin. Also see the [online demo](http://rulesdemo-madura.rhcloud.com/)
+ * [madura-rules-demo](../madura-rules-demo/README.md): This is the full demo that shows Madura Objects and Madura Rules working with Vaadin. Also see the [online demo](http://demos-madura.rhcloud.com/madura-rules-demo/)
  * [madura-address-book](../madura-address-book/README.md): Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.
- * [madura-mobile-demo](../madura-mobile-demo/README.md): Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules. Also see the [online demo](http://mobiledemo-madura.rhcloud.com/)
+ * [madura-mobile-demo](../madura-mobile-demo/README.md): Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules. Also see the [online demo](http://demos-madura.rhcloud.com/madura-mobile-demo/)
 
