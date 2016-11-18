@@ -26,7 +26,7 @@
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 			<reference t="Madura Rules Online" url="http://demos-madura.rhcloud.com/madura-rules-demo/"/>
 			<reference t="Madura Mobile Online" url="http://demos-madura.rhcloud.com/madura-mobile-demo/"/>
-			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/madura-mobile-demo.apk"/>
+			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/Madura%20Mobile%20Demo.apk"/>
 		</references>
 	</title>
 	<body>
@@ -569,9 +569,9 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <p>The key to this is a product called PhoneGap. The details of how
         to use it to package a Vaadin application for an app store are in <referenceLink t="PhoneGap"/>.</p>
         <p>But there is very little to it. In the madura-mobile-demo sources you will find a directory called <courier>cordova</courier> which
-        contains the files to build the PhoneGap application. Most of this is specific to Phonegap and it documented by that product, but the
+        contains the files to build the PhoneGap application. Most of this is specific to Phonegap and it is documented by that product, but the
         thing you need to know for now is that this application is essentially a wrapper for the browser. Phonegap can do a lot more than that
-        but this is a demo so we will keep it simple. If there is a deployed war file there must be a url somewhere, that is in the <courier>index.html</courier> file.
+        but this is a demo so we will keep it simple. The URL for our deloyed war file in the <courier>index.html</courier> file.
         There is also a <courier>config.xml</courier> file which holds the name and description of the application, the name generates the final
         file name of the apk file.</p>
         <p>The Phonegap part of the build is disabled by default and to use it you need to run the <courier>phonegap</courier> maven profile.

@@ -31,7 +31,7 @@ In addition, if you have configured a rules plugin, such as Madura Rules, into y
 
 Still with us? Good. In addition to all that we added some extra things that come in handy:
 
- * Support for Mobile applications using [Touchkit](https://vaadin.com/add-ons/touchkit) and [PhoneGap](https://vaadin.com/blog/-/blogs/packaging-vaadin-apps-for-home-screens-and-app-stores-with-phonegap) .
+ * Support for Mobile applications using [Touchkit](https://vaadin.com/add-ons/touchkit) and [PhoneGap](https://build.phonegap.com) .
  * An extension of the Vaadin [JPAContainer](https://vaadin.com/directory#!addon/vaadin-jpacontainer) which supports `@Transactional` better. It also supports nice popup edit forms for each row. The edit forms use Madura Objects.
  * A login filter that pops a login dialog if this user is not yet logged in. We use this for demos rather than production, but it could be customised for production.
 
