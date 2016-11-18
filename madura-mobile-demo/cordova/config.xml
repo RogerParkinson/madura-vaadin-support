@@ -5,8 +5,8 @@
 	xmlns:gap= "http://phonegap.com/ns/1.0"
 	xmlns:android= "http://schemas.android.com/apk/res/android"
 	versionCode = "10"
-	version="0.0.2-SNAPSHOT">
-	<name>madura-mobile-demo</name>
+	version="3.2.1">
+	<name>Madura Mobile Demo</name>
 	<description>
 		Demonstrates a wrapped Vaadin App that uses Madura
 	</description>
@@ -39,7 +39,13 @@
 	    android:normalScreens="true" 
 	    android:largeScreens="true" 
 	    android:xlargeScreens="true" />
-  	<icon src="astrolab-icon.png" platform="android" width="100" height="100"/>
+<!--   	<icon src="astrolab-icon.png" platform="android" width="100" height="100"/> -->
+	<platform name="android">
+		<icon src="res/icon/android/ldpi.png" gap:density="ldpi" />
+		<icon src="res/icon/android/mdpi.png" gap:density="mdpi" />
+		<icon src="res/icon/android/hdpi.png" gap:density="hdpi" />
+		<icon src="res/icon/android/xhdpi.png" gap:density="xhdpi" />
+	</platform>
  	
 	<feature name="http://api.phonegap.com/1.0/network"/>
 	<gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.5.0" /> <!-- the gap: in this tag is vital -->
