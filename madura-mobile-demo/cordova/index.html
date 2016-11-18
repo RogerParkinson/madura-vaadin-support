@@ -1,10 +1,9 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Vaadin Training App</title>
+		<title>madura-mobile-demo</title>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8">
-
     // Wait for device API libraries to load
     //
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -12,14 +11,19 @@
     // device APIs are available
     //
     function onDeviceReady() {
-         var ref = window.open('http://demos-madura.rhcloud.com/madura-mobile-demo/', '_blank', 'location=yes');
+//        var ref = window.open('http://demos-madura.rhcloud.com/madura-mobile-demo/', '_blank', 'location=yes,toolbar=no');
+        var ref = cordova.InAppBrowser.open('http://demos-madura.rhcloud.com/madura-mobile-demo/', '_blank', 'location=no,toolbar=no');
+
 //          ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
-//          ref.addEventListener('loadstop', function(event) { alert('stop: ' + event.url); });
-//          ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
+          ref.addEventListener('loadstop', function(event) {
+        	  ref.insertCSS({file: "style.css"});
+        	  });
+          ref.addEventListener('loaderror', function(event) { alert('error: ' + event.message); });
 //          ref.addEventListener('exit', function(event) { alert(event.type); });
     }
 
     </script>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
   </head>
   <body>
   </body>

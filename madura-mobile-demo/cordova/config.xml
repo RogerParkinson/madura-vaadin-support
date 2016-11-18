@@ -14,44 +14,38 @@
 		email="roger.parkinson35@gmail.com">
 		Roger Parkinson
 	</author>
-	<platform name="android">
-		<icon src="astrolab-icon.png" width="100" height="100" qualifier="mdpi" />
-	</platform>
-	<splash src="astrolab-splash.png" platform="android" qualifier="mdpi"/>
+	<gap:splash src="astrolab-splash.png" platform="android" qualifier="mdpi"/>
 	<preference name="phonegap-version" value="cli-6.3.0" />
 	<preference name="orientation" value="portrait" />
-	<preference name="fullscreen" value="true" />
+	<preference name="fullscreen" value="false" />
 	<!-- These rules lets demo.vaadin.com take over the web view created by 
 		cordova/phonegap -->
 	<preference name="stay-in-webview" value="true" />
-	<preference name="SplashScreenDelay" value="3000" />
-	
+	<preference name="SplashScreenDelay" value="7000" />
+
+	<gap:config-file platform="android" target="AndroidManifest.xml" parent="/manifest/application" mode="add">
+        <activity android:name=".Convert"
+                  android:label="@string/app_name"
+                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+	</gap:config-file>
+
 	<supports-screens android:anyDensity="true" android:resizeable="true" 
-    android:smallScreens="true" 
-    android:normalScreens="true" 
-    android:largeScreens="true" 
-    android:xlargeScreens="true" />
-<!-- 	<icon src="astrolab-icon.png" gap:platform="android" width="100" height="100" gap:density="mdpi" /> -->
+	    android:smallScreens="true" 
+	    android:normalScreens="true" 
+	    android:largeScreens="true" 
+	    android:xlargeScreens="true" />
+  	<icon src="astrolab-icon.png" platform="android" width="100" height="100"/>
+ 	
 	<feature name="http://api.phonegap.com/1.0/network"/>
-<!-- 	<gap:plugin name="org.apache.cordova.inappbrowser" version="0.2.4" />
-	<gap:plugin name="org.apache.cordova.inappbrowser" source="pgb" spec="0.2.4" /> 
-	<gap:plugin name="cordova-plugin-inappbrowser" spec="~1.5.0" />-->
-	<gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.5.0" />
+	<gap:plugin name="cordova-plugin-inappbrowser" source="npm" version="1.5.0" /> <!-- the gap: in this tag is vital -->
 
 	<content src="index.html" />
 	<access origin="*" />
-	<!-- 
-	<gap:splash src="astrolab-splash.png" />
-	<gap:splash src="res/screen/android/screen-ldpi-portrait.png" gap:platform="android" gap:qualifier="port-ldpi" />
-	<gap:splash src="res/screen/android/screen-mdpi-portrait.png" gap:platform="android" gap:qualifier="port-mdpi" />
-	<gap:splash src="res/screen/android/screen-hdpi-portrait.png" gap:platform="android" gap:qualifier="port-hdpi" />
-	<gap:splash src="res/screen/android/screen-xhdpi-portrait.png" gap:platform="android" gap:qualifier="port-xhdpi" />
-	<gap:splash src="res/screen/android/screen-xxhdpi-portrait.png" gap:platform="android" gap:qualifier="port-xxhdpi" />
-	<icon src="astrolab-icon.png"/>
-	<icon gap:platform="android" gap:qualifier="mdpi" src="res/icon/android/icon-48-mdpi.png"/>
-	<icon gap:platform="android" gap:qualifier="hdpi" src="res/icon/android/icon-72-hdpi.png"/>
-	<icon gap:platform="android" gap:qualifier="xhdpi" src="res/icon/android/icon-96-xhdpi.png"/>
-	 -->
-
+	<gap:splash src="astrolab-splash.png" gap:platform="android" gap:qualifier="port-mdpi"/>
 
 </widget>
