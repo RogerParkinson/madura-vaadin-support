@@ -19,7 +19,7 @@ Build and Run
 To compile the entire project, run "mvn install".
 To run the application, run "mvn jetty:run" and open http://localhost:8080/
 
-Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
+Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java8
 
 The maven build includes a profile that will use Phonegap to turn the application into an apk file you can install on an Android device. Phonegap supports
 other mobile devices for which you need to apply for an id from the relevant app store.
