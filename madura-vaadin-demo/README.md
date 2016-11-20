@@ -22,3 +22,12 @@ The Submit button is inactive until the form is completed, and without errors 'c
 
 On the login dialog you can specify English or French. Try French, even if you don't speak French. You will see all the labels and options now in French once you log in. The translation is done in a normal Java resource bundle. Madura manages using the resource bundle to adjust the captions on the fields and buttons, as well as the choices in the drop down.
 ![Vaadin Demo Screen](../madura-vaadin/docs/images/VaadinDemo.png)
+
+Docker
+--
+mvn clean package
+sudo docker build -t madura/vadin-demo:3.2.2 .
+sudo docker run -p 8080:8080 -d madura/vadin-demo:3.2.2
+browse to http://localhost:8080/madura-vaadin-demo-3.2.2
+
+
