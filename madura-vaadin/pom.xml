@@ -313,6 +313,8 @@
 							<Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
 						</manifestEntries>
 					</archive>
+					<finalName>${project.artifactId}-${project.version}-addon.zip</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
 				</configuration>
 			</plugin>
             </plugins>
