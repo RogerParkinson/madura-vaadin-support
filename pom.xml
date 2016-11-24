@@ -48,7 +48,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<pdf>target/${project.artifactId}-${project.version}.pdf</pdf>
-		<spring.framework.version>4.2.3.RELEASE</spring.framework.version>
+		<spring.framework.version>4.3.3.RELEASE</spring.framework.version>
 		<vaadin.version>7.7.3</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
@@ -145,12 +145,12 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-objects</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-rules</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
@@ -172,6 +172,12 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
 				<version>1.7.12</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<scope>test</scope>
+				<version>4.12</version>
 			</dependency>
 
 			<dependency>
@@ -208,7 +214,7 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-resource-loader</artifactId>
-				<version>1.2.0</version>
+				<version>1.2.1-SNAPSHOT</version>
 			</dependency>
 
 		</dependencies>
