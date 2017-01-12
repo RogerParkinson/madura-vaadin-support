@@ -209,7 +209,32 @@ public class DefaultView extends VerticalLayout implements MessageSourceAware {
 ...
         ]]></code>
         <p>The two class annotations ensure that Spring loads this as a session component, and the <courier>MaduraSessionManager</courier> is auto wired. The <courier>MaduraSessionManager</courier> is the 
-        general purpose API we use to get to Madura so we need it everywhere.</p>
+        general purpose API we use to get to Madura Objects so we need it everywhere.</p>
+        <p>There is a handy mechanism for reporting the version details in here. The component bean <courier>applicationVersion</courier> is created by the Spring scan. It looks in the war file
+        manifest for entries for Implementation-Title, Implementation-Version and Implementation-build and makes up a string of these. You can inject the string anywhere you like eg:</p>
+        <code><![CDATA[
+...
+@Autowired(required=false) @Qualifier("applicationVersion") private String m_applicationVersion;
+...
+        ]]></code>
+        <p>If there is no manifest it looks for a file called <courier>/ApplicationVersion.properties</courier>. Make sure your war build actually sets the implementation-build entry in the manifest, it is not there by default,
+        and note the capitals.</p>
+        <p>We use the <courier>applicationVersion</courier> bean in the default login prompt as a tooltip that shows when you mouse over the logo. We also use it in the About boxes. 
+        The About boxes here use the <courier>aboutInfo</courier> bean which is also created by the scan. That gets the <courier>applicationVersion</courier> injected. But it does more than that. It scans all the beans for
+        any that implement the <courier>nz.co.senanque.version.Version</courier> interface. For those beans it calls each one to get the version and builds all the bean names and versions into a string suitable for displaying
+        on the about box. This means you can report not only your main version but selected dependencies as well. Typically all you do to provide a version bean is provide a class like this:</p>
+        <code><![CDATA[
+@Component("MyUniqueComponentName")
+public class LocalVersion extends Version {
+
+	public LocalVersion() {
+	}
+	public String getVersion() {
+		return this.getClass().getPackage().getImplementationVersion();
+	}
+}
+        ]]></code>
+        <p>Give the bean a unique name, ie replace 'MyUniqueComponentName' and put this in a package that your Spring configuration will scan.</p> 
 		<p>Now we can look inside the first demo.</p>
 		</h1>
 		<h1 t="madura-vaadin-demo">
