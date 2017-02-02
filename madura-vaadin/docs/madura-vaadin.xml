@@ -719,6 +719,27 @@ public class MaduraMobileDemoTouchKitUI extends UI {
 		<table width="12cm">
 			<tw>12cm</tw>
         <tr>
+            <th>3.2.2</th>
+        </tr>
+        <tr>
+        	<td>Added Docker file to vaadin7-demo.</td>
+        </tr>
+        <tr>
+        	<td>Upgraded Spring and Madura dependencies.</td>
+        </tr>
+        <tr>
+            <th>3.2.1</th>
+        </tr>
+        <tr>
+        	<td>Updated phonegap dependency.</td>
+        </tr>
+        <tr>
+        	<td>Removed title bar in mobile.</td>
+        </tr>
+        <tr>
+        	<td>Fixed reference to api location.</td>
+        </tr>
+        <tr>
             <th>3.2.0</th>
         </tr>
         <tr>
