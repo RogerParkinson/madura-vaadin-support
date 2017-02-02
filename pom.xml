@@ -145,12 +145,12 @@
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-objects</artifactId>
-				<version>3.1.1-SNAPSHOT</version>
+				<version>3.2.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-rules</artifactId>
-				<version>3.1.1-SNAPSHOT</version>
+				<version>3.2.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
