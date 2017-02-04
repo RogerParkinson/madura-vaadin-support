@@ -171,9 +171,7 @@
 										<artifactId>
 											madura-objects-maven-plugin
 										</artifactId>
-										<versionRange>
-											[3.0.0-SNAPSHOT,)
-										</versionRange>
+										<versionRange>[3.0.0,)</versionRange>
 										<goals>
 											<goal>generate</goal>
 										</goals>
