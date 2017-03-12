@@ -52,6 +52,7 @@
 		<vaadin.version>7.7.3</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
+		<springsecurity.version>4.0.1.RELEASE</springsecurity.version>
 		<project.scm.id>github</project.scm.id>
 		<project.source.version>1.8</project.source.version>
 		<project.target.version>1.8</project.target.version>
@@ -210,6 +211,16 @@
 			    <artifactId>spring-test</artifactId>
 			    <version>${spring.framework.version}</version>
 			    <scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${springsecurity.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${springsecurity.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
@@ -417,5 +428,6 @@
   	<module>madura-address-book</module>
   	<module>madura-rules-demo</module>
     <module>madura-mobile-demo</module>
+    <module>madura-springsecurity-login</module>
   </modules>
 </project>

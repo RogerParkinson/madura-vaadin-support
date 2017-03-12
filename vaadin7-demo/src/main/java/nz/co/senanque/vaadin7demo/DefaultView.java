@@ -26,5 +26,6 @@ public class DefaultView extends VerticalLayout implements View {
 
     public void enter(ViewChangeEvent event) {
         // the view is constructed in the init() method()
+    	//permissionFactory.getCurrentPermissions();
     }
 }

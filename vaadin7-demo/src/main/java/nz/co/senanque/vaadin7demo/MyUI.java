@@ -17,6 +17,7 @@ import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -40,7 +41,7 @@ public class MyUI extends UI {
 	@Autowired
     private SpringViewProvider viewProvider;
 
-    @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
+    @WebServlet(name = "MyUIServlet", urlPatterns = {"/app/*", "/VAADIN/*"}, asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
 
 		private static final long serialVersionUID = 1L;
@@ -90,7 +91,9 @@ public class MyUI extends UI {
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         navigationBar.addComponent(createNavigationButton("View Scoped View",
                 ViewScopedView.VIEW_NAME));
+        navigationBar.addComponent(createLogoutButton());
         root.addComponent(navigationBar);
+        
 
         final Panel viewContainer = new Panel();
         viewContainer.setSizeFull();
@@ -111,5 +114,21 @@ public class MyUI extends UI {
 			}
 		});
         return button;
+    }
+    private Button createLogoutButton() {
+        Button button = new Button("logout");
+        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        button.addClickListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+		    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+		    	getUI().close();
+		        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+		        //getUI().getPage().setLocation(contextPath+"/logout");
+
+			}
+		});
+        return button;
+    	
     }
 }

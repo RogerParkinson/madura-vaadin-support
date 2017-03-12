@@ -12,6 +12,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.logback-extensions</groupId>
 			<artifactId>logback-ext-spring</artifactId>
 			<scope>compile</scope>
@@ -27,8 +32,11 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-login</artifactId>
+			<artifactId>madura-springsecurity-login</artifactId>
+			<version>${project.version}</version>
 		</dependency>
+ 
+
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring</artifactId>
@@ -38,6 +46,10 @@
 					<groupId>commons-logging</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-resource-loader</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
