@@ -124,7 +124,7 @@ public class MyUI extends UI {
 		    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
 		    	getUI().close();
 		        String contextPath = VaadinService.getCurrentRequest().getContextPath();
-		        //getUI().getPage().setLocation(contextPath+"/logout");
+		        getUI().getPage().setLocation(contextPath+"/logout");
 
 			}
 		});
