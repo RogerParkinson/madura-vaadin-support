@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<% %>
 <html>
 <head>
 <title>Login Page</title>
@@ -72,6 +73,12 @@
 			value="${_csrf.token}" />
 
 		</form>
+		<p>${title}</p>
+		<p>${logo}</p>
+		<p>${help}</p>
+		<p>${flags}</p>
+		<p>${version}</p>
+		
 	</div>
 
 </body>
