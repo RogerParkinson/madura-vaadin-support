@@ -6,7 +6,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +19,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");
 		auth.inMemoryAuthentication().withUser("how").password("password").roles("EDITOR");
 	}
-	@Autowired AuthenticationFailureHandler authenticationFailureHandler;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
         http
@@ -32,10 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //        	.httpBasic()
 //	        	.and()
 	        .formLogin()
-	        	.loginPage("/login").failureHandler(authenticationFailureHandler)
+	        	.loginPage("/login")
 	        	.permitAll() // Login page is accessible to anybody
 	        	.defaultSuccessUrl("/app", true)
-//	        	.failureUrl("/login.jsp?error=Failed")
+	        	.failureUrl("/login.jsp?error=Failed")
 	        	.and()
 	        .logout()
 	        	.logoutUrl("/logout")

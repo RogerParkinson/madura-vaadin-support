@@ -37,17 +37,17 @@
 <body onload='document.loginForm.username.focus();'>
 	<c:url value="/login" var="loginUrl"/>
 
-	<h1>Spring Security Custom Login Form (XML)</h1>
+	<h1>Spring Security Custom Login Form (JSP)</h1>
 
 	<div id="login-box">
 
-		<h2>Login with Username and Password</h2>
+		<h2>Login with Username and Password </h2>
 
-		<c:if test="${not empty error}">
-			<div class="error">${error}</div>
+		<c:if test="${not empty param.error}">
+			<div class="error">${param.error}</div>
 		</c:if>
-		<c:if test="${not empty msg}">
-			<div class="msg">${msg}</div>
+		<c:if test="${not empty param.msg}">
+			<div class="msg">${param.msg}</div>
 		</c:if>
 
 		<form name='loginForm'
