@@ -32,7 +32,7 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-springsecurity-login</artifactId>
+			<artifactId>madura-login</artifactId>
 			<version>${project.version}</version>
 		</dependency>
  
