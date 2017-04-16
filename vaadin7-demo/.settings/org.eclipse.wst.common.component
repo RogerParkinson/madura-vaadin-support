@@ -4,9 +4,6 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-        <dependent-module archiveName="madura-login-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-login/madura-login">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="vaadin7-demo"/>
         <property name="java-output-path" value="/vaadin7-demo/target/classes"/>
         <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>

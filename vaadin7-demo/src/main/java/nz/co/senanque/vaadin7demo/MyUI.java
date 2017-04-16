@@ -42,7 +42,7 @@ public class MyUI extends UI {
     private SpringViewProvider viewProvider;
 
 //    @WebServlet(name = "MyUIServlet", urlPatterns = {"/*", "/VAADIN/*"}, asyncSupported = true)
-    @WebServlet(name = "MyUIServlet", urlPatterns = {"/*"}, asyncSupported = true)
+    @WebServlet(name = "MyUIServlet", urlPatterns = {"/app", "/VAADIN/*"}, asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
 
 		private static final long serialVersionUID = 1L;
@@ -59,7 +59,7 @@ public class MyUI extends UI {
     @ComponentScan(basePackages = {
     		"nz.co.senanque.vaadin",
     		"nz.co.senanque.validationengine",
- //   		"nz.co.senanque.login",
+    		"nz.co.senanque.login",
     		"nz.co.senanque.testv7"})
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
