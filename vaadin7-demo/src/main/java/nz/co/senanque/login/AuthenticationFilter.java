@@ -37,7 +37,6 @@ public class AuthenticationFilter extends DelegatingFilterProxy {
 		HttpSession session = ((HttpServletRequest)request).getSession(true);
 		if (session != null) {
 			String sessionLocaleString = (String)session.getAttribute(LOCALE);
-			Locale contextLocale = LocaleContextHolder.getLocale();
 			if (requestLocaleString != null && !requestLocaleString.equals(sessionLocaleString)) {
 				LocaleContextHolder.setLocale(new Locale(requestLocaleString));
 				session.setAttribute(LOCALE, requestLocaleString);

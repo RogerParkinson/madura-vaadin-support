@@ -1,11 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:url value="/login" var="loginUrl"/>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>${labels.getMessage("nz.co.senanque.login.LoginInfo.title",null, Locale.getDefault())}</title>
+<title>${labels.getMessage("login.title",null, Locale.getDefault())}</title>
 <link rel="stylesheet" type="text/css" href="resources/login.css"/>
 <link rel="stylesheet" type="text/css" media="only screen and (-webkit-min-device-pixel-ratio: 3.0) and (max-device-width: 1080px), screen and (max-device-width: 360px)" href="resources/galaxyS4.css" />
 <link rel="stylesheet" type="text/css" media="only screen and (min-device-width : 768px) and (max-device-width : 1024px)" href="resources/ipadMini.css" />
@@ -26,13 +26,13 @@
 				${localeSelectBuilder.getLocaleSelect()}
 				</select>
 				</label>
-				<a class="help" href='${labels.getMessage("nz.co.senanque.login.LoginInfo.help.url",null, Locale.getDefault())}' target="_blank">${labels.getMessage("nz.co.senanque.login.LoginInfo.help",null, Locale.getDefault())}</a>
-				<label><span class="heading">${labels.getMessage("nz.co.senanque.login.LoginInfo.title",null, Locale.getDefault())}</span></label>
+				<a class="help" href='${labels.getMessage("login.help.url",null, Locale.getDefault())}' target="_blank">${labels.getMessage("login.help",null, Locale.getDefault())}</a>
+				<label><span class="heading">${labels.getMessage("login.title",null, Locale.getDefault())}</span></label>
 				<label> 
-					<span>${labels.getMessage("nz.co.senanque.login.LoginInfo.username",null, Locale.getDefault())}</span><input type="text" name="username" autofocus />
+					<span>${labels.getMessage("login.name",null, Locale.getDefault())}</span><input type="text" name="username" autofocus />
 				</label> 
 				<label>
-					<span>${labels.getMessage("nz.co.senanque.login.LoginInfo.password",null, Locale.getDefault())}</span><input type="password" name="password" />
+					<span>${labels.getMessage("login.password",null, Locale.getDefault())}</span><input type="password" name="password" />
 				</label> 
 				<label> <span class="error">
 				<c:if test="${not empty param.error}">
@@ -45,7 +45,7 @@
 				</span>
 				</label>
 				<label class="submit"> 
-					<input type="submit" value='${labels.getMessage("nz.co.senanque.login.LoginInfo.login",null, Locale.getDefault())}' />
+					<input type="submit" value='${labels.getMessage("login.login",null, Locale.getDefault())}' />
 				</label>
 			</div>
 			<div class="logo" title="${applicationVersion}"></div>
