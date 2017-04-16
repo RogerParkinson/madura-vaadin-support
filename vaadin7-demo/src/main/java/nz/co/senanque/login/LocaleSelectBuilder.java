@@ -28,7 +28,9 @@ public class LocaleSelectBuilder {
     		if (currentLanguage.equals(language)) {
     			sb.append(" selected ");
     		}
-    		sb.append(" />");
+    		sb.append(" >");
+    		sb.append(language);
+    		sb.append("</option>");
     	}
     	return sb.toString();
 	}
