@@ -41,8 +41,7 @@ public class MyUI extends UI {
 	@Autowired
     private SpringViewProvider viewProvider;
 
-//    @WebServlet(name = "MyUIServlet", urlPatterns = {"/*", "/VAADIN/*"}, asyncSupported = true)
-    @WebServlet(name = "MyUIServlet", urlPatterns = {"/app", "/VAADIN/*"}, asyncSupported = true)
+    @WebServlet(name = "MyUIServlet", urlPatterns = {"/app/*", "/VAADIN/*"}, asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
 
 		private static final long serialVersionUID = 1L;
