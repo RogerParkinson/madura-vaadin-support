@@ -22,7 +22,7 @@ public class LocaleSelectBuilder {
     		String language = getLanguageTag(locale);
     		sb.append("<option value=\"");
     		sb.append(language);
-    		sb.append("\" style=\"background-image:url(resources/flags/");
+    		sb.append("\" style=\"background-image:url(login-resources/flags/");
     		sb.append(language);
     		sb.append(".png);\"");
     		if (currentLanguage.equals(language)) {
@@ -36,7 +36,7 @@ public class LocaleSelectBuilder {
 	}
     public String getLocale() {
     	String language = getLanguageTag(Locale.getDefault());
-    	return "background-image:url(resources/flags/"+language+".png);";
+    	return "background-image:url(login-resources/flags/"+language+".png);";
     }
     @PostConstruct
     public void init() {

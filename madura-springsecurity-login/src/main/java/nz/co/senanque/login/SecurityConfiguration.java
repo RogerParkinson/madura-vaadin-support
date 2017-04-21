@@ -25,7 +25,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        .csrf()
 	        	.disable() // Use Vaadin's CSRF protection
 	        .authorizeRequests()
-	        	.antMatchers("/resources/**").permitAll()
 	        	.antMatchers("/login-resources/**").permitAll()
 	        	.anyRequest().authenticated() // User must be authenticated to access any part of the application
 	        	.and()
