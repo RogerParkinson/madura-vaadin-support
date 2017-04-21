@@ -6,16 +6,13 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 public class LocaleSelectBuilder {
 	
-    @Value("${nz.co.senanque.login.LoginInfo.locales:locales}")
-    private transient String locales;
-    
     private List<Locale> supportedLocales = new ArrayList<>();
 
     public String getLocaleSelect() {
@@ -31,7 +28,9 @@ public class LocaleSelectBuilder {
     		if (currentLanguage.equals(language)) {
     			sb.append(" selected ");
     		}
-    		sb.append(" />");
+    		sb.append(" >");
+    		sb.append(language);
+    		sb.append("</option>");
     	}
     	return sb.toString();
 	}
@@ -41,6 +40,9 @@ public class LocaleSelectBuilder {
     }
     @PostConstruct
     public void init() {
+		ResourceBundleMessageSource labels = new ResourceBundleMessageSource();
+		labels.setBasename("login");
+		String locales = labels.getMessage("login.locales", null, Locale.getDefault());
 		for (String s: StringUtils.tokenizeToStringArray(locales, "|")) {
 			supportedLocales.add(new Locale(s));
 		}
