@@ -58,7 +58,6 @@ public class MyUI extends UI {
     @ComponentScan(basePackages = {
     		"nz.co.senanque.vaadin",
     		"nz.co.senanque.validationengine",
-    		"nz.co.senanque.login",
     		"nz.co.senanque.testv7"})
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {

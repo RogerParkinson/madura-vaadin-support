@@ -5,6 +5,8 @@ package nz.co.senanque.vaadin7demo;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
@@ -18,6 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 @SpringView(name = DefaultView.VIEW_NAME)
 public class DefaultView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "";
+//    @Autowired PermissionFactory permissionFactory;
 
     @PostConstruct
     void init() {
@@ -26,6 +29,6 @@ public class DefaultView extends VerticalLayout implements View {
 
     public void enter(ViewChangeEvent event) {
         // the view is constructed in the init() method()
-    	//permissionFactory.getCurrentPermissions();
+//    	permissionFactory.getCurrentPermissions();
     }
 }
