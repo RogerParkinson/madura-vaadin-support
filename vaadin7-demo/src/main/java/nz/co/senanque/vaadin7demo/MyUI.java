@@ -3,11 +3,16 @@ package nz.co.senanque.vaadin7demo;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
+import nz.co.senanque.login.PermissionResolverSpringSecurity;
+import nz.co.senanque.permissionmanager.PermissionManager;
+import nz.co.senanque.permissionmanager.PermissionManagerImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -20,6 +25,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.Button;
@@ -75,6 +81,13 @@ public class MyUI extends UI {
     	@Bean
     	public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
     		return new PropertySourcesPlaceholderConfigurer();
+    	}
+    	@Bean
+    	@UIScope
+    	public PermissionManager getPermissionManager() {
+    		PermissionManagerImpl ret =  new PermissionManagerImpl();
+    		ret.setPermissionResolver(new PermissionResolverSpringSecurity());
+    		return ret;
     	}
     }
     @Override
