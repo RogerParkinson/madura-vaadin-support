@@ -11,6 +11,9 @@
         <dependent-module archiveName="madura-login-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-login/madura-login">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="madura-permission-manager-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-permission-manager/madura-permission-manager">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <dependent-module archiveName="madura-vaadin-directed-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-directed/madura-vaadin-directed">
             <dependency-type>uses</dependency-type>
         </dependent-module>

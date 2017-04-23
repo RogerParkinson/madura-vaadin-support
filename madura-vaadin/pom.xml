@@ -88,6 +88,10 @@
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-objects</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>manager-permission-manager</artifactId>
+		</dependency>
 
 	</dependencies>
 	<build>

@@ -18,7 +18,7 @@ package nz.co.senanque.vaadin;
 import java.io.Serializable;
 import java.util.List;
 
-import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
+import nz.co.senanque.permissionmanager.PermissionManager;
 
 import org.springframework.context.MessageSource;
 

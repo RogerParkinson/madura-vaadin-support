@@ -3,11 +3,14 @@ package nz.co.senanque.madurarulesdemo;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
+import nz.co.senanque.permissionmanager.PermissionManager;
+import nz.co.senanque.permissionmanager.PermissionManagerImpl;
 import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
+import nz.co.senanque.vaadin.permissionmanager.PermissionResolverLoginImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -98,6 +101,13 @@ public class MyUI extends UI {
     	@UIScope
     	public Hints getHints() {
     		return new HintsImpl();
+    	}
+    	@Bean
+    	@UIScope
+    	public PermissionManager getPermissionManager() {
+    		PermissionManagerImpl ret =  new PermissionManagerImpl();
+    		ret.setPermissionResolver(new PermissionResolverLoginImpl());
+    		return ret;
     	}
     }
     @Override
