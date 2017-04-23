@@ -8,8 +8,6 @@
 
     <context:component-scan base-package="nz.co.senanque.maduramobiledemo, nz.co.senanque.login, nz.co.senanque.pizzaorder.rules" />
     
-    <bean id="permissionManager" class="nz.co.senanque.vaadin.permissionmanager.PermissionManagerImpl" scope="vaadin-ui"/>
-     
 	<bean id="messageSource" class="nz.co.senanque.resourceloader.ResourceBundleMessageSourceExt">
 		<property name="basenames">
 			<list>

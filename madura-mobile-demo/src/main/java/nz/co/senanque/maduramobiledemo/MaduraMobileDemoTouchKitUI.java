@@ -5,12 +5,15 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.maduramobiledemo.touchkit.MenuView;
 import nz.co.senanque.maduramobiledemo.touchkit.PizzaView;
+import nz.co.senanque.permissionmanager.PermissionManager;
+import nz.co.senanque.permissionmanager.PermissionManagerImpl;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.RequestWrapper;
 import nz.co.senanque.vaadin.SpringAwareTouchKitServlet;
 import nz.co.senanque.vaadin.TouchkitHintsImpl;
+import nz.co.senanque.vaadin.permissionmanager.PermissionResolverLoginImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -90,6 +93,13 @@ public class MaduraMobileDemoTouchKitUI extends UI {
             } else {
                 return new HintsImpl();
             }
+    	}
+    	@Bean
+    	@UIScope
+    	public PermissionManager getPermissionManager() {
+    		PermissionManagerImpl ret =  new PermissionManagerImpl();
+    		ret.setPermissionResolver(new PermissionResolverLoginImpl());
+    		return ret;
     	}
     }
     @Override

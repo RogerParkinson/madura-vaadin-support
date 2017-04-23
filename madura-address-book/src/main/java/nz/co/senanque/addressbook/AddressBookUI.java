@@ -5,9 +5,12 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.addressbook.instances.TreeSpecies;
+import nz.co.senanque.permissionmanager.PermissionManager;
+import nz.co.senanque.permissionmanager.PermissionManagerImpl;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
+import nz.co.senanque.vaadin.permissionmanager.PermissionResolverLoginImpl;
 import nz.co.senanque.vaadin.tableeditor.EditorWindowImpl;
 import nz.co.senanque.vaadin.tableeditor.TableEditorLayout;
 
@@ -111,6 +114,13 @@ public class AddressBookUI extends UI  {
     	@UIScope
     	public Hints getHints() {
     		return new HintsImpl();
+    	}
+    	@Bean
+    	@UIScope
+    	public PermissionManager getPermissionManager() {
+    		PermissionManagerImpl ret =  new PermissionManagerImpl();
+    		ret.setPermissionResolver(new PermissionResolverLoginImpl());
+    		return ret;
     	}
     }
 
