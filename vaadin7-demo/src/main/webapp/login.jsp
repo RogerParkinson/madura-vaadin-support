@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="login-resources/login.css"/>
 <link rel="stylesheet" type="text/css" media="only screen and (-webkit-min-device-pixel-ratio: 3.0) and (max-device-width: 1080px), screen and (max-device-width: 360px)" href="login-resources/galaxyS4.css" />
 <link rel="stylesheet" type="text/css" media="only screen and (min-device-width : 768px) and (max-device-width : 1024px)" href="login-resources/ipadMini.css" />
-<link rel="shortcut icon" type="image/png" href="login-resources/favicon.png" />
+<link rel="icon" type="image/png" href="login-resources/favicon.png" />
 <meta http-equiv="cache-control" content="max-age=0" />
 <meta http-equiv="cache-control" content="no-cache" />
 <meta http-equiv="expires" content="0" />
