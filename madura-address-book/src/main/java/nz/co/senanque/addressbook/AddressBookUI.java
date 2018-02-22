@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 
 import nz.co.senanque.addressbook.instances.Person;
 import nz.co.senanque.addressbook.instances.TreeSpecies;
+import nz.co.senanque.login.PermissionResolverSpringSecurity;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
 import nz.co.senanque.vaadin.Hints;
@@ -119,7 +120,7 @@ public class AddressBookUI extends UI  {
     	@UIScope
     	public PermissionManager getPermissionManager() {
     		PermissionManagerImpl ret =  new PermissionManagerImpl();
-    		ret.setPermissionResolver(new PermissionResolverLoginImpl());
+    		ret.setPermissionResolver(new PermissionResolverSpringSecurity());
     		return ret;
     	}
     }
@@ -165,7 +166,7 @@ public class AddressBookUI extends UI  {
 			}});
         
     }
-    @WebServlet(urlPatterns = "/*", name = "AddressBookUIServlet", asyncSupported = true)
+    @WebServlet(urlPatterns = {"/app/*", "/VAADIN/*"}, name = "AddressBookUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = AddressBookUI.class, productionMode = false)
     public static class AddressBookUIServlet extends SpringVaadinServlet {
     }

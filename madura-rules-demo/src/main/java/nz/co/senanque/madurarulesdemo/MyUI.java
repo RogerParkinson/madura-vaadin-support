@@ -3,6 +3,7 @@ package nz.co.senanque.madurarulesdemo;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
+import nz.co.senanque.login.PermissionResolverSpringSecurity;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
 import nz.co.senanque.pizzaorder.instances.Customer;
@@ -62,7 +63,7 @@ public class MyUI extends UI {
 	@Autowired private OrderView m_orderView;
 	@Autowired private MyEventRouter m_eventRouter;
 	
-    @WebServlet(name = "MyUIServlet", urlPatterns = "/*", asyncSupported = true)
+    @WebServlet(name = "MyUIServlet", urlPatterns = {"/app/*", "/VAADIN/*"}, asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
 
 		private static final long serialVersionUID = 1L;
@@ -106,7 +107,7 @@ public class MyUI extends UI {
     	@UIScope
     	public PermissionManager getPermissionManager() {
     		PermissionManagerImpl ret =  new PermissionManagerImpl();
-    		ret.setPermissionResolver(new PermissionResolverLoginImpl());
+    		ret.setPermissionResolver(new PermissionResolverSpringSecurity());
     		return ret;
     	}
     }

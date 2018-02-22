@@ -70,7 +70,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 
 	@Autowired(required=false) private UserRepository m_users;
 
-    @Value("${nz.co.senanque.login.RequestValidatorImpl.mobilePathPrefix:mobile}")
+    @Value("${nz.co.senanque.login.mobilePathPrefix:mobile}")
 	private String m_mobilePathPrefix;
 	
 	@PostConstruct

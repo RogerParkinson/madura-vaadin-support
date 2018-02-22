@@ -6,11 +6,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+	@Autowired AuthenticationSuccessHandler authenticationSuccessHandler;
 	
 	@Autowired
 	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
@@ -31,7 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        .formLogin()
 	        	.loginPage("/login")
 	        	.permitAll() // Login page is accessible to anybody
-	        	.defaultSuccessUrl("/app", true)
+	        	.successHandler(authenticationSuccessHandler)
 	        	.failureUrl("/login.jsp?error=login-failed")
 	        	.and()
 	        .logout()
