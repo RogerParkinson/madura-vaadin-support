@@ -544,7 +544,7 @@ formula: Order "sum"
 		<p>The <courier>madura-mobile-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
 		and a mobile UI. The two UIs do much the same thing, they certainly have the same underlying objects and rules (using Madura Objects and Madura Rules, of course).
 		Part of the point is to show that while you might have to deliver a different UI for a different technology you do not
-		have to re-engineer the object and rules to doit.</p>
+		have to re-engineer the object and rules to do it.</p>
 		<note>
 		The demos displays a message complaining about the widgeset being the wrong version. This is assumed to be a bug in Touchkit 
 		and seems to cause no problems. 
@@ -573,7 +573,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         and we've added a small addition to it to make numeric fields justify right. The theme comes from the <courier>madura-vaadin-touchkit</courier>
         dependency. If you don't care about the right justify you can use 'touchkit' there instead.</p>
         <p>To get to the mobile UI there needs to be a <courier>/mobile</courier> added to the URL. This is
-        actually done for us by the login sequence is you are using <courier>madura-login</courier>, but if your application
+        actually done for us by the login sequence if you are using <courier>madura-login</courier>, but if your application
         uses something else instead you will need to have it redirect to the right UI.</p>
         <p>The rest of the UI, including the classes it invokes are much the same as the desktop UI except that there
         are some Touchkit specific controls used such as <courier>NavigationManager</courier>. You can use the same
@@ -596,12 +596,14 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <p>But there is very little to it. In the madura-mobile-demo sources you will find a directory called <courier>cordova</courier> which
         contains the files to build the PhoneGap application. Most of this is specific to Phonegap and it is documented by that product, but the
         thing you need to know for now is that this application is essentially a wrapper for the browser. Phonegap can do a lot more than that
-        but this is a demo so we will keep it simple. The URL for our deloyed war file in the <courier>index.html</courier> file.
+        but this is a demo so we will keep it simple. The URL for our deloyed war file is in the <courier>index.html</courier> file.
         There is also a <courier>config.xml</courier> file which holds the name and description of the application, the name generates the final
         file name of the apk file.</p>
         <p>The Phonegap part of the build is disabled by default and to use it you need to run the <courier>phonegap</courier> maven profile.
         But first you need to sign up to Phonegap and get a user name, password and create an application id. These need to be defined as maven properties
         <courier>phonegap-build.username, phonegap-build.password</courier> and <courier>phonegap-build.appId</courier>.</p>
+        <p>Because you are deploying your own server end you must edit the <courier>index.html</courier> file and adjust the URL it redirects to
+        so that it points to your own server address. This address is embedded into the resulting application file.</p>
         <p>This apk file is the simplest kind of application you can build, and because it is not signed it cannot be put into the app store. Only
         the Android variation lets you generate unsigned applications, which is why we are using it here. To generate signed applications you need
         to apply to the relevant app stores for an id and tell Phonegap about it. Phonegap supports builds for Apple iOS devices and several others.</p>
