@@ -46,6 +46,11 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-springsecurity-login</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
  	<resources>

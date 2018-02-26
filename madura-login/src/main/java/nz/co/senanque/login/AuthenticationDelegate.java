@@ -21,8 +21,6 @@ public interface AuthenticationDelegate {
 
 	public static final String ERROR_ATTRIBUTE = "nz.co.senanque.login.RequestValidator.ERROR";
 	public static final String LOGIN_URL = "/auth/login";
-	public static final String PERMISSIONS = "nz.co.senanque.login.RequestValidator.AUTHENTICATED";
-	public static final String USERNAME = "nz.co.senanque.login.RequestValidator.USERNAME";
 	public static final String LOCALE = "nz.co.senanque.login.RequestValidator.LOCALE";
 
 	Set<String> authenticate(ServletContext servletContext, String user, String password) throws IOException, LoginException;

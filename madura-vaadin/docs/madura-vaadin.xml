@@ -544,7 +544,7 @@ formula: Order "sum"
 		<p>The <courier>madura-mobile-demo</courier> project is the one we are looking at. This combines <emph>two</emph> UIs: a desktop UI
 		and a mobile UI. The two UIs do much the same thing, they certainly have the same underlying objects and rules (using Madura Objects and Madura Rules, of course).
 		Part of the point is to show that while you might have to deliver a different UI for a different technology you do not
-		have to re-engineer the object and rules to doit.</p>
+		have to re-engineer the object and rules to do it.</p>
 		<note>
 		The demos displays a message complaining about the widgeset being the wrong version. This is assumed to be a bug in Touchkit 
 		and seems to cause no problems. 
@@ -573,7 +573,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         and we've added a small addition to it to make numeric fields justify right. The theme comes from the <courier>madura-vaadin-touchkit</courier>
         dependency. If you don't care about the right justify you can use 'touchkit' there instead.</p>
         <p>To get to the mobile UI there needs to be a <courier>/mobile</courier> added to the URL. This is
-        actually done for us by the login sequence is you are using <courier>madura-login</courier>, but if your application
+        actually done for us by the login sequence if you are using <courier>madura-login</courier>, but if your application
         uses something else instead you will need to have it redirect to the right UI.</p>
         <p>The rest of the UI, including the classes it invokes are much the same as the desktop UI except that there
         are some Touchkit specific controls used such as <courier>NavigationManager</courier>. You can use the same
@@ -596,12 +596,14 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <p>But there is very little to it. In the madura-mobile-demo sources you will find a directory called <courier>cordova</courier> which
         contains the files to build the PhoneGap application. Most of this is specific to Phonegap and it is documented by that product, but the
         thing you need to know for now is that this application is essentially a wrapper for the browser. Phonegap can do a lot more than that
-        but this is a demo so we will keep it simple. The URL for our deloyed war file in the <courier>index.html</courier> file.
+        but this is a demo so we will keep it simple. The URL for our deloyed war file is in the <courier>index.html</courier> file.
         There is also a <courier>config.xml</courier> file which holds the name and description of the application, the name generates the final
         file name of the apk file.</p>
         <p>The Phonegap part of the build is disabled by default and to use it you need to run the <courier>phonegap</courier> maven profile.
         But first you need to sign up to Phonegap and get a user name, password and create an application id. These need to be defined as maven properties
         <courier>phonegap-build.username, phonegap-build.password</courier> and <courier>phonegap-build.appId</courier>.</p>
+        <p>Because you are deploying your own server end you must edit the <courier>index.html</courier> file and adjust the URL it redirects to
+        so that it points to your own server address. This address is embedded into the resulting application file.</p>
         <p>This apk file is the simplest kind of application you can build, and because it is not signed it cannot be put into the app store. Only
         the Android variation lets you generate unsigned applications, which is why we are using it here. To generate signed applications you need
         to apply to the relevant app stores for an id and tell Phonegap about it. Phonegap supports builds for Apple iOS devices and several others.</p>
@@ -703,6 +705,81 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <le>forgot password/change password. This would need to tie in with your <courier>AuthenticationDelegate</courier> implementation.</le>
         </list>
         <p>The out-of-the-box implementation has just two user/passwords: admin/admin and user/user. Admin has the ADMIN permission which is used in the rules demo.</p>
+        </h2>
+        </h1>
+        
+        <h1 t="madura-spring-security-login">
+        <p>This sub project provides a more sophisticated login facility than madura-login <sectionLink t="madura-login"/>. The important difference is that
+        this builds on Spring Security, which means you have access to a more robust and richer security product.</p>
+        <p>Like madura-login it uses a web fragment to provide authentication and authorization services. It is specifically designed to be used
+        with Vaadin applications but it might be adapted to others. We only consider Vaadin here.</p>
+        <p>To add it to an application you need to do the following:</p>
+        <list>
+        <le>Add the project to your classpath, usually with a Maven entry for <courier>nz.co.senanque:madura-springsecurity-login</courier></le>
+        <le>Modify your Vaadin Web Servlet to specify <courier>urlPatterns = {"/app/*", "/VAADIN/*"}</courier>. See the MyUI.java file in
+        the vaadin7-demo project for a specific example.</le>
+        <le>Ensure your application scans the package <courier>nz.co.senanque.login</courier>. In all our demos this is done in the applicationContext.xml file.</le>
+        </list>
+        <p>You could stop there. Your application will now pop a login form instead of your usual initial application page, and once logged in it
+        will behave as normal. But you will probaby want to do several more things:</p>
+        <list>
+        <le>Customise the user names and passwords, and where they are stored.</le>
+        <le>Make use of the different permissions available to different users.</le>
+        <le>Change the look of the login form.</le>
+        <le>Further customisations for Spring Security.</le>
+        </list>
+        <h2 t="Customise User Names">
+        <p>There is a default list of in-memory users and passwords defined in the file <courier>nz.co.senanque.login.SecurityConfiguration</courier>.
+        This is, in fact, the whole Spring Security configuration and you are free to clone this file into your own application and
+        edit it as needed. But do make sure you do <emph>not</emph> change its package or its name, otherwise you will get two configurations
+        which is never good. Keeping the name the same will ensure your version overrides the default version. The default version
+        has in-memory user/password combinations: admin/admin and user/user. They each have roles ADMIN and USER respectively.</p>
+        <p>For a production system you inevitably want a more dynamic user/password repository and Spring Security gives you plenty
+        of options to do that.</p>
+        </h2>
+        <h2 t="Permissions">
+        <p>By default Spring Security roles are interpreted as Madura permissions. To access them from your application just
+        add this to your beans:</p>
+        <code><![CDATA[
+@Bean
+@UIScope
+public PermissionManager getPermissionManager() {
+	PermissionManagerImpl ret =  new PermissionManagerImpl();
+	ret.setPermissionResolver(new PermissionResolverSpringSecurity());
+	return ret;
+}
+        ]]></code>
+        <p>The permission manager is just a simple wrapper API to allow the application to check if this user has the
+        permission being requested, the permission resolver is the thing that does the work of extracting the permissions
+        from Spring Security. It is likely you will want to customise this to fit in with your particular configuration
+        of Spring Security. This is actually the reason these beans are not annotated with component, it makes it easier
+        for you to find them.</p>
+        <p>Sometimes during testing the application you might want to suppress the login page and get an automatic login
+        to a default user/password. The way to do this is to <emph>not</emph> scan the <courier>nz.cosenanque.login</courier>
+        package and to implement a dummy permission resolver class that supplies a user and a useful set of permissions.
+        It is simple enough to organise both of these things in a Spring Profile that ensures the testing environment
+        omits the scan and uses the test resolver, while production uses the production resolver and includes the scan.</p>
+        </h2>
+        <h2 t="Change the Login Form">
+        <p>The Login Form is defined by a login.jsp file which you can rewrite completely if you wish. Just call it the same name and put in
+        in the webapp directory in your application. If you want you can leave the jsp alone and just change the style sheets. These
+        are all found in the <courier>src/main/resources/META-INF/resources/login-resources</courier> directory of the library project. The
+        simplest approach is to clone the ones you want to change into your application's <courier>webapp/login-resources</courier> directory.
+        The login-resources directory is not blocked by the security, which means the files in there are accessible before the user has
+        logged in, so they can be used in the login form. You will certainly want to supply your own <courier>favicon.png</courier>
+        and <courier>logo.gif</courier> files.</p>
+        <p>Apart from logging in the login form allows the user to select a language. There are only three languages defined and it
+        is likely you will want to add others. For each new language you need to supply a flag png file in your <courier>login-resources/flags</courier>,
+        and a <courier>login_xx.properties</courier> file in your <courier>src/main/resources</courier> directory. You also need to clone
+        the <courier>login.properties</courier> file from the library and update the value for <courier>login.locales</courier>. That
+        must contain a list of all the supported languages. Note that these are languages rather than countries so we just use 'en' and 'fr'
+        etc, rather than <courier>en_US</courier>, though you are free to extend the list any way you want.</p>
+        </h2>
+        <h2 t="Further Customisations">
+        <p>Because we are relying on Spring Security you can use any options available from there. These are defined in the <courier>nz.co.senanque.login.SecurityConfiguration</courier>
+        already discussed. The one thing, in practice, that does not seem to work is the basic authentication option (ie without the form). This is because the
+        login process must redirect to <courier>/app</courier>, and basic authentication seems to not have that option.</p>
+        <p>Apart from that you ought to be able to rewrite that security configuration as much as you like.</p>
         </h2>
         </h1>
         

@@ -12,11 +12,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
 			<groupId>org.logback-extensions</groupId>
 			<artifactId>logback-ext-spring</artifactId>
 			<scope>compile</scope>
@@ -29,11 +24,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-springsecurity-login</artifactId>
-			<version>${project.version}</version>
 		</dependency>
  
 
@@ -85,6 +75,13 @@
 			<artifactId>vaadin-touchkit-agpl</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-springsecurity-login</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

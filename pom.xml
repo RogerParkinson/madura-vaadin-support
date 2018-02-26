@@ -98,6 +98,11 @@
 			</dependency>
 			<dependency>
 				<groupId>nz.co.senanque</groupId>
+				<artifactId>madura-login</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-vaadin</artifactId>
 	            <version>${project.version}</version>
 			</dependency>
@@ -226,6 +231,11 @@
 				<groupId>nz.co.senanque</groupId>
 				<artifactId>madura-resource-loader</artifactId>
 				<version>1.3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>nz.co.senanque</groupId>
+				<artifactId>manager-permission-manager</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 
 		</dependencies>

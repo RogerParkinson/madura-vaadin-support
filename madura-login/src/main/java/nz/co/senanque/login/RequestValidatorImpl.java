@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import nz.co.senanque.login.users.UserRepository;
 import nz.co.senanque.login.users.UserRepositoryImpl;
+import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.resourceloader.MessageResource;
 
 import org.slf4j.Logger;
@@ -69,7 +70,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 
 	@Autowired(required=false) private UserRepository m_users;
 
-    @Value("${nz.co.senanque.login.RequestValidatorImpl.mobilePathPrefix:mobile}")
+    @Value("${nz.co.senanque.login.mobilePathPrefix:mobile}")
 	private String m_mobilePathPrefix;
 	
 	@PostConstruct
@@ -88,7 +89,7 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 	public boolean isURLIgnored(HttpServletRequest req) {
 		String url = req.getRequestURI();
 		HttpSession session = req.getSession(true);
-		Object o = session.getAttribute(USERNAME);
+		Object o = session.getAttribute(PermissionManager.USERNAME);
 		m_logger.debug("checking url {} current user {} session {}",url,o,session.getId());
 		if (o != null) {
 			m_logger.debug("true");
@@ -121,8 +122,8 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 			throw new RuntimeException(e);
 		}
 		HttpSession session = req.getSession(true);
-		session.setAttribute(PERMISSIONS, permissions);
-		session.setAttribute(USERNAME, login[0]);
+		session.setAttribute(PermissionManager.PERMISSIONS, permissions);
+		session.setAttribute(PermissionManager.USERNAME, login[0]);
 		session.setAttribute(LOCALE, "en");
 		m_logger.debug("Setting user: {} on session {}",login[0],req.getSession().getId());
 		
@@ -141,8 +142,8 @@ public class RequestValidatorImpl implements AuthenticationDelegate, MessageSour
 		}
 		Set<String> permissions = m_authenticationDelegate.authenticate(req.getServletContext(),user,password);
 		HttpSession session = req.getSession(true);
-		session.setAttribute(PERMISSIONS, permissions);
-		session.setAttribute(USERNAME, user);
+		session.setAttribute(PermissionManager.PERMISSIONS, permissions);
+		session.setAttribute(PermissionManager.USERNAME, user);
 		session.setAttribute(LOCALE, locale);
 		m_logger.debug("Setting user: {} on session {}",user,req.getSession().getId());
 	}

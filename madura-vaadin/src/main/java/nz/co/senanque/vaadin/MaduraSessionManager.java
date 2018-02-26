@@ -29,9 +29,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import nz.co.senanque.logging.HashIdLogger;
+import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.vaadin.application.MaduraConverterFactory;
 import nz.co.senanque.vaadin.application.PropertyNotFoundException;
-import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.FieldMetadata;
 import nz.co.senanque.validationengine.LocaleAwareExceptionFactory;
 import nz.co.senanque.validationengine.ObjectMetadata;
@@ -58,6 +58,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.server.UserError;
+import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractField;
@@ -622,7 +623,10 @@ public class MaduraSessionManager implements Serializable, MessageSourceAware
     }
     public void logout(UI ui) {
     	close();
-    	m_permissionManager.close(ui);
+    	VaadinService.getCurrentRequest().getWrappedSession().invalidate();
+    	ui.close();
+        String contextPath = VaadinService.getCurrentRequest().getContextPath();
+        ui.getPage().setLocation(contextPath);
     }
     
     @PreDestroy

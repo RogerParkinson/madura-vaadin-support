@@ -87,11 +87,18 @@
 		</dependency>
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-login</artifactId>
+			<artifactId>madura-objects</artifactId>
 		</dependency>
+<!-- 
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-objects</artifactId>
+			<artifactId>madura-login</artifactId>
+		</dependency>
+ -->
+ 		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-permission-manager</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
 	</dependencies>

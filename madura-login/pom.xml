@@ -33,6 +33,11 @@
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-resource-loader</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>nz.co.senanque</groupId>
+			<artifactId>madura-permission-manager</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

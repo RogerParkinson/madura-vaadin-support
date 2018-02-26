@@ -22,9 +22,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.format.FormattingTable;
-import nz.co.senanque.vaadin.permissionmanager.PermissionManager;
 import nz.co.senanque.validationengine.ValidationEngine;
 import nz.co.senanque.validationengine.metadata.ClassMetadata;
 import nz.co.senanque.validationengine.metadata.PropertyMetadata;
