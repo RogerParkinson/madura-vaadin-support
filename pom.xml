@@ -439,5 +439,6 @@
   	<module>madura-rules-demo</module>
     <module>madura-mobile-demo</module>
     <module>madura-springsecurity-login</module>
+    <module>madura-permission-manager</module>
   </modules>
 </project>

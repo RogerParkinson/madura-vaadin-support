@@ -3,29 +3,22 @@
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/generated-sources/xjc"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/generated-sources/xjc"/>
         <dependent-module archiveName="madura-vaadin-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin/madura-vaadin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-<<<<<<< HEAD
-        <dependent-module archiveName="madura-login-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-login/madura-login">
-=======
-        <dependent-module archiveName="madura-permission-manager-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-permission-manager/madura-permission-manager">
->>>>>>> refs/heads/adding_spring_security
+        <dependent-module archiveName="madura-permission-manager-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-permission-manager/madura-permission-manager">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="madura-vaadin-directed-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-directed/madura-vaadin-directed">
-<<<<<<< HEAD
-=======
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="madura-springsecurity-login-3.2.3-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-springsecurity-login/madura-springsecurity-login">
->>>>>>> refs/heads/adding_spring_security
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="madura-rules-demo"/>
-        <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>
         <property name="java-output-path" value="/madura-rules-demo/target/classes"/>
+        <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>
     </wb-module>
 </project-modules>

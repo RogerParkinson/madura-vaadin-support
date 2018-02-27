@@ -14,7 +14,6 @@ import nz.co.senanque.vaadin.MaduraSessionManager;
 import nz.co.senanque.vaadin.RequestWrapper;
 import nz.co.senanque.vaadin.SpringAwareTouchKitServlet;
 import nz.co.senanque.vaadin.TouchkitHintsImpl;
-import nz.co.senanque.vaadin.permissionmanager.PermissionResolverLoginImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +27,6 @@ import org.springframework.web.context.ContextLoaderListener;
 import com.vaadin.addon.touchkit.ui.NavigationManager;
 import com.vaadin.addon.touchkit.ui.TabBarView;
 import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;

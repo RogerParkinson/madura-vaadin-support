@@ -10,7 +10,6 @@ import nz.co.senanque.permissionmanager.PermissionManagerImpl;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
-import nz.co.senanque.vaadin.permissionmanager.PermissionResolverLoginImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +26,6 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.external.org.slf4j.Logger;
 import com.vaadin.external.org.slf4j.LoggerFactory;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.UIScope;
