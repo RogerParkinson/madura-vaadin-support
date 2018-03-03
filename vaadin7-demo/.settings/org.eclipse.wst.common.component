@@ -4,6 +4,12 @@
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="madura-springsecurity-login-3.2.4-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-springsecurity-login/madura-springsecurity-login">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="madura-permission-manager-3.2.4-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-permission-manager/madura-permission-manager">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="vaadin7-demo"/>
         <property name="java-output-path" value="/vaadin7-demo/target/classes"/>
         <property name="component.exclusion.patterns" value="WEB-INF/classes/VAADIN/gwt-unitCache/**,WEB-INF/classes/VAADIN/widgetsets/WEB-INF/**"/>
