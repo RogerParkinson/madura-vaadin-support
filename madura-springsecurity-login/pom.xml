@@ -7,9 +7,6 @@
 	</parent>
 	<artifactId>madura-springsecurity-login</artifactId>
 	<name>Spring Security Login</name>
-	<properties>
-		<springsecurity.version>4.0.1.RELEASE</springsecurity.version>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>jstl</groupId>
