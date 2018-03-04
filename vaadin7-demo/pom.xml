@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>nz.co.senanque</groupId>
 		<artifactId>madura-vaadin-support</artifactId>
-		<version>3.2.5-SNAPSHOT</version>
+		<version>3.2.5</version>
 	</parent>
 	<artifactId>vaadin7-demo</artifactId>
 	<packaging>war</packaging>
