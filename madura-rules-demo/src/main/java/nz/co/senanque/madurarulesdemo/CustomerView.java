@@ -82,7 +82,7 @@ public class CustomerView extends VerticalLayout {
 			}});
 		submit.setClickShortcut(KeyCode.ENTER );
 		submit.addStyleName(ValoTheme.BUTTON_PRIMARY);
-		Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ADMIN", new ClickListener(){
+		Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ROLE_ADMIN", new ClickListener(){
 
 			@Override
 			public void buttonClick(ClickEvent event) {

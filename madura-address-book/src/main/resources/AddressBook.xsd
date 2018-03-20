@@ -101,7 +101,7 @@ limitations under the License.
 					<xsd:appinfo>
 						<annox:annotate>
 							<md:Label labelName="person.address" />
-							<md:ReadPermission name="ADMIN" />
+							<md:ReadPermission name="ROLE_ADMIN" />
 						</annox:annotate>
 					</xsd:appinfo>
 				</xsd:annotation>
