@@ -24,8 +24,7 @@
 			<reference t="PhoneGap" url="https://build.phonegap.com"/>
 			<reference t="PhoneGap-Build" url="http://docs.phonegap.com/phonegap-build/overview/"/>
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-			<reference t="Madura Rules Online" url="http://demos-madura.rhcloud.com/madura-rules-demo/"/>
-			<reference t="Madura Mobile Online" url="http://demos-madura.rhcloud.com/madura-mobile-demo/"/>
+			<reference t="on-line demos" url="http://madurasoftware.com/?page_id=43"/>
 			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/Madura%20Mobile%20Demo.apk"/>
 		</references>
 	</title>
@@ -72,7 +71,7 @@
 		become enabled or disabled depending on the current value of the boolean.</le>
 		<le>Labels and read-only fields may contain data derived from rules. This automatically updates as the rules change the data.</le>
 		</list>
-		<p>Still with us? Good. In addition to all that we added some extra things that come in handy:</p>
+		<p>Still with us? Good. We added some extra things that come in handy:</p>
 		<list>
 		<le>Support for Mobile applications using Touchkit<referenceLink t="vaadin-touchkit"/> and PhoneGap<referenceLink t="PhoneGap"/>.</le>
 		<le>An extension of the Vaadin JPAContainer<referenceLink t="JPAContainer"/> which supports <courier>@Transactional</courier> better. It also supports nice popup edit forms for each row. The edit forms use Madura Objects.</le>
@@ -81,18 +80,18 @@
 		<p>The details of how to use all this are best explained by examples.</p>
 		<list>
 		<le>madura-vaadin-demo: This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.</le>
-		<le>madura-rules-demo: This is the full demo that shows Madura Objects and Madura Rules working with Vaadin. See <referenceLink t="Madura Rules Online"/> for the on-line demo.</le>
+		<le>madura-rules-demo: This is the full demo that shows Madura Objects and Madura Rules working with Vaadin.</le>
 		<le>madura-address-book: Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.</le>
-		<le>madura-mobile-demo: Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules. See <referenceLink t="Madura Mobile Online"/> for the on-line demo.</le>
+		<le>madura-mobile-demo: Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules.</le>
 		</list>
- 		<p>These demos form the basis of this documentation and we will refer to them extensively. 
+ 		<p>There are on-line demos<referenceLink t="on-line demos"/> for all of these. These demos form the basis of this documentation and we will refer to them extensively. 
+ 		
 <!--  		The core code is packaged as a vaadin-addon<referenceLink t="vaadin-addon"/> available from the Vaadin site. -->
  		</p>
 		</h1>
 		<h1 t="Common Techniques">
 		<p>All the demos use Vaadin 7, Spring<referenceLink t="Spring Framework"/>, Madura and Maven. We assume you are reasonably familiar with all of these.</p>
-		<p>To build use: <courier>mvn install</courier></p>
-		<p>To run with Jetty use: <courier>mvn jetty:run</courier> and open <courier>http://localhost:8080/</courier>. You can also run them with Eclipse WTP. We tested with Tomcat 7.</p>
+		<p>To compile the entire project, run "mvn install" then deploy the war file to your favour servlet engine. Or you can use Eclipse and WTP, which is our development environment, using Tomcat 8 and Java8.</p>
 		<p>To login the user/password is always admin/admin, you can also use user/user</p>
 		<p>The login process is managed by the <courier>madura-login</courier><sectionLink t="madura-login"/> project. This provides a simple login facility suitable for demos simply by making it
 		a maven dependency and a little configuration.</p>
@@ -238,6 +237,7 @@ public class LocalVersion extends Version {
 		<p>Now we can look inside the first demo.</p>
 		</h1>
 		<h1 t="madura-vaadin-demo">
+		<p>There is an on-line demo of this<referenceLink t="on-line demos"/>.</p>
 		<p>The interesting things in this project are in the <courier>nz.co.senanque.vaadindemo.DefaultView</courier>. You saw it briefly in the previous section so you know it is a session dependent bean and
 		it has a <courier>MaduraSessionManager</courier> injected.</p>
 		<p>It has an <courier>init</courier> method which runs once Spring has instantiated the bean and finished injecting everything. All it does is set up a layout called <courier>panel</courier>.</p>
@@ -264,7 +264,7 @@ Button cancel = fieldGroup.createButton("button.cancel", new ClickListener(){
 		<p>There is not much to this really. It creates a button, translates the name and adds the listener. But we might have used a variation on this:</p>
         <code><![CDATA[
 ...
-Button cancel = fieldGroup.createButton("button.cancel", "ADMIN", new ClickListener(){
+Button cancel = fieldGroup.createButton("button.cancel", "ROLE_ADMIN", new ClickListener(){
 ...
 	}});
 ...
@@ -303,7 +303,7 @@ Map<String,Field<?>> fields = fieldGroup.buildAndBind(m_fields, beanItem);
         including the boolean, are derived from the <courier>hints</courier> bean which you can customise for your own needs.</p>
 		</h1>
 		<h1 t="madura-rules-demo">
-		<p>There is an on-line demo of this at <referenceLink t="Madura Rules Online"/>.</p>
+		<p>There is an on-line demo of this<referenceLink t="on-line demos"/>.</p>
 		<p>This demo is more complicated, and it uses Madura Rules so there are some configuration differences too. We will look at those first.</p>
 		<p>The <courier>applicationContext.xml</courier> has an extra package to scan, this is the package we put the generated rules in.</p>
 		<p>Madura Rules uses a maven plugin to generate Java rules in much the same way Madura Objects generated Java objects from the XSD. When you use Madura Rules you always use Madura Objects as well,
@@ -326,7 +326,7 @@ Map<String,Field<?>> fields = fieldGroup.buildAndBind(m_fields, beanItem);
 		and see how errors are displayed etc. Notice that the Submit button does not enable until both required fields have valid values. This is the same as the madura-vaadin-demo <sectionLink t="madura-vaadin-demo"/>.</p>
 		<p>The demo also has a disabled BMI button. This is a different sort of button, created using:</p>
         <code><![CDATA[
-Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ADMIN", new ClickListener(){
+Button bmi = customerForm.createFieldButton("button.bmi", "dynamic","ROLE_ADMIN", new ClickListener(){
         ]]></code>
         <p>There is a boolean field called <courier>dynamic</courier> in the <courier>Customer</courier> object and this code creates a button that is disabled or enabled depending on whether <courier>dynamic</courier>
         is false or true. This would not be all that useful if nothing changed the value of <courier>dynamic</courier>, but there is a rule in the <courier>PizzaOrder.rul</courier> file:</p>
@@ -431,6 +431,7 @@ formula: Order "sum"
 		</h2>
 		</h1>
 		<h1 t="madura-address-book">
+		<p>There is an on-line demo of this<referenceLink t="on-line demos"/>.</p>
         <img width="12cm" href="images/Table.png">Address Book</img>
 		<p>This demo is all about displaying and editing rows from a database in a table. It uses Madura Objects but not Madura Rules. It does use the madura-tableeditor so that needs to be specified as a
 		maven dependency and the <courier>nz.co.senanque.vaadin.tableeditor</courier> package has to be scanned so that is added to the <courier>ComponentScan</courier> in the <courier>AddressBookUI</courier>
@@ -513,7 +514,7 @@ formula: Order "sum"
 		</h2>
 		</h1>
         <h1 t="Mobile Applications">
-        <p>There is an on-line demo of the mobile application described here at <referenceLink t="Madura Mobile Online"/>.</p>
+        <p>There is an on-line demo of the mobile application<referenceLink t="on-line demos"/>.</p>
         <h2 t="Touchkit">
         <p>Touchkit is an addon product produced by Vaadin to enable 'touch' devices like phones and tablets, so this
         is what you need for a mobile application. There is a lot to Touchkit that we will not cover here (just as there
