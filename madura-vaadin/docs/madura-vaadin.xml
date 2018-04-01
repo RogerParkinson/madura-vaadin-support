@@ -597,14 +597,19 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <p>But there is very little to it. In the madura-mobile-demo sources you will find a directory called <courier>cordova</courier> which
         contains the files to build the PhoneGap application. Most of this is specific to Phonegap and it is documented by that product, but the
         thing you need to know for now is that this application is essentially a wrapper for the browser. Phonegap can do a lot more than that
-        but this is a demo so we will keep it simple. The URL for our deloyed war file is in the <courier>index.html</courier> file.
+        but this is a demo so we will keep it simple. The URL for our deployed war file is in the <courier>index.html</courier> file.
         There is also a <courier>config.xml</courier> file which holds the name and description of the application, the name generates the final
         file name of the apk file.</p>
         <p>The Phonegap part of the build is disabled by default and to use it you need to run the <courier>phonegap</courier> maven profile.
-        But first you need to sign up to Phonegap and get a user name, password and create an application id. These need to be defined as maven properties
-        <courier>phonegap-build.username, phonegap-build.password</courier> and <courier>phonegap-build.appId</courier>.</p>
-        <p>Because you are deploying your own server end you must edit the <courier>index.html</courier> file and adjust the URL it redirects to
-        so that it points to your own server address. This address is embedded into the resulting application file.</p>
+        But first you need to sign up to Phonegap and get a user name, password and create an application id. These need to be defined as environment variables, and you also need
+        to give the address of the target server as an environment variable too. Use the following names:</p>
+        <code><![CDATA[
+phonegap-build.username=your.email@gmail.com
+phonegap-build.password=xxxxx
+phonegap-build.appId=nnnn
+demo.server=http://myserver.com:8080
+        ]]></code>
+        <p>Alternatively you can create a $HOME/madura.properties file with these values.</p>
         <p>This apk file is the simplest kind of application you can build, and because it is not signed it cannot be put into the app store. Only
         the Android variation lets you generate unsigned applications, which is why we are using it here. To generate signed applications you need
         to apply to the relevant app stores for an id and tell Phonegap about it. Phonegap supports builds for Apple iOS devices and several others.</p>
@@ -614,6 +619,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         </h2>
         </h1>
         <h1 t="madura-login">
+        <p>This sub project is largely superseded by <sectionLink t="madura-spring-security-login"/> but this gives a little more control over the login screen layout if that is needed.</p>
         <img width="12cm" href="images/Login.png">Login Screen</img>
         <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
         <p>To configure it into an application we need to tell Spring which directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.
@@ -710,7 +716,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         </h1>
         
         <h1 t="madura-spring-security-login">
-        <p>This sub project provides a more sophisticated login facility than madura-login <sectionLink t="madura-login"/>. The important difference is that
+        <p>This sub project provides a more sophisticated login facility than madura-login <sectionLink t="madura-login"/> The important difference is that
         this builds on Spring Security, which means you have access to a more robust and richer security product.</p>
         <p>Like madura-login it uses a web fragment to provide authentication and authorization services. It is specifically designed to be used
         with Vaadin applications but it might be adapted to others. We only consider Vaadin here.</p>
