@@ -350,6 +350,7 @@
 						</execution>
 					</executions>
 				</plugin>
+				<!-- 
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>wagon-maven-plugin</artifactId>
@@ -362,7 +363,7 @@
 								<goal>upload-single</goal>
 							</goals>
 							<configuration>
-								<serverId>bluehost</serverId> <!-- references the server declaration -->
+								<serverId>bluehost</serverId>
 								<fromFile>${project.build.directory}/${project.build.finalName}.pdf</fromFile>
 								<url>${env.BLUEHOST_URL}</url>
 								<toFile>/public_html/madura/${project.build.finalName}.pdf</toFile>
@@ -370,6 +371,7 @@
 						</execution>
 					</executions>
 				</plugin>
+				-->
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
