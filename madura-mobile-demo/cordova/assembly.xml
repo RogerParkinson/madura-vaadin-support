@@ -17,7 +17,16 @@
       <directory>cordova</directory>
       <excludes>
         <exclude>assembly.xml</exclude>
+        <exclude>index.html</exclude>
       </excludes>
+    </fileSet>
+    <fileSet>
+       <outputDirectory>/</outputDirectory>
+      <directory>cordova</directory>
+      <includes>
+        <include>index.html</include>
+      </includes>
+      <filtered>true</filtered>
     </fileSet>
   </fileSets>
 </assembly>

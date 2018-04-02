@@ -11,8 +11,7 @@
     // device APIs are available
     //
     function onDeviceReady() {
-//        var ref = window.open('http://demos-madura.rhcloud.com/madura-mobile-demo/', '_blank', 'location=yes,toolbar=no');
-        var ref = cordova.InAppBrowser.open('http://demos-madura.rhcloud.com/madura-mobile-demo/', '_blank', 'location=no,toolbar=no');
+        var ref = cordova.InAppBrowser.open('${demo.server}/madura-mobile-demo/', '_blank', 'location=no,toolbar=no');
 
 //          ref.addEventListener('loadstart', function(event) { alert('start: ' + event.url); });
           ref.addEventListener('loadstop', function(event) {
