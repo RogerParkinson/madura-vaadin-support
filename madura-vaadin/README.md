@@ -1,9 +1,13 @@
 Madura Vaadin Support
 ==
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/madura-vaadin-support/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/madura-vaadin-support)
+
+[![build_status](https://travis-ci.org/RogerParkinson/madura-vaadin-support.svg?branch=master)](https://travis-ci.org/RogerParkinson/madura-vaadin-support)
+
 (A more detailed document can be found at [Madura Vaadin (PDF)](http://www.madurasoftware.com/madura-vaadin.pdf)) 
 
-`madura-vaadin` ties together all the back-end Madura projects ([Madura Objects](https://github.com/RogerParkinson/madura-objects-parent) and [Madura Rules](https://github.com/RogerParkinson/madura-objects-parent/tree/master/madura-rules) , and delivers them with a [Vaadin UI](https://vaadin.com/home) . So it is worth taking a brief moment to review what those back-ends do:
+`madura-vaadin` ties together all the back-end Madura projects ([Madura Objects](https://github.com/RogerParkinson/madura-objects-parent) and [Madura Rules](https://github.com/RogerParkinson/madura-objects-parent/tree/master/madura-rules)) , and delivers them with a [Vaadin UI](https://vaadin.com/home) . So it is worth taking a brief moment to review what those back-ends do:
 
  * Madura Objects builds your domain objects as annotated POJOs from an XSD file (using JAXB). The resulting objects behave just like POJOs except, when configured with the Madura Objects validation engine, they self validate as well as maintaining field metadata such as choice lists, permissions, labels etc.
  * Madura Rules plugs into the Madura Objects validation engine to support a rules/constraints based environment that does cross-field validation as well as deriving new values (eg total of the invoice lines on this invoice). It does 'truth maintenance' which means when the data changes rules might be 'unfired', keeping the derived data always 'true'. The rules can also operate on metadata which means they can change the list of valid choices on a choice field, make a field visible or read-only etc.
@@ -29,7 +33,7 @@ In addition, if you have configured a rules plugin, such as Madura Rules, into y
  * One or more buttons may be tied to boolean fields that are, in turn, controlled by rules. These buttons become enabled or disabled depending on the current value of the boolean.
  * Labels and read-only fields may contain data derived from rules. This automatically updates as the rules change the data.
 
-Still with us? Good. In addition to all that we added some extra things that come in handy:
+Still with us? Good. We added some extra things that come in handy:
 
  * Support for Mobile applications using [Touchkit](https://vaadin.com/add-ons/touchkit) and [PhoneGap](https://build.phonegap.com) .
  * An extension of the Vaadin [JPAContainer](https://vaadin.com/directory#!addon/vaadin-jpacontainer) which supports `@Transactional` better. It also supports nice popup edit forms for each row. The edit forms use Madura Objects.
@@ -37,8 +41,10 @@ Still with us? Good. In addition to all that we added some extra things that com
 
 The details of how to use all this are best explained by examples.
 
- * [madura-vaadin-demo](../madura-vaadin-demo/README.md): This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.
- * [madura-rules-demo](../madura-rules-demo/README.md): This is the full demo that shows Madura Objects and Madura Rules working with Vaadin. Also see the [online demo](http://demos-madura.rhcloud.com/madura-rules-demo/)
- * [madura-address-book](../madura-address-book/README.md): Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.
- * [madura-mobile-demo](../madura-mobile-demo/README.md): Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules. Also see the [online demo](http://demos-madura.rhcloud.com/madura-mobile-demo/)
+ * [madura-vaadin-demo](https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-vaadin-demo): This is a basic demo of Madura working with Vaadin. Specifically Madura Objects without Madura Rules.
+ * [madura-rules-demo](https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-rules-demo): This is the full demo that shows Madura Objects and Madura Rules working with Vaadin.
+ * [madura-address-book](https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-address-book): Demonstrates the extended JPA container and a pop-up row editor which has Madura Objects backing the fields.
+ * [madura-mobile-demo](https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-mobile-demo): Demonstrates an application that presents both a desktop and mobile UI, both backed by Madura Objects and Madura Rules.
+
+There are [on-line demos](http://madurasoftware.com/?page_id=43) for all of these. 
 

@@ -1,5 +1,10 @@
 madura-vaadin-support
 ==
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/madura-vaadin-support/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/madura-vaadin-support)
+
+[![build_status](https://travis-ci.org/RogerParkinson/madura-vaadin-support.svg?branch=master)](https://travis-ci.org/RogerParkinson/madura-vaadin-support)
+
 We love Vaadin's UI approach, so we've made sure Madura plays well with it. The following sub projects provide libraries and demonstrations supporting what we've done. 
 
  * [madura-login](./madura-login/README.md): Provides a demo-ware web fragment that does authentication and authorisation and is compatible with Vaadin. This one is not actually dependent on Vaadin or Madura, but it is dependent on Spring and the demos use it.

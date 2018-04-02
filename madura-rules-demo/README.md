@@ -1,6 +1,10 @@
 madura-rules-demo
 ==
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/madura-vaadin-support/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/madura-vaadin-support)
+
+[![build_status](https://travis-ci.org/RogerParkinson/madura-vaadin-support.svg?branch=master)](https://travis-ci.org/RogerParkinson/madura-vaadin-support)
+
 (A more detailed document can be found at [Madura Vaadin (PDF)](http://www.madurasoftware.com/madura-vaadin.pdf)) 
 
 This demo shows Vaadin and Madura Rules working together providing cross-field validation, dynamic enabling and disabling of fields, dynamic adjusting of choice lists to only offer valid choices in the current context.
@@ -17,10 +21,7 @@ More detailed documentation for this is found in the [madura-vaadin](../madura-v
 
 Build and Run
 --
-To compile the entire project, run "mvn install".
-To run the application, run "mvn jetty:run" and open http://localhost:8080/
-
-Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
+To compile the entire project, run "mvn install" then deploy the war file to your favour servlet engine. Or you can use Eclipse and WTP, which is our development environment, using Tomcat 8 and Java8.
 
 Script
 --

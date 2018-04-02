@@ -1,5 +1,10 @@
 madura-address-book
 ==
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nz.co.senanque/madura-vaadin-support/badge.svg)](http://mvnrepository.com/artifact/nz.co.senanque/madura-vaadin-support)
+
+[![build_status](https://travis-ci.org/RogerParkinson/madura-vaadin-support.svg?branch=master)](https://travis-ci.org/RogerParkinson/madura-vaadin-support)
+
 A demo program that illustrates the extended JPAContainer and the table editor from [madura-vaadin-tableeditor](../madura-vaadin-tableeditor/README.md).
 
 This combination provides an almost out-of-the box database table editor complete with a pop-up dialog box to insert and edit table rows. The dialog automatically uses the Madura validation engine for validation. In this example we do not use Madura Rules which would enable cross field validation, however this could be added without changing the code. What we do see here in terms of validation is:
@@ -16,10 +21,7 @@ More detailed documentation for this is found in the [madura-vaadin](../madura-v
 
 Build and Run
 --
-To compile the entire project, run "mvn install".
-To run the application, run "mvn jetty:run" and open http://localhost:8080/
-
-Or you can use Eclipse and WTP, which is our development environment, using Tomcat 7 and Java7
+To compile the entire project, run "mvn install" then deploy the war file to your favour servlet engine. Or you can use Eclipse and WTP, which is our development environment, using Tomcat 8 and Java8.
 
 Script
 --
