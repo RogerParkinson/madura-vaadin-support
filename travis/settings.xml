@@ -5,6 +5,11 @@
       <username>${env.SONATYPE_USERNAME}</username>
       <password>${env.SONATYPE_PASSWORD}</password>
     </server>
+		<server>
+			<id>bluehost</id>
+			<username>${env.BLUEHOST_USERNAME}</username>
+			<password>${env.BLUEHOST_USERNAME}</password>
+		</server>
   </servers>
   <profiles>
     <profile>
