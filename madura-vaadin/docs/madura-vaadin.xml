@@ -803,6 +803,12 @@ public PermissionManager getPermissionManager() {
 		<table width="12cm">
 			<tw>12cm</tw>
         <tr>
+            <th>3.3.0</th>
+        </tr>
+        <tr>
+        	<td>Travis build and docs tidy up.</td>
+        </tr>
+        <tr>
             <th>3.2.2</th>
         </tr>
         <tr>

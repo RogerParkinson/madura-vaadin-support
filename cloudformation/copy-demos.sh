@@ -1,0 +1,3 @@
+scp -i madura-demos.pem ~/madura-vaadin-support/madura-vaadin-support/madura-rules-demo/target/madura-rules-demo-3.2.5.war ec2-user@ec2-13-55-73-252.ap-southeast-2.compute.amazonaws.com:~
+scp -i madura-demos.pem ~/madura-vaadin-support/madura-vaadin-support/madura-address-book/target/madura-address-book-3.2.5.war ec2-user@ec2-13-55-73-252.ap-southeast-2.compute.amazonaws.com:~
+scp -i madura-demos.pem ~/madura-vaadin-support/madura-vaadin-support/madura-mobile-demo/target/madura-mobile-demo-3.2.5.war ec2-user@ec2-13-55-73-252.ap-southeast-2.compute.amazonaws.com:~
