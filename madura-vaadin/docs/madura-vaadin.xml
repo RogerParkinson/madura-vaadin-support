@@ -799,7 +799,7 @@ public PermissionManager getPermissionManager() {
             arrangement.</p> 
 		</a1>
 		<a1 t="Release Notes">
-		<note>You need Java 1.7 to compile this project.</note>
+		<note>You need Java 8 to compile this project.</note>
 		<table width="12cm">
 			<tw>12cm</tw>
         <tr>
