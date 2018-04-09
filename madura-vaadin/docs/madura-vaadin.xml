@@ -26,6 +26,7 @@
 			<reference t="Apache Licence 2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
 			<reference t="on-line demos" url="http://madurasoftware.com/?page_id=43"/>
 			<reference t="Madura Mobile Demo.apk" url="http://www.madurasoftware.com/Madura%20Mobile%20Demo.apk"/>
+			<reference t="UserAttributeEditor" url="https://docs.spring.io/spring-security/site/docs/4.0.3.RELEASE/apidocs/org/springframework/security/core/userdetails/memory/UserAttributeEditor.html"/>
 		</references>
 	</title>
 	<body>
@@ -736,13 +737,17 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         <le>Further customisations for Spring Security.</le>
         </list>
         <h2 t="Customise User Names">
-        <p>There is a default list of in-memory users and passwords defined in the file <courier>nz.co.senanque.login.SecurityConfiguration</courier>.
-        This is, in fact, the whole Spring Security configuration and you are free to clone this file into your own application and
-        edit it as needed. But do make sure you do <emph>not</emph> change its package or its name, otherwise you will get two configurations
-        which is never good. Keeping the name the same will ensure your version overrides the default version. The default version
-        has in-memory user/password combinations: admin/admin and user/user. They each have roles ADMIN and USER respectively.</p>
-        <p>For a production system you inevitably want a more dynamic user/password repository and Spring Security gives you plenty
-        of options to do that.</p>
+        <p>There is a default list of users defined in the file <courier>default-users.properties</courier>:</p>
+        <code><![CDATA[
+admin=admin,ROLE_ADMIN
+user=user,ROLE_USER
+        ]]></code>
+        <p>There are two users: admin/admin and user/user with their respective roles, which are used as permissions.</p>
+        <p>You can replace this list with your own just by adding a file <courier>users.properties</courier> to your classpath.
+        The format of the properties file is defined by UserAttributeEditor<referenceLink t="UserAttributeEditor"/>, a Spring class
+        and it is just a csv file with <courier>user[,disabled],password,role1[,role2...]</courier>.</p>
+        <p>These are, of course, in-memory users and not suitable for production use because you cannot edit them
+        without redeploying a new copy of the application.</p>
         </h2>
         <h2 t="Permissions">
         <p>By default Spring Security roles are interpreted as Madura permissions. To access them from your application just
@@ -802,6 +807,12 @@ public PermissionManager getPermissionManager() {
 		<note>You need Java 8 to compile this project.</note>
 		<table width="12cm">
 			<tw>12cm</tw>
+        <tr>
+            <th>3.4.0</th>
+        </tr>
+        <tr>
+        	<td>Added custom user names to spring login mechanism.</td>
+        </tr>
         <tr>
             <th>3.3.0</th>
         </tr>
