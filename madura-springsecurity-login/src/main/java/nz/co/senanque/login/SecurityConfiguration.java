@@ -1,11 +1,15 @@
 package nz.co.senanque.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -13,12 +17,20 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired AuthenticationSuccessHandler authenticationSuccessHandler;
+	@Autowired UserDetailsService userDetailsService;
 	
-	@Autowired
-	public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
-		auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
-	}
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
+    }
+    @Bean(name = "default-users")
+    public PropertiesFactoryBean defaultUsers() {
+        PropertiesFactoryBean bean = new PropertiesFactoryBean();
+        bean.setLocation(new ClassPathResource("default-users.properties"));
+        return bean;
+    }
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
         http
