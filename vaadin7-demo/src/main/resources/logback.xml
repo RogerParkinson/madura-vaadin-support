@@ -9,6 +9,7 @@
 	
 	<logger name="nz.co.senanque.vaadin7demo" level="debug"/>
 	<logger name="org.springframework.security" level="debug"/>
+	<logger name="nz.co.senanque.login" level="debug"/>
 
   <root level="warn">
     <appender-ref ref="STDOUT" />

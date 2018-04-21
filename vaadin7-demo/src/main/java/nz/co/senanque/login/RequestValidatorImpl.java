@@ -3,8 +3,7 @@
  */
 package nz.co.senanque.login;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.io.IOException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -19,19 +18,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.filter.state.DefaultStateKeyGenerator;
-import org.springframework.security.oauth2.client.resource.BaseOAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.AccessTokenRequest;
-import org.springframework.security.oauth2.client.token.DefaultAccessTokenRequest;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.ResponseExtractor;
+import org.springframework.web.client.RestOperations;
 
 /**
  * Spring bean that is fetched from the Spring context explicitly by the filter rather than injected.
@@ -56,28 +60,13 @@ public class RequestValidatorImpl implements RequestValidator {
 	private static Logger m_logger = LoggerFactory.getLogger(RequestValidatorImpl.class);
 	public static final String ERROR_ATTRIBUTE = "nz.co.senanque.login.RequestValidator.ERROR";
 
-	@Value("${oauth2.client.registration.wso2.authorizationUri}")
-	private String authzEndpoint;
-	@Value("${oauth2.client.registration.wso2.accessToken}")
-	private String accessTokenEndpoint;
-	@Value("${oauth2.client.registration.wso2.client-id}")
-	private String clientId;
-	@Value("${oauth2.client.registration.wso2.client-secret}")
-	private String clientSecret;
-	@Value("${oauth2.client.registration.wso2.callback}")
-	private String callback;
-	@Value("${oauth2.client.registration.wso2.grantType}")
-	private String authzGrantType;
-	@Value("${oauth2.client.registration.wso2.scope}")
-	private String scope;
-
 	private String[] m_ignoreURLs;
 	@Autowired(required=false) @Qualifier("applicationVersion") private String m_applicationVersion;
+	@Autowired LoginParams loginParams;
+	@Autowired private RestTemplateFactory restTemplateFactory;
+//	@Autowired private JwtTokenStore tokenStore;
 	
-	private OAuth2RestOperations restTemplate;
-	
-	private DefaultStateKeyGenerator stateKeyGenerator = new DefaultStateKeyGenerator();
-
+	DefaultAccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
     
     private String[] m_imageExtensions = new String[]{".ico",".gif",".png",".jpg",".jpeg",".css",};
 	
@@ -86,42 +75,26 @@ public class RequestValidatorImpl implements RequestValidator {
 		if (m_ignoreURLs == null) {
 			m_ignoreURLs = new String[]{"/login"};
 		}
-		restTemplate = oAuthRestTemplate();
+	}
+	
+	private RestOperations getRestTemplate() {
+		return restTemplateFactory.getRestTemplate();
 	}
 	
 	//@Bean
 	public OAuth2RestOperations oAuthRestTemplate() {
 		AuthorizationCodeResourceDetails resourceDetails = new AuthorizationCodeResourceDetails();
 	    resourceDetails.setId("1");
-	    resourceDetails.setClientId(clientId);
-	    resourceDetails.setClientSecret(clientSecret);
-	    resourceDetails.setAccessTokenUri(accessTokenEndpoint);
-	    resourceDetails.setUserAuthorizationUri(authzEndpoint);
+	    resourceDetails.setClientId(loginParams.getClientId());
+	    resourceDetails.setClientSecret(loginParams.getClientSecret());
+	    resourceDetails.setAccessTokenUri(loginParams.getAccessTokenEndpoint());
+	    resourceDetails.setUserAuthorizationUri(loginParams.getAuthzEndpoint());
 
 	    OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails, new DefaultOAuth2ClientContext());
 
 	    return restTemplate;
 	}
 	
-	public void extablishToken() {
-		BaseOAuth2ProtectedResourceDetails b = new BaseOAuth2ProtectedResourceDetails();
-		OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(b);
-		OAuth2AccessToken accessToken = restTemplate.getAccessToken();
-		
-		Map map = restTemplate.getForEntity(accessTokenEndpoint, Map.class).getBody();
-		map.toString();
-
-	}
-
-	public OAuthPKCEAuthenticationRequestBuilder getRedirectToWso2() {
-	    OAuthPKCEAuthenticationRequestBuilder oAuthPKCEAuthenticationRequestBuilder = new OAuthPKCEAuthenticationRequestBuilder(authzEndpoint);
-	    oAuthPKCEAuthenticationRequestBuilder
-	            .setClientId(clientId)
-	            .setRedirectURI(callback)
-	            .setResponseType(authzGrantType)
-	            .setScope(scope);
-	    return oAuthPKCEAuthenticationRequestBuilder;
-	}
 	/* (non-Javadoc)
 	 * @see nz.co.senanque.login.RequestValidator#isURLIgnored(javax.servlet.http.HttpServletRequest)
 	 */
@@ -165,92 +138,47 @@ public class RequestValidatorImpl implements RequestValidator {
 		
         HttpSession session = request.getSession(true);
 		String code = request.getParameter(OAuth2Constants.CODE);
-		AuthorizationCodeAccessTokenProvider accessTokenProvider = new AuthorizationCodeAccessTokenProvider();
-		AuthorizationCodeResourceDetails details = new AuthorizationCodeResourceDetails();
-		details.setAccessTokenUri(accessTokenEndpoint);
-		details.setClientId(clientId);
-		details.setClientSecret(clientSecret);
-		details.setScope(Arrays.asList(new String[]{"default"}));
-		details.setId("1");
-//		details.setCode(code);
-
-		AccessTokenRequest accessTokenRequest = new DefaultAccessTokenRequest();
-		accessTokenRequest.setStateKey(stateKeyGenerator.generateKey(details));
-		accessTokenRequest.add(OAuth2Constants.CODE, code);
-		AuthorizationCodeAccessTokenProvider t = new AuthorizationCodeAccessTokenProvider();
-		OAuth2AccessToken accessToken = t.obtainAccessToken(details, accessTokenRequest);
-//		BaseOAuth2ProtectedResourceDetails b = new BaseOAuth2ProtectedResourceDetails();
-//		b.setAccessTokenUri(accessTokenEndpoint);
-//		b.setClientId(clientId);
-//		b.setClientSecret(clientSecret);
-//		b.setCode(code);
-//		OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(b);
-//		OAuth2AccessToken accessToken = restTemplate.getAccessToken();
-//		
-//		Map map = restTemplate.getForEntity(accessTokenEndpoint, Map.class).getBody();
-//		map.toString();
+		String state = request.getParameter(OAuth2Constants.STATE);
+		Object preservedState = session.getAttribute(OAuth2Constants.PRESERVED_STATE);
+		if (preservedState != null && !preservedState.equals(state)) {
+			throw new RuntimeException("Invalid state");
+		}
 		
-		
-//        OAuthTokenPKCERequestBuilder oAuthTokenPKCERequestBuilder = new OAuthTokenPKCERequestBuilder(accessTokenEndpoint);
-//
-//        OAuthClientRequest accessRequest = oAuthTokenPKCERequestBuilder.setGrantType(GrantType.AUTHORIZATION_CODE)
-//                .setClientId(clientId)
-//                .setClientSecret(clientSecret)
-//                .setRedirectURI(callback)
-//                .setCode(code)
-//                .buildBodyMessage();
-//
-//        //create OAuth client that uses custom http client under the hood
-//        OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
-////
-//        OAuthClientResponse oAuthResponse = oAuthClient.accessToken(accessRequest);
-//        String accessToken = oAuthResponse.getParam(OAuth2Constants.ACCESS_TOKEN);
-//        session.setAttribute(OAuth2Constants.ACCESS_TOKEN, accessToken);
+		AccessTokenRequestBuilder accessTokenRequestBuilder = new AccessTokenRequestBuilder(loginParams.getAccessTokenEndpoint());
+		accessTokenRequestBuilder.setClientId(loginParams.getClientId());
+		accessTokenRequestBuilder.setRedirectURI(loginParams.getCallback());
+		accessTokenRequestBuilder.setCode(code);
+		accessTokenRequestBuilder.setHttpMethod(HttpMethod.POST);
+		MultiValueMap<String, String> form = accessTokenRequestBuilder.getForm();
 
-        
-//        HttpSession session = request.getSession(true);
-//		String code = request.getParameter(OAuth2Constants.CODE);
-//		//String code = (String) session.getAttribute(OAuth2Constants.CODE);
-//		TokenRequestBuilder tokenRequestBuilder = new OAuthClientRequest.TokenRequestBuilder(accessTokenEndpoint);
-//
-//        OAuthClientRequest accessRequest = tokenRequestBuilder.setGrantType(GrantType.AUTHORIZATION_CODE)
-//                .setClientId(clientId)
-//                .setClientSecret(clientSecret)
-//                .setRedirectURI(accessTokenEndpoint)
-//                .setCode(code)
-//                .buildBodyMessage();
-//        accessRequest.addHeader("Content-Type", "application/x-www-form-urlencoded");
-//        accessRequest.addHeader("Cache-Control", "no-cache");
-//        accessRequest.addHeader("Pragma", "no-cache");
-//        accessRequest.addHeader("User-Agent", "Java/1.8.0_60");
-//        accessRequest.addHeader("Host", "localhost");
-//        accessRequest.addHeader("Connection", "keep-alive");
-//        //create OAuth client that uses custom http client under the hood
-//        OAuthClient oAuthClient = new OAuthClient(new URLConnectionClient());
-//
-//        OAuthClientResponse oAuthResponse = oAuthClient.accessToken(accessRequest);
-//        String accessToken = oAuthResponse.getParam(OAuth2Constants.ACCESS_TOKEN);
-//        session.setAttribute(OAuth2Constants.ACCESS_TOKEN, accessToken);
-//
-//        String idToken = oAuthResponse.getParam("id_token");
-//        if (idToken != null) {
-//            session.setAttribute("id_token", idToken);
-//        }
-
-//		OAuth2RestOperations restTemplate = oAuthRestTemplate();
-//		restTemplate.getOAuth2ClientContext();
-//		
-//		Map map = restTemplate.getForEntity(accessTokenEndpoint, Map.class).getBody();
-//		map.toString();
-		
+		final ResponseExtractor<OAuth2AccessToken> delegate = restTemplateFactory.getResponseExtractor();
+		ResponseExtractor<OAuth2AccessToken> responseExtractor = new ResponseExtractor<OAuth2AccessToken>() {
+			@Override
+			public OAuth2AccessToken extractData(ClientHttpResponse response) throws IOException {
+//				if (response.getHeaders().containsKey("Set-Cookie")) {
+//					copy.setCookie(response.getHeaders().getFirst("Set-Cookie"));
+//				}
+				return delegate.extractData(response);
+			}
+		};
+		OAuth2AccessToken oauth2AccessToken = restTemplateFactory.getRestTemplate().execute(accessTokenRequestBuilder.getFullUri(),accessTokenRequestBuilder.getHttpMethod(),
+				restTemplateFactory.getRequestCallback(form,accessTokenRequestBuilder.getHeaders(loginParams.getClientId(), loginParams.getClientSecret())),
+				responseExtractor, form.toSingleValueMap());
+		String accessToken = oauth2AccessToken.getValue();
+		session.setAttribute(OAuth2Constants.ACCESS_TOKEN, accessToken);
+		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+//		OAuth2Authentication authentication = tokenStore.readAuthentication(oauth2AccessToken);
+//		securityContext.setAuthentication(authentication);
 	}
 
 	@Override
-	public String buildRedirectRequest() {
-		AuthorizationCodeRequestBuilder details = new AuthorizationCodeRequestBuilder(authzEndpoint);
-		details.setClientId(clientId);
-		details.setRedirectURI(callback);
-		return details.getFullUri();
+	public AuthorizationCodeRequestBuilder getAuthorizationCodeRequestBuilder(String state) {
+		AuthorizationCodeRequestBuilder ret = new AuthorizationCodeRequestBuilder(loginParams.getAuthzEndpoint());
+		ret.setClientId(loginParams.getClientId());
+		ret.setRedirectURI(loginParams.getCallback());
+		ret.setState(state);
+		return ret;
 	}
+	
 
 }
