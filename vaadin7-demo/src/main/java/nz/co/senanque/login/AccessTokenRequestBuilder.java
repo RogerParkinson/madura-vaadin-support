@@ -25,10 +25,6 @@ public class AccessTokenRequestBuilder extends RequestBuilder {
 		parameters.put(CODE, code);
 		return this;
 	}
-	public void setState(Object preservedState) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }

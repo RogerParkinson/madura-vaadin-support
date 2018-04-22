@@ -1,6 +1,7 @@
 package nz.co.senanque.login;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
+@PropertySource("classpath:application.properties")
 public class LoginParams {
 
 	@Value("${oauth2.client.registration.wso2.authorizationUri}")
@@ -24,6 +26,13 @@ public class LoginParams {
 	private String authzGrantType;
 	@Value("${oauth2.client.registration.wso2.scope}")
 	private String scope;
+	@Value("${oauth.server.config.keyStoreName}")
+	private String keyStoreName;
+	@Value("${oauth.server.config.keyStorePassword}")
+	private String keyStorePassword;
+	@Value("${oauth.server.config.keyPairName}")
+	private String keyPairName;
+
 	public String getAuthzEndpoint() {
 		return authzEndpoint;
 	}
@@ -65,5 +74,23 @@ public class LoginParams {
 	}
 	public void setScope(String scope) {
 		this.scope = scope;
+	}
+	public String getKeyStoreName() {
+		return keyStoreName;
+	}
+	public void setKeyStoreName(String keyStoreName) {
+		this.keyStoreName = keyStoreName;
+	}
+	public String getKeyStorePassword() {
+		return keyStorePassword;
+	}
+	public void setKeyStorePassword(String keyStorePassword) {
+		this.keyStorePassword = keyStorePassword;
+	}
+	public String getKeyPairName() {
+		return keyPairName;
+	}
+	public void setKeyPairName(String keyPairName) {
+		this.keyPairName = keyPairName;
 	}
 }

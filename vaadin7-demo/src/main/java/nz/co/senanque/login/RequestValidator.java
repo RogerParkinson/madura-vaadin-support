@@ -15,7 +15,7 @@ public interface RequestValidator {
 
 	public abstract boolean isURLIgnored(HttpServletRequest req);
 //	public abstract OAuthPKCEAuthenticationRequestBuilder getRedirectToWso2();
-	public abstract void setErrorAttribute(HttpServletRequest req, String error);
+//	public abstract void setErrorAttribute(HttpServletRequest req, String error);
 	public abstract void authenticate(HttpServletRequest req) throws OAuthSystemException, OAuthProblemException;
 	public abstract AuthorizationCodeRequestBuilder getAuthorizationCodeRequestBuilder(String state);
 
