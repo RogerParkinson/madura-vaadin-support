@@ -9,28 +9,24 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:oauth.properties")
 public class LoginParams {
 
-	@Value("${oauth2.client.registration.wso2.authorizationUri}")
+	@Value("${oauth2.client.authorizationUri}")
 	private String authzEndpoint;
-	@Value("${oauth2.client.registration.wso2.accessToken}")
+	@Value("${oauth2.client.accessToken}")
 	private String accessTokenEndpoint;
-	@Value("${oauth2.client.registration.wso2.client-id}")
+	@Value("${oauth2.client.client-id}")
 	private String clientId;
-	@Value("${oauth2.client.registration.wso2.client-secret}")
+	@Value("${oauth2.client.client-secret}")
 	private String clientSecret;
-	@Value("${oauth2.client.registration.wso2.callback}")
+	@Value("${oauth2.client.callback}")
 	private String callback;
-	@Value("${oauth2.client.registration.wso2.grantType}")
+	@Value("${oauth2.client.grantType}")
 	private String authzGrantType;
-	@Value("${oauth2.client.registration.wso2.scope}")
+	@Value("${oauth2.client.scope}")
 	private String scope;
-	@Value("${oauth.server.config.keyStoreName}")
-	private String keyStoreName;
-	@Value("${oauth.server.config.keyStorePassword}")
-	private String keyStorePassword;
-	@Value("${oauth.server.config.keyPairName}")
+	@Value("${oauth2.client.keyPairName}")
 	private String keyPairName;
 
 	public String getAuthzEndpoint() {
@@ -74,18 +70,6 @@ public class LoginParams {
 	}
 	public void setScope(String scope) {
 		this.scope = scope;
-	}
-	public String getKeyStoreName() {
-		return keyStoreName;
-	}
-	public void setKeyStoreName(String keyStoreName) {
-		this.keyStoreName = keyStoreName;
-	}
-	public String getKeyStorePassword() {
-		return keyStorePassword;
-	}
-	public void setKeyStorePassword(String keyStorePassword) {
-		this.keyStorePassword = keyStorePassword;
 	}
 	public String getKeyPairName() {
 		return keyPairName;
