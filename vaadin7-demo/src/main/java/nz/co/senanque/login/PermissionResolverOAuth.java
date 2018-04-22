@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * This gets the username and permissions from Spring Security. We make few assumptions about the underlying
@@ -34,11 +33,9 @@ public class PermissionResolverOAuth implements PermissionResolver {
 		SecurityContext sc = SecurityContextHolder.getContext();
 		Authentication authentication = sc.getAuthentication(); // null
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails userDetails = null;
-		if (principal instanceof UserDetails) {
-		    userDetails = (UserDetails) principal;
-		    userName = userDetails.getUsername();
-		    Collection<? extends GrantedAuthority>  authorities = userDetails.getAuthorities();
+		if (principal instanceof String) {
+		    userName = (String)principal;
+		    Collection<? extends GrantedAuthority>  authorities = authentication.getAuthorities();
 		    for (GrantedAuthority ga: authorities) {
 		    	// Madura can use this as a permission, though by default it is actually a ROLE.
 		    	// The underlying implementation of Spring Security can be customised to implement

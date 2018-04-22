@@ -29,9 +29,4 @@ public class OAuthPKCEAuthenticationRequestBuilder extends OAuthClientRequest.Au
         super(url);
     }
 
-//    public OAuthPKCEAuthenticationRequestBuilder setPKCECodeChallenge(String codeChallenge, String method) {
-//        this.parameters.put(OAuth2Constants.OAUTH2_PKCE_CODE_CHALLENGE, codeChallenge);
-//        this.parameters.put(OAuth2Constants.OAUTH2_PKCE_CODE_CHALLENGE_METHOD, method);
-//        return this;
-//    }
 }

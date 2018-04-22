@@ -1,9 +1,9 @@
 package nz.co.senanque.vaadin7demo;
 
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
+import nz.co.senanque.login.OAuth2Constants;
 import nz.co.senanque.login.PermissionResolverOAuth;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
@@ -14,8 +14,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
@@ -69,6 +75,8 @@ public class MyUI extends UI {
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
+    	@Autowired private JwtTokenStore tokenStore;
+    	
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
     	}
@@ -87,6 +95,14 @@ public class MyUI extends UI {
 		@Bean
     	@UIScope
     	public PermissionManager getPermissionManager() {
+			ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
+			OAuth2AccessToken oauth2AccessToken = (OAuth2AccessToken)requestAttributes.getRequest().getSession().getAttribute(OAuth2Constants.ACCESS_TOKEN);
+			SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+			OAuth2Authentication authentication = tokenStore.readAuthentication(oauth2AccessToken);
+			securityContext.setAuthentication(authentication);
+			authentication.setAuthenticated(true);
+			SecurityContextHolder.setContext(securityContext);
+
     		PermissionManagerImpl ret =  new PermissionManagerImpl();
     		ret.setPermissionResolver(new PermissionResolverOAuth());
     		return ret;

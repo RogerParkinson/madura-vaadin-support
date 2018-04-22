@@ -60,13 +60,9 @@ public class RequestValidatorImpl implements RequestValidator {
 	public static final String ERROR_ATTRIBUTE = "nz.co.senanque.login.RequestValidator.ERROR";
 
 	private String[] m_ignoreURLs;
-//	@Autowired(required=false) @Qualifier("applicationVersion") private String m_applicationVersion;
 	@Autowired LoginParams loginParams;
 	@Autowired private RestTemplateFactory restTemplateFactory;
-	@Autowired private JwtTokenStore tokenStore;
-	
-//	DefaultAccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
-    
+	    
     private String[] m_imageExtensions = new String[]{".ico",".gif",".png",".jpg",".jpeg",".css",};
 	
 	@PostConstruct
@@ -75,24 +71,6 @@ public class RequestValidatorImpl implements RequestValidator {
 			m_ignoreURLs = new String[]{"/login"};
 		}
 	}
-	
-//	private RestOperations getRestTemplate() {
-//		return restTemplateFactory.getRestTemplate();
-//	}
-	
-//	//@Bean
-//	public OAuth2RestOperations oAuthRestTemplate() {
-//		AuthorizationCodeResourceDetails resourceDetails = new AuthorizationCodeResourceDetails();
-//	    resourceDetails.setId("1");
-//	    resourceDetails.setClientId(loginParams.getClientId());
-//	    resourceDetails.setClientSecret(loginParams.getClientSecret());
-//	    resourceDetails.setAccessTokenUri(loginParams.getAccessTokenEndpoint());
-//	    resourceDetails.setUserAuthorizationUri(loginParams.getAuthzEndpoint());
-//
-//	    OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resourceDetails, new DefaultOAuth2ClientContext());
-//
-//	    return restTemplate;
-//	}
 	
 	/* (non-Javadoc)
 	 * @see nz.co.senanque.login.RequestValidator#isURLIgnored(javax.servlet.http.HttpServletRequest)
@@ -119,10 +97,6 @@ public class RequestValidatorImpl implements RequestValidator {
 		}
 		return false;
 	}
-//	public void setErrorAttribute(HttpServletRequest req, String error) {
-//		req.getSession().setAttribute(ERROR_ATTRIBUTE, error);
-//		m_logger.debug("Setting error: {} on session {}",error,req.getSession().getId());
-//	}
 	
 	public String[] getIgnoreURLs() {
 		return m_ignoreURLs;
@@ -154,22 +128,13 @@ public class RequestValidatorImpl implements RequestValidator {
 		ResponseExtractor<OAuth2AccessToken> responseExtractor = new ResponseExtractor<OAuth2AccessToken>() {
 			@Override
 			public OAuth2AccessToken extractData(ClientHttpResponse response) throws IOException {
-//				if (response.getHeaders().containsKey("Set-Cookie")) {
-//					copy.setCookie(response.getHeaders().getFirst("Set-Cookie"));
-//				}
 				return delegate.extractData(response);
 			}
 		};
 		OAuth2AccessToken oauth2AccessToken = restTemplateFactory.getRestTemplate().execute(accessTokenRequestBuilder.getFullUri(),accessTokenRequestBuilder.getHttpMethod(),
 				restTemplateFactory.getRequestCallback(form,accessTokenRequestBuilder.getHeaders(loginParams.getClientId(), loginParams.getClientSecret())),
 				responseExtractor, form.toSingleValueMap());
-		String accessToken = oauth2AccessToken.getValue();
-		session.setAttribute(OAuth2Constants.ACCESS_TOKEN, accessToken);
-		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-		OAuth2Authentication authentication = tokenStore.readAuthentication(oauth2AccessToken);
-		securityContext.setAuthentication(authentication);
-		authentication.setAuthenticated(true);
-		SecurityContextHolder.setContext(securityContext);
+		session.setAttribute(OAuth2Constants.ACCESS_TOKEN, oauth2AccessToken);
 	}
 
 	@Override

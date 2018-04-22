@@ -58,6 +58,7 @@ public class AuthenticationFilter extends GenericFilterBean {
 		if (!uri.endsWith("login")) {
 			HttpSession session = ((HttpServletRequest)request).getSession(true);
 			Object accessToken = session.getAttribute(OAuth2Constants.ACCESS_TOKEN);
+			m_logger.debug("accessToken {}",accessToken);
 			if (!m_validator.isURLIgnored(httpServletRequest) && accessToken == null) {
 				String state = generator.generate();
 				session.setAttribute(OAuth2Constants.PRESERVED_STATE, state);
