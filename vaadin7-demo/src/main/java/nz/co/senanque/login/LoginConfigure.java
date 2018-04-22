@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
+import com.vaadin.spring.annotation.UIScope;
+
 /**
  * @author Roger Parkinson
  *
@@ -22,18 +24,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @ComponentScan("nz.co.senanque.login")
 public class LoginConfigure {
 
-	@Autowired LoginParams loginParams;
+	@Autowired private LoginParams loginParams;
 
-
-	@Bean
-	public MethodInvokingFactoryBean methodInvokingFactoryBean() {
-	    MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
-	    methodInvokingFactoryBean.setTargetClass(SecurityContextHolder.class);
-	    methodInvokingFactoryBean.setTargetMethod("setStrategyName");
-	    methodInvokingFactoryBean.setArguments(new String[]{SecurityContextHolder.MODE_INHERITABLETHREADLOCAL});
-	    return methodInvokingFactoryBean;
-	}
-	
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 	    JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
@@ -53,5 +45,10 @@ public class LoginConfigure {
         return new JwtTokenStore(accessTokenConverter());
     }
  
+	@Bean
+	@UIScope
+	public PermissionResolverOAuth getPermissionResolverOAuth() {
+		return new PermissionResolverOAuth();
+	}
     
 }

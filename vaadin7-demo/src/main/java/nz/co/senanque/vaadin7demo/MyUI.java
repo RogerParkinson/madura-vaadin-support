@@ -3,10 +3,9 @@ package nz.co.senanque.vaadin7demo;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
 
-import nz.co.senanque.login.OAuth2Constants;
-import nz.co.senanque.login.PermissionResolverOAuth;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
+import nz.co.senanque.permissionmanager.PermissionResolver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,14 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;
@@ -51,8 +44,9 @@ public class MyUI extends UI {
 	private static final long serialVersionUID = 1L;
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
-	@Autowired
-    private SpringViewProvider viewProvider;
+	@Autowired private SpringViewProvider viewProvider;
+	@Autowired private JwtTokenStore tokenStore;
+	@Autowired private PermissionResolver permissionResolver;
 	
     @WebServlet(name = "MyUIServlet", urlPatterns = {"/app/*", "/VAADIN/*"}, asyncSupported = true)
     public static class MyUIServlet extends SpringVaadinServlet {
@@ -75,8 +69,6 @@ public class MyUI extends UI {
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
-    	@Autowired private JwtTokenStore tokenStore;
-    	
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
     	}
@@ -91,23 +83,15 @@ public class MyUI extends UI {
     	public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() {
     		return new PropertySourcesPlaceholderConfigurer();
     	}
-
-		@Bean
-    	@UIScope
-    	public PermissionManager getPermissionManager() {
-			ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
-			OAuth2AccessToken oauth2AccessToken = (OAuth2AccessToken)requestAttributes.getRequest().getSession().getAttribute(OAuth2Constants.ACCESS_TOKEN);
-			SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-			OAuth2Authentication authentication = tokenStore.readAuthentication(oauth2AccessToken);
-			securityContext.setAuthentication(authentication);
-			authentication.setAuthenticated(true);
-			SecurityContextHolder.setContext(securityContext);
-
-    		PermissionManagerImpl ret =  new PermissionManagerImpl();
-    		ret.setPermissionResolver(new PermissionResolverOAuth());
-    		return ret;
-    	}
     }
+
+	@Bean
+	@UIScope
+	public PermissionManager getPermissionManager() {
+		PermissionManagerImpl ret =  new PermissionManagerImpl();
+		ret.setPermissionResolver(permissionResolver);
+		return ret;
+	}
     @Override
     protected void init(VaadinRequest vaadinRequest) { // called at session start
     	
@@ -123,7 +107,6 @@ public class MyUI extends UI {
                 ViewScopedView.VIEW_NAME));
         navigationBar.addComponent(createLogoutButton());
         root.addComponent(navigationBar);
-        
 
         final Panel viewContainer = new Panel();
         viewContainer.setSizeFull();
@@ -155,10 +138,8 @@ public class MyUI extends UI {
 		    	getUI().close();
 		        String contextPath = VaadinService.getCurrentRequest().getContextPath();
 		        getUI().getPage().setLocation(contextPath+"/logout");
-
 			}
 		});
         return button;
-    	
     }
 }
