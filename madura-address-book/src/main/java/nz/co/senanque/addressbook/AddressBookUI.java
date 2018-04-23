@@ -8,6 +8,7 @@ import nz.co.senanque.addressbook.instances.TreeSpecies;
 import nz.co.senanque.login.PermissionResolverSpringSecurity;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
+import nz.co.senanque.permissionmanager.PermissionResolver;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
@@ -82,6 +83,7 @@ public class AddressBookUI extends UI  {
     	private Container.Filterable personContainer;
     	@Autowired @Qualifier("treeContainer") 
     	private Container.Filterable treeContainer;
+    	@Autowired private PermissionResolver permissionResolver;
 
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
@@ -120,7 +122,7 @@ public class AddressBookUI extends UI  {
     	@UIScope
     	public PermissionManager getPermissionManager() {
     		PermissionManagerImpl ret =  new PermissionManagerImpl();
-    		ret.setPermissionResolver(new PermissionResolverSpringSecurity());
+    		ret.setPermissionResolver(permissionResolver);
     		return ret;
     	}
     }

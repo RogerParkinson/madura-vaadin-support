@@ -49,7 +49,6 @@
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
 			<artifactId>madura-springsecurity-login</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

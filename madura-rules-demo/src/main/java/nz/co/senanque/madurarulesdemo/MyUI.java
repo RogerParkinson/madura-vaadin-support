@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import nz.co.senanque.login.PermissionResolverSpringSecurity;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
+import nz.co.senanque.permissionmanager.PermissionResolver;
 import nz.co.senanque.pizzaorder.instances.Customer;
 import nz.co.senanque.pizzaorder.instances.Order;
 import nz.co.senanque.vaadin.Hints;
@@ -84,6 +85,8 @@ public class MyUI extends UI {
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
+    	@Autowired private PermissionResolver permissionResolver;
+    	
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
     	}
@@ -107,7 +110,7 @@ public class MyUI extends UI {
     	@UIScope
     	public PermissionManager getPermissionManager() {
     		PermissionManagerImpl ret =  new PermissionManagerImpl();
-    		ret.setPermissionResolver(new PermissionResolverSpringSecurity());
+    		ret.setPermissionResolver(permissionResolver);
     		return ret;
     	}
     }

@@ -8,6 +8,7 @@ import nz.co.senanque.maduramobiledemo.touchkit.MenuView;
 import nz.co.senanque.maduramobiledemo.touchkit.PizzaView;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.permissionmanager.PermissionManagerImpl;
+import nz.co.senanque.permissionmanager.PermissionResolver;
 import nz.co.senanque.vaadin.Hints;
 import nz.co.senanque.vaadin.HintsImpl;
 import nz.co.senanque.vaadin.MaduraSessionManager;
@@ -76,6 +77,8 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     @PropertySource("classpath:config.properties")
     public static class MyConfiguration {
     	
+    	@Autowired private PermissionResolver permissionResolver;
+
     	public MyConfiguration() {
     		m_logger.info("MyConfiguration"); // this gets called at application startup, not session startup so this is an app bean.
     	}
@@ -98,7 +101,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
     	@UIScope
     	public PermissionManager getPermissionManager() {
     		PermissionManagerImpl ret =  new PermissionManagerImpl();
-    		ret.setPermissionResolver(new PermissionResolverSpringSecurity());
+    		ret.setPermissionResolver(permissionResolver);
     		return ret;
     	}
     }

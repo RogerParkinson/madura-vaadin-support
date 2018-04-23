@@ -81,8 +81,7 @@
 
 		<dependency>
 			<groupId>nz.co.senanque</groupId>
-			<artifactId>madura-oauth2-login</artifactId>
-			<version>${project.version}</version>
+			<artifactId>madura-springsecurity-login</artifactId>
 		</dependency>
 
 	</dependencies>
