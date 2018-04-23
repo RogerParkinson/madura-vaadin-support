@@ -3,7 +3,7 @@
 	<parent>
         <artifactId>madura-vaadin-support</artifactId>
         <groupId>nz.co.senanque</groupId>
-        <version>3.4.0</version>
+        <version>3.4.1-SNAPSHOT</version>
     </parent>
 	<artifactId>madura-permission-manager</artifactId>
 	<name>madura-permission-manager</name>
