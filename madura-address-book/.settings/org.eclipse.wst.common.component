@@ -5,16 +5,16 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/generated-sources/xjc"/>
-        <dependent-module archiveName="madura-springsecurity-login-3.4.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-springsecurity-login/madura-springsecurity-login">
+        <dependent-module archiveName="madura-springsecurity-login-3.4.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-springsecurity-login/madura-springsecurity-login">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="madura-permission-manager-3.4.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-permission-manager/madura-permission-manager">
+        <dependent-module archiveName="madura-vaadin-tableeditor-3.4.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-tableeditor/madura-vaadin-tableeditor">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="madura-vaadin-tableeditor-3.4.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin-tableeditor/madura-vaadin-tableeditor">
+        <dependent-module archiveName="madura-vaadin-3.4.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin/madura-vaadin">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="madura-vaadin-3.4.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-vaadin/madura-vaadin">
+        <dependent-module archiveName="madura-permission-manager-3.4.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/madura-permission-manager/madura-permission-manager">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="madura-address-book"/>
