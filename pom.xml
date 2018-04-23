@@ -202,6 +202,16 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.framework.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.framework.version}</version>
 			</dependency>
@@ -215,6 +225,11 @@
 			    <artifactId>spring-test</artifactId>
 			    <version>${spring.framework.version}</version>
 			    <scope>test</scope>
+			</dependency>
+			<dependency>
+			    <groupId>org.springframework.security.oauth</groupId>
+			    <artifactId>spring-security-oauth2</artifactId>
+			    <version>2.3.2.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.security</groupId>
@@ -380,18 +395,19 @@
 		</pluginManagement>
 	</build>
   <modules>
+    <module>madura-permission-manager</module>
+    <module>madura-oauth2-login</module>
+    <module>madura-springsecurity-login</module>
   	<module>madura-login</module>
-  	<module>vaadin7-demo</module>
-  	<module>madura-vaadin</module>
-    <module>madura-vaadin-touchkit</module>
-  	<module>madura-vaadin-demo</module>
   	<module>madura-vaadin-directed</module>
   	<module>madura-vaadin-tableeditor</module>
+  	<module>madura-vaadin</module>
+    <module>madura-vaadin-touchkit</module>
+  	<module>vaadin7-demo</module>
+  	<module>madura-vaadin-demo</module>
   	<module>madura-address-book</module>
   	<module>madura-rules-demo</module>
     <module>madura-mobile-demo</module>
-    <module>madura-springsecurity-login</module>
-    <module>madura-permission-manager</module>
   </modules>
 	<profiles>
 		<profile>

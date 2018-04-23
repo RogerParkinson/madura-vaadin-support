@@ -12,30 +12,15 @@ import javax.servlet.http.HttpSession;
 import nz.co.senanque.permissionmanager.PermissionManager;
 import nz.co.senanque.resourceloader.MessageResource;
 
-import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResponseExtractor;
-import org.springframework.web.client.RestOperations;
 
 /**
  * Spring bean that is fetched from the Spring context explicitly by the filter rather than injected.
@@ -107,7 +92,7 @@ public class RequestValidatorImpl implements RequestValidator {
 	}
 
 	@Override
-	public void authenticate(HttpServletRequest request) throws OAuthSystemException, OAuthProblemException {
+	public void authenticate(HttpServletRequest request) {
 		
         HttpSession session = request.getSession(true);
 		String code = request.getParameter(OAuth2Constants.CODE);

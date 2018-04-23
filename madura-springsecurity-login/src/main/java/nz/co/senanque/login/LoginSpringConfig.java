@@ -3,6 +3,8 @@ package nz.co.senanque.login;
 import java.util.HashMap;
 import java.util.Map;
 
+import nz.co.senanque.permissionmanager.PermissionResolver;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +29,11 @@ public class LoginSpringConfig {
 		attributes.put("labels", labels);
 		ret.setAttributes(attributes);
 		return ret;
+	}
+	
+	@Bean
+	public PermissionResolver getPermissionResolverSpringSecurity() {
+		return new PermissionResolverSpringSecurity();
 	}
 	
 }

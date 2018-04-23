@@ -1,6 +1,5 @@
 package nz.co.senanque.login;
 
-import org.springframework.http.HttpHeaders;
 
 
 public class AccessTokenRequestBuilder extends RequestBuilder {

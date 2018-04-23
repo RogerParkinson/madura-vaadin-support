@@ -13,7 +13,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.context.ContextLoaderListener;
 
 import com.vaadin.annotations.Theme;
@@ -45,7 +44,6 @@ public class MyUI extends UI {
 	private static Logger m_logger = LoggerFactory.getLogger(MyUI.class);
 	
 	@Autowired private SpringViewProvider viewProvider;
-	@Autowired private JwtTokenStore tokenStore;
 	@Autowired private PermissionResolver permissionResolver;
 	
     @WebServlet(name = "MyUIServlet", urlPatterns = {"/app/*", "/VAADIN/*"}, asyncSupported = true)
