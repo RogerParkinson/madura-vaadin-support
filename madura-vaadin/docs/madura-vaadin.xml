@@ -16,6 +16,7 @@
 			<reference t="JPAContainer" url="https://vaadin.com/directory#!addon/vaadin-jpacontainer"/>
 			<reference t="madura-login" url="https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-login"/>
 			<reference t="MaduraObjects" url="https://github.com/RogerParkinson/madura-objects-parent"/>
+			<reference t="authserver" url="https://github.com/RogerParkinson/authserver"/>
 			<reference t="MaduraRules" url="https://github.com/RogerParkinson/madura-objects-parent/tree/master/madura-rules"/>
 			<reference t="Madura Rules Demo" url="https://github.com/RogerParkinson/madura-vaadin-support/tree/master/madura-rules-demo"/>
 			<reference t="vaadin-touchkit" url="https://vaadin.com/add-ons/touchkit"/>
@@ -620,7 +621,7 @@ demo.server=http://myserver.com:8080
         </h2>
         </h1>
         <h1 t="madura-login">
-        <p>This sub project is largely superseded by <sectionLink t="madura-spring-security-login"/> but this gives a little more control over the login screen layout if that is needed.</p>
+        <p>This sub project is largely superseded by <sectionLink t="madura-springsecurity-login"/> but this gives a little more control over the login screen layout if that is needed.</p>
         <img width="12cm" href="images/Login.png">Login Screen</img>
         <p>This sub project provides a demo-ware login facility. It uses a web fragment to provide authentication and authorization services.</p>
         <p>To configure it into an application we need to tell Spring which directories to scan. All the demos here do this in the <courier>WEB-INF/applicationContext.xml</courier> file.
@@ -716,7 +717,7 @@ public class MaduraMobileDemoTouchKitUI extends UI {
         </h2>
         </h1>
         
-        <h1 t="madura-spring-security-login">
+        <h1 t="madura-springsecurity-login">
         <p>This sub project provides a more sophisticated login facility than madura-login <sectionLink t="madura-login"/> The important difference is that
         this builds on Spring Security, which means you have access to a more robust and richer security product.</p>
         <p>Like madura-login it uses a web fragment to provide authentication and authorization services. It is specifically designed to be used
@@ -753,11 +754,13 @@ user=user,ROLE_USER
         <p>By default Spring Security roles are interpreted as Madura permissions. To access them from your application just
         add this to your beans:</p>
         <code><![CDATA[
+@Autowired PermissionResolver permissionResolver
+
 @Bean
 @UIScope
 public PermissionManager getPermissionManager() {
 	PermissionManagerImpl ret =  new PermissionManagerImpl();
-	ret.setPermissionResolver(new PermissionResolverSpringSecurity());
+	ret.setPermissionResolver(permissionResolver);
 	return ret;
 }
         ]]></code>
@@ -795,6 +798,34 @@ public PermissionManager getPermissionManager() {
         </h2>
         </h1>
         
+        <h1 t="madura-oauth2-login">
+        <p>When you want to move to production you really want an OAuth2 solution. This externalises the authentication, making another server responsible for
+        looking up the user and password and it delivers only the permissions available to the (now) logged in user. It means that all those complex workflows
+        around lost passwords and expired passwords can be handled in the authentication server, not built in your application.</p>
+        <p>It does require you to deploy an authentication server, of course, making it less useful in demos. So all the Madura demos use 
+        <sectionLink t="madura-springsecurity-login"/> to keep it simple.</p>
+        <p>To convert from madura-springsecurity-login to madura-oath2-login you need to change the maven dependency in the pom file and add two files to the
+        top of the classpath: oauth.properties and public.txt.
+        The oauth.properties file should look something like this:</p>
+        <code><![CDATA[
+oauth2.client.scope=default
+oauth2.client.grantType=code
+oauth2.client.accessToken=http://acme:acmesecret@localhost:9999/uaa/oauth/token
+oauth2.client.callback=http://localhost:8080/vaadin7-demo/login
+oauth2.client.client-id=acme
+oauth2.client.client-secret=acmesecret
+oauth2.client.authorizationUri=http://localhost:9999/uaa/oauth/authorize
+oauth2.client.keyPairName=test
+        ]]></code>
+        <p>The values here will change depending on your authentication server. These values work for the sample authentication server we tested against.</p>
+        <p>The public.txt file contains the <emph>public</emph> component of the key pair held in the authentication server.</p>
+        <p>You can find samples of both files in the vaadin7-demo project.</p>
+        <p>The server we tested this with is a simple spring-boot annotation configured authentication server<referenceLink t="authserver"/>. 
+        The idea is that you replace this sample server with your own. Depending on what authentication server you choose you may need to recode part of
+        the madura-oauth2-login library. The OAuth2 standard has variations. But you do have this proof of concept to start with.</p>
+        <p>As with madura-springsecurity-login the permissions are loaded from Spring ROLEs and that means every permission starts with 'ROLE_' eg ROLE_ADMIN etc.</p>
+        </h1>
+        
 		<a1 t="License">
 			<p>The code specific to Madura-VaadinSupport is licensed under the Apache License 2.0 <referenceLink t="Apache Licence 2.0"/>.</p>
 			<p>Most of the dependent products have compatable licenses detailed in their pom files.</p>
@@ -809,6 +840,9 @@ public PermissionManager getPermissionManager() {
 			<tw>12cm</tw>
         <tr>
             <th>3.4.0</th>
+        </tr>
+        <tr>
+        	<td>Added oauth2 login module.</td>
         </tr>
         <tr>
         	<td>Added custom user names to spring login mechanism.</td>
