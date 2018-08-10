@@ -15,7 +15,7 @@
 		Roger Parkinson
 	</author>
 	<gap:splash src="astrolab-splash.png" platform="android" qualifier="mdpi"/>
-	<preference name="phonegap-version" value="cli-6.3.0" />
+	<preference name="phonegap-version" value="cli-6.4.0" />
 	<preference name="orientation" value="portrait" />
 	<preference name="fullscreen" value="false" />
 	<!-- These rules lets demo.vaadin.com take over the web view created by 
