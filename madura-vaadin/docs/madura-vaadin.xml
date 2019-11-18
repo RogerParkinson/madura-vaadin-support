@@ -839,6 +839,12 @@ oauth2.client.keyPairName=test
 		<table width="12cm">
 			<tw>12cm</tw>
         <tr>
+            <th>3.4.1</th>
+        </tr>
+        <tr>
+        	<td>Fixed a problem in travis CI and tidied some poms which had warnings.</td>
+        </tr>
+        <tr>
             <th>3.4.0</th>
         </tr>
         <tr>

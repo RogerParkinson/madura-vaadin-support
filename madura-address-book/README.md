@@ -21,7 +21,7 @@ More detailed documentation for this is found in the [madura-vaadin](../madura-v
 
 Build and Run
 --
-To compile the entire project, run "mvn install" then deploy the war file to your favour servlet engine. Or you can use Eclipse and WTP, which is our development environment, using Tomcat 8 and Java8.
+To compile the entire project, run "mvn install" then deploy the war file to your favourite servlet engine. Or you can use Eclipse and WTP, which is our development environment, using Tomcat 8 and Java8.
 
 Script
 --
