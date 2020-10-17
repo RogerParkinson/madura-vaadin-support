@@ -8,7 +8,7 @@
 	<artifactId>madura-permission-manager</artifactId>
 	<name>madura-permission-manager</name>
 	<properties>
-		<spring.framework.version>4.3.3.RELEASE</spring.framework.version>
+		<spring.framework.version>5.2.9.RELEASE</spring.framework.version>
 	</properties>
 	<dependencies>
 		<dependency>
