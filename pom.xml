@@ -48,7 +48,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<pdf>target/${project.artifactId}-${project.version}.pdf</pdf>
-		<spring.framework.version>6.1.14</spring.framework.version>
+		<spring.framework.version>6.1.20</spring.framework.version>
 		<vaadin.version>7.7.24</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<springsecurity.version>5.7.13</springsecurity.version>
